@@ -1,0 +1,28 @@
+
+
+// Mixin for media query passing the type of screen.
+$breakpoints: (
+    phone: 400px,
+    phone-wide: 480px,
+    phablet: 560px,
+    tablet-small: 640px,
+    tablet: 769px,
+    tablet-wide: 1135px,
+    tablet-large: 990px,
+    tablet-larger: 1050px,
+    desktop: 1248px,
+    desktop-min: 1160px,
+    desktop-wide: 1440px,
+    ipad-wide: 1055px
+);
+@mixin media-query ($width, $type: min) {
+    @if map_has_key($breakpoints, $width) {
+        $breakpoint-width: map_get($breakpoints, $width);
+        @if $type == max {
+            $width: $breakpoint-width - 1px;
+        }
+        @media all and(#{$type}-width: $width) {
+            @content;
+        }
+    }
+}

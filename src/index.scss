@@ -1,0 +1,116 @@
+/**
+ * Global Styles will be written here.
+ */
+@import "theme";
+// Go to site.variables file in semantic/src/site/globals to add imports for fonts (you will need to build semantic to see changes)
+
+html,
+body {
+    font-size: 1.5vw;
+
+    @media only screen and (min-width: 1920px) {
+        font-size: 30px;
+    }
+
+    @media only screen and (max-width: 990px) {
+        font-size: 15px;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: map_get($text-colors, dark);
+}
+
+code {
+    font-family:
+        source-code-pro,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Courier New",
+        monospace;
+}
+
+/*
+Font weights and their mapping to the design
+--------------------------------------------
+Light	300
+Normal, Regular	400
+Medium	500
+Semi Bold, Demi Bold	600
+Bold	700
+Extra Bold, Ultra Bold	800
+Black, Heavy
+*/
+
+// add class="light" to convert it to white.
+
+.light {
+    color: map_get($colors, light);
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 300;
+}
+
+hr {
+    padding: 0 map_get($sizes, margins) 0 map_get($sizes, margins);
+    width: 80%;
+}
+
+p,
+span {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.ui.modals.visible {
+    background: transparent !important;
+
+    .modal {
+        background: transparent !important;
+    }
+
+    .image.content {
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    img {
+        width: 100% !important;
+        object-fit: cover;
+    }
+
+    .description {
+        position: absolute;
+        display: flex !important;
+        justify-content: center;
+        align-items: flex-end;
+        width: 100%;
+        height: 100%;
+        animation: fade 2s linear;
+
+        p {
+            margin-bottom: 20px;
+            opacity: 0;
+        }
+
+        &:hover {
+            p {
+                opacity: 1;
+                background: rgba(210, 210, 210, .5);
+                padding: 20px 30px;
+                transition: opacity 250ms ease-in-out;
+            }
+        }
+    }
+}
+

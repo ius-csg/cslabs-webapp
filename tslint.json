@@ -1,0 +1,70 @@
+{
+  "extends": ["tslint:recommended", "tslint-react"],
+  "rules": {
+    "no-string-literal": false,
+    "arrow-parens": false,
+    "arrow-return-shorthand": [false],
+    "comment-format": [true, "check-space"],
+    "import-blacklist": [true],
+    "interface-over-type-literal": false,
+    "interface-name": false,
+    "max-line-length": [true, {"limit": 160, "ignore-pattern": "//"}],
+    "member-access": false,
+    "member-ordering": [true, { "order": "fields-first" }],
+    "newline-before-return": false,
+    "no-any": false,
+    "no-empty-interface": false,
+    "no-import-side-effect": [true, {"ignore-module": "(\\.d|firebase\\/.*?)$"}],
+    "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
+    "no-invalid-this": [true, "check-function-in-method"],
+    "no-namespace": false,
+    "no-null-keyword": false,
+    "no-require-imports": false,
+    "no-submodule-imports": [true, "@src", "rxjs", "firebase"],
+    "no-this-assignment": [true, { "allow-destructuring": true }],
+    "no-trailing-whitespace": true,
+    "object-literal-sort-keys": false,
+    "object-literal-shorthand": false,
+    "one-variable-per-declaration": [false],
+    "only-arrow-functions": [true, "allow-declarations"],
+    "ordered-imports": [false],
+    "prefer-method-signature": false,
+    "prefer-template": [true, "allow-single-concat"],
+    "quotemark": [true, "single", "jsx-single"],
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "trailing-comma": [
+      true,
+      {
+        "singleline": "never",
+        "multiline": {
+          "objects": "never",
+          "arrays": "never",
+          "functions": "ignore",
+          "typeLiterals": "ignore"
+        }
+      }
+    ],
+    "triple-equals": [true, "allow-null-check"],
+    "type-literal-delimiter": true,
+    "typedef": [true, "parameter", "property-declaration"],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case",
+      "allow-leading-underscore"
+    ],
+    // tslint-react
+    "jsx-no-multiline-js": false,
+    "jsx-no-lambda": false
+  },
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js",
+      "src/semantic/**",
+      "public/semantic/**"
+    ]
+  }
+}
