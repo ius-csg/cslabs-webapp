@@ -16,3 +16,8 @@ export function stripOptionals(obj: object): object {
   }
   return newObj;
 }
+
+export function log(message: any) {
+  // tslint:disable-next-line:no-console
+  console.log(message);
+}

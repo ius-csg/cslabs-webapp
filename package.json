@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "run-p watch:react watch:semantic",
+    "start": "yarn run watch:react",
     "build": "node scripts/build.js",
     "analyze:vendor": "source-map-explorer build/static/js/1.*",
     "analyze:app": "source-map-explorer build/static/js/main.*",
