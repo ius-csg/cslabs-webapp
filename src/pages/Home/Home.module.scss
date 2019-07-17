@@ -1,12 +1,5 @@
 
-.wmks-console-window {
-    width: 800px;
-    height: 600px;
-}
-
-.wmks-console-window-container {
-    position: relative;
-    width: 800px;
-    height: 600px;
-    margin: auto;
+.container {
+    display: flex;
+    flex-direction: row;
 }
