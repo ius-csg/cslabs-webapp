@@ -2,17 +2,21 @@ import * as React from 'react';
 import {log} from '../../util';
 import {ChangeEvent, Component} from 'react';
 import * as styles from './ConsoleContainer.module.scss';
-import {acquireTicket, listVms} from '../../Api';
-import {connect, getNewConsoleWindowId} from '../../Api/wkms';
-import {WMKSObject} from '../../Api/wmks';
+import {acquireTicket} from '../../api2';
+import {connect, getNewConsoleWindowId} from '../../api2/wkms';
+import {WMKSObject} from '../../api2/wmks';
 
-class ConsoleContainer extends Component {
+interface ConsoleContainerProps {
+  vms: string[];
+}
+
+class ConsoleContainer extends Component<ConsoleContainerProps> {
 
   wmks?: WMKSObject;
   consoleWindowId: string = '';
-  state = {ticket: '', vms: [], selectedVM: ''};
+  state = {ticket: '', selectedVM: ''};
 
-  constructor(props: {}) {
+  constructor(props: ConsoleContainerProps) {
     super(props);
     this.consoleWindowId = getNewConsoleWindowId();
   }
@@ -50,10 +54,6 @@ class ConsoleContainer extends Component {
     }
   };
 
-  async componentDidMount() {
-    this.setState({vms: await listVms()});
-  }
-
   selectionChanged = (event: ChangeEvent<HTMLSelectElement>) => {
     log(event.currentTarget.value);
     this.setState({selectedVM: event.currentTarget.value});
@@ -62,10 +62,12 @@ class ConsoleContainer extends Component {
   render() {
     return (
       <div>
+        {this.props.vms ?
         <select value={this.state.selectedVM} onChange={this.selectionChanged}>
           <option key='' value=''/>
-          {this.state.vms.map(vm => (<option key={vm} value={vm}>{vm}</option>))}
+          {this.props.vms.map(vm => (<option key={vm} value={vm}>{vm}</option>))}
         </select>
+        : null}
         <button onClick={this.connectVM}>Connect</button>
         <button onClick={this.disconnect}>Disconnect</button>
         <button onClick={this.destroy}>Destroy</button>
