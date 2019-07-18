@@ -59,7 +59,7 @@ export interface WMKSObject {
 
   /**
    * Connects	the	WMKS	to	a	remote	virtual	machine	by	the	WebSocket	URL,	and	sets	up	the UI.
-   *
+   * @throws Error throws error if it fails to connect
    * @param url WebSocket URL, type is string in format: <ws | wss> :// <host:port>/ <path> /? <authentication info>
    */
   connect(url: string): void;

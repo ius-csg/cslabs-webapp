@@ -1,6 +1,6 @@
-import {VirtualMachinePowerState} from './VirtualMachinePowerState';
+import {VMPowerState} from './VMPowerState';
 
 export interface VirtualMachine {
   name: string;
-  powerState: VirtualMachinePowerState;
+  powerState: VMPowerState;
 }

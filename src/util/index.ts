@@ -17,7 +17,7 @@ export function stripOptionals(obj: object): object {
   return newObj;
 }
 
-export function log(message: any) {
+export function log(message: any, ...optionalParams: any[]) {
   // tslint:disable-next-line:no-console
-  console.log(message);
+  console.log(message, optionalParams);
 }
