@@ -2,9 +2,9 @@ import * as React from 'react';
 import {log} from '../../util';
 import {ChangeEvent, Component} from 'react';
 import * as styles from './ConsoleContainer.module.scss';
-import {acquireTicket} from '../../api2';
-import {connect, getNewConsoleWindowId} from '../../api2/wkms';
-import {WMKSObject} from '../../api2/wmks';
+import {acquireTicket} from '../../api';
+import {connect, getNewConsoleWindowId} from '../../api/wkms';
+import {WMKSObject} from '../../api/wmks';
 
 interface ConsoleContainerProps {
   vms: string[];

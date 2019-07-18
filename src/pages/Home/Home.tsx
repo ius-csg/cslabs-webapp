@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import ConsoleContainer from '../../components/ConsoleContainer/ConsoleContainer';
 import * as styles from './Home.module.scss';
-import {listVms} from '../../api2';
+import {listVms} from '../../api';
 
 class Home extends Component {
 
