@@ -6,10 +6,10 @@
 
 html,
 body {
-    font-size: 1.5vw;
+    font-size: .9vw;
 
     @media only screen and (min-width: 1920px) {
-        font-size: 30px;
+        font-size: 18px;
     }
 
     @media only screen and (max-width: 990px) {
@@ -112,5 +112,11 @@ span {
             }
         }
     }
+}
+
+
+// fix a bug in react-bootstrap where fading items stay hidden
+.fade.show {
+    opacity: 1;
 }
 

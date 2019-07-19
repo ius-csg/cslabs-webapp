@@ -1,0 +1,12 @@
+
+.power-indicator {
+    color: gray;
+}
+
+.power-indicator.on {
+    color: #02ce00;
+}
+
+.power-indicator.suspended {
+    color: #c7cb4f;
+}
