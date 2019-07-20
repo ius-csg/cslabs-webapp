@@ -10,7 +10,7 @@ export const WMKS = window['WMKS'];
  * @throws Error
  */
 export function connect(htmlId: string, ticket: string): WMKSObject {
-  const wmks: WMKSObject = WMKS.createWMKS(htmlId, {})
+  const wmks: WMKSObject = WMKS.createWMKS(htmlId)
     .register(WMKS.CONST.Events.CONNECTION_STATE_CHANGE,
       (event: any, data: any) => {
         if (data.state === WMKS.CONST.ConnectionState.CONNECTED) {

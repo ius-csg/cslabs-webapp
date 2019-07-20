@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {ChangeEvent, Component, RefObject} from 'react';
-import {log} from '../../util';
+import {getClipboardFromEvent, log} from '../../util';
 import * as styles from './ConsoleWindow.module.scss';
 import {acquireTicket} from '../../api';
 import {connect, getNewConsoleWindowId} from '../../api/wkms';
@@ -24,6 +24,8 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   consoleWindowId: string = '';
   state: ConsoleContainerState = {wmks: undefined, width: 0, height: 0, pastedText: ''};
   ref: RefObject<HTMLDivElement>;
+  resizeEventHandler: () => void;
+  pasteEventHandler: (e: any) => boolean;
 
   constructor(props: ConsoleContainerProps) {
     super(props);
@@ -51,6 +53,9 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   componentWillUnmount(): void {
     log('unmount ' + this.consoleWindowId);
     this.destroy();
+    const div: HTMLDivElement = this.ref.current as HTMLDivElement;
+    div.removeEventListener('resize', this.resizeEventHandler);
+    div.removeEventListener('paste', this.pasteEventHandler);
   }
 
   disconnect = () => {
@@ -81,7 +86,16 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
         await this.connectVM();
       }
     });
-    div.addEventListener('resize', () => this.setSize(div.offsetWidth));
+
+    this.resizeEventHandler = () => this.setSize(div.offsetWidth);
+    div.addEventListener('resize', this.resizeEventHandler);
+
+    this.pasteEventHandler = (e: any) => {
+      this.wmks.sendInputString(getClipboardFromEvent(e));
+      return false; // Prevent the default handler from running.
+    };
+
+    div.addEventListener('paste', this.pasteEventHandler);
   }
 
   setSize(parentWidth: number, after?: () => void) {

@@ -21,6 +21,14 @@ export function classes(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
 }
 
+export function getClipboardFromEvent(e: any) {
+  if (window['clipboardData'] && window['clipboardData'].getData) { // IE
+    return window['clipboardData'].getData('Text');
+  } else if (e.clipboardData && e.clipboardData.getData) {
+    return e.clipboardData.getData('text/plain');
+  }
+}
+
 export function log(message: any, ...optionalParams: any[]) {
   // tslint:disable-next-line:no-console
   console.log(message, optionalParams);
