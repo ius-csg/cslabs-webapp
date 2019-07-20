@@ -7,6 +7,7 @@ import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import * as styles from './LabEnvironment.module.scss';
 import {getPowerStateLabel, VMPowerState} from '../../types/VMPowerState';
 import {CenteredIcon} from '../../util/CenteredIcon';
+import {Lorem} from '../util/Lorem';
 
 interface LabEnvironmentProps {
   vms: VirtualMachine[];
@@ -24,7 +25,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
 
   render() {
     return (
-      <Tab.Container id='list-group-tabs-example' defaultActiveKey='#topology' mountOnEnter={true}>
+      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={false}>
         <Container fluid={true}>
           <Row>
           <Col sm={4} md={4} lg={2}>
@@ -33,7 +34,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
               <ListGroup.Item action={true} href='#status'>Status</ListGroup.Item>
             </ListGroup>
-            <ListGroup>
+            <ListGroup style={{marginTop: 20}}>
               {this.props.vms.map(vm =>
                 <ListGroup.Item key={vm.name} action={true} href={'#' + vm.name}>
                   <CenteredIcon className={getIndicatorClassName(vm)}  icon={faPowerOff} />
@@ -45,12 +46,15 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
             <Tab.Content>
               <Tab.Pane eventKey='#topology'>
                 <h2>Topology</h2>
+                <Lorem/>
               </Tab.Pane>
               <Tab.Pane eventKey='#readme'>
                 <h2>Readme</h2>
+                <Lorem/>
               </Tab.Pane>
               <Tab.Pane eventKey='#status'>
                 <h2>Status</h2>
+                <Lorem/>
               </Tab.Pane>
               { this.props.vms.map(vm =>
                 <Tab.Pane key={vm.name} eventKey={'#' + vm.name}>

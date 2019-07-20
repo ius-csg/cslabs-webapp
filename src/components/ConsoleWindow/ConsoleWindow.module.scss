@@ -2,9 +2,19 @@
 
 .wmks-console-window-container {
     position: relative;
-    margin: 40px auto auto;
+    margin: 20px auto auto;
 }
 
+.controls {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+
+    > * {
+        margin: 10px;
+    }
+}
 
 .power-state {
     margin-right: 20px;

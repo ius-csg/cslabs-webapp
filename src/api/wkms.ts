@@ -18,7 +18,7 @@ export function connect(htmlId: string, ticket: string): WMKSObject {
         }
       })
     .register(WMKS.CONST.Events.ERROR, (event: any, data: any) => log('ConsoleError: ', data, event));
-  wmks.connect('wss://esxi.home.local/ticket/' + ticket);
+  wmks.connect('wss://websocket.home.local/ticket/' + ticket);
   return wmks;
 }
 

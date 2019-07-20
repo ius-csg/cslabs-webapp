@@ -16,7 +16,7 @@ class Home extends Component<{}, HomeState> {
   render() {
     return  (
       <Container fluid={true}>
-        <Row>
+        <Row style={{marginTop: 20 }}>
           <LabEnvironment vms={this.state.vms}/>
         </Row>
       </Container>
