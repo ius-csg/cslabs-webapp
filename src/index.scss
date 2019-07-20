@@ -120,3 +120,8 @@ span {
     opacity: 1;
 }
 
+// Style the console globally to have rounded corners.
+.wmks > canvas {
+    border-radius: 4px;
+}
+
