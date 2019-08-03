@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styles from './App.module.scss';
 import * as Sentry from '@sentry/browser';
 import Routes from './router/Routes';
 
@@ -29,7 +28,7 @@ class App extends React.Component<AppProps> {
 
   public render() {
     return (
-      <div className={styles.app}>
+      <div>
         <Routes/>
       </div>
     );
