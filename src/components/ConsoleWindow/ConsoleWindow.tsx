@@ -24,8 +24,8 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   consoleWindowId: string = '';
   state: ConsoleContainerState = {wmks: undefined, width: 0, height: 0, pastedText: ''};
   ref: RefObject<HTMLDivElement>;
-  resizeEventHandler: () => void;
-  pasteEventHandler: (e: any) => boolean;
+  private resizeEventHandler?: () => void;
+  private pasteEventHandler?: (e: any) => boolean;
 
   constructor(props: ConsoleContainerProps) {
     super(props);
@@ -54,8 +54,13 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     log('unmount ' + this.consoleWindowId);
     this.destroy();
     const div: HTMLDivElement = this.ref.current as HTMLDivElement;
-    div.removeEventListener('resize', this.resizeEventHandler);
-    div.removeEventListener('paste', this.pasteEventHandler);
+    if (this.resizeEventHandler) {
+      div.removeEventListener('resize', this.resizeEventHandler);
+    }
+    if (this.pasteEventHandler) {
+      div.removeEventListener('paste', this.pasteEventHandler);
+    }
+
   }
 
   disconnect = () => {

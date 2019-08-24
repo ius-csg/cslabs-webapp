@@ -1,5 +1,25 @@
 @import "mixins";
-$colors: get('colors');
-$text-colors: get('textColors');
-$sizes: get('sizes');
 
+/**
+
+Bootstrap theme: Litera
+Location: public/bootstrap/css/bootstrap.min.css
+Url: https://bootswatch.com/litera/
+
+Below are theme colors. They should always match the bootstrap theme.
+If a theme is changed then these colors will need to be updated too.
+These are only here if bootstrap can't already provide a way to theme the application.
+ */
+
+$colors: (
+    primary: #4582ec,
+    secondary: #adb5bd,
+    warning: #f0ad4e,
+    info: #17a2b8,
+    success: #02b875,
+    danger: #d9534f,
+    text-primary: #343a40,
+    text-seconary: #707070,
+    text-inverted: #fff,
+    link: #4582ec
+);

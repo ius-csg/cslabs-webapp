@@ -2,7 +2,6 @@
  * Global Styles will be written here.
  */
 @import "theme";
-// Go to site.variables file in semantic/src/site/globals to add imports for fonts (you will need to build semantic to see changes)
 
 html,
 body {
@@ -20,7 +19,6 @@ body {
 body {
     margin: 0;
     padding: 0;
-    color: map_get($text-colors, dark);
 }
 
 code {
@@ -45,11 +43,6 @@ Extra Bold, Ultra Bold	800
 Black, Heavy
 */
 
-// add class="light" to convert it to white.
-
-.light {
-    color: map_get($colors, light);
-}
 
 h1 {
     font-size: 36px;
@@ -62,7 +55,7 @@ h2 {
 }
 
 hr {
-    padding: 0 map_get($sizes, margins) 0 map_get($sizes, margins);
+    padding: 0 6.25% 0 6.25%;
     width: 80%;
 }
 
