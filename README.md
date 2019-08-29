@@ -2,17 +2,19 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Read more about the default yarn scripts provided by `react-scripts` [here](./available_scripts.md)
+Read more about the default yarn scripts provided by `react-scripts` [here](docs/available-scripts.md)
 
 ## Requirements
 
 * [Nodejs](https://nodejs.org/en/download/) - (this will install the `node` and the `npm` commands)
 * [Yarn](https://yarnpkg.com/en/) - Run `npm i -g yarn` to install yarn
 
-## Setup
+## Setup and running
 
 In the project directory run `yarn install` to install all the project's dependencies. 
-To run the application use `yarn start`.
+To run the application use `yarn start`. You also will need to run `yarn run watch:lint` to run the 
+command line linter so you can see linting errors in for the entire project. Any PR's with lint issues
+will be rejected.
 
 ## Development
 
@@ -26,6 +28,11 @@ This let's you have all of Jetbrain's products for free for a year.
 
 This project uses `yarn` instead of `npm`. If you need to install a library then you will use `yarn add {library name}`
 instead of `npm install {library-name}`. 
+
+#### Linting
+
+This project uses `tslint` an `stylelint` to enforce a standard code style. Follow the [Setup WebStorm](docs/setup-webstorm.md)
+guide to make sure the linter is showing in your editor.
 
 #### Theming / Components
 
@@ -63,3 +70,11 @@ If you are unfamiliar with Redux, follow [this guide](https://redux.js.org/basic
 We are going to go with a render first approach to provide seamless experiences if users already have the data cached.
 Using this approach we will only show a loading indicator if the application is both retrieving data and has no entities
 in the cache. We will always request the newest data and replace our local content to ensure our cache is up to date.
+
+
+#### Git Workflow
+
+The main branch is master. When some work needs to be done, you will branch off from master. 
+After the work has completed, the developer will create a PR in Github to merge back into master and notify the project lead
+to review. Any PR's with linting issues will be rejected so make sure you run the linter via `yarn run lint` before submitting a PR. 
+To run the linter while developing run `yarn run watch:lint`.
