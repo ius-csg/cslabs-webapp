@@ -21,7 +21,7 @@ will be rejected.
 #### Official IDE
 
 The official IDE for this project will be [WebStorm](https://www.jetbrains.com/webstorm/). If you haven't already 
-applied for student licensing, do so [here](https://www.jetbrains.com/student/) with you ius email address. 
+applied for student licensing, do so [here](https://www.jetbrains.com/student/) with your ius email address. 
 This let's you have all of Jetbrain's products for free for a year. 
 
 See the [Linting](#linting) section to make sure the linter is running in WebStorm.
