@@ -22,6 +22,8 @@ The official IDE for this project will be [WebStorm](https://www.jetbrains.com/w
 applied for student licensing, do so [here](https://www.jetbrains.com/student/) with you ius email address. 
 This let's you have all of Jetbrain's products for free for a year. 
 
+See the [Linting](#linting) section to make sure the linter is running in WebStorm.
+
 ## Concepts to know
 
 #### Yarn
@@ -32,7 +34,7 @@ instead of `npm install {library-name}`.
 #### Linting
 
 This project uses `tslint` an `stylelint` to enforce a standard code style. Follow the [Setup WebStorm](docs/setup-webstorm.md)
-guide to make sure the linter is showing in your editor.
+guide to make sure the linter is running in your editor.
 
 #### Theming / Components
 
