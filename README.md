@@ -18,11 +18,23 @@ will be rejected.
 
 ## Development
 
+#### Official IDE
+
 The official IDE for this project will be [WebStorm](https://www.jetbrains.com/webstorm/). If you haven't already 
 applied for student licensing, do so [here](https://www.jetbrains.com/student/) with you ius email address. 
 This let's you have all of Jetbrain's products for free for a year. 
 
 See the [Linting](#linting) section to make sure the linter is running in WebStorm.
+
+
+#### Git Workflow
+
+The main branch is master. When some work needs to be done, you will branch off from master. 
+After the work has completed, the developer will create a PR in Github to merge back into master and notify the project lead
+to review. Any PR's with linting issues will be rejected so make sure you run the linter via `yarn run lint` before submitting a PR. 
+To run the linter while developing run `yarn run watch:lint`.
+
+
 
 ## Concepts to know
 
@@ -73,10 +85,3 @@ We are going to go with a render first approach to provide seamless experiences 
 Using this approach we will only show a loading indicator if the application is both retrieving data and has no entities
 in the cache. We will always request the newest data and replace our local content to ensure our cache is up to date.
 
-
-#### Git Workflow
-
-The main branch is master. When some work needs to be done, you will branch off from master. 
-After the work has completed, the developer will create a PR in Github to merge back into master and notify the project lead
-to review. Any PR's with linting issues will be rejected so make sure you run the linter via `yarn run lint` before submitting a PR. 
-To run the linter while developing run `yarn run watch:lint`.
