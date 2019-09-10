@@ -50,8 +50,8 @@ export interface WMKSFactoryOptions extends ModifiableOptions {
   enableUint8Utf8?: boolean;
 }
 
-export interface GlobalWMKSObject {
-  createWMKS(htmlId: string, options: WMKSFactoryOptions): WMKSObject;
+export interface WMKSObjectFactory {
+  createWMKS(htmlId: string, options?: WMKSFactoryOptions): WMKSObject;
 }
 
 export interface WMKSObject {
@@ -77,6 +77,7 @@ export interface WMKSObject {
   destroy(): void;
   // Display‐related	APIs
 
+  register(event: any, handler: (event: any, data: any) => void): WMKSObject;
   /**
    * Sends	a	request	to	set	the	screen	resolution	of	the	currently	connected	VM.		Here,	if	the
    * parameters	width	and	height	that	are	passed	are	larger	than	those	of	the	WMKS	widget
