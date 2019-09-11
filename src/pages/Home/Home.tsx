@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 // import * as styles from './Home.module.scss';
-import {listVms} from '../../api';
+import {getModule} from '../../api';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {Container, Row} from 'react-bootstrap';
@@ -24,7 +24,9 @@ class Home extends Component<{}, HomeState> {
   }
 
   async componentDidMount() {
-    this.setState({vms: await listVms()});
+    const mod = await getModule(5);
+    console.log(mod);
+    // this.setState({vms: await listVms()});
   }
 }
 
