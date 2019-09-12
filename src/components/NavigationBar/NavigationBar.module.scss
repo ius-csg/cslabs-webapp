@@ -11,7 +11,14 @@
     }
 }
 
-.navbar-nav .nav-link {
+.nav {
+    color: white;
+    &:hover {
+        color: yellow;
+    }
+}
+
+.nav-link {
     color: white;
 
     &:hover {

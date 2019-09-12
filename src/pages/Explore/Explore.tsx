@@ -1,9 +1,14 @@
-import {Container} from 'react-bootstrap';
+import {CardColumns} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 
-export const Explore = () => (
-    <Container>
-      <ModuleCard/>
-    </Container>
-)
+class Explore extends React.Component {
+  render() {
+      const rows = [];
+      for (let i = 0; i < 9; i++ ) {
+        rows.push(<ModuleCard key={i}/>);
+      }
+      return <CardColumns>{rows}</CardColumns>;
+  }
+}
+export default Explore;

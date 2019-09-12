@@ -4,9 +4,9 @@ import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
 import History from './history';
 import Login from '../pages/Login/Login';
-import {Explore} from '../pages/Explore/Explore';
 import {Layout} from '../pages/Layout/Layout';
 import {NavigationBar} from '../components/NavigationBar/NavigationBar';
+import Explore from '../pages/Explore/Explore';
 
 const Routes = () => (
   <React.Fragment>
