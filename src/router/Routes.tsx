@@ -5,6 +5,8 @@ import NotFound from '../pages/NotFound/NotFound';
 import History from './history';
 import Login from '../pages/Login/Login';
 import Profile from '../pages/Profile/Profile';
+import ResetEmail from '../pages/ResetEmail/ResetEmail';
+import ResetPassword from '../pages/ResetPassword/ResetPassword';
 
 const Routes = () => (
   <Router history={History}>
@@ -12,6 +14,8 @@ const Routes = () => (
       <Route exact={true} path='/' component={Home}/>
       <Route exact={true} path='/login' component={Login}/>
       <Route exact={true} path='/profile' component={Profile}/>
+      <Route exact={true} path='/resetemail' component={ResetEmail}/>
+      <Route exact={true} path='/resetpassword' component={ResetPassword}/>
       <Route component={NotFound} />
     </Switch>
   </Router>
