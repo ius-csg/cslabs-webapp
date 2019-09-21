@@ -1,7 +1,8 @@
-import * as React from 'react'
+import * as React from 'react';
 import {Component, FormEvent} from 'react';
-import {Button, Container, FormControlProps, Form, Col} from 'react-bootstrap';
+import {Button, FormControlProps, Form, Col} from 'react-bootstrap';
 import styles from './ResetPassword.module.scss';
+import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 export default class ResetPassword extends Component {
 
   state = {
@@ -23,7 +24,7 @@ export default class ResetPassword extends Component {
   };
   render() {
     return (
-      <Container>
+      <AccountManagementLayout>
         <h2>Reset Password</h2>
         <Form>
           <Col sm='6'>
@@ -61,7 +62,7 @@ export default class ResetPassword extends Component {
             </Form.Group>
           </Col>
         </Form>
-      </Container>
+      </AccountManagementLayout>
     );
   }
 }

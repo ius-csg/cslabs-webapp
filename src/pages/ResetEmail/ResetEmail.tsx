@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
-import {Button, Container, FormControlProps, Form, Col} from 'react-bootstrap';
+import {Button, FormControlProps, Form, Col} from 'react-bootstrap';
 import styles from '../ResetPassword/ResetPassword.module.scss';
+import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 export default class ResetEmail extends Component {
   state = {
     email: ''
@@ -13,7 +14,7 @@ export default class ResetEmail extends Component {
 
   render() {
     return (
-      <Container>
+      <AccountManagementLayout>
         <h2>Email Management</h2>
         <Form>
           <Col sm='6'>
@@ -29,7 +30,7 @@ export default class ResetEmail extends Component {
             <Button className={styles['button']} variant='primary' type='submit'>Change Email</Button>
           </Col>
         </Form>
-      </Container>
+      </AccountManagementLayout>
     );
   }
 }
