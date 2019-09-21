@@ -85,3 +85,9 @@ We are going to go with a render first approach to provide seamless experiences 
 Using this approach we will only show a loading indicator if the application is both retrieving data and has no entities
 in the cache. We will always request the newest data and replace our local content to ensure our cache is up to date.
 
+### Font Awesome
+
+https://github.com/FortAwesome/react-fontawesome
+
+
+More documentation coming!

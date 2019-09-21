@@ -1,6 +1,7 @@
 import {log} from '../util';
-import {WMKSObject} from './wmks';
+import {WMKSObjectFactory, WMKSObject} from './wmks';
 
+export const WMKSFactory: WMKSObjectFactory = window['WMKS'];
 export const WMKS = window['WMKS'];
 
 /**
@@ -10,7 +11,7 @@ export const WMKS = window['WMKS'];
  * @throws Error
  */
 export function connect(htmlId: string, ticket: string): WMKSObject {
-  const wmks: WMKSObject = WMKS.createWMKS(htmlId)
+  const wmks: WMKSObject = WMKSFactory.createWMKS(htmlId)
     .register(WMKS.CONST.Events.CONNECTION_STATE_CHANGE,
       (event: any, data: any) => {
         if (data.state === WMKS.CONST.ConnectionState.CONNECTED) {
