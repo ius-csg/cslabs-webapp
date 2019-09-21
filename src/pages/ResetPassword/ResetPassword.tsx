@@ -24,7 +24,7 @@ export default class ResetPassword extends Component {
   render() {
     return (
       <Container>
-        <h1>Reset Password</h1>
+        <h2>Reset Password</h2>
         <Form>
           <Col sm='6'>
             <Form.Group controlId='formBasicCurrentPassword'>
@@ -57,7 +57,7 @@ export default class ResetPassword extends Component {
               <Form.Control.Feedback type='invalid'>
                 The password did not match, please try again.
               </Form.Control.Feedback>
-              <Button className={styles['button']} variant='primary' type='submit'>Register</Button>
+              <Button className={styles['button']} variant='primary' type='submit'>Reset Password</Button>
             </Form.Group>
           </Col>
         </Form>
