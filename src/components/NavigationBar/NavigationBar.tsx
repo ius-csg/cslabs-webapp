@@ -1,20 +1,26 @@
 import React from 'react';
-import { Nav, Navbar, Container} from 'react-bootstrap';
+import {Navbar, Container, Nav} from 'react-bootstrap';
 import styles from './NavigationBar.module.scss';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faBook } from '@fortawesome/free-solid-svg-icons';
 
 export const NavigationBar = () => (
-  <Navbar expand='lg' className={styles['navbar']}>
-    <Container>
-      <Navbar.Brand href='/' className={styles.navbarBrand}>CSG</Navbar.Brand>
+  <Navbar bg={styles.navbar} variant={styles.navbar} className={styles['navbar']}>
+    <Container className={styles['links']}>
+      <Navbar.Brand href='/' className={styles['navbar-brand']}>CSG</Navbar.Brand>
       <Navbar.Toggle aria-controls='basic-navbar-nav'/>
-      <Navbar.Collapse id={'basic-navbar-nav'} className={styles.navbarNav}>
+      <Navbar.Collapse id={'basic-navbar-nav'} className={styles['navbar']}>
         <nav className={'mr-auto'}>
-          <Nav.Item><Nav.Link href={'/'}>Home > Explore</Nav.Link></Nav.Item>
+          <Nav.Item className={styles['nav-item']}>
+            <Nav.Link href={'/'}><FontAwesomeIcon icon={faBook} /> Home > Explore</Nav.Link>
+          </Nav.Item>
         </nav>
-        <Nav className={'ml-auto nav'}>
-          <Nav.Item><Nav.Link href={'/explore'} className={styles.navLink}>Explore</Nav.Link></Nav.Item>
-          <Nav.Item><Nav.Link href={'/explore'}>Modules</Nav.Link></Nav.Item>
-          <Nav.Item><Nav.Link href={'/login'}>Account</Nav.Link></Nav.Item>
+        <Nav>
+          <Nav.Item className={styles['nav-item']}>
+            <Nav.Link href={'/explore'}><FontAwesomeIcon icon={faBook} /> Explore</Nav.Link>
+          </Nav.Item>
+          <Nav.Item className={styles['nav-item']}><Nav.Link href={'/explore'}>Modules</Nav.Link></Nav.Item>
+          <Nav.Item className={styles['nav-item']}><Nav.Link href={'/login'}>Account</Nav.Link></Nav.Item>
         </Nav>
       </Navbar.Collapse>
     </Container>

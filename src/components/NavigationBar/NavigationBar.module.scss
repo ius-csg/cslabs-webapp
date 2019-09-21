@@ -1,6 +1,10 @@
 .navbar {
     background-color: maroon;
-    color: white;
+    color: white !important;
+
+    &:hover {
+        color: yellow;
+    }
 }
 
 .navbar-brand {
@@ -11,15 +15,7 @@
     }
 }
 
-.nav {
-    color: white;
-
-    &:hover {
-        color: yellow;
-    }
-}
-
-.nav-link {
+.nav-item a {
     color: white;
 
     &:hover {
