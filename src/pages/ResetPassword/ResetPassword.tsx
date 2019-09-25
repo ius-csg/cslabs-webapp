@@ -3,6 +3,7 @@ import {Component, FormEvent} from 'react';
 import {Button, FormControlProps, Form, Col} from 'react-bootstrap';
 import styles from './ResetPassword.module.scss';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
+import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
 export default class ResetPassword extends Component {
 
   state = {
@@ -45,6 +46,7 @@ export default class ResetPassword extends Component {
                onChange={this.onPasswordChange}
                placeholder='Enter New Password'
               />
+              <PasswordStrength password={this.state.password}/>
             </Form.Group>
             <Form.Group controlId='formBasicConfirmPassword'>
               <Form.Label column={true}>Confirm Password</Form.Label>
