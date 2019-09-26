@@ -1,4 +1,5 @@
 import React from 'react';
+import {BrowserRouter as Router, Rout, Link,} from 'react-router-dom';
 import { Nav, Navbar, Container} from 'react-bootstrap';
 import styles from './NavigationBar.module.scss';
 
@@ -14,7 +15,7 @@ export const NavigationBar = () => (
         <Nav className={'ml-auto nav'}>
           <Nav.Item><Nav.Link href={'/explore'} className={styles.navLink}>Explore</Nav.Link></Nav.Item>
           <Nav.Item><Nav.Link href={'/explore'}>Modules</Nav.Link></Nav.Item>
-          <Nav.Item><Nav.Link href={'/login'}>Account</Nav.Link></Nav.Item>
+          <Nav.Item><Nav.Link href={'/Profile'}>Account</Nav.Link></Nav.Item>
         </Nav>
       </Navbar.Collapse>
     </Container>
