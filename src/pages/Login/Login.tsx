@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
 import {Container, Form, Col, Button, Tabs, Tab, FormControlProps} from 'react-bootstrap';
+import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
 
 export default class Login extends Component {
 
@@ -97,6 +98,7 @@ export default class Login extends Component {
                   <Form.Label column={true}>Password</Form.Label>
                   <Form.Control type='password' value={this.state.password} onChange={this.onPasswordChange} placeholder='Password' />
               </Form.Group>
+              <PasswordStrength password={this.state.password}/>
               <Form.Group controlId='formBasicConfirmPassword'>
                 <Form.Label column={true}>Confirm Password</Form.Label>
                 <Form.Control
