@@ -1,0 +1,28 @@
+.navbar {
+    background-color: maroon;
+    color: white;
+}
+
+.navbar-brand {
+    color: white;
+
+    &:hover {
+        color: yellow;
+    }
+}
+
+.nav {
+    color: white;
+
+    &:hover {
+        color: yellow;
+    }
+}
+
+.nav-link {
+    color: white;
+
+    &:hover {
+        color: yellow;
+    }
+}
