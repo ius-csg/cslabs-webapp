@@ -2,6 +2,7 @@ import axios from 'axios';
 import {VirtualMachine} from '../types/VirtualMachine';
 import {Module} from '../types/Module';
 import {User} from '../types/User';
+import {RegisterForm} from '../pages/Login/Login';
 
 let api = makeAxios();
 
@@ -34,6 +35,14 @@ export async function getModule(id: number) {
 
 export async function login(email: string, password: string) {
   const user =  ( await api.post<User>('/user/authenticate', {email: email, password: password })).data;
+  const token: string = String(user.token);
+  localStorage.setItem('token', token);
+  api = makeAxios(user.token);
+  return user;
+}
+
+export async function register(form: RegisterForm) {
+  const user =  ( await api.post<User>('/user/register', form)).data;
   const token: string = String(user.token);
   localStorage.setItem('token', token);
   api = makeAxios(user.token);

@@ -11,7 +11,6 @@ import {Layout} from '../pages/Layout/Layout';
 import {NavigationBar} from '../components/NavigationBar/NavigationBar';
 import Explore from '../pages/Explore/Explore';
 
-
 const Routes = () => (
   <React.Fragment>
     <NavigationBar />

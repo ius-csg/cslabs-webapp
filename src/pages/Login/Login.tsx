@@ -1,122 +1,131 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
-import {Container, Form, Col, Button, Tabs, Tab, FormControlProps} from 'react-bootstrap';
-import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
+import {Container, Form, Col, Button, Tabs, Tab, Alert} from 'react-bootstrap';
+import {isEmailValid, RegisterTab} from '../../components/RegisterTab/RegisterTab';
+import {BootstrapFormEvent} from '../../components/util/Util';
+import {login, register} from '../../api';
+import {Redirect} from 'react-router';
 
-export default class Login extends Component {
+export interface RegisterForm extends LoginForm {
+  firstName: string;
+  lastName: string;
+  gradYear: string;
+  phoneNumber: string;
+  confirmPass: string;
+}
 
-  state = {
-    firstName: '',
-    lastName: '',
-    schoolEmail: '',
-    gradYear: '',
-    phoneNumber: '',
-    confirmPass: '',
-    password: ''
+export interface LoginForm {
+  schoolEmail: string;
+  password: string;
+}
+
+type TabKeys = 'Login' | 'Register';
+
+interface LoginPageState {
+  activeTab: TabKeys;
+  form: RegisterForm;
+  redirectToProfile: boolean;
+  errorMessage: string;
+  submitted: boolean;
+  emailTouched: boolean;
+}
+
+export default class Login extends Component<{}, LoginPageState> {
+
+  state: LoginPageState = {
+    redirectToProfile: false,
+    activeTab: 'Login',
+    errorMessage: '',
+    submitted: false,
+    emailTouched: false,
+    form: {
+      firstName: '',
+      lastName: '',
+      schoolEmail: '',
+      gradYear: '',
+      phoneNumber: '',
+      confirmPass: '',
+      password: ''
+    }
   };
 
-  onFirstNameChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({firstName: event.currentTarget.value});
-  };
-  onPasswordChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({password: event.currentTarget.value});
-  };
-  onConfirmPassChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({confirmPass: event.currentTarget.value});
-  };
-  onLastNameChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({lastName: event.currentTarget.value});
-  };
-  onEmailChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({schoolEmail: event.currentTarget.value});
-  };
-  onPhoneChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({phoneNumber: event.currentTarget.value});
-  };
-  onGradChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({gradYear: event.currentTarget.value});
+  onInputChange = (event: BootstrapFormEvent) => {
+    const input: HTMLInputElement = event.currentTarget as unknown as HTMLInputElement;
+    if (input.name === 'schoolEmail') {
+      this.setState({emailTouched: true});
+    }
+    this.setState({form: {...this.state.form, [input.name]: event.currentTarget.value}});
   };
 
-  isEmailInvalid = () => {
-    return this.state.schoolEmail.indexOf('@ius.edu') === -1;
+  onTabSelect = (eventKey: string) => this.setState({activeTab: eventKey as TabKeys});
+
+  onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    this.setState({submitted: true});
+    const form: HTMLFormElement = e.currentTarget as unknown as HTMLFormElement;
+    if (!form.checkValidity() || !isEmailValid(this.state.form.schoolEmail)) {
+      return;
+    }
+    try {
+      if (this.state.activeTab === 'Login') {
+        await login(this.state.form.schoolEmail, this.state.form.password);
+      } else if (this.state.activeTab === 'Register') {
+        await register(this.state.form);
+      }
+      this.setState({redirectToProfile: true});
+    } catch (e) {
+      const req: XMLHttpRequest = e.request;
+      if (req.status === 0) {
+        this.setState({errorMessage: 'Could not make a connection!'});
+      } else if (req.status >= 500 && req.status < 600) {
+        this.setState({errorMessage: 'A server error has occurred'});
+      }
+    }
   };
-  isPassInvalid = () => {
-    return this.state.password !== this.state.confirmPass;
-  };
+
+  renderRedirect() {
+    if (this.state.redirectToProfile) {
+      return <Redirect to='/profile'/>;
+    }
+    return null;
+  }
 
   render() {
     return (
       <Container>
-        <Form>
-          <Col sm='6'>
-          <Tabs defaultActiveKey='Login' id='tabs'>
-            <Tab eventKey='Login' title='Login'>
-          <Form.Group controlId='formBasicUsername'>
-            <Form.Label column={true}>Email</Form.Label>
-            <Form.Control type='email' value={this.state.schoolEmail} onChange={this.onEmailChange} placeholder='Enter Email' />
-          </Form.Group>
-          <Form.Group controlId='formBasicPassword'>
-            <Form.Label column={true}>Password</Form.Label>
-              <Form.Control type='password' value={this.state.password} onChange={this.onPasswordChange} placeholder='Password' />
-          </Form.Group>
-          <Form.Group controlId='formBasicCheckbox'>
-            <Form.Check type='checkbox' label='Remember Me' />
-          </Form.Group>
-          <Button variant='primary' type='submit'>Login</Button>
-            </Tab>
-            <Tab eventKey='Register' title='Register'>
-              <Form.Group controlId='formBasicFirstName'>
-                  <Form.Label column={true}>First Name</Form.Label>
-                  <Form.Control type='text' value={this.state.firstName} onChange={this.onFirstNameChange} placeholder='Enter First Name' />
-              </Form.Group>
-              <Form.Group controlId='formBasicLastName'>
-                <Form.Label column={true}>Last Name</Form.Label>
-                <Form.Control type='text' value={this.state.lastName} onChange={this.onLastNameChange} placeholder='Enter Last Name' />
-              </Form.Group>
-              <Form.Group controlId='formBasicEmail'>
+        {this.renderRedirect()}
+        <h1>Login / Register</h1>
+        <Col sm='6' style={{margin: 'auto'}}>
+          <Form onSubmit={this.onSubmit}>
+            <Tabs activeKey={this.state.activeTab} onSelect={this.onTabSelect} id='tabs' mountOnEnter={true} unmountOnExit={true}>
+              <Tab eventKey='Login' title='Login'>
+                <Form.Group controlId='formBasicUsername'>
                   <Form.Label column={true}>Email</Form.Label>
-                  <Form.Control
-                    isInvalid={this.isEmailInvalid()}
-                    type='text'
-                    value={this.state.schoolEmail}
-                    onChange={this.onEmailChange}
-                    placeholder='Enter School Email'
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    Please provide an email with @ius.edu
-                  </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId='formBasicGradTime'>
-                  <Form.Label column={true}>Graduation Year</Form.Label>
-                  <Form.Control type='number' value={this.state.gradYear} onChange={this.onGradChange} placeholder='Enter Graduation Year' />
-              </Form.Group>
-              <Form.Group controlId='formBasicPhoneNumber'>
-                <Form.Label column={true}>Phone Number</Form.Label>
-                <Form.Control type='number' value={this.state.phoneNumber} onChange={this.onPhoneChange} placeholder='Enter Phone Number' />
-              </Form.Group>
-              <Form.Group controlId='formBasicPassword'>
+                  <Form.Control name='schoolEmail' type='email' required={true} value={this.state.form.schoolEmail} onChange={this.onInputChange} placeholder='Enter Email'/>
+                </Form.Group>
+                <Form.Group controlId='formBasicPassword'>
                   <Form.Label column={true}>Password</Form.Label>
-                  <Form.Control type='password' value={this.state.password} onChange={this.onPasswordChange} placeholder='Password' />
-              </Form.Group>
-              <PasswordStrength password={this.state.password}/>
-              <Form.Group controlId='formBasicConfirmPassword'>
-                <Form.Label column={true}>Confirm Password</Form.Label>
-                <Form.Control
-                  isInvalid={this.isPassInvalid()}
-                  type='password'
-                  value={this.state.confirmPass}
-                  onChange={this.onConfirmPassChange}
-                  placeholder='Password'
+                  <Form.Control name='password' type='password' required={true} value={this.state.form.password} onChange={this.onInputChange} placeholder='Password'/>
+                </Form.Group>
+                <Form.Group controlId='formBasicCheckbox'>
+                  <Form.Check type='checkbox' label='Remember Me'/>
+                </Form.Group>
+                {this.state.errorMessage ?
+                  <Alert variant='danger'>{this.state.errorMessage}</Alert> : null}
+                <Button variant='primary' type='submit'>Login</Button>
+              </Tab>
+              <Tab eventKey='Register' title='Register'>
+                <RegisterTab
+                  errorMessage={this.state.errorMessage}
+                  emailTouched={this.state.emailTouched}
+                  submitted={this.state.submitted}
+                  onInputChange={this.onInputChange}
+                  form={this.state.form}
                 />
-                <Form.Control.Feedback type='invalid'>
-                  The password did not match, please try again.
-                </Form.Control.Feedback>
-                <Button variant='primary' type='submit'>Register</Button>
-              </Form.Group>
-            </Tab>
-          </Tabs>
-          </Col>
-        </Form>
+              </Tab>
+            </Tabs>
+          </Form>
+        </Col>
       </Container>
     );
   }
