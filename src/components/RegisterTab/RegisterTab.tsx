@@ -1,9 +1,10 @@
 import {Component} from 'react';
 import React from 'react';
-import {Alert, Button, Form} from 'react-bootstrap';
+import {Alert, Form} from 'react-bootstrap';
 import PasswordStrength from '../AccountManagementLayout/PasswordStrength';
 import {RegisterForm} from '../../pages/Login/Login';
 import {BootstrapFormEvent} from '../util/Util';
+import {LoadingButton} from '../../util/LoadingButton';
 
 export const isEmailValid = (email: string) => {
   return email.indexOf('@ius.edu') !== -1;
@@ -17,6 +18,7 @@ interface RegisterTabProps {
   form: RegisterForm;
   onInputChange: (event: BootstrapFormEvent) => void;
   submitted: boolean;
+  submitting: boolean;
   emailTouched: boolean;
   errorMessage: string;
 }
@@ -87,7 +89,7 @@ export class RegisterTab extends Component<RegisterTabProps> {
       </Form.Group>
       {this.props.errorMessage ?
         <Alert variant='danger'>{this.props.errorMessage}</Alert> : null}
-      <Button variant='primary' type='submit'>Register</Button>
+      <LoadingButton loading={this.props.submitting} label='Register'/>
     </React.Fragment>
     );
   }

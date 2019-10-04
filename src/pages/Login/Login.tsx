@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
-import {Container, Form, Col, Button, Tabs, Tab, Alert, Spinner} from 'react-bootstrap';
+import {Container, Form, Col, Tabs, Tab, Alert} from 'react-bootstrap';
 import {isEmailValid, RegisterTab} from '../../components/RegisterTab/RegisterTab';
 import {BootstrapFormEvent} from '../../components/util/Util';
 import {login, register} from '../../api';
 import {Redirect} from 'react-router';
+import {LoadingButton} from '../../util/LoadingButton';
 
 export interface RegisterForm extends LoginForm {
   firstName: string;
@@ -115,19 +116,11 @@ export default class Login extends Component<{}, LoginPageState> {
                 </Form.Group>
                 {this.state.errorMessage ?
                   <Alert variant='danger'>{this.state.errorMessage}</Alert> : null}
-                <Button disabled={this.state.submitting} variant='primary' type='submit'>
-                  { this.state.submitting ?
-                    <Spinner
-                      as='span'
-                      animation='border'
-                      size='sm'
-                      role='status'
-                      aria-hidden='true'
-                    /> : 'Login'}
-                </Button>
+                  <LoadingButton loading={this.state.submitting} label='Login'/>
               </Tab>
               <Tab eventKey='Register' title='Register'>
                 <RegisterTab
+                  submitting={this.state.submitting}
                   errorMessage={this.state.errorMessage}
                   emailTouched={this.state.emailTouched}
                   submitted={this.state.submitted}
