@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
-import {Container, Form, Col, Button, Tabs, Tab, Alert} from 'react-bootstrap';
+import {Container, Form, Col, Button, Tabs, Tab, Alert, Spinner} from 'react-bootstrap';
 import {isEmailValid, RegisterTab} from '../../components/RegisterTab/RegisterTab';
 import {BootstrapFormEvent} from '../../components/util/Util';
 import {login, register} from '../../api';
@@ -28,6 +28,7 @@ interface LoginPageState {
   errorMessage: string;
   submitted: boolean;
   emailTouched: boolean;
+  submitting: boolean;
 }
 
 export default class Login extends Component<{}, LoginPageState> {
@@ -37,6 +38,7 @@ export default class Login extends Component<{}, LoginPageState> {
     activeTab: 'Login',
     errorMessage: '',
     submitted: false,
+    submitting: false,
     emailTouched: false,
     form: {
       firstName: '',
@@ -67,6 +69,7 @@ export default class Login extends Component<{}, LoginPageState> {
       return;
     }
     try {
+      this.setState({submitting: true});
       if (this.state.activeTab === 'Login') {
         await login(this.state.form.schoolEmail, this.state.form.password);
       } else if (this.state.activeTab === 'Register') {
@@ -76,9 +79,9 @@ export default class Login extends Component<{}, LoginPageState> {
     } catch (e) {
       const req: XMLHttpRequest = e.request;
       if (req.status === 0) {
-        this.setState({errorMessage: 'Could not make a connection!'});
+        this.setState({errorMessage: 'Could not make a connection!', submitting: false});
       } else if (req.status >= 500 && req.status < 600) {
-        this.setState({errorMessage: 'A server error has occurred'});
+        this.setState({errorMessage: 'A server error has occurred', submitting: false});
       }
     }
   };
@@ -112,7 +115,16 @@ export default class Login extends Component<{}, LoginPageState> {
                 </Form.Group>
                 {this.state.errorMessage ?
                   <Alert variant='danger'>{this.state.errorMessage}</Alert> : null}
-                <Button variant='primary' type='submit'>Login</Button>
+                <Button disabled={this.state.submitting} variant='primary' type='submit'>
+                  { this.state.submitting ?
+                    <Spinner
+                      as='span'
+                      animation='border'
+                      size='sm'
+                      role='status'
+                      aria-hidden='true'
+                    /> : 'Login'}
+                </Button>
               </Tab>
               <Tab eventKey='Register' title='Register'>
                 <RegisterTab
