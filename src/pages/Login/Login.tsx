@@ -2,7 +2,13 @@ import * as React from 'react';
 import {Component, FormEvent} from 'react';
 import {Container, Form, Col, Tabs, Tab, Alert} from 'react-bootstrap';
 import {isEmailValid, RegisterTab} from '../../components/RegisterTab/RegisterTab';
-import {BootstrapFormEvent} from '../../components/util/Util';
+import {
+  BootstrapFormEvent,
+  ErrorResponse, getResponseData,
+  isBadRequest,
+  isServerError,
+  isUnknownError,
+} from '../../components/util/Util';
 import {login, register} from '../../api';
 import {Redirect} from 'react-router';
 import {LoadingButton} from '../../util/LoadingButton';
@@ -22,6 +28,8 @@ export interface LoginForm {
 
 type TabKeys = 'Login' | 'Register';
 
+export type UserErrorResponse = ErrorResponse<RegisterForm>;
+
 interface LoginPageState {
   activeTab: TabKeys;
   form: RegisterForm;
@@ -30,6 +38,7 @@ interface LoginPageState {
   submitted: boolean;
   emailTouched: boolean;
   submitting: boolean;
+  errors?: UserErrorResponse;
 }
 
 export default class Login extends Component<{}, LoginPageState> {
@@ -60,7 +69,15 @@ export default class Login extends Component<{}, LoginPageState> {
     this.setState({form: {...this.state.form, [input.name]: event.currentTarget.value}});
   };
 
-  onTabSelect = (eventKey: string) => this.setState({activeTab: eventKey as TabKeys});
+  onTabSelect = (eventKey: string) => this.setState({activeTab: eventKey as TabKeys, errors: undefined, errorMessage: ''});
+
+  async makeRequest() {
+    if (this.state.activeTab === 'Login') {
+      return await login(this.state.form.schoolEmail, this.state.form.password);
+    } else {
+      return await register(this.state.form);
+    }
+  }
 
   onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -71,18 +88,13 @@ export default class Login extends Component<{}, LoginPageState> {
     }
     try {
       this.setState({submitting: true});
-      if (this.state.activeTab === 'Login') {
-        await login(this.state.form.schoolEmail, this.state.form.password);
-      } else if (this.state.activeTab === 'Register') {
-        await register(this.state.form);
-      }
+      await this.makeRequest();
       this.setState({redirectToProfile: true});
     } catch (e) {
-      const req: XMLHttpRequest = e.request;
-      if (req.status === 0) {
-        this.setState({errorMessage: 'Could not make a connection!', submitting: false});
-      } else if (req.status >= 500 && req.status < 600) {
-        this.setState({errorMessage: 'A server error has occurred', submitting: false});
+      if (isBadRequest(e)) {
+        this.setState({errorMessage: getResponseData<UserErrorResponse>(e).message, submitting: false, errors: getResponseData(e)});
+      } else if (isUnknownError(e) || isServerError(e)) {
+        this.setState({errorMessage: isUnknownError(e) ? 'Could not make a connection!' : 'A server error has occurred', submitting: false});
       }
     }
   };

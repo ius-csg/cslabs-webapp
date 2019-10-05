@@ -4,7 +4,6 @@ export interface User {
   firstName: string;
   middleName?: string;
   lastName: string;
-  token?: string;
   schoolEmail: string;
   personalEmail: string;
   graduationYear?: number;
@@ -13,4 +12,8 @@ export interface User {
   updatedAt: string;
   cardCodeHash?: string;
   terminationDate?: string;
+}
+
+export interface UserWithToken extends User {
+  token: string;
 }

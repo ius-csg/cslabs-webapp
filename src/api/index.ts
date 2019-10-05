@@ -1,24 +1,17 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import {VirtualMachine} from '../types/VirtualMachine';
 import {Module} from '../types/Module';
-import {User} from '../types/User';
+import {User, UserWithToken} from '../types/User';
 import {RegisterForm} from '../pages/Login/Login';
+import {makeAxios} from '../components/util/Util';
 
 let api = makeAxios();
 
-function makeAxios(token?: string) {
-  if (!token) {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      token = storedToken;
-    }
+function setToken(token?: string) {
+  if (token) {
+    localStorage.setItem('token', token);
   }
-  return axios.create({
-    baseURL: 'https://localhost:5001/api',
-    ...(token ? {
-      headers: {Authorization: `Bearer ${token}`}
-    } : {})
-  });
+  api = makeAxios(token);
 }
 
 export async function acquireTicket(vmName: string): Promise<string> {
@@ -33,20 +26,16 @@ export async function getModule(id: number) {
   return ( await api.get<Module>(`/modules/${id}`)).data;
 }
 
-export async function login(email: string, password: string) {
-  const user =  ( await api.post<User>('/user/authenticate', {email: email, password: password })).data;
-  const token: string = String(user.token);
-  localStorage.setItem('token', token);
-  api = makeAxios(user.token);
-  return user;
+export async function login(email: string, password: string): Promise<AxiosResponse<UserWithToken>> {
+  const resp = await api.post<UserWithToken>('/user/authenticate', {email: email, password: password });
+  setToken(resp.data.token);
+  return resp;
 }
 
-export async function register(form: RegisterForm) {
-  const user =  ( await api.post<User>('/user/register', form)).data;
-  const token: string = String(user.token);
-  localStorage.setItem('token', token);
-  api = makeAxios(user.token);
-  return user;
+export async function register(form: RegisterForm): Promise<AxiosResponse<UserWithToken>> {
+  const resp = await api.post<UserWithToken>('/user/register', form);
+  setToken(resp.data.token);
+  return resp;
 }
 export async function getCurrentUser() {
   return ( await api.get<User>('/user/current')).data;
