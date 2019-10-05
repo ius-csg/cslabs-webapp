@@ -86,6 +86,10 @@ export default class Login extends Component<{}, LoginPageState> {
     if (!form.checkValidity() || !isEmailValid(this.state.form.schoolEmail)) {
       return;
     }
+    await this.trySubmit();
+  };
+
+  async trySubmit() {
     try {
       this.setState({submitting: true});
       await this.makeRequest();
@@ -97,7 +101,7 @@ export default class Login extends Component<{}, LoginPageState> {
         this.setState({errorMessage: isUnknownError(e) ? 'Could not make a connection!' : 'A server error has occurred', submitting: false});
       }
     }
-  };
+  }
 
   renderRedirect() {
     if (this.state.redirectToProfile) {
