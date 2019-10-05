@@ -1,17 +1,13 @@
 .navbar {
     background-color: maroon;
     color: white !important;
-
-    &:hover {
-        color: yellow;
-    }
 }
 
 .navbar-brand {
     color: white;
 
     &:hover {
-        color: yellow;
+        font-weight: bolder;
     }
 }
 
@@ -19,6 +15,13 @@
     color: white;
 
     &:hover {
-        color: yellow;
+        font-weight: bolder;
     }
 }
+
+img {
+    width: 60px;
+}
+
+svg { width: 200px; }
+

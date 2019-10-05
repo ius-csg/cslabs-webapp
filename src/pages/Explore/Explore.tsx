@@ -1,14 +1,38 @@
 import {CardColumns} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
+import {Module} from '../../types/Module';
+import {getPublicModules} from '../../api';
 
-class Explore extends React.Component {
+interface ExploreState {
+  modules: Module[];
+}
+
+class Explore extends React.Component<{}, ExploreState> {
+
+  state: ExploreState = {
+    modules: []
+  };
+
+  constructor(props: {}) {
+    super(props);
+    this.loadModules();
+  }
+
+  async loadModules() {
+    const modules = await getPublicModules();
+    this.setState({ modules: modules});
+  }
+
   render() {
-      const rows = [];
-      for (let i = 0; i < 9; i++ ) {
-        rows.push(<ModuleCard key={i}/>);
-      }
-      return <CardColumns>{rows}</CardColumns>;
+      const cards = this.state.modules.map((m, i) => <ModuleCard module={m} key={i}/>);
+      return (
+        <div>
+          <h1>Welcome</h1>
+          <CardColumns>{cards}</CardColumns>
+        </div>
+      );
   }
 }
+
 export default Explore;

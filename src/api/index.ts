@@ -15,3 +15,11 @@ export async function listVms(): Promise<VirtualMachine[]> {
 export async function getModule(id: number) {
   return ( await axios.get<Module>(`${baseUrl}/modules/${id}`)).data;
 }
+
+export async function getPublicModules(): Promise<Module[]> {
+  return ( await axios.get<Module[]>(`${baseUrl}/modules`)).data;
+}
+
+export async function getPrivateModules(): Promise<Module[]> {
+  return ( await axios.get<Module[]>(`${baseUrl}/modules`)).data;
+}
