@@ -47,3 +47,7 @@ export type ErrorResponse<T> = {
 export function getResponseData<T>(e: any): T {
   return e.response ? e.response.data : undefined;
 }
+
+export function getErrorResponseMessage(e: any): string {
+  return e.response ? e.response.data ? e.response.data.message : '' : '';
+}

@@ -4,7 +4,7 @@ import {Container, Form, Col, Tabs, Tab, Alert} from 'react-bootstrap';
 import {isEmailValid, RegisterTab} from '../../components/RegisterTab/RegisterTab';
 import {
   BootstrapFormEvent,
-  ErrorResponse, getResponseData,
+  ErrorResponse, getErrorResponseMessage, getResponseData,
   isBadRequest,
   isServerError,
   isUnknownError,
@@ -92,7 +92,7 @@ export default class Login extends Component<{}, LoginPageState> {
       this.setState({redirectToProfile: true});
     } catch (e) {
       if (isBadRequest(e)) {
-        this.setState({errorMessage: getResponseData<UserErrorResponse>(e).message, submitting: false, errors: getResponseData(e)});
+        this.setState({errorMessage: getErrorResponseMessage(e), submitting: false, errors: getResponseData(e)});
       } else if (isUnknownError(e) || isServerError(e)) {
         this.setState({errorMessage: isUnknownError(e) ? 'Could not make a connection!' : 'A server error has occurred', submitting: false});
       }
