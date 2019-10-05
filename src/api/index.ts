@@ -4,6 +4,8 @@ import {Module} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {RegisterForm} from '../pages/Login/Login';
 import {makeAxios} from '../components/util/Util';
+import jwt_decode from 'jwt-decode';
+import {AuthToken} from '../types/AuthToken';
 
 let api = makeAxios();
 
@@ -39,4 +41,19 @@ export async function register(form: RegisterForm): Promise<AxiosResponse<UserWi
 }
 export async function getCurrentUser() {
   return ( await api.get<User>('/user/current')).data;
+}
+
+export function isAuthenticated() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    // @ts-ignore
+    const decoded = jwt_decode<AuthToken>(token);
+    // @todo implement auth checking.
+    return true;
+  }
+  return false;
+}
+
+export function logout() {
+  localStorage.removeItem('token');
 }
