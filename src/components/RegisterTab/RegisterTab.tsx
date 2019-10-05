@@ -6,8 +6,8 @@ import {RegisterForm} from '../../pages/Login/Login';
 import {BootstrapFormEvent} from '../util/Util';
 import {LoadingButton} from '../../util/LoadingButton';
 
-export const isEmailValid = (email: string) => {
-  return email.indexOf('@ius.edu') !== -1;
+export const isSchoolEmailValid = (email: string) => {
+  return email.length === 0 || email.indexOf('@ius.edu') !== -1;
 };
 
 export const isPhoneNumberValid = (phoneNumber: string) => {
@@ -41,10 +41,9 @@ export class RegisterTab extends Component<RegisterTabProps> {
         <Form.Control required={true} name='lastName' type='text' value={this.props.form.lastName} onChange={this.props.onInputChange} placeholder='Enter Last Name' />
       </Form.Group>
       <Form.Group controlId='formBasicEmail'>
-        <Form.Label column={true}>Email</Form.Label>
+        <Form.Label column={true}>School Email (Either personal or school email is required)</Form.Label>
         <Form.Control
-          required={true}
-          isInvalid={this.props.emailTouched && !isEmailValid(this.props.form.schoolEmail)}
+          isInvalid={this.props.emailTouched && !isSchoolEmailValid(this.props.form.schoolEmail)}
           name='schoolEmail'
           type='text'
           value={this.props.form.schoolEmail}
@@ -53,6 +52,20 @@ export class RegisterTab extends Component<RegisterTabProps> {
         />
         <Form.Control.Feedback type='invalid'>
           Please provide an email with @ius.edu
+        </Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group controlId='formBasicEmail'>
+        <Form.Label column={true}>Personal Email (Either personal or school email is required)</Form.Label>
+        <Form.Control
+          isInvalid={this.props.emailTouched && !isSchoolEmailValid(this.props.form.personalEmail)}
+          name='personalEmail'
+          type='text'
+          value={this.props.form.personalEmail}
+          onChange={this.props.onInputChange}
+          placeholder='Enter Personal Email'
+        />
+        <Form.Control.Feedback type='invalid'>
+          Please provide a valid email address
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId='formBasicGradTime'>

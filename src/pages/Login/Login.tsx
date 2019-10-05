@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
 import {Container, Form, Col, Tabs, Tab, Alert} from 'react-bootstrap';
-import {isEmailValid, RegisterTab} from '../../components/RegisterTab/RegisterTab';
+import {isSchoolEmailValid, RegisterTab} from '../../components/RegisterTab/RegisterTab';
 import {
   BootstrapFormEvent,
   ErrorResponse, getErrorResponseMessage, getResponseData,
@@ -19,6 +19,7 @@ export interface RegisterForm extends LoginForm {
   gradYear: string;
   phoneNumber: string;
   confirmPass: string;
+  personalEmail: string;
 }
 
 export interface LoginForm {
@@ -54,6 +55,7 @@ export default class Login extends Component<{}, LoginPageState> {
       firstName: '',
       lastName: '',
       schoolEmail: '',
+      personalEmail: '',
       gradYear: '',
       phoneNumber: '',
       confirmPass: '',
@@ -83,7 +85,11 @@ export default class Login extends Component<{}, LoginPageState> {
     e.preventDefault();
     this.setState({submitted: true});
     const form: HTMLFormElement = e.currentTarget as unknown as HTMLFormElement;
-    if (!form.checkValidity() || !isEmailValid(this.state.form.schoolEmail)) {
+    if (!form.checkValidity() || (!isSchoolEmailValid(this.state.form.schoolEmail) && this.state.activeTab === 'Register')) {
+      return;
+    }
+    if (this.state.form.schoolEmail.length === 0 && this.state.form.personalEmail.length === 0) {
+      this.setState({errorMessage: 'At least one email address is required'});
       return;
     }
     await this.trySubmit();

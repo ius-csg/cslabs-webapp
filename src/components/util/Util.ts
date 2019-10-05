@@ -23,19 +23,19 @@ export function nullable<T>(value: T | null): T | undefined {
 }
 
 export function isBadRequest(e: any) {
-  return e.response ? e.response.status === 400 : false;
+  return getErrorStatus(e) === 400;
 }
 
 export function isServerError(e: any) {
-  return e.response ? e.response.status >= 500 && e.response.status < 600 : false;
+  return getErrorStatus(e) >= 500 && getErrorStatus(e) < 600;
 }
 
 export function isUnknownError(e: any) {
-  return e.response ? e.response.status === 0 : false;
+  return getErrorStatus(e) === 0;
 }
 
-export function isAxiosResponse(e: any): boolean {
-  return !!e.response;
+export function getErrorStatus(e: any): number {
+  return e.response ? e.response.status : (e.request ? e.request.status : -1);
 }
 
 export type Stringify<T> = { [K in keyof T]: string|undefined };
