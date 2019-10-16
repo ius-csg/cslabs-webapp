@@ -12,6 +12,11 @@ import {
 import {login, register} from '../../api';
 import {Redirect} from 'react-router';
 import {LoadingButton} from '../../util/LoadingButton';
+import {connect} from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import {setCurrentUser} from '../../redux/actions/entities/currentUser';
+import {User, UserWithToken} from '../../types/User';
+import {AxiosResponse} from 'axios';
 
 export interface RegisterForm extends LoginForm {
   firstName: string;
@@ -42,7 +47,13 @@ interface LoginPageState {
   errors?: UserErrorResponse;
 }
 
-export default class Login extends Component<{}, LoginPageState> {
+interface LoginProps {
+  actions: {
+    setCurrentUser: (user: User) => void;
+  };
+}
+
+export class Login extends Component<LoginProps, LoginPageState> {
 
   state: LoginPageState = {
     redirectToProfile: false,
@@ -73,7 +84,7 @@ export default class Login extends Component<{}, LoginPageState> {
 
   onTabSelect = (eventKey: string) => this.setState({activeTab: eventKey as TabKeys, errors: undefined, errorMessage: ''});
 
-  async makeRequest() {
+  async makeRequest(): Promise<AxiosResponse<UserWithToken>> {
     if (this.state.activeTab === 'Login') {
       return await login(this.state.form.schoolEmail, this.state.form.password);
     } else {
@@ -98,7 +109,8 @@ export default class Login extends Component<{}, LoginPageState> {
   async trySubmit() {
     try {
       this.setState({submitting: true});
-      await this.makeRequest();
+      const resp = await this.makeRequest();
+      this.props.actions.setCurrentUser(resp.data);
       this.setState({redirectToProfile: true});
     } catch (e) {
       if (isBadRequest(e)) {
@@ -157,3 +169,7 @@ export default class Login extends Component<{}, LoginPageState> {
     );
   }
 }
+
+export default connect(undefined,
+  (dispatch: Dispatch) => ({actions: bindActionCreators({setCurrentUser: setCurrentUser}, dispatch)})
+)(Login);
