@@ -1,3 +1,5 @@
+@import "../../theme";
+
 .navbar {
     background-color: maroon;
     color: white !important;
@@ -15,12 +17,19 @@
     color: white;
 
     &:hover {
-        font-weight: bolder;
+        color: map_get($colors, primary) !important;
     }
 }
 
 img {
     width: 60px;
+
+.nav-link {
+    color: white !important;
+
+    &:hover {
+        color: yellow !important;
+    }
 }
 
 svg { width: 200px; }

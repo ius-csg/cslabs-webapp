@@ -11,11 +11,14 @@ import * as serviceWorker from './registerServiceWorker';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import configureStore from './redux/store';
+import {PersistGate} from 'redux-persist/integration/react';
 
-const store: any = configureStore();
+const {store, persistor} = configureStore();
 render((
   <Provider store={store}>
-    <App/>
+    <PersistGate loading={null} persistor={persistor}>
+      <App/>
+    </PersistGate>
    </Provider>
  ), document.getElementById('root'));
 

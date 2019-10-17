@@ -1,21 +1,23 @@
-import {applyMiddleware, combineReducers, compose, createStore, DeepPartial} from 'redux';
+import {AnyAction, applyMiddleware, combineReducers, compose, createStore, DeepPartial} from 'redux';
 import rootReducer from '../reducers';
 import {routerMiddleware} from 'connected-react-router';
 import {WebState} from '../types/WebState';
 import history from '../../router/history';
 import {initBrowser} from '../actions/browser';
-import thunk from 'redux-thunk';
+import thunk, {ThunkMiddleware} from 'redux-thunk';
+import {persistGlobalStore, persistRootReducer} from './persistance';
 
-const configureStore = (initialState?: DeepPartial<WebState>) => {
-  const root = combineReducers(rootReducer(history));
+const configureStore = (initialState?: DeepPartial<WebState>, onReady?: () => void) => {
+  const root = persistRootReducer(combineReducers(rootReducer(history)));
+
   const store = createStore(
     root,
     initialState,
-    compose(applyMiddleware(thunk, routerMiddleware(history)))
+    compose(applyMiddleware(thunk as ThunkMiddleware<WebState, AnyAction>, routerMiddleware(history)))
   );
-  // @ts-ignore
+  const persistor = persistGlobalStore(store, onReady);
   store.dispatch(initBrowser());
-  return store;
+  return { store, persistor};
 };
 
 export default configureStore;

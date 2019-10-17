@@ -1,3 +1,4 @@
+import {makeLogger} from './logger';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -29,7 +30,30 @@ export function getClipboardFromEvent(e: any) {
   }
 }
 
+const logger = makeLogger();
+
 export function log(message: any, ...optionalParams: any[]) {
-  // tslint:disable-next-line:no-console
-  console.log(message, optionalParams);
+  logMessage('info', message, optionalParams);
+}
+
+export function info(message: any, ...optionalParams: any[]) {
+  logMessage('info', message, optionalParams);
+}
+export function logError(message?: any, ...optionalParams: any[]) {
+  logMessage('error', message, optionalParams);
+}
+
+export function warn(message?: any, ...optionalParams: any[]) {
+  logMessage('warn', message, ...optionalParams);
+}
+
+export function verbose(message?: any, ...optionalParams: any[]) {
+  logMessage('verbose', message, ...optionalParams);
+}
+
+function logMessage(level: string, message: any, ...optionalParams: any[]) {
+  if (typeof message === 'object') {
+    logger.log(level, '', ...[message, ...optionalParams]);
+  }
+  logger.log(level, message, optionalParams);
 }

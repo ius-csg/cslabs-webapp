@@ -1,13 +1,20 @@
 import * as React from 'react';
-import styles from './Profile.module.scss';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 import {Link} from 'react-router-dom';
 import {RoutePaths} from '../../router/RoutePaths';
+import {connect} from 'react-redux';
+import {WebState} from '../../redux/types/WebState';
+import {getCurrentUser} from '../../redux/selectors/entities';
+import {User} from '../../types/User';
 
-const Profile = () => (
+interface ProfileProps {
+  user: User;
+}
+
+const Profile = (props: ProfileProps) => (
   <AccountManagementLayout>
-    <h2>email@email.com</h2>
-    <ul className={styles['links']}>
+    <h2>{props.user.personalEmail || props.user.schoolEmail}</h2>
+    <ul style={{listStyleType: 'none'}}>
       <li><Link to={RoutePaths.resetEmail}>Manage Email Addresses</Link></li>
       <li><Link to={RoutePaths.resetPassword}>Change Password</Link></li>
       <li><Link to='/logout'>Log Out</Link></li>
@@ -15,4 +22,4 @@ const Profile = () => (
   </AccountManagementLayout>
 );
 
-export default Profile;
+export default connect((state: WebState) => ({user: getCurrentUser(state) }))(Profile);
