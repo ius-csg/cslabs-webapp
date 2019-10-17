@@ -7,7 +7,7 @@ import CSGIcon from '../../assets/icons/cs-labs-icon-128.png';
 
 export const NavigationBar = () => (
   <Navbar bg={styles.navbar} variant={styles.navbar} className={styles['navbar']}>
-    <Container className={styles['links']}>
+    <Container>
       <Navbar.Brand href='/' className={styles['navbar-brand']}><img src={CSGIcon} alt={'CSG Icon'}/></Navbar.Brand>
       <Navbar.Toggle aria-controls='basic-navbar-nav'/>
       <Navbar.Collapse id={'basic-navbar-nav'} className={styles['navbar']}>

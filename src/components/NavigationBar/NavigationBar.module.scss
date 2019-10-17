@@ -17,12 +17,13 @@
     color: white;
 
     &:hover {
-        color: map_get($colors, primary) !important;
+        color: darken(white, 20%) !important;
     }
 }
 
 img {
     width: 60px;
+}
 
 .nav-link {
     color: white !important;
