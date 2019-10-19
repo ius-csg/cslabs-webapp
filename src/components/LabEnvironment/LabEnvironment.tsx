@@ -32,14 +32,25 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
             <ListGroup>
               <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
-              <ListGroup.Item action={true}>
+              <ListGroup.Item style={{padding: 0}}>
                 <Dropdown>
-                  <Dropdown.Toggle styles='none' variant='success' id='dropdown-basic'>
+                  <Dropdown.Toggle
+                    style={
+                      {borderRadius: 0, padding: 15, paddingLeft: 20, textAlign: 'left', caretPositionFromPoint: 'right'}
+                    }
+                    drop='right'
+                    alignRight={true}
+                    block={true}
+                    variant='fail'
+                    id='dropdown-basic'
+                  >
                     Status
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item href='#/action-1'>Shutdown</Dropdown.Item>
-                    <Dropdown.Item href='#/action-2'>Start Up</Dropdown.Item>
+                  <Dropdown.Menu
+                    alignRight={true}
+                  >
+                    <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>
+                    <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>
                     {/*<Dropdown.Item href='#/action-3'>Snapshot</Dropdown.Item>*/}
                     {/*<Dropdown.Item href='#/action-4'>Restore Snapshot</Dropdown.Item>*/}
                   </Dropdown.Menu>
