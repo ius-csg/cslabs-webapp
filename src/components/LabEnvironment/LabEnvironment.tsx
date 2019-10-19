@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Col, Container, ListGroup, OverlayTrigger, Row, Tab, Tooltip} from 'react-bootstrap';
+import {Col, Container, Dropdown, ListGroup, OverlayTrigger, Row, Tab, Tooltip} from 'react-bootstrap';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
@@ -32,7 +32,19 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
             <ListGroup>
               <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
-              <ListGroup.Item action={true} href='#status'>Status</ListGroup.Item>
+              <ListGroup.Item action={true}>
+                <Dropdown>
+                  <Dropdown.Toggle styles='none' variant='success' id='dropdown-basic'>
+                    Status
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href='#/action-1'>Shutdown</Dropdown.Item>
+                    <Dropdown.Item href='#/action-2'>Start Up</Dropdown.Item>
+                    {/*<Dropdown.Item href='#/action-3'>Snapshot</Dropdown.Item>*/}
+                    {/*<Dropdown.Item href='#/action-4'>Restore Snapshot</Dropdown.Item>*/}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </ListGroup.Item>
             </ListGroup>
             <ListGroup style={{marginTop: 20}}>
               {this.props.vms.map(vm =>
