@@ -4,18 +4,32 @@ import RFB from 'novnc-core';
  * Please Read NoVNC's documentation: https://github.com/novnc/noVNC/blob/master/docs/API.md
  */
 
-import {log} from '../util';
+import {log, logError} from '../util';
+import {TicketResponse} from './index';
 
-export function connect(htmlId: string, ticket: string, vmid: number) {
+export function connect(htmlId: string, ticketResponse: TicketResponse, vmid: number) {
   try {
-    const rfb = new RFB(document.getElementById(htmlId) as any);
-    rfb.connect('https://192.168.1.2:8006', 444, undefined, `/api2/json/nodes/a1/qemu/${vmid}/vncwebsocket?port=5900&vncticket=${ticket}`);
-    rfb.set_onDisconnected(() => log('connection	state	change:	Disconnected'));
-    rfb.set_onNotification((self: RFB, msg: string, level: 'normal' | 'warn' | 'error', options?: { [key: string]: any }) =>
-      log(`RFB Notification: [${level}] ${msg}`, options));
+    const rfb = new RFB(document.getElementById(htmlId) as any,
+      // @ts-ignore
+      `wss://192.168.1.2:8006/api2/json/nodes/a1/qemu/${vmid}/vncwebsocket?port=${ticketResponse.port}&vncticket=${encodeURIComponent(ticketResponse.ticket)}`);
+    rfb.scaleViewport = true;
+    rfb.addEventListener('connect', () => log('connect'));
+    rfb.addEventListener('disconnect', () => log('disconnect'));
+    rfb.addEventListener('credentialsrequired', () => {
+      rfb.sendCredentials({
+        username: ticketResponse.user,
+        password: ticketResponse.ticket
+      });
+      log('credentialsrequired');
+    });
+    rfb.addEventListener('securityfailure', (e: any) => log({messsage: 'securityfailure', ...e}));
+    rfb.addEventListener('clipboard', () => log('clipboard'));
+    rfb.addEventListener('bell', () => log('bell'));
+    rfb.addEventListener('desktopname', () => log('desktopname'));
+    rfb.addEventListener('capabilities', () => log('capabilities'));
     return rfb;
   } catch (exc) {
-    log('Unable to create RFB client -- ' + exc, 'error');
+    logError('Unable to create RFB client -- ' + exc, 'error');
     return;
   }
 }

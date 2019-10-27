@@ -2,11 +2,11 @@
 
 .wmks-console-window-container {
     position: relative;
-    margin: 20px auto auto;
+    margin-bottom: 20px;
 }
 
 .controls {
-    display: flex;
+    display: none;
     align-items: center;
     align-content: center;
     flex-direction: column;

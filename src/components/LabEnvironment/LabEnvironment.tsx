@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Col, Container, ListGroup, OverlayTrigger, Row, Tab, Tooltip} from 'react-bootstrap';
+import {Col, Container, ListGroup, Row, Tab} from 'react-bootstrap';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import * as styles from './LabEnvironment.module.scss';
-import {getPowerStateLabel, VMPowerState} from '../../types/VMPowerState';
+import {VMPowerState} from '../../types/VMPowerState';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import {Lorem} from '../util/Lorem';
 
@@ -26,8 +26,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
   render() {
     return (
       <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={false}>
-        <Container fluid={true}>
-          <Row>
+        <Container fluid={true} className='full-height-container'>
+          <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
             <ListGroup>
               <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
@@ -42,8 +42,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
                 </ListGroup.Item>)}
             </ListGroup>
           </Col>
-          <Col sm={8} md={8} lg={10}>
-            <Tab.Content>
+          <Col sm={8} md={8} lg={10} className='full-height-container'>
+            <Tab.Content className='full-height-container'>
               <Tab.Pane eventKey='#topology'>
                 <h2>Topology</h2>
                 <Lorem/>
@@ -57,13 +57,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
                 <Lorem/>
               </Tab.Pane>
               { this.props.vms.map(vm =>
-                <Tab.Pane key={vm.name} eventKey={'#' + vm.name}>
-                  <h2>
-                    {vm.name}
-                    <OverlayTrigger placement='bottom' overlay={<Tooltip id='tooltip-bottom'>{getPowerStateLabel(vm.powerState)}</Tooltip>}>
-                      <CenteredIcon className={getIndicatorClassName(vm)}  icon={faPowerOff} />
-                    </OverlayTrigger>
-                  </h2>
+                <Tab.Pane key={vm.name} eventKey={'#' + vm.name} className='full-height-container'>
                   <ConsoleWindow vm={vm}/>
                 </Tab.Pane>
               )}

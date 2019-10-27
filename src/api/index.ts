@@ -16,10 +16,17 @@ function setToken(token?: string) {
   api = makeAxios(token);
 }
 
-export async function acquireTicket(id: number): Promise<string> {
-  return (await axios.get<string>('/virtual-machines/get-ticket/' + id)).data;
+export interface TicketResponse {
+  port: number;
+  ticket: string;
+  cert: string;
+  upid: string;
+  user: string;
 }
 
+export async function acquireTicket(id: number): Promise<TicketResponse> {
+  return (await api.get<TicketResponse>('/VirtualMachines/get-ticket/' + id)).data;
+}
 
 export async function listVms(): Promise<VirtualMachine[]> {
  return (await axios.get<VirtualMachine[]>('http://localhost:4567/vms')).data;

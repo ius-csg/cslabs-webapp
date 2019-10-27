@@ -1,12 +1,13 @@
-import {Col, Container, Image, Row} from 'react-bootstrap';
+import {Col, Image, Row} from 'react-bootstrap';
 import * as React from 'react';
+import {Layout} from '../../pages/Layout/Layout';
 
 interface AccountManagementLayoutProps {
   children: any;
 }
 
 export const AccountManagementLayout = (props: AccountManagementLayoutProps) => (
-  <Container>
+  <Layout>
     <h1>Account Management</h1>
     <Row>
       <Col xs={{span: 12, order: 2}} md={{span: 8, order: 1}}>
@@ -16,5 +17,5 @@ export const AccountManagementLayout = (props: AccountManagementLayoutProps) => 
         <Image roundedCircle={true} src='https://apps.ius.edu/profile/images/24-1563997501_thumb.jpg' alt='profile'/>
       </Col>
     </Row>
-  </Container>
+  </Layout>
 );

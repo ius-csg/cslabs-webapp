@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {ChangeEvent, Component, RefObject} from 'react';
-import {getClipboardFromEvent, log} from '../../util';
+import {combineClasses, getClipboardFromEvent, log} from '../../util';
 import * as styles from './ConsoleWindow.module.scss';
 // import {acquireTicket} from '../../api';
 import {connect, getNewConsoleWindowId} from '../../api/rfb';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import {VMPowerState} from '../../types/VMPowerState';
-import {Button, FormControl, InputGroup} from 'react-bootstrap';
 import RFB from 'novnc-core';
+import {acquireTicket} from '../../api';
 
 interface ConsoleContainerProps {
   vm: VirtualMachine;
@@ -43,8 +43,8 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     }
 
     try {
-      // const ticket = await acquireTicket(this.props.vm.id);
-      this.setState({rfb: connect(this.consoleWindowId, 'PVEVNC:5DB52A0E::jdaBvvi+nVw18my9ZfUr5L2AwNACHW5U1D6Gf96O/xZhTvAWDw8JHxwWk9As9BBemSzDtpWnz8//Bet0/Xk1nVNsjYkisvfiUNAGYZ5GGy2cQL7UIoE83kjEtWO2NhyHw0iRNM6aplnDVqQwbAK6SelwyCQyHfpSqD6SEWaWmjpTuzKmZbKPeHFSVjjTFtlSq7OGoLjCPYPiJccxg7HdTb3N2XoePLE0XaXtwrBK6DBxeezwEnLqn0DPdmrcau0t19BOCQBb+Mp4iUbgWuPj7E2a/E9vNEzXkn5pmZtmZqn+0EETk4QRxFDviV0yoFb7IRTW/OgO/GMeS2pYCXh2cA==', 100)});
+      const ticketResponse = await acquireTicket(this.props.vm.proxmoxId);
+      this.setState({rfb: connect(this.consoleWindowId, ticketResponse, this.props.vm.proxmoxId)});
     } catch (e) {
       log('Could not connect to vm', e);
     }
@@ -97,6 +97,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
     this.pasteEventHandler = (e: any) => {
       if (this.rfb !== undefined) {
+
         this.rfb.clipboardPasteFrom(getClipboardFromEvent(e));
       }
       return false; // Prevent the default handler from running.
@@ -117,7 +118,8 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
   onPaste = () => {
     if (this.rfb) {
-      // this.rfb.sendKey(this.state.pastedText);
+      log('pasting');
+      this.rfb.clipboardPasteFrom(this.state.pastedText);
     }
   };
 
@@ -129,18 +131,11 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   render() {
 
     return (
-      <div ref={this.ref}>
-          {this.rfb ?
-            <div className={styles['controls']}>
-              <Button size='sm' onClick={this.sendCtrlAltDelete}>Send Ctrl + Alt + Delete</Button>
-              <InputGroup className='ml-1' style={{width: 340}}>
-                <InputGroup.Prepend><Button onClick={this.onClear} variant='secondary'>Clear</Button></InputGroup.Prepend>
-                <FormControl value={this.state.pastedText} style={{textAlign: 'center'}} onChange={this.onPastedTextChange} placeholder='paste text' />
-                <InputGroup.Append><Button onClick={this.onPaste} variant='secondary'>Send to vm</Button></InputGroup.Append>
-              </InputGroup>
-            </div> : null}
-        <div className={styles['wmks-console-window-container']} style={{width: this.state.width, height: this.state.height}}>
-          <div id={this.consoleWindowId} style={{width: this.state.width, height: this.state.height}}/>
+      <div ref={this.ref} className='full-height-container'>
+        <div
+          className={combineClasses(styles['wmks-console-window-container'], 'full-height-container')}
+        >
+          <div id={this.consoleWindowId} className='fill-height'/>
         </div>
       </div>
     );

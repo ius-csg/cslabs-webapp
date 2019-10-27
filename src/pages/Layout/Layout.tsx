@@ -1,8 +1,13 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import {Container} from 'react-bootstrap';
-
-export const Layout = (props: any) => (
-  <Container style={{marginTop: 20}}>
+interface LayoutProps {
+  fluid?: boolean;
+  children: any;
+  style?: CSSProperties;
+  className?: string;
+}
+export const Layout = (props: LayoutProps) => (
+  <Container style={{marginTop: 20, ...props.style || {}}} {...{fluid: props.fluid}} className={props.className}>
     {props.children}
   </Container>
 );

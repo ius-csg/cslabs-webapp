@@ -3,7 +3,8 @@ import {Component} from 'react';
 // import * as styles from './Home.module.scss';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
-import {Container, Row} from 'react-bootstrap';
+import {VMPowerState} from '../../types/VMPowerState';
+import {Layout} from '../Layout/Layout';
 
 interface HomeState {
   vms: VirtualMachine[];
@@ -11,14 +12,12 @@ interface HomeState {
 
 class Home extends Component<{}, HomeState> {
 
-  state: HomeState  = {vms: []};
+  state: HomeState  = {vms: [ {proxmoxId: 100, id: 1, name: 'Test', powerState: VMPowerState.POWERED_ON}]};
   render() {
     return  (
-      <Container fluid={true}>
-        <Row style={{marginTop: 20 }}>
+      <Layout fluid={true} className='full-height-container'>
           <LabEnvironment vms={this.state.vms}/>
-        </Row>
-      </Container>
+      </Layout>
     );
   }
 

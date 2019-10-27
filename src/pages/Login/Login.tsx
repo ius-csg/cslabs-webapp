@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
-import {Container, Form, Col, Tabs, Tab, Alert} from 'react-bootstrap';
+import {Form, Col, Tabs, Tab, Alert} from 'react-bootstrap';
 import {isSchoolEmailValid, RegisterTab} from '../../components/RegisterTab/RegisterTab';
 import {
   BootstrapFormEvent,
@@ -17,6 +17,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {User, UserWithToken} from '../../types/User';
 import {AxiosResponse} from 'axios';
+import {Layout} from '../Layout/Layout';
 
 export interface RegisterForm extends LoginForm {
   firstName: string;
@@ -130,7 +131,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
 
   render() {
     return (
-      <Container>
+      <Layout>
         {this.renderRedirect()}
         <h1>Login / Register</h1>
         <Col sm='6' style={{margin: 'auto'}}>
@@ -165,7 +166,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
             </Tabs>
           </Form>
         </Col>
-      </Container>
+      </Layout>
     );
   }
 }

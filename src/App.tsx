@@ -28,9 +28,7 @@ class App extends React.Component<AppProps> {
 
   public render() {
     return (
-      <div>
         <Routes/>
-      </div>
     );
   }
 }
