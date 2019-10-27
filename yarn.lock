@@ -1364,6 +1364,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.2.tgz#c4e63af5e8823ce9cc3f0b34f7b998c2171f0c44"
   integrity sha512-dyYO+f6ihZEtNPDcWNR1fkoTDf3zAK3lAABDze3mz6POyIercH0lEUawUFXlG8xaQZmm1yEBON/4TsYv/laDYg==
 
+"@types/novnc-core@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@types/novnc-core/-/novnc-core-0.1.1.tgz#f2a4107ee22d46ce7116b56d953190d4e9c7a286"
+  integrity sha512-z9wbHMGDrKSoVzjqZBglnMVam0LrA4bfkGQQDsGUWNjC3ZA4YSi40ZjtjK+XmaaoCTs9tybrJv74AEj2ovocSw==
+
 "@types/prop-types@*":
   version "15.7.1"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.1.tgz#f1a11e7babb0c3cad68100be381d1e064c68f1f6"
@@ -7860,6 +7865,11 @@ normalize-url@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
+
+novnc-core@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/novnc-core/-/novnc-core-0.2.1.tgz#13b4c607204cd82d7972250f8d931dde54c3bce7"
+  integrity sha512-F1FwBTUm6Jg6uGmwgxmcAbceCIWpU2FSSpLN1j52J8M87EZcMtSAS0Q8jhH/+OD1EirzkXQkGd2A6sxWjn5Mqg==
 
 npm-bundled@^1.0.1:
   version "1.0.6"

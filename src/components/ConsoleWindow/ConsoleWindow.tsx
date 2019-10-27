@@ -2,18 +2,18 @@ import * as React from 'react';
 import {ChangeEvent, Component, RefObject} from 'react';
 import {getClipboardFromEvent, log} from '../../util';
 import * as styles from './ConsoleWindow.module.scss';
-import {acquireTicket} from '../../api';
-import {connect, getNewConsoleWindowId} from '../../api/wkms';
-import {WMKSObject} from '../../api/wmks';
+// import {acquireTicket} from '../../api';
+import {connect, getNewConsoleWindowId} from '../../api/rfb';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import {VMPowerState} from '../../types/VMPowerState';
 import {Button, FormControl, InputGroup} from 'react-bootstrap';
+import RFB from 'novnc-core';
 
 interface ConsoleContainerProps {
   vm: VirtualMachine;
 }
 interface ConsoleContainerState {
-  wmks: WMKSObject|undefined;
+  rfb?: RFB;
   width: number;
   height: number;
   pastedText: string;
@@ -22,7 +22,7 @@ interface ConsoleContainerState {
 class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerState> {
 
   consoleWindowId: string = '';
-  state: ConsoleContainerState = {wmks: undefined, width: 0, height: 0, pastedText: ''};
+  state: ConsoleContainerState = {width: 0, height: 0, pastedText: ''};
   ref: RefObject<HTMLDivElement>;
   private resizeEventHandler?: () => void;
   private pasteEventHandler?: (e: any) => boolean;
@@ -33,18 +33,18 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     this.ref = React.createRef();
   }
 
-  get wmks(): WMKSObject {
-    return this.state.wmks as WMKSObject;
+  get rfb() {
+    return this.state.rfb;
   }
 
   connectVM = async () => {
-    if (this.wmks) {
+    if (this.rfb) {
       return;
     }
 
     try {
-      const ticket = await acquireTicket(this.props.vm.name);
-      this.setState({wmks: connect(this.consoleWindowId, ticket)});
+      // const ticket = await acquireTicket(this.props.vm.id);
+      this.setState({rfb: connect(this.consoleWindowId, 'PVEVNC:5DB52A0E::jdaBvvi+nVw18my9ZfUr5L2AwNACHW5U1D6Gf96O/xZhTvAWDw8JHxwWk9As9BBemSzDtpWnz8//Bet0/Xk1nVNsjYkisvfiUNAGYZ5GGy2cQL7UIoE83kjEtWO2NhyHw0iRNM6aplnDVqQwbAK6SelwyCQyHfpSqD6SEWaWmjpTuzKmZbKPeHFSVjjTFtlSq7OGoLjCPYPiJccxg7HdTb3N2XoePLE0XaXtwrBK6DBxeezwEnLqn0DPdmrcau0t19BOCQBb+Mp4iUbgWuPj7E2a/E9vNEzXkn5pmZtmZqn+0EETk4QRxFDviV0yoFb7IRTW/OgO/GMeS2pYCXh2cA==', 100)});
     } catch (e) {
       log('Could not connect to vm', e);
     }
@@ -64,23 +64,23 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   }
 
   disconnect = () => {
-    if (this.wmks) {
-      log(this.wmks);
-      this.wmks.disconnect();
+    if (this.rfb) {
+      log(this.rfb);
+      this.rfb.disconnect();
     }
   };
 
   destroy = () => {
-    if (this.wmks) {
-      log(this.wmks);
-      this.wmks.destroy();
-      this.setState({wmks: undefined});
+    if (this.rfb) {
+      log(this.rfb);
+      this.rfb.disconnect();
+      this.setState({rfb: undefined});
     }
   };
 
   sendCtrlAltDelete = () => {
-    if (this.wmks !== undefined) {
-      this.wmks.sendCAD();
+    if (this.rfb !== undefined) {
+      this.rfb.sendCtrlAltDel();
     }
   };
 
@@ -96,7 +96,9 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     div.addEventListener('resize', this.resizeEventHandler);
 
     this.pasteEventHandler = (e: any) => {
-      this.wmks.sendInputString(getClipboardFromEvent(e));
+      if (this.rfb !== undefined) {
+        this.rfb.clipboardPasteFrom(getClipboardFromEvent(e));
+      }
       return false; // Prevent the default handler from running.
     };
 
@@ -113,7 +115,11 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     this.setState({width: parentWidth, height: height}, after);
   }
 
-  onPaste = () => this.wmks.sendInputString(this.state.pastedText);
+  onPaste = () => {
+    if (this.rfb) {
+      // this.rfb.sendKey(this.state.pastedText);
+    }
+  };
 
   onPastedTextChange = (event: any) =>
     this.setState({pastedText: (event as ChangeEvent<HTMLInputElement>).currentTarget.value});
@@ -124,7 +130,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
     return (
       <div ref={this.ref}>
-          {this.wmks ?
+          {this.rfb ?
             <div className={styles['controls']}>
               <Button size='sm' onClick={this.sendCtrlAltDelete}>Send Ctrl + Alt + Delete</Button>
               <InputGroup className='ml-1' style={{width: 340}}>
