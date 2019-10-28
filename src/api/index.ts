@@ -59,9 +59,13 @@ export function logout() {
 }
 
 export async function getPublicModules(): Promise<Module[]> {
-  return ( await axios.get<Module[]>(`/modules`)).data;
+  return ( await api.get<Module[]>(`/modules`)).data;
 }
 
-export async function getPrivateModules(): Promise<Module[]> {
-  return ( await axios.get<Module[]>(`/modules`)).data;
+export async function getPublicModule(id: number) {
+  return ( await api.get<Module>(`/modules/${id}`)).data;
+}
+
+export async function getPrivateModules() {
+  return ( await api.get<Module[]>(`/modules/`)).data;
 }

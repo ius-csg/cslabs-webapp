@@ -28,7 +28,7 @@ class Explore extends React.Component<{}, ExploreState> {
       const cards = this.state.modules.map((m, i) => <ModuleCard module={m} key={i}/>);
       return (
         <div>
-          <h1>Welcome</h1>
+          <h1>Welcome To CSG LABS</h1>
           <CardColumns>{cards}</CardColumns>
         </div>
       );
