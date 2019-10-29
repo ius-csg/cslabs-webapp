@@ -33,12 +33,13 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
               <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
               <ListGroup.Item style={{padding: 0}}>
-                <Dropdown>
+                <Dropdown
+                  drop='right'
+                >
                   <Dropdown.Toggle
                     style={
                       {borderRadius: 0, padding: 15, paddingLeft: 20, textAlign: 'left', caretPositionFromPoint: 'right'}
                     }
-                    drop='right'
                     alignRight={true}
                     block={true}
                     variant='fail'
