@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Col, Container, Dropdown, ListGroup, OverlayTrigger, Row, Tab, Tooltip} from 'react-bootstrap';
+import {Col, Container, ButtonGroup, Button, Dropdown, ListGroup, OverlayTrigger, Row, Tab, Tooltip} from 'react-bootstrap';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
@@ -34,28 +34,50 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
               <ListGroup.Item style={{padding: 0}}>
                 <Dropdown
+                  as={ButtonGroup}
                   drop='right'
                 >
+                  <Button
+                    variant='light'
+                    style={{borderRadius: 0, padding: 15, paddingLeft: 20, paddingRight: 57, textAlign: 'left'}}
+                  >VM1
+                  </Button>
                   <Dropdown.Toggle
+                    variant='light'
+                    split={true}
+                    id='dropdown-split-basic'
                     style={
-                      {borderRadius: 0, padding: 15, paddingLeft: 20, textAlign: 'left', caretPositionFromPoint: 'right'}
-                    }
-                    alignRight={true}
-                    block={true}
-                    variant='fail'
-                    id='dropdown-basic'
-                  >
-                    Status
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu
-                    alignRight={true}
-                  >
+                       {borderRadius: 0, padding: 15, paddingLeft: 20, textAlign: 'left', caretPositionFromPoint: 'right'}
+                     }
+                  />
+                  <Dropdown.Menu>
                     <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>
                     <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>
-                    {/*<Dropdown.Item href='#/action-3'>Snapshot</Dropdown.Item>*/}
-                    {/*<Dropdown.Item href='#/action-4'>Restore Snapshot</Dropdown.Item>*/}
                   </Dropdown.Menu>
                 </Dropdown>
+                {/*<Dropdown*/}
+                {/*  drop='right'*/}
+                {/*>*/}
+                {/*  <Dropdown.Toggle*/}
+                {/*    style={*/}
+                {/*      {borderRadius: 0, padding: 15, paddingLeft: 20, textAlign: 'left', caretPositionFromPoint: 'right'}*/}
+                {/*    }*/}
+                {/*    alignRight={true}*/}
+                {/*    block={true}*/}
+                {/*    variant='fail'*/}
+                {/*    id='dropdown-basic'*/}
+                {/*  >*/}
+                {/*    Status*/}
+                {/*  </Dropdown.Toggle>*/}
+                {/*  <Dropdown.Menu*/}
+                {/*    alignRight={true}*/}
+                {/*  >*/}
+                {/*    <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>*/}
+                {/*    <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>*/}
+                {/*    /!*<Dropdown.Item href='#/action-3'>Snapshot</Dropdown.Item>*!/*/}
+                {/*    /!*<Dropdown.Item href='#/action-4'>Restore Snapshot</Dropdown.Item>*!/*/}
+                {/*  </Dropdown.Menu>*/}
+                {/*</Dropdown>*/}
               </ListGroup.Item>
             </ListGroup>
             <ListGroup style={{marginTop: 20}}>
