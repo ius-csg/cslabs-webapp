@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {ListGroup} from 'react-bootstrap';
+import {Dropdown, ListGroup} from 'react-bootstrap';
 // import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {VirtualMachine} from '../../types/VirtualMachine';
 // import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
@@ -27,9 +27,16 @@ export class Status extends Component<StatusProps> {
       return(
         <ListGroup>
           {this.props.vms.map(vm =>
-            <ListGroup.Item key={vm.name} action={true} href={'#' + vm.name}>
+            <ListGroup.Item key={vm.name}>
               <CenteredIcon className={getIndicatorClassName(vm)} icon={faPowerOff}/>
-              {vm.name}
+              <span>{vm.name}</span>
+              <Dropdown as='span' drop='right'>
+                <Dropdown.Toggle as='span' variant='light' id='dropdown-split-basic'/>
+                <Dropdown.Menu>
+                  <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>
+                  <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </ListGroup.Item>)}
       </ListGroup>
       );
@@ -38,5 +45,3 @@ export class Status extends Component<StatusProps> {
     }
   }
 }
-
-export default Status;

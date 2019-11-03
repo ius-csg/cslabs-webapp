@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {Col, Container, Dropdown, ListGroup, OverlayTrigger, Row, Tab, Tooltip} from 'react-bootstrap';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
@@ -9,7 +8,7 @@ import * as styles from './LabEnvironment.module.scss';
 import {getPowerStateLabel, VMPowerState} from '../../types/VMPowerState';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import {Lorem} from '../util/Lorem';
-import {RoutePaths} from '../../router/RoutePaths';
+import {Status} from '../../pages/Status/Status';
 
 interface LabEnvironmentProps {
   vms: VirtualMachine[];
@@ -34,7 +33,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
             <ListGroup>
               <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
-              <ListGroup.Item action={true}><Link to={RoutePaths.status}>Status</Link></ListGroup.Item>
+              <ListGroup.Item action={true} href='#status'>Status</ListGroup.Item>
             </ListGroup>
             <ListGroup style={{marginTop: 20}}>
               {this.props.vms.map(vm =>
@@ -65,8 +64,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
               </Tab.Pane>
               <Tab.Pane eventKey='#status'>
                 <h2>Status</h2>
-
-                <Lorem/>
+                <Status vms={this.props.vms}/>
               </Tab.Pane>
               { this.props.vms.map(vm =>
                 <Tab.Pane key={vm.name} eventKey={'#' + vm.name}>

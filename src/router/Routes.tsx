@@ -9,7 +9,6 @@ import ResetEmail from '../pages/ResetEmail/ResetEmail';
 import ResetPassword from '../pages/ResetPassword/ResetPassword';
 import {Layout} from '../pages/Layout/Layout';
 import {NavigationBar} from '../components/NavigationBar/NavigationBar';
-import Status from '../pages/Status/Status';
 import Explore from '../pages/Explore/Explore';
 import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {PublicOnlyRoute} from '../components/PublicOnlyRoute/PublicOnlyRoute';
@@ -28,7 +27,6 @@ const Routes = () => (
             <PrivateRoute exact={true} path={RoutePaths.resetEmail} component={ResetEmail}/>
             <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
             <Route exact={true} path={RoutePaths.explore} component={Explore}/>
-            <Route exact={true} path={RoutePaths.status} component={Status}/>
             <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
             <Route component={NotFound} />
           </Switch>
