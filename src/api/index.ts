@@ -57,3 +57,15 @@ export function isAuthenticated() {
 export function logout() {
   localStorage.removeItem('token');
 }
+
+export async function getPublicModules(): Promise<Module[]> {
+  return ( await api.get<Module[]>(`/modules`)).data;
+}
+
+export async function getPublicModule(id: number) {
+  return ( await api.get<Module>(`/modules/${id}`)).data;
+}
+
+export async function getPrivateModules() {
+  return ( await api.get<Module[]>(`/modules/`)).data;
+}

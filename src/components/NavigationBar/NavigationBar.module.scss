@@ -2,23 +2,27 @@
 
 .navbar {
     background-color: maroon;
-    color: white;
+    color: white !important;
 }
 
 .navbar-brand {
     color: white;
 
     &:hover {
-        color: yellow;
+        font-weight: bolder;
     }
 }
 
-.nav {
+.nav-item a {
     color: white;
 
     &:hover {
-        color: map_get($colors, primary) !important;
+        color: darken(white, 20%) !important;
     }
+}
+
+img {
+    width: 60px;
 }
 
 .nav-link {
@@ -28,3 +32,6 @@
         color: yellow !important;
     }
 }
+
+svg { width: 200px; }
+
