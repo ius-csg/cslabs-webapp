@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Dropdown, ListGroup} from 'react-bootstrap';
+import {Dropdown, ListGroup, Col} from 'react-bootstrap';
 // import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {VirtualMachine} from '../../types/VirtualMachine';
 // import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
@@ -28,17 +28,17 @@ export class Status extends Component<StatusProps> {
         <ListGroup>
           {this.props.vms.map(vm =>
             <ListGroup.Item key={vm.name} className={styles['vm-selector']}>
-              <CenteredIcon className={getIndicatorClassName(vm)} icon={faPowerOff}/>
-              <span>
-                <span>{vm.name}</span>
-              </span>
-              <Dropdown as='span' drop='right'>
-                <Dropdown.Toggle as='span' id='dropdown-basic'/>
-                <Dropdown.Menu>
-                  <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>
-                  <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              <Col>{vm.name}</Col>
+              <Col><CenteredIcon className={getIndicatorClassName(vm)} icon={faPowerOff}/></Col>
+              <Col>
+                <Dropdown drop='right'>
+                  <Dropdown.Toggle id='dropdown-basic'/>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>
+                    <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
             </ListGroup.Item>)}
       </ListGroup>
       );

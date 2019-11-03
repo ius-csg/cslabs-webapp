@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Col, Container, Dropdown, ListGroup, OverlayTrigger, Row, Tab, Tooltip} from 'react-bootstrap';
+import {Col, Container, ListGroup, OverlayTrigger, Row, Tab, Tooltip} from 'react-bootstrap';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
@@ -35,22 +35,6 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
               <ListGroup.Item action={true} href='#status'>Status</ListGroup.Item>
             </ListGroup>
-            <ListGroup style={{marginTop: 20}}>
-              {this.props.vms.map(vm =>
-                <ListGroup.Item key={vm.name} action={true} href={'#' + vm.name} className={styles['vm-selector']}>
-                  <span>
-                    <CenteredIcon className={getIndicatorClassName(vm)}  icon={faPowerOff} />
-                    <span>{vm.name}</span>
-                  </span>
-                  <Dropdown as='span' drop='right'>
-                    <Dropdown.Toggle as='span' variant='light' id='dropdown-split-basic'/>
-                    <Dropdown.Menu>
-                      <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>
-                      <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </ListGroup.Item>)}
-            </ListGroup>
           </Col>
           <Col sm={8} md={8} lg={10}>
             <Tab.Content>
@@ -64,6 +48,13 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
               </Tab.Pane>
               <Tab.Pane eventKey='#status'>
                 <h2>VM Status</h2>
+                <Container>
+                  <Row>
+                    <Col>Name</Col>
+                    <Col>Status</Col>
+                    <Col>Options</Col>
+                  </Row>
+                </Container>
                 <Status vms={this.props.vms}/>
               </Tab.Pane>
               { this.props.vms.map(vm =>
