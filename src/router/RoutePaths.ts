@@ -6,5 +6,6 @@ export const RoutePaths = {
   resetEmail: '/resetemail',
   resetPassword: '/resetpassword',
   logout: '/logout',
-  home: '/'
+  home: '/',
+  status: '/status'
 };
