@@ -5,6 +5,7 @@ import PasswordStrength from '../AccountManagementLayout/PasswordStrength';
 import {RegisterForm} from '../../pages/Login/Login';
 import {BootstrapFormEvent} from '../util/Util';
 import {LoadingButton} from '../../util/LoadingButton';
+import {isPassValid} from '../../util';
 
 export const isSchoolEmailValid = (email: string) => {
   return email.length === 0 || email.indexOf('@ius.edu') !== -1;
@@ -82,7 +83,15 @@ export class RegisterTab extends Component<RegisterTabProps> {
 
       <Form.Group controlId='formBasicPassword'>
         <Form.Label column={true}>Password</Form.Label>
-        <Form.Control required={true} name='password' type='password' value={this.props.form.password} onChange={this.props.onInputChange} placeholder='Password' />
+        <Form.Control
+          required={true}
+          name='password'
+          type='password'
+          value={this.props.form.password}
+          onChange={this.props.onInputChange}
+          isInvalid={!isPassValid(this.props.form.password)}
+          placeholder='Password'
+        />
       </Form.Group>
       <PasswordStrength password={this.props.form.password}/>
       <Form.Group controlId='formBasicConfirmPassword'>

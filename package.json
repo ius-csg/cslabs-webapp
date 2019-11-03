@@ -18,8 +18,9 @@
     "preinstall": "yarn run check-npm"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.19",
-    "@fortawesome/free-solid-svg-icons": "^5.9.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.24",
+    "@fortawesome/free-brands-svg-icons": "^5.11.1",
+    "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@sentry/browser": "^4.3.2",
     "@types/history": "^4.7.2",
@@ -30,6 +31,7 @@
     "@types/react-burger-menu": "^2.2.1",
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.4",
+    "@types/react-router": "^5.1.2",
     "@types/react-router-dom": "^4.3.1",
     "@types/winston": "^2.4.4",
     "@types/zxcvbn": "^4.4.0",

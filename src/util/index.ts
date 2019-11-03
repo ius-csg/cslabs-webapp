@@ -1,4 +1,5 @@
 import {makeLogger} from './logger';
+import zxcvbn from 'zxcvbn';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -56,4 +57,12 @@ function logMessage(level: string, message: any, ...optionalParams: any[]) {
     logger.log(level, '', ...[message, ...optionalParams]);
   }
   logger.log(level, message, optionalParams);
+}
+
+export function isPassValid(password: string) {
+  if (password.length === 0) {
+    return true;
+  }
+  const result = zxcvbn(password);
+  return result.score >= 4;
 }
