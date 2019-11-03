@@ -17,6 +17,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {User, UserWithToken} from '../../types/User';
 import {AxiosResponse} from 'axios';
+import {isPassValid} from '../../util';
 
 export interface RegisterForm extends LoginForm {
   firstName: string;
@@ -92,11 +93,19 @@ export class Login extends Component<LoginProps, LoginPageState> {
     }
   }
 
+  isFormInvalid(form: HTMLFormElement) {
+    return(!form.checkValidity() ||
+      ((!isSchoolEmailValid(this.state.form.schoolEmail) ||
+        (!isPassValid(this.state.form.password))) &&
+        this.state.activeTab === 'Register')
+    );
+  }
+
   onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     this.setState({submitted: true});
     const form: HTMLFormElement = e.currentTarget as unknown as HTMLFormElement;
-    if (!form.checkValidity() || (!isSchoolEmailValid(this.state.form.schoolEmail) && this.state.activeTab === 'Register')) {
+    if (this.isFormInvalid(form)) {
       return;
     }
     if (this.state.form.schoolEmail.length === 0 && this.state.form.personalEmail.length === 0) {
