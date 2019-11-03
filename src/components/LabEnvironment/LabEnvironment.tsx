@@ -63,7 +63,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
                 <Lorem/>
               </Tab.Pane>
               <Tab.Pane eventKey='#status'>
-                <h2>Status</h2>
+                <h2>VM Status</h2>
                 <Status vms={this.props.vms}/>
               </Tab.Pane>
               { this.props.vms.map(vm =>

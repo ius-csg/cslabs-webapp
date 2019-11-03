@@ -27,11 +27,13 @@ export class Status extends Component<StatusProps> {
       return(
         <ListGroup>
           {this.props.vms.map(vm =>
-            <ListGroup.Item key={vm.name}>
+            <ListGroup.Item key={vm.name} className={styles['vm-selector']}>
               <CenteredIcon className={getIndicatorClassName(vm)} icon={faPowerOff}/>
-              <span>{vm.name}</span>
+              <span>
+                <span>{vm.name}</span>
+              </span>
               <Dropdown as='span' drop='right'>
-                <Dropdown.Toggle as='span' variant='light' id='dropdown-split-basic'/>
+                <Dropdown.Toggle as='span' id='dropdown-basic'/>
                 <Dropdown.Menu>
                   <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>
                   <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>
