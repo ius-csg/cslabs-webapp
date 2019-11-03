@@ -5,6 +5,7 @@ import {Dropdown, ListGroup, Col} from 'react-bootstrap';
 import {VirtualMachine} from '../../types/VirtualMachine';
 // import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
+import {shutdownVm, startUpVm} from '../../api';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import * as styles from '../../components/LabEnvironment/LabEnvironment.module.scss';
 import {VMPowerState} from '../../types/VMPowerState';
@@ -34,8 +35,8 @@ export class Status extends Component<StatusProps> {
                 <Dropdown drop='right'>
                   <Dropdown.Toggle id='dropdown-basic'/>
                   <Dropdown.Menu>
-                    <Dropdown.Item href='#/action-1'>Start Up</Dropdown.Item>
-                    <Dropdown.Item href='#/action-2'>Shutdown</Dropdown.Item>
+                    <Dropdown.Item action={startUpVm(vm.name)}>Start Up</Dropdown.Item>
+                    <Dropdown.Item action={shutdownVm(vm.name)}>Shutdown</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>
