@@ -4,6 +4,7 @@ import {Component} from 'react';
 import {VirtualMachine} from '../../types/VirtualMachine';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {Container, Row} from 'react-bootstrap';
+import {VMPowerState} from '../../types/VMPowerState';
 
 interface HomeState {
   vms: VirtualMachine[];
@@ -11,7 +12,12 @@ interface HomeState {
 
 class Home extends Component<{}, HomeState> {
 
-  state: HomeState  = {vms: []};
+  state: HomeState  = {vms: [
+      {
+        powerState: VMPowerState.POWERED_ON,
+        name: 'test'
+      }
+    ]};
   render() {
     return  (
       <Container fluid={true}>
