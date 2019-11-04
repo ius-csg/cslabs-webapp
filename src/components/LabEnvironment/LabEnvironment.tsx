@@ -26,14 +26,23 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
 
   render() {
     return (
-      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={false}>
-        <Container fluid={true} className='full-height-container'>
+      <Tab.Container defaultActiveKey='#status' mountOnEnter={true} unmountOnExit={false}>
+        <Container className='full-height-container'>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
             <ListGroup>
-              <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
-              <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
-              <ListGroup.Item action={true} href='#status'>Status</ListGroup.Item>
+              {/*<ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>*/}
+              {/*<ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>*/}
+              <ListGroup.Item action={true} href='#status'>Statuses</ListGroup.Item>
+            </ListGroup>
+            <ListGroup style={{marginTop: 20}}>
+              {this.props.vms.map(vm =>
+                <ListGroup.Item key={vm.name} action={true} href={'#' + vm.name} className={styles['vm-selector']}>
+                  <span>
+                    <CenteredIcon className={getIndicatorClassName(vm)}  icon={faPowerOff} />
+                    <span>{vm.name}</span>
+                  </span>
+                </ListGroup.Item>)}
             </ListGroup>
           </Col>
           <Col sm={8} md={8} lg={10} className='full-height-container'>

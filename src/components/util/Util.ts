@@ -3,11 +3,12 @@ import {FormControl, FormControlProps} from 'react-bootstrap';
 import axios from 'axios';
 
 export type BootstrapFormEvent = FormEvent<FormControl & FormControlProps>;
-
+console.log('REACT ENV');
+console.log({...process.env});
 export function makeAxios(token?: string) {
   token = token ? token : nullable(localStorage.getItem('token'));
   return axios.create({
-    baseURL: 'https://localhost:5001/api',
+    baseURL: process.env.REACT_APP_API_URL,
     ...(token ? {
       headers: {Authorization: `Bearer ${token}`}
     } : {}),
