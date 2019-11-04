@@ -41,7 +41,7 @@ export type UserErrorResponse = ErrorResponse<RegisterForm>;
 interface LoginPageState {
   activeTab: TabKeys;
   form: RegisterForm;
-  redirectToProfile: boolean;
+  redirectUrl: string;
   errorMessage: string;
   submitted: boolean;
   emailTouched: boolean;
@@ -58,7 +58,7 @@ interface LoginProps {
 export class Login extends Component<LoginProps, LoginPageState> {
 
   state: LoginPageState = {
-    redirectToProfile: false,
+    redirectUrl: '',
     activeTab: 'Login',
     errorMessage: '',
     submitted: false,
@@ -121,7 +121,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
       this.setState({submitting: true});
       const resp = await this.makeRequest();
       this.props.actions.setCurrentUser(resp.data);
-      this.setState({redirectToProfile: true});
+      this.setState({redirectUrl: '/login'});
     } catch (e) {
       if (isBadRequest(e)) {
         this.setState({errorMessage: getErrorResponseMessage(e), submitting: false, errors: getResponseData(e)});
@@ -132,8 +132,8 @@ export class Login extends Component<LoginProps, LoginPageState> {
   }
 
   renderRedirect() {
-    if (this.state.redirectToProfile) {
-      return <Redirect to='/profile'/>;
+    if (this.state.redirectUrl.length !== 0) {
+      return <Redirect to='/my-modules'/>;
     }
     return null;
   }
