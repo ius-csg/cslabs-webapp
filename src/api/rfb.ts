@@ -11,7 +11,7 @@ export function connect(htmlId: string, ticketResponse: TicketResponse, vmid: nu
   try {
     const rfb = new RFB(document.getElementById(htmlId) as any,
       // @ts-ignore
-      `wss://csg.ius.edu/vncwebsocket/${vmid}/vncwebsocket?port=${ticketResponse.port}&vncticket=${encodeURIComponent(ticketResponse.ticket)}`);
+      `wss://iuscsg.dev/vncwebsocket/${vmid}/vncwebsocket?port=${ticketResponse.port}&vncticket=${encodeURIComponent(ticketResponse.ticket)}`);
     rfb.scaleViewport = true;
     rfb.addEventListener('connect', () => log('connect'));
     rfb.addEventListener('disconnect', () => log('disconnect'));
