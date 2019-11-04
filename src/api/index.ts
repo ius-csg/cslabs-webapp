@@ -32,6 +32,14 @@ export async function listVms(): Promise<VirtualMachine[]> {
  return (await axios.get<VirtualMachine[]>('http://localhost:4567/vms')).data;
 }
 
+export async function startUpVm(name: string): Promise<VirtualMachine> {
+  return (await axios.put<VirtualMachine>(`/LabVirtualMachines/${name}`)).data;
+}
+
+export async function shutdownVm(name: string): Promise<VirtualMachine> {
+  return (await axios.put<VirtualMachine>(`/LabVirtualMachines/${name}`)).data;
+}
+
 export async function getModule(id: number) {
   return ( await api.get<Module>(`/modules/${id}`)).data;
 }

@@ -10,3 +10,8 @@
 .power-indicator.suspended {
     color: #c7cb4f;
 }
+
+.vm-selector {
+    display: flex;
+    justify-content: space-between;
+}

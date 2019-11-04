@@ -8,6 +8,7 @@ import * as styles from './LabEnvironment.module.scss';
 import {VMPowerState} from '../../types/VMPowerState';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import {Lorem} from '../util/Lorem';
+import {Status} from '../../pages/Status/Status';
 
 interface LabEnvironmentProps {
   vms: VirtualMachine[];
@@ -34,13 +35,6 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
               <ListGroup.Item action={true} href='#status'>Status</ListGroup.Item>
             </ListGroup>
-            <ListGroup style={{marginTop: 20}}>
-              {this.props.vms.map(vm =>
-                <ListGroup.Item key={vm.name} action={true} href={'#' + vm.name}>
-                  <CenteredIcon className={getIndicatorClassName(vm)}  icon={faPowerOff} />
-                  {vm.name}
-                </ListGroup.Item>)}
-            </ListGroup>
           </Col>
           <Col sm={8} md={8} lg={10} className='full-height-container'>
             <Tab.Content className='full-height-container'>
@@ -53,8 +47,15 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
                 <Lorem/>
               </Tab.Pane>
               <Tab.Pane eventKey='#status'>
-                <h2>Status</h2>
-                <Lorem/>
+                <h2>VM Status</h2>
+                <Container>
+                  <Row>
+                    <Col>Name</Col>
+                    <Col>Status</Col>
+                    <Col>Options</Col>
+                  </Row>
+                </Container>
+                <Status vms={this.props.vms}/>
               </Tab.Pane>
               { this.props.vms.map(vm =>
                 <Tab.Pane key={vm.name} eventKey={'#' + vm.name} className='full-height-container'>

@@ -5,6 +5,7 @@ import {VirtualMachine} from '../../types/VirtualMachine';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {VMPowerState} from '../../types/VMPowerState';
 import {Layout} from '../Layout/Layout';
+import {VMPowerState} from '../../types/VMPowerState';
 
 interface HomeState {
   vms: VirtualMachine[];
