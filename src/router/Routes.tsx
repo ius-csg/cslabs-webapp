@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Switch, Route, Router} from 'react-router-dom';
+import {Switch, Route, Router, BrowserRouter} from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
 import History from './history';
@@ -14,11 +14,12 @@ import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {PublicOnlyRoute} from '../components/PublicOnlyRoute/PublicOnlyRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
-
+console.log('PROCESS_ENV: ' + process.env.PUBLIC_URL);
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
-    <NavigationBar />
+    <BrowserRouter basename={process.env.PUBLIC_URL || undefined}/>
     <Router history={History}>
+      <NavigationBar />
       <Switch>
         <Route exact={true} path={RoutePaths.home} component={Home}/>
         <PublicOnlyRoute exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
