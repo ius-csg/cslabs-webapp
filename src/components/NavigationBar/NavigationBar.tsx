@@ -20,21 +20,21 @@ export const NavigationBar = () => (
         </nav>
         <Nav>
           <Nav.Item className={styles['nav-item']}>
-            <Nav.Link>
+            <Nav.Link as='span'>
               <Link to='/explore'>
                 <FontAwesomeIcon icon={faBook} size={'2x'} rotation={180}/> Explore
               </Link>
             </Nav.Link>
           </Nav.Item>
           <Nav.Item className={styles['nav-item']}>
-            <Nav.Link>
+            <Nav.Link as='span'>
               <Link to='/explore'>
                 <FontAwesomeIcon icon={faList} size={'2x'}/> Modules
               </Link>
             </Nav.Link>
           </Nav.Item>
           <Nav.Item className={styles['nav-item']}>
-            <Nav.Link>
+            <Nav.Link as='span'>
               <Link to={'/login'}>
                 <FontAwesomeIcon icon={faUser} size={'2x'}/> Account
               </Link>
