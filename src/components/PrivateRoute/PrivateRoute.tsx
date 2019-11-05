@@ -1,18 +1,22 @@
 import {Route, RouteProps, Redirect} from 'react-router';
 import React from 'react';
-import {isAuthenticated} from '../../api';
 import {RoutePaths} from '../../router/RoutePaths';
+import {
+  mapIsAuthenticatedToProps,
+  mapIsAuthenticatedToPropsType
+} from '../../redux/selectors/entities';
+import {connect} from 'react-redux';
 
-interface PrivateRoute extends RouteProps {
+type PrivateRouteProps = mapIsAuthenticatedToPropsType & RouteProps & {
   component: any;
-}
+};
 
-export function PrivateRoute({component: Component, ...rest}: PrivateRoute) {
+function PrivateRouteComponent({component: Component, authenticated, ...rest}: PrivateRouteProps) {
   return (
     <Route
       {...rest}
       render={props =>
-        isAuthenticated() ? (
+        authenticated ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -26,3 +30,5 @@ export function PrivateRoute({component: Component, ...rest}: PrivateRoute) {
     />
   );
 }
+
+export const PrivateRoute = connect(mapIsAuthenticatedToProps)(PrivateRouteComponent);

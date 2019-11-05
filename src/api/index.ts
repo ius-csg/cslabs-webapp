@@ -4,8 +4,8 @@ import {Module} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {RegisterForm} from '../pages/Login/Login';
 import {makeAxios} from '../components/util/Util';
-import jwt_decode from 'jwt-decode';
-import {AuthToken} from '../types/AuthToken';
+import {Dispatch} from 'redux';
+import {setCurrentUser} from '../redux/actions/entities/currentUser';
 
 let api = makeAxios();
 
@@ -55,24 +55,14 @@ export async function register(form: RegisterForm): Promise<AxiosResponse<UserWi
   setToken(resp.data.token);
   return resp;
 }
-export async function getCurrentUser() {
+export async function getCurrentUserFromServer() {
   return ( await api.get<User>('/user/current')).data;
 }
 
-export function isAuthenticated() {
-  const token = localStorage.getItem('token');
-  if (token) {
-    // @ts-ignore
-    const decoded = jwt_decode<AuthToken>(token);
-    // @todo implement auth checking.
-    return true;
-  }
-  return false;
-}
-
-export function logout() {
+export const logout = () => (dispatch: Dispatch) => {
   localStorage.removeItem('token');
-}
+  dispatch(setCurrentUser(null));
+};
 
 export async function getPublicModules(): Promise<Module[]> {
   return ( await api.get<Module[]>(`/modules`)).data;

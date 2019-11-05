@@ -7,19 +7,19 @@ import {VMPowerState} from '../../types/VMPowerState';
 // import {Layout} from '../Layout/Layout';
 import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
-import {User} from '../../types/User';
 import {Redirect} from 'react-router';
 import {RoutePaths} from '../../router/RoutePaths';
+import {isAuthenticated} from '../../redux/selectors/entities';
 
 interface HomeState {
   vms: VirtualMachine[];
 }
 
-class Home extends Component<{user?: User}, HomeState> {
+class Home extends Component<ReturnType<typeof mapStateToProps>, HomeState> {
 
   state: HomeState  = {vms: [ {proxmoxId: 100, id: 1, name: 'Test', powerState: VMPowerState.POWERED_ON}]};
   render() {
-    if (this.props.user) {
+    if (this.props.authenticated) {
       return <Redirect to={RoutePaths.myModules} />;
     } else {
       return <Redirect to={RoutePaths.login} />;
@@ -32,5 +32,5 @@ class Home extends Component<{user?: User}, HomeState> {
   }
 
 }
-
-export default connect((state: WebState) => ({ user: state.entities.currentUser}))(Home);
+const mapStateToProps = (state: WebState) => ({ authenticated: isAuthenticated(state)});
+export default connect(mapStateToProps)(Home);

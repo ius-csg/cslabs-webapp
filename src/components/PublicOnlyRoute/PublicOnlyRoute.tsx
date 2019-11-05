@@ -1,18 +1,22 @@
 import {Route, RouteProps, Redirect} from 'react-router';
 import React from 'react';
-import {isAuthenticated} from '../../api';
+import {
+  mapIsAuthenticatedToProps,
+  mapIsAuthenticatedToPropsType
+} from '../../redux/selectors/entities';
+import {connect} from 'react-redux';
 
-interface PublicOnlyRouteProps extends RouteProps {
+type PublicOnlyRouteProps =  RouteProps & mapIsAuthenticatedToPropsType & {
   component: any;
   redirectTo: string;
-}
+};
 
-export function PublicOnlyRoute({component: Component, redirectTo, ...rest}: PublicOnlyRouteProps) {
+function PublicOnlyRouteComponent({component: Component, authenticated, redirectTo, ...rest}: PublicOnlyRouteProps) {
   return (
     <Route
       {...rest}
       render={props =>
-        !isAuthenticated() ? (
+        !authenticated ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -26,3 +30,5 @@ export function PublicOnlyRoute({component: Component, redirectTo, ...rest}: Pub
     />
   );
 }
+
+export const PublicOnlyRoute = connect(mapIsAuthenticatedToProps)(PublicOnlyRouteComponent);

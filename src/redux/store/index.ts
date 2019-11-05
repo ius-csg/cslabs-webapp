@@ -9,11 +9,12 @@ import {persistGlobalStore, persistRootReducer} from './persistance';
 
 const configureStore = (initialState?: DeepPartial<WebState>, onReady?: () => void) => {
   const root = persistRootReducer(combineReducers(rootReducer(history)));
-
+// @ts-ignore
+  const composeEnhancers: typeof compose = (typeof window !== 'undefined' && window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']) || compose;
   const store = createStore(
     root,
     initialState,
-    compose(applyMiddleware(thunk as ThunkMiddleware<WebState, AnyAction>, routerMiddleware(history)))
+    composeEnhancers(applyMiddleware(thunk as ThunkMiddleware<WebState, AnyAction>, routerMiddleware(history)))
   );
   const persistor = persistGlobalStore(store, onReady);
   store.dispatch(initBrowser());

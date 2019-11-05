@@ -11,23 +11,22 @@ import {NavigationBar} from '../components/NavigationBar/NavigationBar';
 // import Explore from '../pages/Explore/Explore';
 import PublicModule from '../pages/PublicModule/PublicModule';
 import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
-import {PublicOnlyRoute} from '../components/PublicOnlyRoute/PublicOnlyRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
-console.log('PROCESS_ENV: ' + process.env.PUBLIC_URL);
+
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
       <NavigationBar />
       <Switch>
         <Route exact={true} path={RoutePaths.home} component={Home}/>
-        <PublicOnlyRoute exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
+        <Route exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
         <PrivateRoute exact={true} path={RoutePaths.profile} component={Profile}/>
         <PrivateRoute exact={true} path={RoutePaths.resetEmail} component={ResetEmail}/>
         <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
         {/*<Route exact={true} path={RoutePaths.explore} component={Explore}/>*/}
-        <Route exact={true} path={RoutePaths.myModules} component={MyModules}/>
+        <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
         <Route exact={true} path='/module/:id' component={PublicModule}/>
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
         <Route component={NotFound} />

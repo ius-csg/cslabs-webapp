@@ -17,7 +17,7 @@ const Profile = (props: ProfileProps) => (
     <ul style={{listStyleType: 'none'}}>
       <li><Link to={RoutePaths.resetEmail}>Manage Email Addresses</Link></li>
       <li><Link to={RoutePaths.resetPassword}>Change Password</Link></li>
-      <li><Link to='/logout'>Log Out</Link></li>
+      <li><Link to={RoutePaths.logout}>Log Out</Link></li>
     </ul>
   </AccountManagementLayout>
 );

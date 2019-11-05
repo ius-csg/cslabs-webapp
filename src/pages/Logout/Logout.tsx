@@ -1,9 +1,15 @@
 import {Redirect, RouteComponentProps} from 'react-router';
 import React from 'react';
 import {logout} from '../../api';
+import {connect} from 'react-redux';
+import {bindActionCreators, Dispatch} from 'redux';
 
-export function LogOut(props: RouteComponentProps) {
-  logout();
+type LogoutProps = ReturnType<typeof mapDispatchToProps> & RouteComponentProps & {
+  label: string;
+};
+
+export function LogOutComponent(props: LogoutProps) {
+  props.logout();
   return (
     <Redirect
       to={{
@@ -13,3 +19,7 @@ export function LogOut(props: RouteComponentProps) {
     />
   );
 }
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({logout: logout}, dispatch);
+
+export const LogOut = connect(undefined, mapDispatchToProps)(LogOutComponent);

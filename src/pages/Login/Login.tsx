@@ -15,10 +15,13 @@ import {LoadingButton} from '../../util/LoadingButton';
 import {connect} from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
-import {User, UserWithToken} from '../../types/User';
+import {UserWithToken} from '../../types/User';
 import {AxiosResponse} from 'axios';
 import {isPassValid} from '../../util';
 import {Layout} from '../Layout/Layout';
+import {WebState} from '../../redux/types/WebState';
+import {isAuthenticated} from '../../redux/selectors/entities';
+import {RoutePaths} from '../../router/RoutePaths';
 
 export interface RegisterForm extends LoginForm {
   firstName: string;
@@ -49,11 +52,7 @@ interface LoginPageState {
   errors?: UserErrorResponse;
 }
 
-interface LoginProps {
-  actions: {
-    setCurrentUser: (user: User) => void;
-  };
-}
+type LoginProps = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
 export class Login extends Component<LoginProps, LoginPageState> {
 
@@ -75,6 +74,12 @@ export class Login extends Component<LoginProps, LoginPageState> {
       password: ''
     }
   };
+
+  componentDidMount(): void {
+    if (this.props.authenticated) {
+      this.setState({redirectUrl: RoutePaths.profile});
+    }
+  }
 
   onInputChange = (event: BootstrapFormEvent) => {
     const input: HTMLInputElement = event.currentTarget as unknown as HTMLInputElement;
@@ -121,7 +126,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
       this.setState({submitting: true});
       const resp = await this.makeRequest();
       this.props.actions.setCurrentUser(resp.data);
-      this.setState({redirectUrl: '/login'});
+      this.setState({redirectUrl: '/my-modules'}, () => console.log(this.state));
     } catch (e) {
       if (isBadRequest(e)) {
         this.setState({errorMessage: getErrorResponseMessage(e), submitting: false, errors: getResponseData(e)});
@@ -133,7 +138,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
 
   renderRedirect() {
     if (this.state.redirectUrl.length !== 0) {
-      return <Redirect to='/my-modules'/>;
+      return <Redirect to={this.state.redirectUrl} />;
     }
     return null;
   }
@@ -179,7 +184,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
     );
   }
 }
+const mapDispatchToProps = (dispatch: Dispatch) => ({actions: bindActionCreators({setCurrentUser: setCurrentUser}, dispatch)});
+const mapStateToProps = (state: WebState) => ({ authenticated: isAuthenticated(state)});
 
-export default connect(undefined,
-  (dispatch: Dispatch) => ({actions: bindActionCreators({setCurrentUser: setCurrentUser}, dispatch)})
-)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

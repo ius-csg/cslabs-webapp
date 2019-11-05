@@ -7,9 +7,9 @@ import CSGIcon from '../../assets/icons/cs-labs-icon-128.png';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
-import {User} from '../../types/User';
+import {isAuthenticated} from '../../redux/selectors/entities';
 
-const NavigationBarComponent = ({user}: {user?: User}) => (
+const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToProps>) => (
   <Navbar bg={styles.navbar} variant={styles.navbar} className={styles['navbar']}>
     <Container>
       <Navbar.Brand className={styles['navbar-brand']}>
@@ -28,7 +28,7 @@ const NavigationBarComponent = ({user}: {user?: User}) => (
           {/*    </Link>*/}
           {/*  </Nav.Link>*/}
           {/*</Nav.Item>*/}
-          {user ?
+          {authenticated ?
           <Nav.Item className={styles['nav-item']}>
             <Nav.Link as='span'>
               <Link to='/my-modules'>
@@ -51,5 +51,5 @@ const NavigationBarComponent = ({user}: {user?: User}) => (
     </Container>
   </Navbar>
 );
-
-export const NavigationBar = connect((state: WebState) => ({user: state.entities.currentUser}))(NavigationBarComponent);
+const mapStateToProps = (state: WebState) => ({authenticated: isAuthenticated(state)});
+export const NavigationBar = connect(mapStateToProps)(NavigationBarComponent);
