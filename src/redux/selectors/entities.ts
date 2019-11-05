@@ -9,10 +9,9 @@ export function isAuthenticated(state: WebState) {
   const user: User | null = getCurrentUser(state);
   const token = localStorage.getItem('token');
   if (token && user) {
-    // @ts-ignore
+    const time = Math.ceil((new Date()).getTime() / 1000);
     const decoded = jwt_decode<AuthToken>(token);
-    // @todo implement auth checking.
-    return true;
+    return time < decoded['exp'];
   }
   return false;
 }

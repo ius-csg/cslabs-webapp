@@ -4,13 +4,13 @@ import {combineClasses, getClipboardFromEvent, log} from '../../util';
 import * as styles from './ConsoleWindow.module.scss';
 // import {acquireTicket} from '../../api';
 import {connect, getNewConsoleWindowId} from '../../api/rfb';
-import {VirtualMachine} from '../../types/VirtualMachine';
+import {UserLabVm} from '../../types/UserLabVm';
 import {VMPowerState} from '../../types/VMPowerState';
 import RFB from 'novnc-core';
 import {acquireTicket} from '../../api';
 
 interface ConsoleContainerProps {
-  vm: VirtualMachine;
+  vm: UserLabVm;
 }
 interface ConsoleContainerState {
   rfb?: RFB;
@@ -43,8 +43,8 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     }
 
     try {
-      const ticketResponse = await acquireTicket(this.props.vm.proxmoxId);
-      this.setState({rfb: connect(this.consoleWindowId, ticketResponse, this.props.vm.proxmoxId)});
+      const ticketResponse = await acquireTicket(this.props.vm.proxmoxVmId);
+      this.setState({rfb: connect(this.consoleWindowId, ticketResponse, this.props.vm.proxmoxVmId)});
     } catch (e) {
       log('Could not connect to vm', e);
     }

@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
-import {VirtualMachine} from '../types/VirtualMachine';
-import {Module} from '../types/Module';
+import {UserLabVm} from '../types/UserLabVm';
+import {Module, UserModule} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {RegisterForm} from '../pages/Login/Login';
 import {makeAxios} from '../components/util/Util';
@@ -28,16 +28,16 @@ export async function acquireTicket(id: number): Promise<TicketResponse> {
   return (await api.get<TicketResponse>('/VirtualMachines/get-ticket/' + id)).data;
 }
 
-export async function listVms(): Promise<VirtualMachine[]> {
- return (await axios.get<VirtualMachine[]>('http://localhost:4567/vms')).data;
+export async function listVms(): Promise<UserLabVm[]> {
+ return (await axios.get<UserLabVm[]>('http://localhost:4567/vms')).data;
 }
 
-export async function startUpVm(name: string): Promise<VirtualMachine> {
-  return (await axios.put<VirtualMachine>(`/LabVirtualMachines/${name}`)).data;
+export async function startUpVm(name: string): Promise<UserLabVm> {
+  return (await axios.put<UserLabVm>(`/LabVirtualMachines/${name}`)).data;
 }
 
-export async function shutdownVm(name: string): Promise<VirtualMachine> {
-  return (await axios.put<VirtualMachine>(`/LabVirtualMachines/${name}`)).data;
+export async function shutdownVm(name: string): Promise<UserLabVm> {
+  return (await axios.put<UserLabVm>(`/LabVirtualMachines/${name}`)).data;
 }
 
 export async function getModule(id: number) {
@@ -67,11 +67,21 @@ export const logout = () => (dispatch: Dispatch) => {
 export async function getPublicModules(): Promise<Module[]> {
   return ( await api.get<Module[]>(`/modules`)).data;
 }
+export async function getPrivateModule(code: string): Promise<Module> {
+  return ( await api.get<Module>(`/modules/code/${code}`)).data;
+}
 
 export async function getPublicModule(id: number) {
   return ( await api.get<Module>(`/modules/${id}`)).data;
 }
 
-export async function getPrivateModules() {
-  return ( await api.get<Module[]>(`/modules/`)).data;
+export async function getUserModules() {
+  return ( await api.get<UserModule[]>(`/usermodules/`)).data;
+}
+export async function getUserModule(id: number) {
+  return ( await api.get<UserModule>(`/usermodules/${id}`)).data;
+}
+
+export async function startUserModule(id: string) {
+  return ( await api.post<UserModule>(`/usermodules/${id}`)).data;
 }

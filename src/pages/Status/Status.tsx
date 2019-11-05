@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import {Dropdown, ListGroup, Col} from 'react-bootstrap';
 // import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
-import {VirtualMachine} from '../../types/VirtualMachine';
+import {UserLabVm} from '../../types/UserLabVm';
 // import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import {shutdownVm, startUpVm} from '../../api';
@@ -11,10 +11,10 @@ import * as styles from '../../components/LabEnvironment/LabEnvironment.module.s
 import {VMPowerState} from '../../types/VMPowerState';
 
 interface StatusProps {
-  vms: VirtualMachine[];
+  vms: UserLabVm[];
 }
 
-function getIndicatorClassName(vm: VirtualMachine) {
+function getIndicatorClassName(vm: UserLabVm) {
   return [
     styles['power-indicator'],
     vm.powerState === VMPowerState.POWERED_ON ? styles['on'] : '',

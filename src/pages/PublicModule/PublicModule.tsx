@@ -1,14 +1,23 @@
 import React, {Component} from 'react';
 import {Module} from '../../types/Module';
-import {getPublicModule} from '../../api';
+import {getPrivateModule, getPublicModule, startUserModule} from '../../api';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {RouteComponentProps} from 'react-router';
+import {connect} from 'react-redux';
+import {WebState} from '../../redux/types/WebState';
+import {isAuthenticated} from '../../redux/selectors/entities';
+import {Link} from 'react-router-dom';
+import {RoutePaths} from '../../router/RoutePaths';
+import {Layout} from '../Layout/Layout';
 
 interface MyModuleState {
   module?: Module;
+  message?: string;
+  redirectUrl?: string;
+  starting?: boolean;
 }
 
-interface PublicModuleProps extends RouteComponentProps<{id: string}> {}
+type PublicModuleProps = RouteComponentProps<{id: string}> & ReturnType<typeof mapStateToProps>;
 
 class PublicModule extends Component<PublicModuleProps, MyModuleState > {
 
@@ -16,22 +25,44 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState > {
 
   constructor(props: PublicModuleProps) {
     super(props);
-    const id = Number(props.match.params.id);
-    this.loadModule(id);
+
+  }
+  async componentDidMount() {
+    try {
+      if (isNaN(Number(this.props.match.params.id))) {
+        console.log("getting private module");
+        this.setState({ module: await getPrivateModule(this.props.match.params.id)});
+      } else {
+        this.setState({ module: await getPublicModule(Number(this.props.match.params.id))});
+      }
+    } catch (e) {
+      this.setState({message: 'Could not load module'});
+    }
+
   }
 
-  async loadModule(id: number) {
-    const module = await getPublicModule(id);
-    this.setState({ module: module});
-  }
+  startModule = async () => {
+    if (this.state.module !== undefined) {
+      this.setState({starting: true});
+      const userModule = await startUserModule(this.state.module.specialCode);
+      this.setState({redirectUrl: RoutePaths.userModule.replace(':id', String(userModule.id))});
+    }
+  };
 
   render() {
+    if (this.state.redirectUrl) {
+      return <Link to={this.state.redirectUrl} />;
+    }
+    if (!this.props.authenticated) {
+      return <Link to={RoutePaths.login} />;
+    }
     return (
-      <div>
-        {this.state.module ? <ModuleCard module={this.state.module} /> : null}
-      </div>
+      <Layout>
+        <h5 style={{textAlign: 'center'}}>{this.state.message ? this.state.message : null}</h5>
+        {this.state.module ? <ModuleCard buttonAction={this.startModule} module={this.state.module} /> : null}
+      </Layout>
     );
   }
 }
-
-export  default PublicModule;
+const mapStateToProps = (state: WebState) => ({authenticated: isAuthenticated(state)});
+export default connect(mapStateToProps)(PublicModule);

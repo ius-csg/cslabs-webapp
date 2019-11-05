@@ -1,8 +1,8 @@
 import {VMPowerState} from './VMPowerState';
 
-export interface VirtualMachine {
+export interface UserLabVm {
   id: number;
-  proxmoxId: number;
+  proxmoxVmId: number;
   name: string;
   powerState: VMPowerState;
 }

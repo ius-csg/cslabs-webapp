@@ -1,12 +1,12 @@
 import {CardColumns} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
-import {Module} from '../../types/Module';
-import {getPrivateModules} from '../../api';
+import {UserModule} from '../../types/Module';
+import {getUserModules} from '../../api';
 import {Layout} from '../Layout/Layout';
 
 interface MyModulesState {
-  modules: Module[];
+  modules: UserModule[];
 }
 
 class MyModules extends React.Component<{}, MyModulesState> {
@@ -21,7 +21,7 @@ class MyModules extends React.Component<{}, MyModulesState> {
   }
 
   async loadModules() {
-    const modules = await getPrivateModules();
+    const modules = await getUserModules();
     this.setState({ modules: modules});
   }
 
@@ -35,7 +35,7 @@ class MyModules extends React.Component<{}, MyModulesState> {
   }
 
   render() {
-      const cards = this.state.modules.map((m, i) => <ModuleCard module={m} key={i}/>);
+      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={'user-module/' + m.id} module={m} key={i}/>);
       return (
         <Layout>
           <h1>My Modules</h1>

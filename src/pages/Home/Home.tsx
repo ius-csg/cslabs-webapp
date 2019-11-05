@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 // import * as styles from './Home.module.scss';
-import {VirtualMachine} from '../../types/VirtualMachine';
+import {UserLabVm} from '../../types/UserLabVm';
 // import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {VMPowerState} from '../../types/VMPowerState';
 // import {Layout} from '../Layout/Layout';
@@ -12,12 +12,12 @@ import {RoutePaths} from '../../router/RoutePaths';
 import {isAuthenticated} from '../../redux/selectors/entities';
 
 interface HomeState {
-  vms: VirtualMachine[];
+  vms: UserLabVm[];
 }
 
 class Home extends Component<ReturnType<typeof mapStateToProps>, HomeState> {
 
-  state: HomeState  = {vms: [ {proxmoxId: 100, id: 1, name: 'Test', powerState: VMPowerState.POWERED_ON}]};
+  state: HomeState  = {vms: [ {proxmoxVmId: 100, id: 1, name: 'Test', powerState: VMPowerState.POWERED_ON}]};
   render() {
     if (this.props.authenticated) {
       return <Redirect to={RoutePaths.myModules} />;

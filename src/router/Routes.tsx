@@ -14,6 +14,7 @@ import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
+import {UserModulePage} from '../pages/UserModule/UserModule';
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
@@ -27,7 +28,8 @@ const Routes = () => (
         <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
         {/*<Route exact={true} path={RoutePaths.explore} component={Explore}/>*/}
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
-        <Route exact={true} path='/module/:id' component={PublicModule}/>
+        <PrivateRoute exact={true} path='/module/:id' component={PublicModule}/>
+        <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
         <Route component={NotFound} />
       </Switch>
