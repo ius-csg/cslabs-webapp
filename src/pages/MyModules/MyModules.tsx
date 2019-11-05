@@ -22,6 +22,7 @@ class MyModules extends React.Component<{}, MyModulesState> {
 
   async loadModules() {
     const modules = await getUserModules();
+    console.log(modules);
     this.setState({ modules: modules});
   }
 

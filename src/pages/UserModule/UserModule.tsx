@@ -4,7 +4,7 @@ import {Component} from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {UserLabVm} from '../../types/UserLabVm';
-import {getUserModule} from '../../api';
+import {getUserModule, startUpVm} from '../../api';
 
 type UserModuleProps = RouteComponentProps<{id: string}>;
 
@@ -21,6 +21,12 @@ export class UserModulePage extends Component<UserModuleProps, UserModuleState> 
   async componentDidMount() {
     this.setState({
       vms: (await getUserModule(Number(this.props.match.params.id))).userLabs[0].userLabVms
+    }, () => {
+      // @ts-ignore
+      for (const vm of this.state.vms) {
+        startUpVm(vm.id);
+      }
+
     });
   }
 

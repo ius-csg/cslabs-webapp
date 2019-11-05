@@ -1,8 +1,9 @@
 import {VMPowerState} from './VMPowerState';
+import {LabVm} from './Module';
 
 export interface UserLabVm {
   id: number;
   proxmoxVmId: number;
-  name: string;
   powerState: VMPowerState;
+  labVm: LabVm;
 }

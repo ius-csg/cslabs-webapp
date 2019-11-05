@@ -37,10 +37,10 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
             </ListGroup>
             <ListGroup style={{marginTop: 20}}>
               {this.props.vms.map(vm =>
-                <ListGroup.Item key={vm.name} action={true} href={'#' + vm.name} className={styles['vm-selector']}>
+                <ListGroup.Item key={vm.labVm.name} action={true} href={'#' + vm.labVm.name} className={styles['vm-selector']}>
                   <span>
                     <CenteredIcon className={getIndicatorClassName(vm)}  icon={faPowerOff} />
-                    <span>{vm.name}</span>
+                    <span>{vm.labVm.name}</span>
                   </span>
                 </ListGroup.Item>)}
             </ListGroup>
@@ -67,7 +67,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
                 <Status vms={this.props.vms}/>
               </Tab.Pane>
               { this.props.vms.map(vm =>
-                <Tab.Pane key={vm.name} eventKey={'#' + vm.name} className='full-height-container'>
+                <Tab.Pane key={vm.labVm.name} eventKey={'#' + vm.labVm.name} className='full-height-container'>
                   <ConsoleWindow vm={vm}/>
                 </Tab.Pane>
               )}

@@ -44,8 +44,8 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState > {
   startModule = async () => {
     if (this.state.module !== undefined) {
       this.setState({starting: true});
-      const userModule = await startUserModule(this.state.module.specialCode);
-      this.setState({redirectUrl: RoutePaths.userModule.replace(':id', String(userModule.id))});
+      await startUserModule(this.state.module.specialCode);
+      // this.setState({redirectUrl: RoutePaths.userModule.replace(':id', String(userModule.id))});
     }
   };
 
@@ -59,7 +59,10 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState > {
     return (
       <Layout>
         <h5 style={{textAlign: 'center'}}>{this.state.message ? this.state.message : null}</h5>
-        {this.state.module ? <ModuleCard buttonAction={this.startModule} module={this.state.module} /> : null}
+        { this.state.starting ? <h5>Your lab is starting, please check back in 5 minutes. and got to the my modules page.</h5> :
+          (
+            this.state.module ? <ModuleCard buttonAction={this.startModule} module={this.state.module} /> : null
+          )}
       </Layout>
     );
   }

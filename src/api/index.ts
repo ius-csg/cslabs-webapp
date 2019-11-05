@@ -29,15 +29,15 @@ export async function acquireTicket(id: number): Promise<TicketResponse> {
 }
 
 export async function listVms(): Promise<UserLabVm[]> {
- return (await axios.get<UserLabVm[]>('http://localhost:4567/vms')).data;
+ return (await axios.post<UserLabVm[]>('http://localhost:4567/vms')).data;
 }
 
-export async function startUpVm(name: string): Promise<UserLabVm> {
-  return (await axios.put<UserLabVm>(`/LabVirtualMachines/${name}`)).data;
+export async function startUpVm(id: number): Promise<string> {
+  return (await api.post<string>(`/VirtualMachines/start/${id}`)).data;
 }
 
-export async function shutdownVm(name: string): Promise<UserLabVm> {
-  return (await axios.put<UserLabVm>(`/LabVirtualMachines/${name}`)).data;
+export async function shutdownVm(id: number): Promise<string> {
+  return (await api.put<string>(`/VirtualMachines/shutdown/${id}`)).data;
 }
 
 export async function getModule(id: number) {

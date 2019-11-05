@@ -5,7 +5,7 @@ import * as styles from './ConsoleWindow.module.scss';
 // import {acquireTicket} from '../../api';
 import {connect, getNewConsoleWindowId} from '../../api/rfb';
 import {UserLabVm} from '../../types/UserLabVm';
-import {VMPowerState} from '../../types/VMPowerState';
+// import {VMPowerState} from '../../types/VMPowerState';
 import RFB from 'novnc-core';
 import {acquireTicket} from '../../api';
 
@@ -65,14 +65,12 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
   disconnect = () => {
     if (this.rfb) {
-      log(this.rfb);
       this.rfb.disconnect();
     }
   };
 
   destroy = () => {
     if (this.rfb) {
-      log(this.rfb);
       this.rfb.disconnect();
       this.setState({rfb: undefined});
     }
@@ -87,9 +85,10 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   componentDidMount(): void {
     const div: HTMLDivElement = this.ref.current as HTMLDivElement;
     this.setSize(div.offsetWidth, async () => {
-      if (this.props.vm.powerState === VMPowerState.POWERED_ON) {
-        await this.connectVM();
-      }
+      // if (this.props.vm.powerState === VMPowerState.POWERED_ON) {
+      //
+      // }
+      await this.connectVM();
     });
 
     this.resizeEventHandler = () => this.setSize(div.offsetWidth);
