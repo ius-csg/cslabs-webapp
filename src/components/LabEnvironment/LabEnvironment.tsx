@@ -1,24 +1,24 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {Col, Container, ListGroup, Row, Tab} from 'react-bootstrap';
-import {UserLabVm} from '../../types/UserLabVm';
+import {isRunning, UserLabVm} from '../../types/UserLabVm';
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import * as styles from './LabEnvironment.module.scss';
-import {VMPowerState} from '../../types/VMPowerState';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import {Lorem} from '../util/Lorem';
 import {Status} from '../../pages/Status/Status';
 
 interface LabEnvironmentProps {
   vms: UserLabVm[];
+  statuses: {[key: number]: string};
 }
 
-function getIndicatorClassName(vm: UserLabVm) {
+export function getIndicatorClassName(running: boolean) {
   return [
     styles['power-indicator'],
-    vm.powerState === VMPowerState.POWERED_ON ? styles['on'] : '',
-    vm.powerState === VMPowerState.SUSPENDED ? styles['suspended'] : ''
+    running ? styles['on'] : '',
+    !running ? styles['suspended'] : ''
   ].join(' ');
 }
 
@@ -39,7 +39,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
               {this.props.vms.map(vm =>
                 <ListGroup.Item key={vm.labVm.name} action={true} href={'#' + vm.labVm.name} className={styles['vm-selector']}>
                   <span>
-                    <CenteredIcon className={getIndicatorClassName(vm)}  icon={faPowerOff} />
+                    <CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))}  icon={faPowerOff} />
                     <span>{vm.labVm.name}</span>
                   </span>
                 </ListGroup.Item>)}
@@ -64,11 +64,11 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
                     <Col>Options</Col>
                   </Row>
                 </Container>
-                <Status vms={this.props.vms}/>
+                <Status vms={this.props.vms} statuses={this.props.statuses}/>
               </Tab.Pane>
               { this.props.vms.map(vm =>
                 <Tab.Pane key={vm.labVm.name} eventKey={'#' + vm.labVm.name} className='full-height-container'>
-                  <ConsoleWindow vm={vm}/>
+                  <ConsoleWindow vm={vm} status={this.props.statuses[vm.id]} />
                 </Tab.Pane>
               )}
             </Tab.Content>

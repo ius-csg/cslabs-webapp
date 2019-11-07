@@ -11,6 +11,7 @@ import {acquireTicket} from '../../api';
 
 interface ConsoleContainerProps {
   vm: UserLabVm;
+  status: string;
 }
 interface ConsoleContainerState {
   rfb?: RFB;

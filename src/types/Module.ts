@@ -8,7 +8,9 @@ export interface Module {
   published: boolean;
   updatedAt: string;
   createdAt: string;
-  specialCode: string;
+  specialCode?: string;
+  // if there is a user module instance, it's id will show here.
+  userModuleId?: number;
 }
 
 export interface Lab {

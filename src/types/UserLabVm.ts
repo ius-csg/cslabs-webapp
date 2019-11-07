@@ -1,9 +1,15 @@
-import {VMPowerState} from './VMPowerState';
 import {LabVm} from './Module';
 
 export interface UserLabVm {
   id: number;
   proxmoxVmId: number;
-  powerState: VMPowerState;
   labVm: LabVm;
+}
+
+export interface Statuses {
+  [key: number]: string;
+}
+
+export function isRunning(status: string) {
+  return status === 'running';
 }

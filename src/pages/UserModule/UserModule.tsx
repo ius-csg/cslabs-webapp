@@ -4,36 +4,62 @@ import {Component} from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {UserLabVm} from '../../types/UserLabVm';
-import {getUserModule, startUpVm} from '../../api';
+import {getUserLabVmStatuses, getUserModule, startUpVm} from '../../api';
+import {UserModule} from '../../types/Module';
 
 type UserModuleProps = RouteComponentProps<{id: string}>;
 
 interface UserModuleState {
   vms?: UserLabVm[];
+  userModule?: UserModule;
+  statuses: {[key: number]: string};
 }
 
 export class UserModulePage extends Component<UserModuleProps, UserModuleState> {
 
-  state: UserModuleState = {
-    vms: undefined
-  };
+  state: UserModuleState = { statuses: {}};
+  private interval: any;
 
   async componentDidMount() {
+    const userModule = await getUserModule(Number(this.props.match.params.id));
     this.setState({
-      vms: (await getUserModule(Number(this.props.match.params.id))).userLabs[0].userLabVms
-    }, () => {
+      vms: userModule.userLabs[0].userLabVms,
+      userModule: userModule
+    }, async () => {
       // @ts-ignore
       for (const vm of this.state.vms) {
         startUpVm(vm.id);
       }
+      if (this.state.userModule) {
+        this.setState({
+          statuses:  await getUserLabVmStatuses(this.state.userModule.userLabs[0].id)
+        });
+      }
+      this.setStatusInterval();
 
     });
+  }
+
+  setStatusInterval() {
+    this.interval = setInterval(async () => {
+      if (this.state.userModule) {
+        this.setState({
+          statuses:  await getUserLabVmStatuses(this.state.userModule.userLabs[0].id)
+        });
+      }
+    }, 5000);
+  }
+
+  componentWillUnmount(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 
   render() {
     return (
         <Layout fluid={true} className='full-height-container'>
-          {this.state.vms !== undefined ? <LabEnvironment vms={this.state.vms}/> : null}
+          {this.state.vms !== undefined ? <LabEnvironment vms={this.state.vms} statuses={this.state.statuses}/> : null}
         </Layout>
     );
   }

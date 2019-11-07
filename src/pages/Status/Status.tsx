@@ -2,24 +2,18 @@ import * as React from 'react';
 import {Component} from 'react';
 import {ListGroup, Col} from 'react-bootstrap';
 // import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
-import {UserLabVm} from '../../types/UserLabVm';
+import {isRunning, Statuses, UserLabVm} from '../../types/UserLabVm';
 // import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import * as styles from '../../components/LabEnvironment/LabEnvironment.module.scss';
-import {VMPowerState} from '../../types/VMPowerState';
+import {getIndicatorClassName} from '../../components/LabEnvironment/LabEnvironment';
 
 interface StatusProps {
   vms: UserLabVm[];
+  statuses: Statuses;
 }
 
-function getIndicatorClassName(vm: UserLabVm) {
-  return [
-    styles['power-indicator'],
-    vm.powerState === VMPowerState.POWERED_ON ? styles['on'] : '',
-    vm.powerState === VMPowerState.SUSPENDED ? styles['suspended'] : ''
-  ].join(' ');
-}
 
 export class Status extends Component<StatusProps> {
 
@@ -30,7 +24,7 @@ export class Status extends Component<StatusProps> {
           {this.props.vms.map(vm =>
             <ListGroup.Item key={vm.labVm.name} className={styles['vm-selector']}>
               <Col>{vm.labVm.name}</Col>
-              <Col><CenteredIcon className={getIndicatorClassName(vm)} icon={faPowerOff}/></Col>
+              <Col><CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))} icon={faPowerOff}/></Col>
               <Col>
                 {/*<Dropdown drop='right'>*/}
                 {/*  <Dropdown.Toggle id='dropdown-basic'/>*/}

@@ -1,5 +1,4 @@
-import axios, {AxiosResponse} from 'axios';
-import {UserLabVm} from '../types/UserLabVm';
+import {AxiosResponse} from 'axios';
 import {Module, UserModule} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {RegisterForm} from '../pages/Login/Login';
@@ -26,19 +25,15 @@ export interface TicketResponse {
 }
 
 export async function acquireTicket(id: number): Promise<TicketResponse> {
-  return (await api.get<TicketResponse>('/VirtualMachines/get-ticket/' + id)).data;
-}
-
-export async function listVms(): Promise<UserLabVm[]> {
- return (await axios.post<UserLabVm[]>('http://localhost:4567/vms')).data;
+  return (await api.get<TicketResponse>('/virtual-machine/get-ticket/' + id)).data;
 }
 
 export async function startUpVm(id: number): Promise<string> {
-  return (await api.post<string>(`/VirtualMachines/start/${id}`)).data;
+  return (await api.post<string>(`/virtual-machine/start/${id}`)).data;
 }
 
 export async function shutdownVm(id: number): Promise<string> {
-  return (await api.put<string>(`/VirtualMachines/shutdown/${id}`)).data;
+  return (await api.put<string>(`/virtual-machine/shutdown/${id}`)).data;
 }
 
 export async function getModule(id: number) {
@@ -83,6 +78,13 @@ export async function getUserModule(id: number) {
   return handleResponse( await api.get<UserModule>(`/user-module/${id}`)).data;
 }
 
+export async function getUserModuleStatus(id: number) {
+  return handleResponse( await api.get<string>(`/user-module/${id}/status`)).data;
+}
+
+export async function getUserLabVmStatuses(id: number) {
+  return handleResponse( await api.get<{[key: number]: string}>(`/user-lab/${id}/status`)).data;
+}
 export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
 }
