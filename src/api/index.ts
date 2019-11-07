@@ -6,6 +6,7 @@ import {RegisterForm} from '../pages/Login/Login';
 import {makeAxios} from '../components/util/Util';
 import {Dispatch} from 'redux';
 import {setCurrentUser} from '../redux/actions/entities/currentUser';
+import {appDispatch} from '../redux/store';
 
 let api = makeAxios();
 
@@ -64,24 +65,34 @@ export const logout = () => (dispatch: Dispatch) => {
   dispatch(setCurrentUser(null));
 };
 
-export async function getPublicModules(): Promise<Module[]> {
-  return ( await api.get<Module[]>(`/modules`)).data;
+export async function getPublicModules() {
+  return handleResponse( await api.get<Module[]>(`/module`)).data;
 }
-export async function getPrivateModule(code: string): Promise<Module> {
-  return ( await api.get<Module>(`/modules/code/${code}`)).data;
+export async function getModuleByPrivateCode(code: string): Promise<Module> {
+  return handleResponse( await api.get<Module>(`/module/code/${code}`)).data;
 }
 
 export async function getPublicModule(id: number) {
-  return ( await api.get<Module>(`/modules/${id}`)).data;
+  return handleResponse( await api.get<Module>(`/module/${id}`)).data;
 }
 
 export async function getUserModules() {
-  return ( await api.get<UserModule[]>(`/usermodules/`)).data;
+  return handleResponse( await api.get<UserModule[]>(`/user-module/`)).data;
 }
 export async function getUserModule(id: number) {
-  return ( await api.get<UserModule>(`/usermodules/${id}`)).data;
+  return handleResponse( await api.get<UserModule>(`/user-module/${id}`)).data;
 }
 
 export async function startUserModule(id: string) {
-  return ( await api.post<UserModule>(`/usermodules/${id}`)).data;
+  return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
+}
+
+function handleResponse<T>(response: AxiosResponse<T>) {
+  if (response.status < 400) {
+    return response;
+  }
+  if (response.status === 401) {
+    appDispatch(logout());
+  }
+  throw response;
 }

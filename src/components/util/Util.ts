@@ -10,8 +10,7 @@ export function makeAxios(token?: string) {
     baseURL: process.env.REACT_APP_API_URL,
     ...(token ? {
       headers: {Authorization: `Bearer ${token}`}
-    } : {}),
-    validateStatus: (status: number) => status < 400
+    } : {})
   });
 }
 

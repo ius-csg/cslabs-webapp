@@ -9,15 +9,13 @@ interface ExploreState {
   modules: Module[];
 }
 
-
 class Explore extends React.Component<{}, ExploreState> {
 
   state: ExploreState = {
     modules: []
   };
 
-  constructor(props: {}) {
-    super(props);
+  componentDidMount(): void {
     this.loadModules();
   }
 

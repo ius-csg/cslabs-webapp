@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Module} from '../../types/Module';
-import {getPrivateModule, getPublicModule, startUserModule} from '../../api';
+import {getModuleByPrivateCode, getPublicModule, startUserModule} from '../../api';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {RouteComponentProps} from 'react-router';
 import {connect} from 'react-redux';
@@ -31,7 +31,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState > {
     try {
       if (isNaN(Number(this.props.match.params.id))) {
         console.log("getting private module");
-        this.setState({ module: await getPrivateModule(this.props.match.params.id)});
+        this.setState({ module: await getModuleByPrivateCode(this.props.match.params.id)});
       } else {
         this.setState({ module: await getPublicModule(Number(this.props.match.params.id))});
       }

@@ -11,14 +11,14 @@ const configureStore = (initialState?: DeepPartial<WebState>, onReady?: () => vo
   const root = persistRootReducer(combineReducers(rootReducer(history)));
 // @ts-ignore
   const composeEnhancers: typeof compose = (typeof window !== 'undefined' && window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']) || compose;
-  const store = createStore(
+  const storeInstance = createStore(
     root,
     initialState,
     composeEnhancers(applyMiddleware(thunk as ThunkMiddleware<WebState, AnyAction>, routerMiddleware(history)))
   );
-  const persistor = persistGlobalStore(store, onReady);
-  store.dispatch(initBrowser());
-  return { store, persistor};
+  const persistorInstance = persistGlobalStore(storeInstance, onReady);
+  storeInstance.dispatch(initBrowser());
+  return { store: storeInstance, persistor: persistorInstance, appDispatch: storeInstance.dispatch};
 };
 
-export default configureStore;
+export const {store, persistor, appDispatch } = configureStore();

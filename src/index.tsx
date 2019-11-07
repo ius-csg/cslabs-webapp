@@ -10,10 +10,9 @@ import './index.scss';
 import * as serviceWorker from './registerServiceWorker';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import configureStore from './redux/store';
+import { store, persistor } from './redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
 
-const {store, persistor} = configureStore();
 render((
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
