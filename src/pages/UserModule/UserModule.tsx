@@ -10,14 +10,14 @@ import {UserModule} from '../../types/Module';
 type UserModuleProps = RouteComponentProps<{id: string}>;
 
 interface UserModuleState {
-  vms?: UserLabVm[];
+  vms: UserLabVm[];
   userModule?: UserModule;
   statuses: {[key: number]: string};
 }
 
 export class UserModulePage extends Component<UserModuleProps, UserModuleState> {
 
-  state: UserModuleState = { statuses: {}};
+  state: UserModuleState = { statuses: {}, vms: []};
   private interval: any;
 
   async componentDidMount() {
@@ -26,13 +26,15 @@ export class UserModulePage extends Component<UserModuleProps, UserModuleState> 
       vms: userModule.userLabs[0].userLabVms,
       userModule: userModule
     }, async () => {
-      // @ts-ignore
-      for (const vm of this.state.vms) {
-        startUpVm(vm.id);
-      }
       if (this.state.userModule) {
         this.setState({
           statuses:  await getUserLabVmStatuses(this.state.userModule.userLabs[0].id)
+        }, () => {
+          for (const vm of this.state.vms) {
+            if (this.state.statuses[vm.id] === 'stopped') {
+                startUpVm(vm.id);
+            }
+          }
         });
       }
       this.setStatusInterval();
@@ -59,7 +61,7 @@ export class UserModulePage extends Component<UserModuleProps, UserModuleState> 
   render() {
     return (
         <Layout fluid={true} className='full-height-container'>
-          {this.state.vms !== undefined ? <LabEnvironment vms={this.state.vms} statuses={this.state.statuses}/> : null}
+          {this.state.vms ? <LabEnvironment vms={this.state.vms} statuses={this.state.statuses} /> : null}
         </Layout>
     );
   }

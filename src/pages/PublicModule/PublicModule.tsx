@@ -86,12 +86,12 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
   startModule = async () => {
     if (this.state.module !== undefined) {
       this.setStatusCheckInterval();
+      this.setState({status: 'Initializing'});
       this.setState({
           module: {
             ...this.state.module,
             userModuleId: (await startUserModule(String(this.state.module.specialCode))).id
-          },
-          status: 'Initializing'
+          }
       });
     }
   };
@@ -101,7 +101,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
   }
 
   isModuleLoading(): boolean {
-    return Boolean(this.getModule().userModuleId) && this.state.status === 'Initializing';
+    return this.state.status === 'Initializing';
   }
 
   hasModule() {
@@ -123,10 +123,10 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       <Button
         disabled={this.isModuleLoading()}
         className='btn btn-primary'
-        style={{width: 200}}
+        style={{width:  this.isModuleLoading() ? 300 : 200}}
         onClick={this.hasModule() ? undefined : this.startModule}
       >
-        {this.isModuleLoading() ? <Spinner animation='border' /> : null}
+        {this.isModuleLoading() ? <span style={{marginRight: 10}}><Spinner animation='border' size='sm' /></span> : null}
         {this.getButtonText()}
       </Button>
     );
@@ -173,7 +173,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
               {module.description.substring(0, 150)}
             </Card.Text>
             {this.state.status === 'Initializing' ?
-              <h5>Your lab is starting, please check back in 5 minutes. and got to the my modules page.</h5> : null}
+              <h5>Your lab is starting. Please Wait...</h5> : null}
           </Card.Body>
           <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <small className='text-muted'>{module.updatedAt}</small>

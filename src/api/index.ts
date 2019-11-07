@@ -6,6 +6,7 @@ import {makeAxios} from '../components/util/Util';
 import {Dispatch} from 'redux';
 import {setCurrentUser} from '../redux/actions/entities/currentUser';
 import {appDispatch} from '../redux/store';
+import axiosRetry from 'axios-retry';
 
 let api = makeAxios();
 
@@ -24,12 +25,19 @@ export interface TicketResponse {
   user: string;
 }
 
+export const logout = () => (dispatch: Dispatch) => {
+  localStorage.removeItem('token');
+  dispatch(setCurrentUser(null));
+};
+
 export async function acquireTicket(id: number): Promise<TicketResponse> {
   return (await api.get<TicketResponse>('/virtual-machine/get-ticket/' + id)).data;
 }
 
 export async function startUpVm(id: number): Promise<string> {
-  return (await api.post<string>(`/virtual-machine/start/${id}`)).data;
+  const retry = makeAxios();
+  axiosRetry(retry, { retryDelay: (num) => 1000 * num, retries: 10});
+  return (await retry.post<string>(`/virtual-machine/start/${id}`)).data;
 }
 
 export async function shutdownVm(id: number): Promise<string> {
@@ -54,11 +62,6 @@ export async function register(form: RegisterForm): Promise<AxiosResponse<UserWi
 export async function getCurrentUserFromServer() {
   return ( await api.get<User>('/user/current')).data;
 }
-
-export const logout = () => (dispatch: Dispatch) => {
-  localStorage.removeItem('token');
-  dispatch(setCurrentUser(null));
-};
 
 export async function getPublicModules() {
   return handleResponse( await api.get<Module[]>(`/module`)).data;
