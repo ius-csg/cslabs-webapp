@@ -14,7 +14,7 @@ const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToPro
     <Container>
       <Navbar.Brand className={styles['navbar-brand']}>
         <Link to={'/'}>
-          <img src={CSGIcon} alt={'CSG Icon'}/>
+          <img className={styles['logo']} src={CSGIcon} alt={'CSG Icon'}/>
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls='basic-navbar-nav'/>
