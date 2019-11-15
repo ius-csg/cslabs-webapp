@@ -12,7 +12,7 @@ export const isSchoolEmailValid = (email: string) => {
 };
 
 export const isEmailValid = (email: string) => {
-  return email.length === 0 || ^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$.test(email);
+  return email.length === 0 || /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email);
 };
 
 export const isPhoneNumberValid = (phoneNumber: string) => {
@@ -28,10 +28,21 @@ interface RegisterTabProps {
   errorMessage: string;
 }
 
-export class RegisterTab extends Component<RegisterTabProps> {
+export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouched: boolean}> {
+
+  state = {
+    personalEmailTouched: false
+  };
 
   isPassInvalid = () => {
     return this.props.form.password !== this.props.form.confirmPass;
+  };
+
+  onPersonalEmailChange = (event: BootstrapFormEvent) => {
+    this.setState({
+      personalEmailTouched: true
+    });
+    this.props.onInputChange(event);
   };
 
   render() {
@@ -62,11 +73,11 @@ export class RegisterTab extends Component<RegisterTabProps> {
       <Form.Group controlId='formBasicEmail'>
         <Form.Label column={true}>Personal Email (Either personal or school email is required)</Form.Label>
         <Form.Control
-          isInvalid={this.props.emailTouched && !isEmailValid(this.props.form.personalEmail)}
+          isInvalid={this.state.personalEmailTouched && !isEmailValid(this.props.form.personalEmail)}
           name='personalEmail'
           type='text'
           value={this.props.form.personalEmail}
-          onChange={this.props.onInputChange}
+          onChange={this.onPersonalEmailChange}
           placeholder='Enter Personal Email'
         />
         <Form.Control.Feedback type='invalid'>
