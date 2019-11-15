@@ -7,14 +7,14 @@ import RFB from 'novnc-core';
 import {log, logError} from '../util';
 import {TicketResponse} from './index';
 
-export function connect(htmlId: string, ticketResponse: TicketResponse, vmid: number) {
+export function connect(htmlId: string, ticketResponse: TicketResponse, vmid: number, onDisconnect: () => void) {
   try {
     const rfb = new RFB(document.getElementById(htmlId) as any,
       // @ts-ignore
       `wss://iuscsg.dev/vncwebsocket/${vmid}/vncwebsocket?port=${ticketResponse.port}&vncticket=${encodeURIComponent(ticketResponse.ticket)}`);
     rfb.scaleViewport = true;
     rfb.addEventListener('connect', () => log('connect'));
-    rfb.addEventListener('disconnect', () => log('disconnect'));
+    rfb.addEventListener('disconnect', () => onDisconnect());
     rfb.addEventListener('credentialsrequired', () => {
       rfb.sendCredentials({
         username: ticketResponse.user,

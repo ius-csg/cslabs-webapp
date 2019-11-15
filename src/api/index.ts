@@ -41,7 +41,11 @@ export async function startUpVm(id: number): Promise<string> {
 }
 
 export async function shutdownVm(id: number): Promise<string> {
-  return (await api.put<string>(`/virtual-machine/shutdown/${id}`)).data;
+  return (await api.post<string>(`/virtual-machine/shutdown/${id}`)).data;
+}
+
+export async function stopVm(id: number): Promise<string> {
+  return (await api.post<string>(`/virtual-machine/stop/${id}`)).data;
 }
 
 export async function getModule(id: number) {

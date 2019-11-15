@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {ListGroup, Col} from 'react-bootstrap';
+import {ListGroup, Col, Dropdown} from 'react-bootstrap';
 // import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {isRunning, Statuses, UserLabVm} from '../../types/UserLabVm';
 // import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
@@ -8,6 +8,7 @@ import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import * as styles from '../../components/LabEnvironment/LabEnvironment.module.scss';
 import {getIndicatorClassName} from '../../components/LabEnvironment/LabEnvironment';
+import {shutdownVm, startUpVm, stopVm} from '../../api';
 
 interface StatusProps {
   vms: UserLabVm[];
@@ -16,7 +17,6 @@ interface StatusProps {
 
 
 export class Status extends Component<StatusProps> {
-
   render() {
     if (this.props.vms.length > 0) {
       return(
@@ -26,13 +26,14 @@ export class Status extends Component<StatusProps> {
               <Col>{vm.labVm.name}</Col>
               <Col><CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))} icon={faPowerOff}/></Col>
               <Col>
-                {/*<Dropdown drop='right'>*/}
-                {/*  <Dropdown.Toggle id='dropdown-basic'/>*/}
-                {/*  <Dropdown.Menu>*/}
-                {/*    <Dropdown.Item action={startUpVm(vm.labVm.name)}>Start Up</Dropdown.Item>*/}
-                {/*    <Dropdown.Item action={shutdownVm(vm.labVm.name)}>Shutdown</Dropdown.Item>*/}
-                {/*  </Dropdown.Menu>*/}
-                {/*</Dropdown>*/}
+                <Dropdown drop='right'>
+                  <Dropdown.Toggle id='dropdown-basic'/>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
+                    <Dropdown.Item onClick={() => shutdownVm(vm.id)}>Shutdown</Dropdown.Item>
+                    <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </Col>
             </ListGroup.Item>)}
       </ListGroup>
