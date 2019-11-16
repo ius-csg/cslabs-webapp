@@ -3,6 +3,7 @@
 .navbar {
     background-color: maroon;
     color: white !important;
+    height: 60px;
 }
 
 .navbar-brand {
@@ -20,7 +21,7 @@
     align-items: center;
 
     span {
-        display:block;
+        display: block;
         margin: auto;
     }
 

@@ -15,6 +15,7 @@ import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
 import {UserModulePage} from '../pages/UserModule/UserModule';
+import Labs from '../pages/Labs/Labs';
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
@@ -31,6 +32,7 @@ const Routes = () => (
         <PrivateRoute path='/module/:id/' component={PublicModule}/>
         <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
+        <Route exact={true} path={RoutePaths.lab} component={Labs} />
         <Route component={NotFound} />
       </Switch>
     </Router>
