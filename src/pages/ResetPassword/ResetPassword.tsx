@@ -40,6 +40,11 @@ export default class ResetPassword extends Component {
             </Form.Group>
             <Form.Group controlId='formBasicPassword'>
               <Form.Label column={true}>New Password</Form.Label>
+              <p>For password security we use zxcvbn which checks your password based on crackability.
+                There are not any specific guidelines, but we would recommend the password be at least 12 characters.
+                Creating your password out of a series of words is also easier to remember and harder to crack (cup phone dog)
+                than a single password of a complex word (H1st0r13s).
+                Use the crack-timer to gauge how strong your password is.</p>
               <Form.Control
                type='password'
                value={this.state.password}
