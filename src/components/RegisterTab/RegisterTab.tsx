@@ -11,6 +11,10 @@ export const isSchoolEmailValid = (email: string) => {
   return email.length === 0 || email.indexOf('@ius.edu') !== -1;
 };
 
+export const pStyle = {
+  fontSize: '10px'
+};
+
 export const isEmailValid = (email: string) => {
   return email.length === 0 || /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(email);
 };
@@ -96,12 +100,14 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId='formBasicPassword'>
-        <Form.Label column={true}>Password</Form.Label>
-        <p>For password security we use zxcvbn which checks your password based on crackability.
-          There are not any specific guidelines, but we would recommend the password be at least 12 characters.
-          Creating your password out of a series of words is also easier to remember and harder to crack (cup phone dog)
-          than a single password of a complex word (H1st0r13s).
-          Use the crack-timer to gauge how strong your password is.</p>
+        <Form.Label column={true}>New Password</Form.Label>
+        <p style={pStyle}>
+        For password security we use zxcvbn which checks your password based on crackability.
+        There are not any specific guidelines, but we would recommend the password be at least 12 characters.
+        Creating your password out of a series of words is also easier to remember and harder to crack (cup phone dog)
+        than a single password of a complex word (H1st0r13s).
+        Use the crack-timer to gauge how strong your password is.
+        </p>
         <Form.Control
           required={true}
           name='password'
