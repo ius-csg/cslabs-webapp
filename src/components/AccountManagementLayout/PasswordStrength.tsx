@@ -29,7 +29,7 @@ export default class PasswordStrength extends Component<PasswordStrengthProps> {
         break;
     }
     // tslint:disable-next-line:prefer-template
-    x = x + result.crack_times_display.offline_fast_hashing_1e10_per_second + '\n'
+    x = x + result.crack_times_display.offline_slow_hashing_1e4_per_second + '\n'
       + result.feedback.suggestions + '\n'
       + result.feedback.warning;
     return x;
