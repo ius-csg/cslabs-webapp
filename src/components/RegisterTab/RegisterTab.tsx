@@ -8,7 +8,7 @@ import {LoadingButton} from '../../util/LoadingButton';
 import {isPassValid} from '../../util';
 
 export const isSchoolEmailValid = (email: string) => {
-  return email.length === 0 || email.indexOf('@ius.edu') !== -1;
+  return email.length === 0 || email.indexOf('@ius.edu') !== -1 || email.indexOf('@iu.edu') !== -1;
 };
 
 export const isEmailValid = (email: string) => {
@@ -67,7 +67,7 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
           placeholder='Enter School Email'
         />
         <Form.Control.Feedback type='invalid'>
-          Please provide an email with @ius.edu
+          Please provide an email with @ius.edu or @iu.edu
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId='formBasicEmail'>
@@ -126,6 +126,7 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
       </Form.Group>
       {this.props.errorMessage ?
         <Alert variant='danger'>{this.props.errorMessage}</Alert> : null}
+      <p>*Note: We will send you an email verification for each email entered.</p>
       <LoadingButton loading={this.props.submitting} label='Register'/>
     </React.Fragment>
     );

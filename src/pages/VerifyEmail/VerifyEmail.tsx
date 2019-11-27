@@ -42,13 +42,13 @@ export class VerifyEmail extends Component<VerifyEmailProps, State> {
   render() {
     if (this.state.loading) {
       return (
-        <div style={{display: 'flex', justifyContent: 'center'}}>
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: '3rem'}}>
           <Spinner animation='border'/>
         </div>
       );
     }
     return (
-      <p style={{textAlign: 'center'}}>
+      <p style={{textAlign: 'center', marginTop: '3rem'}}>
         {this.state.verified ? 'Your email has successfully been verified!': 'Sorry, we could not verify your email at this time.'}
       </p>
     );
