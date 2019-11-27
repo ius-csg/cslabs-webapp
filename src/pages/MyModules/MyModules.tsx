@@ -36,7 +36,7 @@ class MyModules extends React.Component<{}, MyModulesState> {
   }
 
   render() {
-      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={'user-module/' + m.id} module={m} key={i}/>);
+      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={'user-module-lab/' + m.id} module={m} key={i}/>);
       return (
         <Layout>
           <h1>My Modules</h1>

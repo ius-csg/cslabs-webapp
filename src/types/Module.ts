@@ -34,4 +34,3 @@ export interface UserLab {
   lab: Lab;
   userLabVms: UserLabVm[];
 }
-

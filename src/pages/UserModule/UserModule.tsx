@@ -15,7 +15,7 @@ interface UserModuleState {
   statuses: {[key: number]: string};
 }
 
-export class UserModulePage extends Component<UserModuleProps, UserModuleState> {
+export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
 
   state: UserModuleState = { statuses: {}, vms: []};
   private interval: any;

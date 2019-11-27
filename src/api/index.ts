@@ -8,7 +8,7 @@ import {Dispatch} from 'redux';
 import {setCurrentUser} from '../redux/actions/entities/currentUser';
 import {appDispatch} from '../redux/store';
 import axiosRetry from 'axios-retry';
-import { ILab } from '../types/Lab';
+import { Lab } from '../types/Lab';
 
 let api = makeAxios();
 
@@ -93,8 +93,12 @@ export async function getUserLabVmStatuses(id: number) {
 export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
 }
-export async function getUserLab(id: number) {
-  return handleResponse(await api.get<ILab>(`/labs/${id}`)).data;
+export async function getLab(id: number) {
+  return handleResponse(await api.get<Lab>(`/lab/${id}`)).data;
+}
+
+export async function getLabVmStatuses(id: number) {
+  return handleResponse( await api.get<{[key: number]: string}>(`/lab/${id}/status`)).data;
 }
 
 function handleResponse<T>(response: AxiosResponse<T>) {
