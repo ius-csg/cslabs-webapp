@@ -7,20 +7,32 @@ interface PasswordStrengthProps {
 }
 export default class PasswordStrength extends Component<PasswordStrengthProps> {
   createPasswordLabel(result: ZXCVBNResult) {
+    let x;
     switch (result.score) {
       case 0:
-        return 'Weak';
+        x = 'Weak - Crack Time = ';
+        break;
       case 1:
-        return 'Weak';
+        x = 'Weak - Crack Time = ';
+        break;
       case 2:
-        return 'Fair';
+        x = 'Fair - Crack Time = ';
+        break;
       case 3:
-        return 'Good';
+        x = 'Good - Crack Time = ';
+        break;
       case 4:
-        return 'Strong';
+        x = 'Strong - Crack Time = ';
+        break;
       default:
-        return 'Weak';
+        x = 'Weak - Crack Time = ';
+        break;
     }
+    // tslint:disable-next-line:prefer-template
+    x = x + result.crack_times_display.offline_fast_hashing_1e10_per_second + '\n'
+      + result.feedback.suggestions + '\n'
+      + result.feedback.warning;
+    return x;
   }
   render() {
     const { password } = this.props;
