@@ -96,6 +96,10 @@ export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
 }
 
+export async function verifyEmail(type: string, code: string) {
+  return handleResponse(await api.post<string>(`/user/verify-email`, {type: type, code: code}));
+}
+
 function handleResponse<T>(response: AxiosResponse<T>) {
   if (response.status < 400) {
     return response;
