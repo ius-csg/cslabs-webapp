@@ -100,14 +100,7 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId='formBasicPassword'>
-        <Form.Label column={true}>New Password</Form.Label>
-        <p style={pStyle}>
-        For password security we use zxcvbn which checks your password based on crackability.
-        There are not any specific guidelines, but we would recommend the password be at least 12 characters.
-        Creating your password out of a series of words is also easier to remember and harder to crack (cup phone dog)
-        than a single password of a complex word (H1st0r13s).
-        Use the crack-timer to gauge how strong your password is.
-        </p>
+        <Form.Label column={true}>Password</Form.Label>
         <Form.Control
           required={true}
           name='password'
@@ -117,6 +110,10 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
           isInvalid={!isPassValid(this.props.form.password)}
           placeholder='Password'
         />
+        <Form.Text className='text-muted'>
+          We require a strong password for using our system.
+          To increase the password strength, add numbers, special character, and increase password length.
+        </Form.Text>
       </Form.Group><PasswordStrength password={this.props.form.password}/>
       <Form.Group controlId='formBasicConfirmPassword'>
         <Form.Label column={true}>Confirm Password</Form.Label>

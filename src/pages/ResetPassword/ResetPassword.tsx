@@ -45,6 +45,10 @@ export default class ResetPassword extends Component {
                onChange={this.onPasswordChange}
                placeholder='Enter New Password'
               />
+              <Form.Text className='text-muted'>
+                We require a strong password for using our system.
+                To increase the password strength, add numbers, special character, and increase password length.
+              </Form.Text>
               <PasswordStrength password={this.state.password}/>
             </Form.Group>
             <Form.Group controlId='formBasicConfirmPassword'>

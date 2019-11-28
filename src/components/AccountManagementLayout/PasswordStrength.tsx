@@ -7,7 +7,6 @@ interface PasswordStrengthProps {
 }
 export default class PasswordStrength extends Component<PasswordStrengthProps> {
   createPasswordLabel(result: ZXCVBNResult) {
-    let x;
     switch (result.score) {
       case 0:
         return 'Weak - We require strong passwords';
