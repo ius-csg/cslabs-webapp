@@ -10,29 +10,18 @@ export default class PasswordStrength extends Component<PasswordStrengthProps> {
     let x;
     switch (result.score) {
       case 0:
-        x = 'Weak - Crack Time = ';
-        break;
+        return 'Weak - We require strong passwords';
       case 1:
-        x = 'Weak - Crack Time = ';
-        break;
+        return 'Weak - We require strong passwords';
       case 2:
-        x = 'Fair - Crack Time = ';
-        break;
+        return 'Fair - We require strong passwords';
       case 3:
-        x = 'Good - Crack Time = ';
-        break;
+        return 'Good - We require strong passwords';
       case 4:
-        x = 'Strong - Crack Time = ';
-        break;
+        return 'Strong';
       default:
-        x = 'Weak - Crack Time = ';
-        break;
+        return 'Weak - We require strong passwords';
     }
-    // tslint:disable-next-line:prefer-template
-    x = x + result.crack_times_display.offline_slow_hashing_1e4_per_second + '\n'
-      + result.feedback.suggestions + '\n'
-      + result.feedback.warning;
-    return x;
   }
   render() {
     const { password } = this.props;
