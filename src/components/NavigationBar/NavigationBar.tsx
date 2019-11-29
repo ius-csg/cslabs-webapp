@@ -9,6 +9,12 @@ import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
 import {isAuthenticated} from '../../redux/selectors/entities';
 
+/*interface IconProps {
+  icon: IconProp;
+  size?: SizeProp;
+  customSize?: number | string;
+}*/
+
 const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToProps>) => (
   <Navbar bg={styles.navbar} variant={styles.navbar} className={styles['navbar']}>
     <Container>
@@ -32,7 +38,7 @@ const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToPro
           <Nav.Item className={styles['nav-item']}>
             <Nav.Link as='span'>
               <Link to='/my-modules'>
-                <FontAwesomeIcon icon={faList} size={'1x'}/>
+                <FontAwesomeIcon icon={faList} size={'lg'}/>
                 <span>My Modules</span>
               </Link>
             </Nav.Link>
@@ -51,7 +57,7 @@ const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToPro
           <Nav.Item className={styles['nav-item']}>
             <Nav.Link as='span'>
               <Link to={'/login'}>
-                <FontAwesomeIcon icon={faUser} size={'1x'}/>
+                <FontAwesomeIcon icon={faUser} size={'lg'}/>
                 <span>Account</span>
               </Link>
             </Nav.Link>

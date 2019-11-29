@@ -14,9 +14,9 @@ import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
-import {UserLabPage} from '../pages/UserModule/UserModule';
+import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import Labs from '../pages/Labs/Labs';
-import UserModulePage from '../pages/UserModuleLabs/UserModuleLabs';
+import UserModulePage from '../pages/UserModulePage/UserModulePage';
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>

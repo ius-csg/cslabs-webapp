@@ -13,7 +13,7 @@ export interface UserModuleLabsState {
   moduleLab: {[key: number]: string};
 }
 
-class UserModuleLabsPage extends Component <UserModuleLabsProps, UserModuleLabsState> {
+class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState> {
   state: UserModuleLabsState = {
      userModule: {
        id: 0,
@@ -59,4 +59,4 @@ class UserModuleLabsPage extends Component <UserModuleLabsProps, UserModuleLabsS
   }
 }
 
-export default UserModuleLabsPage;
+export default UserModulePage;
