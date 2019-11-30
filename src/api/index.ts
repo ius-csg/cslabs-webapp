@@ -48,6 +48,10 @@ export async function stopVm(id: number): Promise<string> {
   return (await api.post<string>(`/virtual-machine/stop/${id}`)).data;
 }
 
+export async function scrub(id: number): Promise<string> {
+  return (await api.post<string>(`/virtual-machine/stop/${id}`)).data;
+}
+
 export async function getModule(id: number) {
   return ( await api.get<Module>(`/modules/${id}`)).data;
 }

@@ -8,7 +8,7 @@ import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import * as styles from '../../components/LabEnvironment/LabEnvironment.module.scss';
 import {getIndicatorClassName} from '../../components/LabEnvironment/LabEnvironment';
-import {shutdownVm, startUpVm, stopVm} from '../../api';
+import {shutdownVm, startUpVm, stopVm, scrub} from '../../api';
 
 interface StatusProps {
   vms: UserLabVm[];
@@ -32,6 +32,7 @@ export class Status extends Component<StatusProps> {
                     <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
                     <Dropdown.Item onClick={() => shutdownVm(vm.id)}>Shutdown</Dropdown.Item>
                     <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
+                    <Dropdown.Item onClick={() => scrub(vm.id)}>Scrub</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>
