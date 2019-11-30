@@ -4,6 +4,7 @@ import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {UserModule} from '../../types/Module';
 import {getUserModules} from '../../api';
 import {Layout} from '../Layout/Layout';
+import {RoutePaths} from '../../router/RoutePaths';
 
 interface MyModulesState {
   modules: UserModule[];
@@ -22,7 +23,6 @@ class MyModules extends React.Component<{}, MyModulesState> {
 
   async loadModules() {
     const modules = await getUserModules();
-    console.log(modules);
     this.setState({ modules: modules});
   }
 
@@ -36,7 +36,7 @@ class MyModules extends React.Component<{}, MyModulesState> {
   }
 
   render() {
-      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={'user-module-lab/' + m.id} module={m} key={i}/>);
+      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={RoutePaths.userModule.replace(':id', String(m.id))} module={m} key={i}/>);
       return (
         <Layout>
           <h1>My Modules</h1>

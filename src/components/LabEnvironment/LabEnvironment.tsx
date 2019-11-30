@@ -31,8 +31,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
             <ListGroup>
-              {/*<ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>*/}
-              {/*<ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>*/}
+              <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
+              <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
               <ListGroup.Item action={true} href='#status'>Statuses</ListGroup.Item>
             </ListGroup>
             <ListGroup style={{marginTop: 20}}>

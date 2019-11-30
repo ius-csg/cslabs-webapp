@@ -15,7 +15,6 @@ import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
-import Labs from '../pages/Labs/Labs';
 import UserModulePage from '../pages/UserModulePage/UserModulePage';
 
 const Routes = () => (
@@ -31,10 +30,9 @@ const Routes = () => (
         {/*<Route exact={true} path={RoutePaths.explore} component={Explore}/>*/}
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
         <PrivateRoute path={RoutePaths.modules} component={PublicModule}/>
-        <Route exact={true} path={RoutePaths.userModule} component={UserLabPage}/>
-        <PrivateRoute exact={true} path={RoutePaths.userModuleLabs} component={UserModulePage} />
+        <PrivateRoute exact={true} path={RoutePaths.userLab} component={UserLabPage}/>
+        <PrivateRoute exact={true} path={RoutePaths.userModule} component={UserModulePage} />
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
-        <PrivateRoute exact={true} path={RoutePaths.lab} component={Labs} />
         <Route component={NotFound} />
       </Switch>
     </Router>

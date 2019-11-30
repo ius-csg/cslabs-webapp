@@ -5,6 +5,7 @@ import {UserModule} from '../../types/Module';
 import {getUserModule} from '../../api';
 import {ListGroup} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import {RoutePaths} from '../../router/RoutePaths';
 
 type UserModuleLabsProps = RouteComponentProps<{id: string}>;
 
@@ -44,10 +45,10 @@ class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState
   render() {
     const moduleName = this.state.userModule.module.name;
     const labs = this.state.userModule.userLabs;
-    const labList = labs.map((m, i) =>
+    const labList = labs.map((l, i) =>
       // tslint:disable-next-line:jsx-wrap-multiline
-      <Link to={`lab/` + m.id} key={i}>
-        <ListGroup.Item key={this.state.userModule.id}>{m.lab.name}</ListGroup.Item>
+      <Link to={RoutePaths.userLab.replace(':id', String(l.id))} key={i}>
+        <ListGroup.Item key={this.state.userModule.id}>{l.lab.name}</ListGroup.Item>
       </Link>
     );
     return (

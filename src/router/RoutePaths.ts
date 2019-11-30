@@ -8,8 +8,7 @@ export enum RoutePaths {
   resetPassword = '/resetpassword',
   logout = '/logout',
   home = '/',
-  userModuleLabs = '/user-module-lab/:id',
   userModule = '/user-module/:id',
-  lab = '/lab/:id',
+  userLab = '/user-lab/:id',
   modules = '/modules'
 }
