@@ -6,12 +6,20 @@ import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import * as styles from './LabEnvironment.module.scss';
 import {CenteredIcon} from '../../util/CenteredIcon';
-import {Lorem} from '../util/Lorem';
 import {Status} from '../../pages/Status/Status';
+import TestImage from '../../assets/images/topology.png';
+// @ts-ignore
+import TestPdf from '../../assets/pdf/SampleLabReport.pdf';
+import {Document, Page, pdfjs} from 'react-pdf';
+import {UserLab} from '../../types/Module';
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {
   vms: UserLabVm[];
   statuses: {[key: number]: string};
+  userLab?: UserLab;
+  numPages?: number;
+  pageNumber?: number;
 }
 
 export function getIndicatorClassName(running: boolean) {
@@ -24,16 +32,37 @@ export function getIndicatorClassName(running: boolean) {
 
 export class LabEnvironment extends Component<LabEnvironmentProps> {
 
+  state: LabEnvironmentProps = {
+    vms: [],
+    statuses: {},
+    numPages: 1,
+    pageNumber: 1
+  };
+
+  /*
+  goToPrevPage = () =>
+    this.setState(state => ({ pageNumber: state.pageNumber - 1 }));
+  goToNextPage = () =>
+    this.setState(state => ({ pageNumber: state.pageNumber + 1 }));
+*/
+  // @ts-ignore
+  onDocumentLoadSuccess = ({ numPages }) => {
+    this.setState({ numPages });
+  };
   render() {
+    const { pageNumber, numPages } = this.state;
     return (
       <Tab.Container defaultActiveKey='#status' mountOnEnter={true} unmountOnExit={false}>
         <Container className='full-height-container'>
+          <h2>Lab : {this.props.userLab}</h2>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
             <ListGroup>
               <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
               <ListGroup.Item action={true} href='#status'>Statuses</ListGroup.Item>
+              <ListGroup.Item action={true} href='#vm1'>VM 1</ListGroup.Item>
+              <ListGroup.Item action={true} href='#vm2'>VM 2</ListGroup.Item>
             </ListGroup>
             <ListGroup style={{marginTop: 20}}>
               {this.props.vms.map(vm =>
@@ -49,11 +78,22 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
             <Tab.Content className='full-height-container'>
               <Tab.Pane eventKey='#topology'>
                 <h2>Topology</h2>
-                <Lorem/>
+                <img src={TestImage} style={{width: 1000, height: 700 }} alt={'topology picture'}/>
               </Tab.Pane>
               <Tab.Pane eventKey='#readme'>
-                <h2>Readme</h2>
-                <Lorem/>
+                <h1>Read Me</h1>
+                {this.state.userLab}
+                <div style={{ width: 1000 }}>
+                  <Document
+                    file={TestPdf}
+                    onLoadSuccess={this.onDocumentLoadSuccess}
+                  >
+                    <Page pageNumber={pageNumber} width={1000} />
+                  </Document>
+                  <div>
+                    <p>Page {pageNumber} of {numPages}</p>
+                  </div>
+                </div>
               </Tab.Pane>
               <Tab.Pane eventKey='#status'>
                 <h2>VM Status</h2>
@@ -71,6 +111,12 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
                   <ConsoleWindow vm={vm} status={this.props.statuses[vm.id]} />
                 </Tab.Pane>
               )}
+              <Tab.Pane eventKey='#vm1'>
+                <h1>VM 1</h1>
+              </Tab.Pane>
+              <Tab.Pane eventKey='#vm2'>
+                <h1>VM 2</h1>
+              </Tab.Pane>
             </Tab.Content>
           </Col>
           </Row>

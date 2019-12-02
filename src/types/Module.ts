@@ -16,6 +16,7 @@ export interface Module {
 export interface Lab {
   id: number;
   name: string;
+  status: string;
 }
 
 export interface LabVm {
