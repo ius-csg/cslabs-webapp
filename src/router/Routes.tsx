@@ -16,6 +16,7 @@ import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
 import {UserModulePage} from '../pages/UserModule/UserModule';
 import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
+import Policy from '../pages/Policy/Policy';
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
@@ -33,6 +34,7 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
         <Route exact={true} path={RoutePaths.verifyEmail} component={VerifyEmail}/>
+        <Route exact={true} path={RoutePaths.policy} component={Policy}/>
         <Route component={NotFound} />
       </Switch>
     </Router>

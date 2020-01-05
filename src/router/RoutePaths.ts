@@ -9,5 +9,6 @@ export enum RoutePaths {
   logout = '/logout',
   home = '/',
   userModule = '/user-module/:id',
-  verifyEmail = '/verify-email/:type/:code'
+  verifyEmail = '/verify-email/:type/:code',
+  policy = '/policy'
 }
