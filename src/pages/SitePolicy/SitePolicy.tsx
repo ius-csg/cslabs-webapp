@@ -12,7 +12,7 @@ export default class SitePolicy extends React.Component {
       <React.Fragment >
           <Container>
           <h1 className={styles['headline']}>Site Policy</h1>
-          <h5 className={styles['update']}>Last Updated: &nbsp; <i> Dec 1st, 2019 </i></h5>
+          <h5 className={styles['update']}>Last Updated: &nbsp; <i> January 6th, 2020 </i></h5>
           <Accordion>
             <Card>
               <Accordion.Toggle as={Card.Header} eventKey='termsOfUse' >
