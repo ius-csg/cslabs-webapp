@@ -1,0 +1,31 @@
+@import '../../theme';
+
+.accordian {
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+}
+
+.update {
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.headline {
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+    text-align: center;
+    padding-top: 3rem;
+   // color: map-get($colors, primary)
+}
+
+.contact {
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
+    padding-top: 2rem;
+}
+

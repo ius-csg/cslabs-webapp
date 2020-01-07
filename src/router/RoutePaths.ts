@@ -10,5 +10,5 @@ export enum RoutePaths {
   home = '/',
   userModule = '/user-module/:id',
   verifyEmail = '/verify-email/:type/:code',
-  policy = '/policy'
+  sitePolicy = '/policy'
 }
