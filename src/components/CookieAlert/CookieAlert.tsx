@@ -18,11 +18,12 @@ export const CookieAlert = () => {
 
   return (
     <Alert variant='primary' className={styles['cookieloc']}>
-      Please accept the cookie policy.
-      <Alert.Link href={RoutePaths.sitePolicy}>Cookie Policy</Alert.Link>
+      <div >
+      Please accept the cookie policy. &nbsp;
+      <Alert.Link href={RoutePaths.sitePolicy}>Cookie Policy</Alert.Link> &nbsp;
       We use cookies to give you a better experience and to allow you to connect to the virtual machines.
-      <Button variant='secondary' onClick={() => acceptPolicy()} >Accept</Button>
-    {/*  @todo make the Cookie bar more text/button friendly*/}
+      </div>
+      <Button className={styles['accept-btn']} variant='secondary' onClick={() => acceptPolicy()} >Accept</Button>
     </Alert>
   );
 };
