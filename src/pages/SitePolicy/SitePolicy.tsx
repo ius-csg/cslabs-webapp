@@ -5,6 +5,7 @@ import {PrivacyPolicy} from './policies/PrivacyPolicy';
 import {TermsOfUse} from './policies/TermsOfUse';
 import {Disclaimer} from './policies/Disclaimer';
 import {CookiePolicy} from './policies/CookiePolicy';
+import {DisputeResolution} from './policies/DisputeResolution';
 
 export default class SitePolicy extends React.Component {
   render() {
@@ -20,6 +21,14 @@ export default class SitePolicy extends React.Component {
               </Accordion.Toggle>
               <Accordion.Collapse eventKey='termsOfUse'>
                 <Card.Body> <TermsOfUse/> </Card.Body>
+              </Accordion.Collapse>
+            </Card>
+            <Card>
+              <Accordion.Toggle as={Card.Header} eventKey='dispute'>
+                <h4> DISPUTE RESOLUTION</h4>
+              </Accordion.Toggle>
+              <Accordion.Collapse eventKey='dispute'>
+                <Card.Body> <DisputeResolution/> </Card.Body>
               </Accordion.Collapse>
             </Card>
             <Card>

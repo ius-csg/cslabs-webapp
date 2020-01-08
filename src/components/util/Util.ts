@@ -1,4 +1,4 @@
-import {FormEvent} from 'react';
+import {FormEvent, useState} from 'react';
 import {FormControl, FormControlProps} from 'react-bootstrap';
 import axios from 'axios';
 
@@ -49,4 +49,9 @@ export function getResponseData<T>(e: any): T {
 
 export function getErrorResponseMessage(e: any): string {
   return e.response ? e.response.data ? e.response.data.message : '' : '';
+}
+
+export function useForceUpdate() {
+  const [, setValue] = useState(0); // integer state
+  return () => setValue(value => ++value); // update the state to force render
 }
