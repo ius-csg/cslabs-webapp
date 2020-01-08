@@ -62,9 +62,7 @@
     "exclude": [
       "config/**/*.js",
       "node_modules/**/*.ts",
-      "coverage/lcov-report/*.js",
-      "src/semantic/**",
-      "public/semantic/**"
+      "coverage/lcov-report/*.js"
     ]
   }
 }
