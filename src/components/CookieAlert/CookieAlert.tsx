@@ -17,8 +17,8 @@ export const CookieAlert = () => {
   }
 
   return (
-    <Alert variant='primary' className={styles['cookieloc']}>
-      <div >
+    <Alert variant='primary' className={styles['cookie-alert']}>
+      <div>
       Please accept the cookie policy. &nbsp;
       <Alert.Link href={RoutePaths.sitePolicy}>Cookie Policy</Alert.Link> &nbsp;
       We use cookies to give you a better experience and to allow you to connect to the virtual machines.

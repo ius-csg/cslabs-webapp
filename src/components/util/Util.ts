@@ -52,6 +52,6 @@ export function getErrorResponseMessage(e: any): string {
 }
 
 export function useForceUpdate() {
-  const [, setValue] = useState(0); // integer state
+  const [, setValue] = useState(0);
   return () => setValue(value => ++value); // update the state to force render
 }
