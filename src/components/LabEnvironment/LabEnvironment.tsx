@@ -26,7 +26,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
 
   render() {
     return (
-      <Tab.Container defaultActiveKey='#status' mountOnEnter={true} unmountOnExit={false}>
+      <Tab.Container defaultActiveKey='#status' mountOnEnter={true} unmountOnExit={true}>
         <Container fluid={true} className='full-height-container'>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
@@ -67,7 +67,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
                 <Status vms={this.props.vms} statuses={this.props.statuses}/>
               </Tab.Pane>
               { this.props.vms.map(vm =>
-                <Tab.Pane key={vm.labVm.name} eventKey={'#' + vm.labVm.name} className='full-height-container'>
+                <Tab.Pane  key={vm.labVm.name} eventKey={'#' + vm.labVm.name} className='full-height-container'>
                   <ConsoleWindow vm={vm} status={this.props.statuses[vm.id]} />
                 </Tab.Pane>
               )}

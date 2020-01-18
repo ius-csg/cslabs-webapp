@@ -78,10 +78,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   };
 
   destroy = () => {
-    if (this.rfb) {
-      this.rfb.disconnect();
-      this.setState({rfb: undefined});
-    }
+    this.disconnect();
   };
 
   sendCtrlAltDelete = () => {
