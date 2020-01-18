@@ -4,7 +4,7 @@ import {Component} from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {UserLabVm} from '../../types/UserLabVm';
-import {getUserLabVmStatuses, getUserModule, startUpVm} from '../../api';
+import {getUserLabVmStatuses, getUserModule, startUpVm, updateLastUsed} from '../../api';
 import {UserModule} from '../../types/Module';
 
 type UserModuleProps = RouteComponentProps<{id: string}>;
@@ -37,14 +37,15 @@ export class UserModulePage extends Component<UserModuleProps, UserModuleState> 
           }
         });
       }
-      this.setStatusInterval();
+      this.setInterval();
 
     });
   }
 
-  setStatusInterval() {
+  setInterval() {
     this.interval = setInterval(async () => {
       if (this.state.userModule) {
+        await updateLastUsed(this.state.userModule.userLabs[0].id);
         this.setState({
           statuses:  await getUserLabVmStatuses(this.state.userModule.userLabs[0].id)
         });

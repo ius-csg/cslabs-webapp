@@ -49,11 +49,11 @@ export async function stopVm(id: number): Promise<string> {
   return (await api.post<string>(`/virtual-machine/stop/${id}`)).data;
 }
 
-export async function scrub(id: number): Promise<string> {
+export async function scrubVm(id: number): Promise<string> {
   return (await api.post<string>(`/virtual-machine/scrub/${id}`)).data;
 }
 
-export async function reset(id: number): Promise<string> {
+export async function resetVm(id: number): Promise<string> {
   return (await api.post<string>(`/virtual-machine/reset/${id}`)).data;
 }
 
@@ -96,6 +96,10 @@ export async function getUserModule(id: number) {
 
 export async function getUserModuleStatus(id: number) {
   return handleResponse( await api.get<string>(`/user-module/${id}/status`)).data;
+}
+
+export async function updateLastUsed(id: number) {
+  return handleResponse( await api.get<string>(`/user-lab/${id}/last-used`)).data;
 }
 
 export async function getUserLabVmStatuses(id: number) {

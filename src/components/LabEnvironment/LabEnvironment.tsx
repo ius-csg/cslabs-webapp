@@ -23,7 +23,6 @@ export function getIndicatorClassName(running: boolean) {
 }
 
 export class LabEnvironment extends Component<LabEnvironmentProps> {
-
   render() {
     return (
       <Tab.Container defaultActiveKey='#status' mountOnEnter={true} unmountOnExit={true}>
