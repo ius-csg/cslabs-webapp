@@ -44,7 +44,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     }
 
     try {
-      const ticketResponse = await acquireTicket(this.props.vm.proxmoxVmId);
+      const ticketResponse = await acquireTicket(this.props.vm.id);
       this.setState({rfb: connect(this.consoleWindowId, ticketResponse, this.props.vm.proxmoxVmId, () => {
         log('Disconnected');
         this.setState({
