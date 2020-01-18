@@ -22,7 +22,6 @@ import {Layout} from '../Layout/Layout';
 import {WebState} from '../../redux/types/WebState';
 import {isAuthenticated} from '../../redux/selectors/entities';
 import {RoutePaths} from '../../router/RoutePaths';
-
 export interface RegisterForm extends LoginForm {
   firstName: string;
   lastName: string;
@@ -50,6 +49,7 @@ interface LoginPageState {
   emailTouched: boolean;
   submitting: boolean;
   errors?: UserErrorResponse;
+  shouldHide: boolean,
 }
 
 type LoginProps = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
@@ -63,6 +63,8 @@ export class Login extends Component<LoginProps, LoginPageState> {
     submitted: false,
     submitting: false,
     emailTouched: false,
+    shouldHide: false,
+    
     form: {
       firstName: '',
       lastName: '',
@@ -74,18 +76,34 @@ export class Login extends Component<LoginProps, LoginPageState> {
       password: ''
     }
   };
-
   componentDidMount(): void {
     if (this.props.authenticated) {
       this.setState({redirectUrl: RoutePaths.profile});
     }
   }
-
+  onCapsChange()
+  {
+    this.setState({shouldHide: true})
+  }
   onInputChange = (event: BootstrapFormEvent) => {
     const input: HTMLInputElement = event.currentTarget as unknown as HTMLInputElement;
     if (input.name === 'schoolEmail') {
       this.setState({emailTouched: true});
     }
+    // When the user presses any key on the keyboard, run the function
+    input.addEventListener("keyup", function(this: any, event: any) {
+      if(event.code === "CapsLock")
+      {
+        if(event.getModifierState("CapsLock") === true)
+        {
+          this.setState({shouldHide: true})
+        }
+        if(event.getModifierState("CapsLock") === false)
+        {
+          this.setState({shouldHide: false})
+        }
+      }
+    }.bind(this));
     this.setState({form: {...this.state.form, [input.name]: event.currentTarget.value}});
   };
 
@@ -105,6 +123,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
         (!isPassValid(this.state.form.password))) &&
         this.state.activeTab === 'Register')
     );
+    
   }
 
   onSubmit = async (e: FormEvent) => {
@@ -160,6 +179,8 @@ export class Login extends Component<LoginProps, LoginPageState> {
                   <Form.Label column={true}>Password</Form.Label>
                   <Form.Control name='password' type='password' required={true} value={this.state.form.password} onChange={this.onInputChange} placeholder='Password'/>
                 </Form.Group>
+                {this.state.shouldHide ?
+                  <Alert variant='danger'>Your caps lock is on!</Alert> : null}
                 {/*<Form.Group controlId='formBasicCheckbox'>*/}
                 {/*  <Form.Check type='checkbox' label='Remember Me'/>*/}
                 {/*</Form.Group>*/}
@@ -176,6 +197,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
                   onInputChange={this.onInputChange}
                   form={this.state.form}
                 />
+
               </Tab>
             </Tabs>
           </Form>
