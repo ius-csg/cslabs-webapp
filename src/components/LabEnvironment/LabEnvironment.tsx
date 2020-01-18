@@ -52,9 +52,9 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
   render() {
     const { pageNumber, numPages } = this.state;
     return (
-      <Tab.Container defaultActiveKey='#status' mountOnEnter={true} unmountOnExit={false}>
+      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={false}>
         <Container className='full-height-container'>
-          <h2>Lab : {this.props.userLab}</h2>
+          <h2>Lab : {this.state.userLab}</h2>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
             <ListGroup>
@@ -78,7 +78,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
             <Tab.Content className='full-height-container'>
               <Tab.Pane eventKey='#topology'>
                 <h2>Topology</h2>
-                <img src={TestImage} style={{width: 1000, height: 700 }} alt={'topology picture'}/>
+                <img src={TestImage} style={{width: 1000, height: 700 }} alt={'topology'}/>
               </Tab.Pane>
               <Tab.Pane eventKey='#readme'>
                 <h1>Read Me</h1>
