@@ -180,10 +180,11 @@ export class Login extends Component<LoginProps, LoginPageState> {
                   <Form.Control name='password' type='password' required={true} value={this.state.form.password} onChange={this.onInputChange} placeholder='Password'/>
                 </Form.Group>
                 {this.state.shouldHide ?
-                  <Alert variant='danger'>Your caps lock is on!</Alert> : null}
+                  <Alert variant='warning'>Your caps lock is on!</Alert> : null}
                 {/*<Form.Group controlId='formBasicCheckbox'>*/}
                 {/*  <Form.Check type='checkbox' label='Remember Me'/>*/}
                 {/*</Form.Group>*/}
+                <a href="/ForgotPassword"> Forgot Password? <br></br></a>
                 {this.state.errorMessage ?
                   <Alert variant='danger'>{this.state.errorMessage}</Alert> : null}
                   <LoadingButton loading={this.state.submitting} label='Login'/>

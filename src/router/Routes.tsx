@@ -7,6 +7,7 @@ import Login from '../pages/Login/Login';
 import Profile from '../pages/Profile/Profile';
 import ResetEmail from '../pages/ResetEmail/ResetEmail';
 import ResetPassword from '../pages/ResetPassword/ResetPassword';
+import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import {NavigationBar} from '../components/NavigationBar/NavigationBar';
 // import Explore from '../pages/Explore/Explore';
 import PublicModule from '../pages/PublicModule/PublicModule';
@@ -31,6 +32,7 @@ const Routes = () => (
         {/*<Route exact={true} path={RoutePaths.explore} component={Explore}/>*/}
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
         <PrivateRoute path='/module/:id/' component={PublicModule}/>
+        <Route exact={true} path={RoutePaths.forgotPassword} component={ForgotPassword}/>
         <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
         <Route exact={true} path={RoutePaths.verifyEmail} component={VerifyEmail}/>
