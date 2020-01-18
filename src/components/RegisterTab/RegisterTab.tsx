@@ -28,17 +28,30 @@ interface RegisterTabProps {
   errorMessage: string;
 }
 
-export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouched: boolean}> {
+interface RegisterTabState {
+  personalEmailTouched: boolean;
+  agreedToTerms: boolean;
+  boxChanged: boolean;
+}
+
+export class RegisterTab extends Component<RegisterTabProps, RegisterTabState> {
 
   state = {
-    personalEmailTouched: false
-  };
-
-  label = () => {
-    return <h6>I accept our <a href='/policy'>terms and conditions</a></h6>;
+    personalEmailTouched: false,
+    agreedToTerms: false,
+    boxChanged: false
   };
   isPassInvalid = () => {
     return this.props.form.password !== this.props.form.confirmPass;
+  };
+
+  onPolicyBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      agreedToTerms: !this.state.agreedToTerms
+    });
+    this.setState({
+      boxChanged: true
+    });
   };
 
   onPersonalEmailChange = (event: BootstrapFormEvent) => {
@@ -128,7 +141,11 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId='formBasicCheckbox'>
-        <Form.Check type='checkbox' label={this.label()} />
+        <Form.Check required={true} type='checkbox'>
+          <Form.Check.Input isInvalid={!this.state.agreedToTerms && this.state.boxChanged} onChange={this.onPolicyBoxChange}/>
+          <Form.Check.Label><h6>I agree to the <a href='/policy'>terms and conditions</a>.</h6></Form.Check.Label>
+          <Form.Control.Feedback type='invalid'>You must agree before submitting.</Form.Control.Feedback>
+        </Form.Check>
       </Form.Group>
       {this.props.errorMessage ?
         <Alert variant='danger'>{this.props.errorMessage}</Alert> : null}

@@ -30,7 +30,6 @@ export interface RegisterForm extends LoginForm {
   phoneNumber: string;
   confirmPass: string;
   personalEmail: string;
-  policyAcceptance: boolean;
 }
 
 export interface LoginForm {
@@ -72,8 +71,7 @@ export class Login extends Component<LoginProps, LoginPageState> {
       gradYear: '',
       phoneNumber: '',
       confirmPass: '',
-      password: '',
-      policyAcceptance: false
+      password: ''
     }
   };
 
@@ -104,9 +102,9 @@ export class Login extends Component<LoginProps, LoginPageState> {
   isFormInvalid(form: HTMLFormElement) {
     return(!form.checkValidity() ||
       ((!isSchoolEmailValid(this.state.form.schoolEmail) ||
-        (!isPassValid(this.state.form.password))) &&
+        (!isPassValid(this.state.form.password)) &&
         this.state.activeTab === 'Register')
-    );
+    ));
   }
 
   onSubmit = async (e: FormEvent) => {
