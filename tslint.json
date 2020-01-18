@@ -22,7 +22,7 @@
     "no-require-imports": false,
     "no-submodule-imports": [true, "@src", "rxjs", "firebase", "redux-persist"],
     "no-this-assignment": [true, { "allow-destructuring": true }],
-    "no-trailing-whitespace": true,
+    "no-trailing-whitespace": false,
     "object-literal-sort-keys": false,
     "object-literal-shorthand": false,
     "one-variable-per-declaration": [false],
@@ -62,9 +62,7 @@
     "exclude": [
       "config/**/*.js",
       "node_modules/**/*.ts",
-      "coverage/lcov-report/*.js",
-      "src/semantic/**",
-      "public/semantic/**"
+      "coverage/lcov-report/*.js"
     ]
   }
 }

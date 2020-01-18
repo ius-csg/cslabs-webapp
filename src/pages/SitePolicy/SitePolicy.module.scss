@@ -1,0 +1,34 @@
+@import '../../theme';
+
+.update {
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+.headline {
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+    text-align: center;
+    padding-top: 3rem;
+   // color: map-get($colors, primary)
+}
+
+.contact {
+    display: flex;
+    justify-content: center;
+    font-size: 1.15rem;
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+}
+
+.accordion_toggle_header {
+    display: flex;
+    justify-content: center;
+    :hover {
+        color: map-get($colors, secondary);
+        cursor: pointer;
+    }
+}

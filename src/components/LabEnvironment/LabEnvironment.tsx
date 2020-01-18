@@ -27,7 +27,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps> {
   render() {
     return (
       <Tab.Container defaultActiveKey='#status' mountOnEnter={true} unmountOnExit={false}>
-        <Container className='full-height-container'>
+        <Container fluid={true} className='full-height-container'>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
             <ListGroup>
