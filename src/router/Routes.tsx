@@ -14,8 +14,9 @@ import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
-import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
-import UserModulePage from '../pages/UserModulePage/UserModulePage';
+import {UserModulePage} from '../pages/UserModule/UserModule';
+import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
+import SitePolicy from '../pages/SitePolicy/SitePolicy';
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
@@ -29,10 +30,11 @@ const Routes = () => (
         <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
         {/*<Route exact={true} path={RoutePaths.explore} component={Explore}/>*/}
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
-        <PrivateRoute path={RoutePaths.modules} component={PublicModule}/>
-        <PrivateRoute exact={true} path={RoutePaths.userLab} component={UserLabPage}/>
-        <PrivateRoute exact={true} path={RoutePaths.userModule} component={UserModulePage} />
+        <PrivateRoute path='/module/:id/' component={PublicModule}/>
+        <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
+        <Route exact={true} path={RoutePaths.verifyEmail} component={VerifyEmail}/>
+        <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>
         <Route component={NotFound} />
       </Switch>
     </Router>

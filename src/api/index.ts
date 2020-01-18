@@ -43,7 +43,11 @@ export async function startUpVm(id: number): Promise<string> {
 }
 
 export async function shutdownVm(id: number): Promise<string> {
-  return (await api.put<string>(`/virtual-machine/shutdown/${id}`)).data;
+  return (await api.post<string>(`/virtual-machine/shutdown/${id}`)).data;
+}
+
+export async function stopVm(id: number): Promise<string> {
+  return (await api.post<string>(`/virtual-machine/stop/${id}`)).data;
 }
 
 export async function getModule(id: number) {
@@ -99,6 +103,10 @@ export async function getLab(id: number) {
 
 export async function getLabVmStatuses(id: number) {
   return handleResponse( await api.get<{[key: number]: string}>(`/lab/${id}/status`)).data;
+}
+
+export async function verifyEmail(type: string, code: string) {
+  return handleResponse(await api.post<string>(`/user/verify-email`, {type: type, code: code}));
 }
 
 function handleResponse<T>(response: AxiosResponse<T>) {

@@ -16,7 +16,7 @@ import {isAuthenticated} from '../../redux/selectors/entities';
 }*/
 
 const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToProps>) => (
-  <Navbar bg={styles.navbar} variant={styles.navbar} className={styles['navbar']}>
+  <Navbar className={styles['navbar']}>
     <Container>
       <Navbar.Brand className={styles['navbar-brand']}>
         <Link to={'/'}>
