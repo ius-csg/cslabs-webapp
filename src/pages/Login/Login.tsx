@@ -30,6 +30,7 @@ export interface RegisterForm extends LoginForm {
   phoneNumber: string;
   confirmPass: string;
   personalEmail: string;
+  policyAcceptance: boolean;
 }
 
 export interface LoginForm {
@@ -71,7 +72,8 @@ export class Login extends Component<LoginProps, LoginPageState> {
       gradYear: '',
       phoneNumber: '',
       confirmPass: '',
-      password: ''
+      password: '',
+      policyAcceptance: false
     }
   };
 

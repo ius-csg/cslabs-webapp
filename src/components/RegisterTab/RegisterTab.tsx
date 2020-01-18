@@ -34,6 +34,9 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
     personalEmailTouched: false
   };
 
+  label = () => {
+    return <h6>I accept our <a href='/policy'>terms and conditions</a></h6>;
+  };
   isPassInvalid = () => {
     return this.props.form.password !== this.props.form.confirmPass;
   };
@@ -123,6 +126,9 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
         <Form.Control.Feedback type='invalid'>
           The password did not match, please try again.
         </Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group controlId='formBasicCheckbox'>
+        <Form.Check type='checkbox' label={this.label()} />
       </Form.Group>
       {this.props.errorMessage ?
         <Alert variant='danger'>{this.props.errorMessage}</Alert> : null}
