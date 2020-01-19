@@ -1,12 +1,12 @@
 import {AxiosResponse} from 'axios';
 import {Module, UserModule} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
-import {RegisterForm} from '../pages/Login/Login';
 import {makeAxios} from '../components/util/Util';
 import {Dispatch} from 'redux';
 import {setCurrentUser} from '../redux/actions/entities/currentUser';
 import {appDispatch} from '../redux/store';
 import axiosRetry from 'axios-retry';
+import {RegisterFormValues} from '../pages/LoginRegisterPage/RegisterFormSchema';
 
 let api = makeAxios();
 
@@ -58,7 +58,7 @@ export async function login(email: string, password: string): Promise<AxiosRespo
   return resp;
 }
 
-export async function register(form: RegisterForm): Promise<AxiosResponse<UserWithToken>> {
+export async function register(form: RegisterFormValues): Promise<AxiosResponse<UserWithToken>> {
   const resp = await api.post<UserWithToken>('/user/register', form);
   setToken(resp.data.token);
   return resp;

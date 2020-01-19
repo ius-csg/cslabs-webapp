@@ -1,5 +1,6 @@
 import {makeLogger} from './logger';
 import zxcvbn from 'zxcvbn';
+import {FieldInputProps} from 'formik';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -65,4 +66,11 @@ export function isPassValid(password: string) {
   }
   const result = zxcvbn(password);
   return result.score >= 4;
+}
+
+export function getFieldValue<T>(field: FieldInputProps<T>) {
+  if (field.value === undefined || field.value === null) {
+    return '';
+  }
+  return field.value;
 }
