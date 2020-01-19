@@ -15,8 +15,26 @@ interface StatusProps {
   statuses: Statuses;
 }
 
+interface StatusState {
+  loadingText: string;
+}
 
-export class Status extends Component<StatusProps> {
+export class Status extends Component<StatusProps, StatusState> {
+  state: StatusState = {loadingText: ''};
+
+  performScrub = (vmId: number) => {
+    this.setState({loadingText: 'Scrubbing...'}, async () => {
+      await scrubVm(vmId);
+      this.setState({loadingText: ''});
+    });
+  };
+
+  performShutdown = async (vmId: number) => {
+    this.setState({loadingText: 'Shutting Down...'});
+    setTimeout(() => this.setState({loadingText: ''}), 20000);
+    await shutdownVm(vmId);
+  };
+
   render() {
     if (this.props.vms.length > 0) {
       return(
@@ -26,16 +44,19 @@ export class Status extends Component<StatusProps> {
               <Col>{vm.labVm.name}</Col>
               <Col><CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))} icon={faPowerOff}/></Col>
               <Col>
-                <Dropdown drop='right'>
-                  <Dropdown.Toggle id='dropdown-basic'/>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
-                    <Dropdown.Item onClick={() => shutdownVm(vm.id)}>Shutdown</Dropdown.Item>
-                    <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
-                    <Dropdown.Item onClick={() => scrubVm(vm.id)}>Scrub</Dropdown.Item>
-                    <Dropdown.Item onClick={() => resetVm(vm.id)}>Reset</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                {this.state.loadingText ?
+                  <span>{this.state.loadingText}</span> :
+                  <Dropdown drop='right'>
+                    <Dropdown.Toggle id='dropdown-basic'/>
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
+                      <Dropdown.Item onClick={() => this.performShutdown(vm.id)}>Shutdown</Dropdown.Item>
+                      <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
+                      <Dropdown.Item onClick={() => this.performScrub(vm.id)}>Scrub</Dropdown.Item>
+                      <Dropdown.Item onClick={() => resetVm(vm.id)}>Reset</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                }
               </Col>
             </ListGroup.Item>)}
       </ListGroup>
