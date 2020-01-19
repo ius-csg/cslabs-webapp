@@ -91,7 +91,7 @@ function RegisterForm(props: Props) {
           <PasswordStrength password={values.password}/>
           <PasswordRequirements/>
           <Form.Group controlId='confirmPass'>
-            <Form.Label column={true}>Password</Form.Label>
+            <Form.Label column={true}>Confirm Password</Form.Label>
             <Input name={getFieldName('confirmPass')} type='password' placeholder='Confirm Password'/>
           </Form.Group>
           <Form.Group controlId='acceptedTerms'>
