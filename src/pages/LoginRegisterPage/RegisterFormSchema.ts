@@ -14,8 +14,6 @@ export interface RegisterFormValues extends LoginFormValues {
 export const RegisterFormSchema: ObjectSchema<RegisterFormValues> = object({
   schoolEmail: string().test('either-email', 'At least one email address is required', function(value: any) {
     // tslint:disable-next-line:no-invalid-this
-    console.log('either-email', 'this', this, 'value', value);
-    // tslint:disable-next-line:no-invalid-this
     const { personalEmail } = this.parent;
     if (!personalEmail) {
       return value !== undefined;
@@ -23,8 +21,6 @@ export const RegisterFormSchema: ObjectSchema<RegisterFormValues> = object({
     return true;
   }).matches(/@iu[s]\.edu/, 'Must have an @ius.edu or @iu.edu email address'),
   personalEmail: string().test('either-email', 'At least one email address is required', function(value: any) {
-    // tslint:disable-next-line:no-invalid-this
-    console.log('either-email', 'this', this, 'value', value);
     // tslint:disable-next-line:no-invalid-this
     const { schoolEmail } = this.parent;
     if (!schoolEmail) {

@@ -3,12 +3,11 @@ import {ErrorMessage, Field, FieldProps} from 'formik';
 import styles from './CheckBoxInput.module.scss';
 import {Form} from 'react-bootstrap';
 import uuid from 'uuid';
-import {FormikSetFieldValue, getFieldCheckValue} from '../Util';
+import {FormikSetFieldValue} from '../Util';
 
 interface InputProps {
   name: string;
   disabled?: boolean;
-  type?: 'checkbox' | 'radio';
   label: string|any;
   id?: string;
   className?: string;
@@ -25,25 +24,19 @@ const CheckBoxInput = (props: InputProps) => {
         {(fieldProps: FieldProps) => {
           const {field, form, meta} = fieldProps;
           return (
-            <Form.Check type='checkbox' custom={true}>
+            <Form.Check type='checkbox'>
               <Form.Check.Input
-                type={props.type || 'checkbox'}
                 id={props.id || `${props.name}${id}`}
                 name={props.name}
                 isInvalid={meta.touched && Boolean(meta.error)}
                 className={props.className}
-                {...field}
-                checked={getFieldCheckValue(field)}
+                checked={field.value}
                 onChange={(e: any) => {
-                  console.log('onChange', props.type, props.onChange);
-                  if (props.type !== 'radio') {
-                    field.onChange(e);
-                  }
+                  form.setFieldValue(field.name, e.target.checked, true);
                   if (props.onChange) {
                     props.onChange(e.target.checked, form.setFieldValue);
                   }
                 }}
-                value={props.type === 'radio' ? props.value : undefined}
                 disabled={props.disabled}
               />
               <Form.Check.Label>{props.label}</Form.Check.Label>

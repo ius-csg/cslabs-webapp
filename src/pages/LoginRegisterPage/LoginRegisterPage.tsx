@@ -45,7 +45,7 @@ export class LoginRegisterPage extends Component<LoginProps, LoginPageState> {
 
   render() {
     return (
-      <Layout>
+      <Layout style={{marginBottom: '5rem'}}>
         {this.renderRedirect()}
         <h1>Login / Register</h1>
         <Col sm='6' style={{margin: 'auto'}}>
