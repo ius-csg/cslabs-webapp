@@ -61,9 +61,6 @@ function logMessage(level: string, message: any, ...optionalParams: any[]) {
 }
 
 export function isPassValid(password: string) {
-  if (password.length === 0) {
-    return true;
-  }
   const result = zxcvbn(password);
   return result.score >= 4;
 }
