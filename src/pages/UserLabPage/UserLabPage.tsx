@@ -34,12 +34,12 @@ export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
           }
         });
       }
-      this.setStatusInterval();
+      this.setInterval();
 
     });
   }
 
-  setStatusInterval() {
+  setInterval() {
     this.interval = setInterval(async () => {
       if (this.state.userLab) {
         this.setState({

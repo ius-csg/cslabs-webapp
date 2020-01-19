@@ -34,21 +34,29 @@ export const logout = () => (dispatch: Dispatch) => {
 };
 
 export async function acquireTicket(id: number): Promise<TicketResponse> {
-  return (await api.get<TicketResponse>('/virtual-machine/get-ticket/' + id)).data;
+  return (await api.get<TicketResponse>(`/virtual-machine/${id}/get-ticket`)).data;
 }
 
 export async function startUpVm(id: number): Promise<string> {
   const retry = makeAxios();
   axiosRetry(retry, { retryDelay: (num) => 1000 * num, retries: 10});
-  return (await retry.post<string>(`/virtual-machine/start/${id}`)).data;
+  return (await retry.post<string>(`/virtual-machine/${id}/start`)).data;
 }
 
 export async function shutdownVm(id: number): Promise<string> {
-  return (await api.post<string>(`/virtual-machine/shutdown/${id}`)).data;
+  return (await api.post<string>(`/virtual-machine/${id}/shutdown`)).data;
 }
 
 export async function stopVm(id: number): Promise<string> {
-  return (await api.post<string>(`/virtual-machine/stop/${id}`)).data;
+  return (await api.post<string>(`/virtual-machine/${id}/stop`)).data;
+}
+
+export async function scrubVm(id: number): Promise<string> {
+  return (await api.post<string>(`/virtual-machine/${id}/scrub`)).data;
+}
+
+export async function resetVm(id: number): Promise<string> {
+  return (await api.post<string>(`/virtual-machine/${id}/reset`)).data;
 }
 
 export async function getModule(id: number) {

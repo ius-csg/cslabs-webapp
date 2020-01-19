@@ -32,7 +32,6 @@ export function getIndicatorClassName(running: boolean) {
     !running ? styles['suspended'] : ''
   ].join(' ');
 }
-
 export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmentState> {
 
   state: LabEnvironmentState = {
