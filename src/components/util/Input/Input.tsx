@@ -11,6 +11,7 @@ interface InputProps {
   rows?: number;
   defaultValue?: any;
   placeholder?: string;
+  onKeyUp?: (e: KeyboardEvent) => void;
 }
 
 const Input = (props: InputProps) => (
@@ -26,11 +27,11 @@ const Input = (props: InputProps) => (
                 as={props.type === 'textarea' ? 'textarea' : 'input'}
                 isValid={meta.touched && !meta.error}
                 isInvalid={meta.touched && Boolean(meta.error)}
-                className={styles['form-inputs']}
                 rows={props.rows}
                 placeholder={props.placeholder}
                 {...field}
                 value={getFieldValue(field)}
+                onKeyUp={props.onKeyUp}
                 onChange={(e: FormEvent<FormControlProps>) => field.onChange(e)}
                 disabled={props.disabled}
                 type={props.type || 'text'}
