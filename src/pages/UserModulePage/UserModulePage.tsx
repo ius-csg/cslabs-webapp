@@ -45,18 +45,18 @@ class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState
   render() {
     const moduleName = this.state.userModule.module.name;
     const labs = this.state.userModule.userLabs;
-    const labList = labs.map((l, i) =>
-      // tslint:disable-next-line:jsx-wrap-multiline
-      <Link to={RoutePaths.userLab.replace(':id', String(l.id))} key={i}>
-        <ListGroup.Item key={this.state.userModule.id} >{l.lab.name}
-          <span style={{textAlign: 'right'}}>{l.lab.status}</span>
-        </ListGroup.Item>
-      </Link>
-    );
     return (
       <Layout>
         <h1>Module : {moduleName}</h1>
-        <ListGroup>{labList}</ListGroup>
+        <ListGroup>
+          {labs.map((l, i) => (
+            <Link to={RoutePaths.userLab.replace(':id', String(l.id))} key={i}>
+              <ListGroup.Item key={this.state.userModule.id} >{l.lab.name}
+                <span style={{textAlign: 'right'}}>{l.lab.status}</span>
+              </ListGroup.Item>
+            </Link>
+          ))}
+        </ListGroup>
       </Layout>
     );
   }

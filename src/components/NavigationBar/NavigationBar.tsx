@@ -9,12 +9,6 @@ import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
 import {isAuthenticated} from '../../redux/selectors/entities';
 
-/*interface IconProps {
-  icon: IconProp;
-  size?: SizeProp;
-  customSize?: number | string;
-}*/
-
 const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToProps>) => (
   <Navbar className={styles['navbar']}>
     <Container>
