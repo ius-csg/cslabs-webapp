@@ -17,6 +17,7 @@ import {Formik} from 'formik';
 import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {connect} from 'react-redux';
+import {PasswordRequirements} from '../../components/util/PasswordRequirements';
 
 type Props  = {
   onRedirect: (redirect: string) => void;
@@ -88,6 +89,7 @@ function RegisterForm(props: Props) {
             <Input name={getFieldName('password')} type='password' placeholder='Enter Password'/>
           </Form.Group>
           <PasswordStrength password={values.password}/>
+          <PasswordRequirements/>
           <Form.Group controlId='confirmPass'>
             <Form.Label column={true}>Password</Form.Label>
             <Input name={getFieldName('confirmPass')} type='password' placeholder='Confirm Password'/>
