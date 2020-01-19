@@ -10,7 +10,7 @@ import {WebState} from '../../redux/types/WebState';
 import {isAuthenticated} from '../../redux/selectors/entities';
 
 const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToProps>) => (
-  <Navbar bg={styles.navbar} variant={styles.navbar} className={styles['navbar']}>
+  <Navbar className={styles['navbar']}>
     <Container>
       <Navbar.Brand className={styles['navbar-brand']}>
         <Link to={'/'}>
@@ -24,7 +24,7 @@ const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToPro
           {/*<Nav.Item className={styles['nav-item']}>*/}
           {/*  <Nav.Link as='span'>*/}
           {/*    <Link to='/explore'>*/}
-          {/*      <FontAwesomeIcon icon={faBook} size={'2x'} rotation={180}/> Explore*/}
+          {/*      <FontAwesomeIcon icon={faBook} size={'1x'} rotation={180}/> Explore*/}
           {/*    </Link>*/}
           {/*  </Nav.Link>*/}
           {/*</Nav.Item>*/}
@@ -32,16 +32,26 @@ const NavigationBarComponent = ({authenticated}: ReturnType<typeof mapStateToPro
           <Nav.Item className={styles['nav-item']}>
             <Nav.Link as='span'>
               <Link to='/my-modules'>
-                <FontAwesomeIcon icon={faList} size={'2x'}/>
+                <FontAwesomeIcon icon={faList} size={'lg'}/>
                 <span>My Modules</span>
               </Link>
             </Nav.Link>
           </Nav.Item>
           : null }
+          {/*authenticated ?
+            <Nav.Item className={styles['nav-item']}>
+              <Nav.Link as='span'>
+                <Link to='/modules'>
+                  <FontAwesomeIcon icon={faList} size={'1x'}/>
+                  <span>Modules</span>
+                </Link>
+              </Nav.Link>
+            </Nav.Item>
+          : null*/}
           <Nav.Item className={styles['nav-item']}>
             <Nav.Link as='span'>
               <Link to={'/login'}>
-                <FontAwesomeIcon icon={faUser} size={'2x'}/>
+                <FontAwesomeIcon icon={faUser} size={'lg'}/>
                 <span>Account</span>
               </Link>
             </Nav.Link>

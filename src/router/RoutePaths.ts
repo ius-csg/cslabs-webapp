@@ -9,6 +9,7 @@ export enum RoutePaths {
   logout = '/logout',
   home = '/',
   userModule = '/user-module/:id',
+  userLab = '/user-lab/:id',
   verifyEmail = '/verify-email/:type/:code',
   sitePolicy = '/policy'
 }

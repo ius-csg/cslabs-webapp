@@ -9,17 +9,17 @@ export default class PasswordStrength extends Component<PasswordStrengthProps> {
   createPasswordLabel(result: ZXCVBNResult) {
     switch (result.score) {
       case 0:
-        return 'Weak';
+        return 'Weak - We require strong passwords';
       case 1:
-        return 'Weak';
+        return 'Weak - We require strong passwords';
       case 2:
-        return 'Fair';
+        return 'Fair - We require strong passwords';
       case 3:
-        return 'Good';
+        return 'Good - We require strong passwords';
       case 4:
         return 'Strong';
       default:
-        return 'Weak';
+        return 'Weak - We require strong passwords';
     }
   }
   render() {

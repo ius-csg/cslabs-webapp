@@ -1,4 +1,4 @@
-import {LabVm} from './Module';
+import {LabVm} from './LabVm';
 
 export interface UserLabVm {
   id: number;
