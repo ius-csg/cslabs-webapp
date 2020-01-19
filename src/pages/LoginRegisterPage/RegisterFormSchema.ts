@@ -1,5 +1,6 @@
 import {LoginFormValues} from './LoginFormSchema';
 import {bool, object, ObjectSchema, ref, string} from 'yup';
+import {isPassValid} from '../../util';
 
 export interface RegisterFormValues extends LoginFormValues {
   firstName: string;
@@ -30,7 +31,7 @@ export const RegisterFormSchema: ObjectSchema<RegisterFormValues> = object({
   }),
   firstName: string().required('Required'),
   lastName: string().required('Required'),
-  password: string().required('Required'),
+  password: string().required('Required').test('strong-password', 'The password must be strong', value => isPassValid(value)),
   confirmPass: string().oneOf([ref('password'), ''], `The password did not match, please try again.`).required('Required'),
   gradYear: string(),
   phoneNumber: string().matches(/[0-9]{3}-[0-9]{3}-[0-9]{4}/, 'Please type in format of XXX-XXX-XXXX'),
