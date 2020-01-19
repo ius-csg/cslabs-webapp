@@ -4,6 +4,7 @@ import {Button, FormControlProps, Form, Col} from 'react-bootstrap';
 import styles from './ResetPassword.module.scss';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
+import {PasswordRequirements} from '../../components/util/PasswordRequirements';
 export default class ResetPassword extends Component {
   state = {
     currentPass: '',
@@ -45,10 +46,7 @@ export default class ResetPassword extends Component {
                onChange={this.onPasswordChange}
                placeholder='Enter New Password'
               />
-              <Form.Text className='text-muted'>
-                We require a strong password for using our system.
-                To increase the password strength, add numbers, special character, and increase password length.
-              </Form.Text>
+              <PasswordRequirements/>
               <PasswordStrength password={this.state.password}/>
             </Form.Group>
             <Form.Group controlId='formBasicConfirmPassword'>

@@ -6,6 +6,7 @@ import {RegisterForm} from '../../pages/Login/Login';
 import {BootstrapFormEvent} from '../util/Util';
 import {LoadingButton} from '../../util/LoadingButton';
 import {isPassValid} from '../../util';
+import {PasswordRequirements} from '../util/PasswordRequirements';
 
 export const isSchoolEmailValid = (email: string) => {
   return email.length === 0 || email.indexOf('@ius.edu') !== -1 || email.indexOf('@iu.edu') !== -1;
@@ -110,10 +111,7 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
           isInvalid={!isPassValid(this.props.form.password)}
           placeholder='Password'
         />
-        <Form.Text className='text-muted'>
-          We require a strong password for using our system.
-          To increase the password strength, add numbers, special character, and increase password length.
-        </Form.Text>
+      <PasswordRequirements/>
       </Form.Group><PasswordStrength password={this.props.form.password}/>
       <Form.Group controlId='formBasicConfirmPassword'>
         <Form.Label column={true}>Confirm Password</Form.Label>
