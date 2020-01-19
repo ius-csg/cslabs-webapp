@@ -14,9 +14,10 @@ import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
-import {UserModulePage} from '../pages/UserModule/UserModule';
+import UserModulePage from '../pages/UserModulePage/UserModulePage';
 import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
+import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
@@ -32,6 +33,7 @@ const Routes = () => (
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
         <PrivateRoute path='/module/:id/' component={PublicModule}/>
         <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>
+        <Route exact={true} path={RoutePaths.userLab} component={UserLabPage}/>
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
         <Route exact={true} path={RoutePaths.verifyEmail} component={VerifyEmail}/>
         <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>

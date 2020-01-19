@@ -1,6 +1,6 @@
 
 import {AxiosResponse} from 'axios';
-import {Module, UserModule} from '../types/Module';
+import {Module, UserLab, UserModule} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {RegisterForm} from '../pages/Login/Login';
 import {makeAxios} from '../components/util/Util';
@@ -85,6 +85,18 @@ export async function getUserModules() {
 }
 export async function getUserModule(id: number) {
   return handleResponse( await api.get<UserModule>(`/user-module/${id}`)).data;
+}
+
+export async function getUserLab(id: number) {
+  return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;
+}
+
+export function getUserLabTopologyUrl(id: number) {
+  return  `${process.env.REACT_APP_API_URL}/user-lab/${id}/topology`;
+}
+
+export function getUserLabReadmeUrl(id: number) {
+  return  `${process.env.REACT_APP_API_URL}/user-lab/${id}/readme`;
 }
 
 export async function getUserModuleStatus(id: number) {
