@@ -3,6 +3,8 @@
 .navbar {
     background-color: maroon;
     color: white !important;
+    padding: 0;
+    margin: 0;
 }
 
 .navbar-brand {
@@ -20,8 +22,9 @@
     align-items: center;
 
     span {
-        display:block;
+        display: block;
         margin: auto;
+        font-size: 13px;
     }
 
     &:hover {
@@ -31,7 +34,7 @@
 }
 
 .logo {
-    width: 60px;
+    width: 55px;
 }
 
 .nav-link {

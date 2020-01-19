@@ -6,9 +6,14 @@ import {RegisterForm} from '../../pages/Login/Login';
 import {BootstrapFormEvent} from '../util/Util';
 import {LoadingButton} from '../../util/LoadingButton';
 import {isPassValid} from '../../util';
+import {PasswordRequirements} from '../util/PasswordRequirements';
 
 export const isSchoolEmailValid = (email: string) => {
   return email.length === 0 || email.indexOf('@ius.edu') !== -1 || email.indexOf('@iu.edu') !== -1;
+};
+
+export const pStyle = {
+  fontSize: '10px'
 };
 
 export const isEmailValid = (email: string) => {
@@ -95,7 +100,6 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
           Please type in format of XXX-XXX-XXXX
         </Form.Control.Feedback>
       </Form.Group>
-
       <Form.Group controlId='formBasicPassword'>
         <Form.Label column={true}>Password</Form.Label>
         <Form.Control
@@ -107,8 +111,8 @@ export class RegisterTab extends Component<RegisterTabProps, {personalEmailTouch
           isInvalid={!isPassValid(this.props.form.password)}
           placeholder='Password'
         />
-      </Form.Group>
-      <PasswordStrength password={this.props.form.password}/>
+      <PasswordRequirements/>
+      </Form.Group><PasswordStrength password={this.props.form.password}/>
       <Form.Group controlId='formBasicConfirmPassword'>
         <Form.Label column={true}>Confirm Password</Form.Label>
         <Form.Control

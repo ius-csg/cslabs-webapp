@@ -3,34 +3,31 @@ import {RouteComponentProps} from 'react-router';
 import {Component} from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
-import {UserLabVm} from '../../types/UserLabVm';
-import {getUserLabVmStatuses, getUserModule, startUpVm} from '../../api';
-import {UserModule} from '../../types/Module';
+import {getUserLab, getUserLabVmStatuses, startUpVm} from '../../api';
+import {UserLab} from '../../types/UserLab';
 
 type UserModuleProps = RouteComponentProps<{id: string}>;
 
 interface UserModuleState {
-  vms: UserLabVm[];
-  userModule?: UserModule;
+  userLab?: UserLab;
   statuses: {[key: number]: string};
 }
 
-export class UserModulePage extends Component<UserModuleProps, UserModuleState> {
+export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
 
-  state: UserModuleState = { statuses: {}, vms: []};
+  state: UserModuleState = { statuses: {}};
   private interval: any;
 
   async componentDidMount() {
-    const userModule = await getUserModule(Number(this.props.match.params.id));
+    const userLab = await getUserLab(Number(this.props.match.params.id));
     this.setState({
-      vms: userModule.userLabs[0].userLabVms,
-      userModule: userModule
+      userLab: userLab
     }, async () => {
-      if (this.state.userModule) {
+      if (this.state.userLab) {
         this.setState({
-          statuses:  await getUserLabVmStatuses(this.state.userModule.userLabs[0].id)
+          statuses:  await getUserLabVmStatuses(this.state.userLab.id)
         }, () => {
-          for (const vm of this.state.vms) {
+          for (const vm of (this.state.userLab as UserLab).userLabVms ) {
             if (this.state.statuses[vm.id] === 'stopped') {
                 startUpVm(vm.id);
             }
@@ -44,9 +41,9 @@ export class UserModulePage extends Component<UserModuleProps, UserModuleState> 
 
   setInterval() {
     this.interval = setInterval(async () => {
-      if (this.state.userModule) {
+      if (this.state.userLab) {
         this.setState({
-          statuses:  await getUserLabVmStatuses(this.state.userModule.userLabs[0].id)
+          statuses:  await getUserLabVmStatuses(this.state.userLab.id)
         });
       }
     }, 5000);
@@ -61,7 +58,7 @@ export class UserModulePage extends Component<UserModuleProps, UserModuleState> 
   render() {
     return (
         <Layout fluid={true} className='full-height-container'>
-          {this.state.vms ? <LabEnvironment vms={this.state.vms} statuses={this.state.statuses} /> : null}
+          {this.state.userLab ? <LabEnvironment userLab={this.state.userLab} statuses={this.state.statuses} /> : null}
         </Layout>
     );
   }
