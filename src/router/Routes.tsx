@@ -3,7 +3,7 @@ import {Switch, Route, Router} from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
 import History from './history';
-import Login from '../pages/Login/Login';
+import Login from '../pages/LoginRegisterPage/LoginRegisterPage';
 import Profile from '../pages/Profile/Profile';
 import ResetEmail from '../pages/ResetEmail/ResetEmail';
 import ResetPassword from '../pages/ResetPassword/ResetPassword';

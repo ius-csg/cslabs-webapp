@@ -32,14 +32,11 @@ export default class PasswordStrength extends Component<PasswordStrengthProps> {
           value={testedResult.score}
           max='4'
         />
-        <br />
-        <label className='password-strength-label'>
-          {password && (
-            <>
-              <strong>Password strength:</strong> {this.createPasswordLabel(testedResult)}
-              </>
-          )}
-        </label>
+        {password ? (<>
+          <br />
+          <label className='password-strength-label'><strong>Password strength:</strong> {this.createPasswordLabel(testedResult)}</label>
+          </>
+        ) : null}
       </div>
     );
   }
