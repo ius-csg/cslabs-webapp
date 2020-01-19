@@ -1,6 +1,6 @@
 
 import {AxiosResponse} from 'axios';
-import {Module, UserLab, UserModule} from '../types/Module';
+import {Module} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {RegisterForm} from '../pages/Login/Login';
 import {makeAxios} from '../components/util/Util';
@@ -8,7 +8,8 @@ import {Dispatch} from 'redux';
 import {setCurrentUser} from '../redux/actions/entities/currentUser';
 import {appDispatch} from '../redux/store';
 import axiosRetry from 'axios-retry';
-import { Lab } from '../types/Lab';
+import {UserModule} from '../types/UserModule';
+import {UserLab} from '../types/UserLab';
 
 let api = makeAxios();
 
@@ -108,13 +109,6 @@ export async function getUserLabVmStatuses(id: number) {
 }
 export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
-}
-export async function getLab(id: number) {
-  return handleResponse(await api.get<Lab>(`/lab/${id}`)).data;
-}
-
-export async function getLabVmStatuses(id: number) {
-  return handleResponse( await api.get<{[key: number]: string}>(`/lab/${id}/status`)).data;
 }
 
 export async function verifyEmail(type: string, code: string) {

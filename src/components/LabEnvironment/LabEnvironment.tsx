@@ -8,9 +8,9 @@ import * as styles from './LabEnvironment.module.scss';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
-import {UserLab} from '../../types/Module';
 import {PDFDocumentProxy} from 'pdfjs-dist';
 import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
+import {UserLab} from '../../types/UserLab';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {

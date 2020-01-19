@@ -1,13 +1,14 @@
-import { LabVm } from './Module';
+import {LabVm} from './LabVm';
 
 export interface Lab {
-    id: number;
-    name: string;
-    labType: string;
-    moduleId: number;
-    userId: number;
-    labDifficulty: number;
-    labVm: LabVm[];
-    estimatedCpusUsed: number;
-    estimatedMemoryUsedMb: number;
+  id: number;
+  name: string;
+  status: string;
+  labType: string;
+  moduleId: number;
+  userId: number;
+  labDifficulty: number;
+  labVms?: LabVm[];
+  estimatedCpusUsed: number;
+  estimatedMemoryUsedMb: number;
 }

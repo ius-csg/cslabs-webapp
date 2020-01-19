@@ -1,10 +1,10 @@
 import {CardColumns} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
-import {UserModule} from '../../types/Module';
 import {getUserModules} from '../../api';
 import {Layout} from '../Layout/Layout';
 import {RoutePaths} from '../../router/RoutePaths';
+import {UserModule} from '../../types/UserModule';
 
 interface MyModulesState {
   modules: UserModule[];

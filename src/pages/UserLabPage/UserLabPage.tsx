@@ -4,7 +4,7 @@ import {Component} from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {getUserLab, getUserLabVmStatuses, startUpVm} from '../../api';
-import {UserLab} from '../../types/Module';
+import {UserLab} from '../../types/UserLab';
 
 type UserModuleProps = RouteComponentProps<{id: string}>;
 

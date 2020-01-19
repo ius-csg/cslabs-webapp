@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {RouteComponentProps} from 'react-router';
 import {Layout} from '../Layout/Layout';
-import {UserModule} from '../../types/Module';
 import {getUserModule} from '../../api';
 import {ListGroup} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {RoutePaths} from '../../router/RoutePaths';
+import {UserModule} from '../../types/UserModule';
 
 type UserModuleLabsProps = RouteComponentProps<{id: string}>;
 

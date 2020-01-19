@@ -1,5 +1,3 @@
-import {UserLabVm} from './UserLabVm';
-
 export interface Module {
   id: number;
   name: string;
@@ -13,27 +11,3 @@ export interface Module {
   userModuleId?: number;
 }
 
-export interface Lab {
-  id: number;
-  name: string;
-  status: string;
-}
-
-export interface LabVm {
-  id: number;
-  name: string;
-}
-
-export interface UserModule {
-  id: number;
-  module: Module;
-  userLabs: UserLab[];
-}
-
-export interface UserLab {
-  id: number;
-  lab: Lab;
-  userLabVms: UserLabVm[];
-  hasTopology: boolean;
-  hasReadme: boolean;
-}

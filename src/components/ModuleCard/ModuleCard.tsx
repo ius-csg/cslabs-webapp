@@ -1,12 +1,12 @@
 import {Button, Card} from 'react-bootstrap';
 import React, {Component} from 'react';
-// import TestImage from '../../assets/images/TestImage.jpg';
 import Styles from './ModuleCard.module.scss';
-import {Module, UserModule} from '../../types/Module';
+import {Module} from '../../types/Module';
 import {WebState} from '../../redux/types/WebState';
 import {connect} from 'react-redux';
 import {isAuthenticated} from '../../redux/selectors/entities';
 import {Link} from 'react-router-dom';
+import {UserModule} from '../../types/UserModule';
 
 interface ModuleCardProps extends ReturnType<typeof mapStateToProps> {
   module: Module|UserModule;
