@@ -26,6 +26,7 @@ export interface TicketResponse {
   cert: string;
   upid: string;
   user: string;
+  url: string;
 }
 
 export const logout = () => (dispatch: Dispatch) => {

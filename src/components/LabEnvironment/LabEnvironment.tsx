@@ -56,8 +56,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
   render() {
     const { pageNumber, numPages } = this.state;
     return (
-      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={false}>
-        <Container className='full-height-container'>
+      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={true}>
+        <Container fluid={true} className='full-height-container'>
           <h2>Lab : {this.props.userLab.lab.name}</h2>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
