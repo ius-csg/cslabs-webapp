@@ -16,6 +16,7 @@ import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {connect} from 'react-redux';
 import {handleKeyUp} from './LoginRegisterPage';
+import {Link} from 'react-router-dom';
 
 type Props = {
   onRedirect: (redirect: string) => void;
@@ -62,6 +63,7 @@ function LoginForm(props: Props) {
             <Input name={getFieldName('password')} onKeyUp={(e) => handleKeyUp(e, setCapsLockKey)} type='password' placeholder='Enter Password'/>
           </Form.Group>
           {capsLock ? <Alert variant='warning'>Your caps lock is on!</Alert> : null}
+          <Link to='/ForgotPassword'> Forgot Password?<br/><br/></Link>
           {errorMessage ?
             <Alert variant='danger'>{errorMessage}</Alert> : null}
           <LoadingButton loading={isSubmitting} label='Login'/>
