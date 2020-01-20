@@ -68,6 +68,9 @@ export async function login(email: string, password: string): Promise<AxiosRespo
   setToken(resp.data.token);
   return resp;
 }
+export async function forgotPassword(email: string) {
+  return api.post<string>(`/user/forgot-password/${encodeURIComponent(email)}`);
+}
 
 export async function register(form: RegisterFormValues): Promise<AxiosResponse<UserWithToken>> {
   const resp = await api.post<UserWithToken>('/user/register', form);
