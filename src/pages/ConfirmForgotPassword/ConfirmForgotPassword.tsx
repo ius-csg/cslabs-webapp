@@ -1,70 +1,73 @@
 import * as React from 'react';
-import {Component, FormEvent} from 'react';
-import {Button, FormControlProps, Form, Col} from 'react-bootstrap';
-import styles from './ConfirmForgotPassword.module.scss';
-import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
+import {useState} from 'react';
+import {Form, Col, Row} from 'react-bootstrap';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
 import {RouteComponentProps} from 'react-router';
+import {Layout} from '../Layout/Layout';
+import {Formik} from 'formik';
+import {object} from 'yup';
+import {confirmPasswordValidator, passwordValidator} from '../LoginRegisterPage/RegisterFormSchema';
+import Input from '../../components/util/Input/Input';
+import {PasswordRequirements} from '../../components/util/PasswordRequirements';
+import {CapsLockAlert} from '../../components/util/CapsLockAlert';
+import {LoadingButton} from '../../util/LoadingButton';
 
-type Props = RouteComponentProps<{passwordRecoveryCode: string}>;
+type Props = RouteComponentProps<{ passwordRecoveryCode: string }>;
 
-export default class ConfirmForgotPassword extends Component<Props> {
+interface ConfirmForgotPasswordForm {
+  password: string;
+  confirmPass: string;
+}
 
-  state = {
+const ConfirmForgotPasswordSchema = object<ConfirmForgotPasswordForm>({
+  password: passwordValidator,
+  confirmPass: confirmPasswordValidator
+});
+
+const getFieldName = (prop: keyof ConfirmForgotPasswordForm) => prop;
+
+export default function ConfirmForgotPassword(props: Props) {
+  const [initialState] = useState<ConfirmForgotPasswordForm>({
     password: '',
     confirmPass: ''
-  };
+  });
 
-  onPasswordChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({password: event.currentTarget.value});
-  };
-  onConfirmPassChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({confirmPass: event.currentTarget.value});
-  };
-  isPassInvalid = () => {
-    return this.state.password !== this.state.confirmPass;
-  };
-
-  onSubmit = async (e: any) => {
-    e.preventDefault();
-    const code = this.props.match.params.passwordRecoveryCode;
+  const onSubmit = async (form: ConfirmForgotPasswordForm) => {
+    const code = props.match.params.passwordRecoveryCode;
     console.log(code);
     // await forgotPassword(this.state.email);
   };
 
-  render() {
-    return (
-      <AccountManagementLayout>
-        <h2>Password Recovery</h2>
-        <Form onSubmit={this.onSubmit}>
-          <Col sm='6'>
-            <Form.Group controlId='formBasicPassword'>
-              <Form.Label column={true}>New Password</Form.Label>
-              <Form.Control
-               type='password'
-               value={this.state.password}
-               onChange={this.onPasswordChange}
-               placeholder='Enter New Password'
-              />
-              <PasswordStrength password={this.state.password}/>
-            </Form.Group>
-            <Form.Group controlId='formBasicConfirmPassword'>
-              <Form.Label column={true}>Confirm Password</Form.Label>
-              <Form.Control
-                isInvalid={this.isPassInvalid()}
-                type='password'
-                value={this.state.confirmPass}
-                onChange={this.onConfirmPassChange}
-                placeholder='Confirm New Password'
-              />
-              <Form.Control.Feedback type='invalid'>
-                The password did not match, please try again.
-              </Form.Control.Feedback>
-              <Button className={styles['button']} variant='primary' type='submit'>Change Password</Button>
-            </Form.Group>
-          </Col>
-        </Form>
-      </AccountManagementLayout>
-    );
-  }
+  return (
+    <Layout>
+      <Formik
+        initialValues={initialState}
+        validationSchema={ConfirmForgotPasswordSchema}
+        onSubmit={onSubmit}
+      >
+        {({handleSubmit, values, isSubmitting}) => (
+          <Form onSubmit={handleSubmit}>
+            <Col sm='6' style={{margin: 'auto'}}>
+              <h2>Reset Password</h2>
+              <Form.Group as={Row} controlId='password'>
+                <Form.Label column={true}>New Password</Form.Label>
+                <Input name={getFieldName('password')} type='password' placeholder='Enter Password'/>
+              </Form.Group>
+              <CapsLockAlert/>
+              <PasswordStrength password={values.password}/>
+              <PasswordRequirements/>
+              <Form.Group as={Row}>
+                <Form.Label column={true}>Confirm Password</Form.Label>
+                <Input name={getFieldName('confirmPass')} type='password' placeholder='Confirm Password'/>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <LoadingButton loading={isSubmitting} label='Change Password'/>
+              </Form.Group>
+            </Col>
+          </Form>
+        )}
+      </Formik>
+    </Layout>
+  );
+
 }

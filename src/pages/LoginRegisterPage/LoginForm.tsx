@@ -15,8 +15,8 @@ import {login} from '../../api';
 import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {connect} from 'react-redux';
-import {handleKeyUp} from './LoginRegisterPage';
 import {Link} from 'react-router-dom';
+import {CapsLockAlert} from '../../components/util/CapsLockAlert';
 
 type Props = {
   onRedirect: (redirect: string) => void;
@@ -25,7 +25,6 @@ type Props = {
 const getFieldName = (prop: keyof LoginFormValues) => prop;
 
 function LoginForm(props: Props) {
-  const [capsLock, setCapsLockKey] = useState(false);
   const [initialValues] = useState<LoginFormValues>({
     schoolEmail: '',
     password: ''
@@ -60,12 +59,11 @@ function LoginForm(props: Props) {
           </Form.Group>
           <Form.Group controlId='password'>
             <Form.Label column={true}>Password</Form.Label>
-            <Input name={getFieldName('password')} onKeyUp={(e) => handleKeyUp(e, setCapsLockKey)} type='password' placeholder='Enter Password'/>
+            <Input name={getFieldName('password')} type='password' placeholder='Enter Password'/>
           </Form.Group>
-          {capsLock ? <Alert variant='warning'>Your caps lock is on!</Alert> : null}
+          <CapsLockAlert />
           <Link to='/ForgotPassword'> Forgot Password?<br/><br/></Link>
-          {errorMessage ?
-            <Alert variant='danger'>{errorMessage}</Alert> : null}
+          <Alert show={Boolean(errorMessage)} variant='danger'>{errorMessage}</Alert>
           <LoadingButton loading={isSubmitting} label='Login'/>
         </Form>
       )}

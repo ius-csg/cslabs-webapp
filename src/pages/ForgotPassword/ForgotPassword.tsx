@@ -1,55 +1,72 @@
 import * as React from 'react';
-import {Component, FormEvent} from 'react';
-import {Button, FormControlProps, Form, Col, Alert} from 'react-bootstrap';
-import styles from './ForgotPassword.module.scss';
+import {useState} from 'react';
+import {Form, Col, Alert, Row} from 'react-bootstrap';
 import {forgotPassword} from '../../api';
 import {Layout} from '../Layout/Layout';
+import {Formik} from 'formik';
+import {object, string} from 'yup';
+import {emailValidationMessage} from '../LoginRegisterPage/RegisterFormSchema';
+import Input from '../../components/util/Input/Input';
+import {LoadingButton} from '../../util/LoadingButton';
 
-export default class ForgotPassword extends Component {
+interface MessageState {
+  message: string;
+  variant: 'danger' | 'success';
+}
 
-  state = {
-    email: '',
-    successMessage: '',
-    errorMessage: ''
-  };
+interface ForgotPasswordForm {
+  email: string;
+}
 
-  onEmailChange = (event: FormEvent<FormControlProps>) => {
-    this.setState({email: event.currentTarget.value});
-  };
+const ForgotPasswordSchema = object<ForgotPasswordForm>({
+  email: string().email(emailValidationMessage).required('Required')
+});
 
-  onSubmit = async (e: any) => {
-    e.preventDefault();
+const getFieldName = (prop: keyof ForgotPasswordForm) => prop;
+
+export default function ForgotPassword() {
+  const [messageState, setMessageState] = useState<MessageState>({
+    message: '',
+    variant: 'danger'
+  });
+  const [initialState] = useState<ForgotPasswordForm>({email: ''});
+
+  const onSubmit = async (form: ForgotPasswordForm) => {
+    setMessageState({...messageState, message: ''});
     try {
-      await forgotPassword(this.state.email);
-      this.setState({successMessage: 'If your email exists, a confirmation was sent to your inbox!', errorMessage: undefined});
+      await forgotPassword(form.email);
+      setMessageState({message: 'If your email exists, a confirmation was sent to your inbox!', variant: 'success'});
     } catch (e) {
-      this.setState({errorMessage: 'An Error occurred, try again later'});
+      setMessageState({message: 'An Error occurred, try again later', variant: 'danger'});
     }
-
   };
 
-  render() {
-    return (
-      <Layout>
-        <Form onSubmit={this.onSubmit}>
-          <Col sm='6' style={{margin: 'auto'}}>
-            <h2>Password Recovery</h2>
-            <Form.Group controlId='formBasicCurrentPassword'>
-              <Form.Label column={true}>Email</Form.Label>
-              <Form.Control
-                value={this.state.email}
-                onChange={this.onEmailChange}
-                placeholder='Enter Your Email'
-              />
-            </Form.Group>
-            <Button className={styles['button']} variant='primary' type='submit'>Send Confirmation</Button>
-            <div style={{marginTop: '1rem'}}>
-            {this.state.successMessage ? <Alert variant='success'>{this.state.successMessage}</Alert> : null}
-            {this.state.errorMessage ? <Alert variant='danger'>{this.state.errorMessage}</Alert> : null}
-            </div>
-          </Col>
-        </Form>
-      </Layout>
-    );
-  }
+  return (
+    <Layout>
+      <Formik
+        initialValues={initialState}
+        validationSchema={ForgotPasswordSchema}
+        onSubmit={onSubmit}
+      >
+        {({handleSubmit, isSubmitting}) => (
+          <Form onSubmit={handleSubmit}>
+            <Col sm='6' style={{margin: 'auto'}}>
+              <h2>Password Recovery</h2>
+              <Form.Group as={Row}>
+                <Form.Label column={true}>Email</Form.Label>
+                <Input name={getFieldName('email')} placeholder='Enter Email'/>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <LoadingButton loading={isSubmitting} label='Send Confirmation'/>
+              </Form.Group>
+              <Row className='flex-column'>
+                <Alert show={Boolean(messageState.message)} variant={messageState.variant}>{messageState.message}</Alert>
+              </Row>
+            </Col>
+          </Form>
+        )}
+      </Formik>
+    </Layout>
+  );
+
 }

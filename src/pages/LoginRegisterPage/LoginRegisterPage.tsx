@@ -21,7 +21,7 @@ interface LoginPageState {
 
 type LoginProps = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapStateToProps>;
 
-export function handleKeyUp(event: KeyboardEvent, setCapsLockKey: (state: boolean) => void) {
+export function handleCapsLock(event: KeyboardEvent, setCapsLockKey: (state: boolean) => void) {
     setCapsLockKey(event.getModifierState('CapsLock'));
 }
 

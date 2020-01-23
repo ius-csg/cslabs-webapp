@@ -18,7 +18,7 @@ import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {connect} from 'react-redux';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
-import {handleKeyUp} from './LoginRegisterPage';
+import {CapsLockAlert} from '../../components/util/CapsLockAlert';
 
 type Props  = {
   onRedirect: (redirect: string) => void;
@@ -27,7 +27,6 @@ type Props  = {
 const getFieldName = (prop: keyof RegisterFormValues) => prop;
 
 function RegisterForm(props: Props) {
-  const [capsLock, setCapsLockKey] = useState(false);
   const [initialValues] = useState<RegisterFormValues>({
     firstName: '',
     lastName: '',
@@ -88,14 +87,14 @@ function RegisterForm(props: Props) {
           </Form.Group>
           <Form.Group controlId='password'>
             <Form.Label column={true}>Password</Form.Label>
-            <Input name={getFieldName('password')} onKeyUp={(e) => handleKeyUp(e, setCapsLockKey)} type='password' placeholder='Enter Password'/>
+            <Input name={getFieldName('password')} type='password' placeholder='Enter Password'/>
           </Form.Group>
-          {capsLock ? <Alert variant='warning'>Your caps lock is on!</Alert> : null}
+          <CapsLockAlert/>
           <PasswordStrength password={values.password}/>
           <PasswordRequirements/>
           <Form.Group controlId='confirmPass'>
             <Form.Label column={true}>Confirm Password</Form.Label>
-            <Input name={getFieldName('confirmPass')} onKeyUp={(e) => handleKeyUp(e, setCapsLockKey)}  type='password' placeholder='Confirm Password'/>
+            <Input name={getFieldName('confirmPass')} type='password' placeholder='Confirm Password'/>
           </Form.Group>
           <Form.Group controlId='acceptedTerms'>
             <CheckBoxInput
@@ -103,8 +102,7 @@ function RegisterForm(props: Props) {
               label={<h6>I agree to the <a href='/policy'>terms and conditions</a>.</h6>}
             />
           </Form.Group>
-          {errorMessage ?
-            <Alert variant='danger'>{errorMessage}</Alert> : null}
+          <Alert show={Boolean(errorMessage)} variant='danger'>{errorMessage}</Alert>
           <p>*Note: We will send you an email verification for each email entered.</p>
           <LoadingButton loading={isSubmitting} label='Register'/>
         </Form>

@@ -60,7 +60,10 @@ function logMessage(level: string, message: any, ...optionalParams: any[]) {
   logger.log(level, message, optionalParams);
 }
 
-export function isPassValid(password: string) {
+export function isPassValid(password?: string) {
+  if (!password) {
+    return false;
+  }
   const result = zxcvbn(password);
   return result.score >= 4;
 }
