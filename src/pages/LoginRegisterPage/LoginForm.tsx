@@ -34,7 +34,7 @@ function LoginForm(props: Props) {
   const onSubmit = async (values: LoginFormValues) => {
     try {
       const resp = await login(values.schoolEmail, values.password);
-      props.actions.setCurrentUser(resp.data);
+      await props.actions.setCurrentUser(resp.data);
       props.onRedirect('/my-modules');
     } catch (e) {
       if (isBadRequest(e)) {

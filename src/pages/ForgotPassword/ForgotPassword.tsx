@@ -8,11 +8,7 @@ import {object, string} from 'yup';
 import {emailValidationMessage} from '../LoginRegisterPage/RegisterFormSchema';
 import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
-
-interface MessageState {
-  message: string;
-  variant: 'danger' | 'success';
-}
+import {makeMessageState} from '../../util';
 
 interface ForgotPasswordForm {
   email: string;
@@ -25,10 +21,7 @@ const ForgotPasswordSchema = object<ForgotPasswordForm>({
 const getFieldName = (prop: keyof ForgotPasswordForm) => prop;
 
 export default function ForgotPassword() {
-  const [messageState, setMessageState] = useState<MessageState>({
-    message: '',
-    variant: 'danger'
-  });
+  const [messageState, setMessageState] = useState(makeMessageState());
   const [initialState] = useState<ForgotPasswordForm>({email: ''});
 
   const onSubmit = async (form: ForgotPasswordForm) => {

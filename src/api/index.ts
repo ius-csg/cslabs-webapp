@@ -72,6 +72,10 @@ export async function forgotPassword(email: string) {
   return api.post<string>(`/user/forgot-password/${encodeURIComponent(email)}`);
 }
 
+export function confirmForgotPassword(code: string, password: string) {
+  return api.post<string>(`/user/confirm-forgot-password`, {passwordRecoveryCode: code, newPassword: password});
+}
+
 export async function register(form: RegisterFormValues): Promise<AxiosResponse<UserWithToken>> {
   const resp = await api.post<UserWithToken>('/user/register', form);
   setToken(resp.data.token);

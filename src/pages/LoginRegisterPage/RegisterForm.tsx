@@ -43,7 +43,7 @@ function RegisterForm(props: Props) {
   const onSubmit = async (values: RegisterFormValues) => {
     try {
       const resp = await register(values);
-      props.actions.setCurrentUser(resp.data);
+      await props.actions.setCurrentUser(resp.data);
       props.onRedirect('/my-modules');
     } catch (e) {
       if (isBadRequest(e)) {

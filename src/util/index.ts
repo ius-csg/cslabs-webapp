@@ -74,3 +74,19 @@ export function getFieldValue<T>(field: FieldInputProps<T>) {
   }
   return field.value;
 }
+
+export interface MessageState {
+  message: string;
+  variant: 'danger' | 'success';
+}
+
+export function makeMessageState(): MessageState {
+  return {
+    message: '',
+    variant: 'danger'
+  };
+}
+
+export function delay(timeout: number) {
+  return new Promise(resolve => setTimeout(() => resolve(), timeout));
+}

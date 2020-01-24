@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {Form, Col, Row} from 'react-bootstrap';
+import {Form, Col, Row, Alert} from 'react-bootstrap';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
-import {RouteComponentProps} from 'react-router';
+import {Redirect, RouteComponentProps} from 'react-router';
 import {Layout} from '../Layout/Layout';
 import {Formik} from 'formik';
 import {object} from 'yup';
@@ -11,6 +11,9 @@ import Input from '../../components/util/Input/Input';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
 import {CapsLockAlert} from '../../components/util/CapsLockAlert';
 import {LoadingButton} from '../../util/LoadingButton';
+import {confirmForgotPassword} from '../../api';
+import {delay, makeMessageState} from '../../util';
+import {RoutePaths} from '../../router/RoutePaths';
 
 type Props = RouteComponentProps<{ passwordRecoveryCode: string }>;
 
@@ -31,11 +34,20 @@ export default function ConfirmForgotPassword(props: Props) {
     password: '',
     confirmPass: ''
   });
+  const [messageState, setMessageState] = useState(makeMessageState());
+  const [redirect, setRedirect] = useState('');
 
   const onSubmit = async (form: ConfirmForgotPasswordForm) => {
     const code = props.match.params.passwordRecoveryCode;
-    console.log(code);
-    // await forgotPassword(this.state.email);
+    setMessageState({...messageState, message: ''});
+    try {
+      await confirmForgotPassword(code, form.password);
+      setMessageState({message: 'Password changed!', variant: 'success'});
+      await delay(1500);
+      setRedirect(RoutePaths.login);
+    } catch (e) {
+      setMessageState({message: 'An Error occurred, try again later', variant: 'danger'});
+    }
   };
 
   return (
@@ -47,6 +59,7 @@ export default function ConfirmForgotPassword(props: Props) {
       >
         {({handleSubmit, values, isSubmitting}) => (
           <Form onSubmit={handleSubmit}>
+            {redirect ? <Redirect to={redirect} /> : null}
             <Col sm='6' style={{margin: 'auto'}}>
               <h2>Reset Password</h2>
               <Form.Group as={Row} controlId='password'>
@@ -63,6 +76,9 @@ export default function ConfirmForgotPassword(props: Props) {
               <Form.Group as={Row}>
                 <LoadingButton loading={isSubmitting} label='Change Password'/>
               </Form.Group>
+              <Row className='flex-column'>
+                <Alert show={Boolean(messageState.message)} variant={messageState.variant}>{messageState.message}</Alert>
+              </Row>
             </Col>
           </Form>
         )}
