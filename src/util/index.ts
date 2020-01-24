@@ -1,6 +1,7 @@
 import {makeLogger} from './logger';
 import zxcvbn from 'zxcvbn';
 import {FieldInputProps} from 'formik';
+import {DateTime} from 'luxon';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -89,4 +90,8 @@ export function makeMessageState(): MessageState {
 
 export function delay(timeout: number) {
   return new Promise(resolve => setTimeout(() => resolve(), timeout));
+}
+
+export function getLocalDateTimeString(dateTime: string)  {
+  return DateTime.fromISO(dateTime.replace('Z', '') + '+00:00').toLocaleString(DateTime.DATE_SHORT);
 }

@@ -10,6 +10,7 @@ import {RoutePaths} from '../../router/RoutePaths';
 import {Layout} from '../Layout/Layout';
 import {Button, Card, Spinner} from 'react-bootstrap';
 import Styles from './PublicModule.module.scss';
+import {getLocalDateTimeString} from '../../util';
 
 interface MyModuleState {
   module: Module;
@@ -187,7 +188,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
               <h5>Your lab is starting. Please Wait...</h5> : null}
           </Card.Body>
           <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <small className='text-muted'>{module.updatedAt}</small>
+            <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
             {this.getStartButton()}
           </Card.Footer>
         </Card>
