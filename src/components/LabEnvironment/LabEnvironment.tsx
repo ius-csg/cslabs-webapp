@@ -83,7 +83,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 }
               </Tab.Pane>
               <Tab.Pane eventKey='#readme'>
-                <h1>Read Me</h1>
+                <h2>Read Me</h2>
                 {!this.props.userLab.hasReadme ?
                   <p style={{textAlign: 'center'}}>No Readme Available</p> :
                   <div style={{width: 1000}}>
@@ -105,13 +105,6 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
               </Tab.Pane>
               <Tab.Pane eventKey='#status'>
                 <h2>VM Status</h2>
-                <Container>
-                  <Row>
-                    <Col>Name</Col>
-                    <Col>Status</Col>
-                    <Col>Options</Col>
-                  </Row>
-                </Container>
                 <Status vms={this.props.userLab.userLabVms} statuses={this.props.statuses}/>
               </Tab.Pane>
               { this.props.userLab.userLabVms.map(vm =>

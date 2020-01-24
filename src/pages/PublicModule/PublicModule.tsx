@@ -47,18 +47,23 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       } else {
         module = await getPublicModule(Number(this.props.match.params.id));
       }
-      let status;
-      if (module.userModuleId) {
-        status = await getUserModuleStatus(module.userModuleId);
-        if (status !== 'Initialized') {
-          this.setStatusCheckInterval();
-        }
-      }
-      this.setState({module: module, status: status});
+      this.checkStatusIfModuleInstantiated();
+      this.setState({module: module});
     } catch (e) {
       this.setState({message: 'Could not load module'});
     }
 
+  }
+
+  async checkStatusIfModuleInstantiated() {
+    const userModuleId = (this.state.module || {}).userModuleId;
+    if (userModuleId) {
+      const status = await getUserModuleStatus(userModuleId);
+      this.setState({status: status});
+      if (status !== 'Initialized') {
+        this.setStatusCheckInterval();
+      }
+    }
   }
 
   setStatusCheckInterval() {
@@ -85,14 +90,20 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
 
   startModule = async () => {
     if (this.state.module !== undefined) {
-      this.setStatusCheckInterval();
-      this.setState({status: 'Initializing'});
-      this.setState({
+      try {
+        const module = await startUserModule(String(this.state.module.specialCode));
+        this.setStatusCheckInterval();
+        this.setState({status: 'Initializing'});
+        this.setState({
           module: {
             ...this.state.module,
-            userModuleId: (await startUserModule(String(this.state.module.specialCode))).id
+            userModuleId: (module).id
           }
-      });
+        });
+      } catch (e) {
+        this.setState({message: 'Failed to instantiate module!'});
+        this.clearInterval();
+      }
     }
   };
 
