@@ -18,6 +18,7 @@ import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {connect} from 'react-redux';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
+import {CapsLockAlert} from '../../components/util/CapsLockAlert';
 
 type Props  = {
   onRedirect: (redirect: string) => void;
@@ -42,7 +43,7 @@ function RegisterForm(props: Props) {
   const onSubmit = async (values: RegisterFormValues) => {
     try {
       const resp = await register(values);
-      props.actions.setCurrentUser(resp.data);
+      await props.actions.setCurrentUser(resp.data);
       props.onRedirect('/my-modules');
     } catch (e) {
       if (isBadRequest(e)) {
@@ -88,6 +89,7 @@ function RegisterForm(props: Props) {
             <Form.Label column={true}>Password</Form.Label>
             <Input name={getFieldName('password')} type='password' placeholder='Enter Password'/>
           </Form.Group>
+          <CapsLockAlert/>
           <PasswordStrength password={values.password}/>
           <PasswordRequirements/>
           <Form.Group controlId='confirmPass'>
@@ -100,8 +102,7 @@ function RegisterForm(props: Props) {
               label={<h6>I agree to the <a href='/policy'>terms and conditions</a>.</h6>}
             />
           </Form.Group>
-          {errorMessage ?
-            <Alert variant='danger'>{errorMessage}</Alert> : null}
+          <Alert show={Boolean(errorMessage)} variant='danger'>{errorMessage}</Alert>
           <p>*Note: We will send you an email verification for each email entered.</p>
           <LoadingButton loading={isSubmitting} label='Register'/>
         </Form>

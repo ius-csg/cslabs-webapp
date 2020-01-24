@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {Button, Spinner} from 'react-bootstrap';
 
-export const LoadingButton = (props: {loading: boolean; label: string}) => (
-  <Button disabled={props.loading} variant='primary' type='submit'>
+interface Props {loading: boolean; label: string; className?: string; }
+
+export const LoadingButton = (props: Props) => (
+  <Button className={props.className} disabled={props.loading} variant='primary' type='submit'>
     { props.loading ?
       <Spinner
         as='span'

@@ -60,7 +60,10 @@ function logMessage(level: string, message: any, ...optionalParams: any[]) {
   logger.log(level, message, optionalParams);
 }
 
-export function isPassValid(password: string) {
+export function isPassValid(password?: string) {
+  if (!password) {
+    return false;
+  }
   const result = zxcvbn(password);
   return result.score >= 4;
 }
@@ -70,4 +73,20 @@ export function getFieldValue<T>(field: FieldInputProps<T>) {
     return '';
   }
   return field.value;
+}
+
+export interface MessageState {
+  message: string;
+  variant: 'danger' | 'success';
+}
+
+export function makeMessageState(): MessageState {
+  return {
+    message: '',
+    variant: 'danger'
+  };
+}
+
+export function delay(timeout: number) {
+  return new Promise(resolve => setTimeout(() => resolve(), timeout));
 }

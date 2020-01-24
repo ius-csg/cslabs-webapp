@@ -15,6 +15,8 @@ import {login} from '../../api';
 import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {CapsLockAlert} from '../../components/util/CapsLockAlert';
 
 type Props = {
   onRedirect: (redirect: string) => void;
@@ -32,7 +34,7 @@ function LoginForm(props: Props) {
   const onSubmit = async (values: LoginFormValues) => {
     try {
       const resp = await login(values.schoolEmail, values.password);
-      props.actions.setCurrentUser(resp.data);
+      await props.actions.setCurrentUser(resp.data);
       props.onRedirect('/my-modules');
     } catch (e) {
       if (isBadRequest(e)) {
@@ -59,8 +61,9 @@ function LoginForm(props: Props) {
             <Form.Label column={true}>Password</Form.Label>
             <Input name={getFieldName('password')} type='password' placeholder='Enter Password'/>
           </Form.Group>
-          {errorMessage ?
-            <Alert variant='danger'>{errorMessage}</Alert> : null}
+          <CapsLockAlert />
+          <Link to='/ForgotPassword'> Forgot Password?<br/><br/></Link>
+          <Alert show={Boolean(errorMessage)} variant='danger'>{errorMessage}</Alert>
           <LoadingButton loading={isSubmitting} label='Login'/>
         </Form>
       )}
