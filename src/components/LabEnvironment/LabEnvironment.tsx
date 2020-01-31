@@ -11,12 +11,14 @@ import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
 import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
 import {UserLab} from '../../types/UserLab';
+import {LoadingButton} from '../../util/LoadingButton';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {
   statuses: {[key: number]: string};
   userLab: UserLab;
-
+  starting: boolean;
+  onStartLab: () => void;
 }
 
 interface LabEnvironmentState {
@@ -52,12 +54,25 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     this.setState({ numPages: pdf.numPages, readmeLoaded: true});
   };
 
+  isLabAbleToStart() {
+    const status = this.props.userLab.status;
+    return status === 'NotStarted';
+  }
+
   render() {
     const { pageNumber, numPages } = this.state;
     return (
       <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={true}>
         <Container fluid={true} className='full-height-container'>
-          <h2>Lab : {this.props.userLab.lab.name}</h2>
+          <Row noGutters={true} className='justify-content-between'>
+            <h2>Lab : {this.props.userLab.lab.name}</h2>
+            {this.isLabAbleToStart() ?
+              <LoadingButton
+                loading={this.props.starting}
+                label='Start Lab'
+                onClick={this.props.onStartLab}
+              /> : null}
+          </Row>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
             <ListGroup style={{marginTop: 20}}>
