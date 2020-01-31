@@ -10,4 +10,3 @@ export interface Module {
   // if there is a user module instance, it's id will show here.
   userModuleId?: number;
 }
-

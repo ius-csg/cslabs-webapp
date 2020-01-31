@@ -8,7 +8,7 @@ import {appDispatch} from '../redux/store';
 import axiosRetry from 'axios-retry';
 import {RegisterFormValues} from '../pages/LoginRegisterPage/RegisterFormSchema';
 import {UserModule} from '../types/UserModule';
-import {UserLab} from '../types/UserLab';
+import {InitializationStatus, UserLab} from '../types/UserLab';
 
 let api = makeAxios();
 
@@ -107,6 +107,10 @@ export async function getUserLab(id: number) {
   return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;
 }
 
+export async function startUserLab(id: number) {
+  return handleResponse( await api.post<UserLab>(`/user-lab/${id}/start`)).data;
+}
+
 export function getUserLabTopologyUrl(id: number) {
   return  `${process.env.REACT_APP_API_URL}/user-lab/${id}/topology`;
 }
@@ -115,8 +119,8 @@ export function getUserLabReadmeUrl(id: number) {
   return  `${process.env.REACT_APP_API_URL}/user-lab/${id}/readme`;
 }
 
-export async function getUserModuleStatus(id: number) {
-  return handleResponse( await api.get<string>(`/user-module/${id}/status`)).data;
+export async function getUserLabInitializationStatus(id: number) {
+  return handleResponse( await api.get<InitializationStatus>(`/user-lab/${id}/initialization-status`)).data;
 }
 
 export async function getUserLabVmStatuses(id: number) {

@@ -47,5 +47,3 @@ export const RegisterFormSchema: ObjectSchema<RegisterFormValues> = object({
   phoneNumber: string().matches(/[0-9]{3}-[0-9]{3}-[0-9]{4}/, 'Please type in format of XXX-XXX-XXXX'),
   acceptedTerms: bool().test('accepted-terms', 'You must agree before submitting.', (value?: boolean) => Boolean(value))
 });
-
-
