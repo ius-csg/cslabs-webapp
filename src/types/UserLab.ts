@@ -7,4 +7,6 @@ export interface UserLab {
   userLabVms: UserLabVm[];
   hasTopology: boolean;
   hasReadme: boolean;
+  labTime: string;
+  status: string;
 }

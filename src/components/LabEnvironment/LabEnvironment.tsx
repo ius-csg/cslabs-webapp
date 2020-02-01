@@ -9,7 +9,7 @@ import {CenteredIcon} from '../../util/CenteredIcon';
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
-import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
+import {getUserLabReadmeUrl, getUserLabTopologyUrl, getUserLab} from '../../api';
 import {UserLab} from '../../types/UserLab';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -23,6 +23,7 @@ interface LabEnvironmentState {
   numPages: number;
   pageNumber: number;
   readmeLoaded: boolean;
+  userLab?: UserLab;
 }
 
 export function getIndicatorClassName(running: boolean) {
@@ -40,6 +41,11 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     readmeLoaded: false,
     pageNumber: 1
   };
+
+  async componentDidMount() {
+    const userLab = await getUserLab(Number(this.props.userLab.id));
+    this.setState({ userLab: userLab});
+  }
 
   canGoToPrevPage = () => this.state.pageNumber > 1;
   canGoToNextPage = () => this.state.pageNumber < this.state.numPages;
@@ -76,6 +82,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
           </Col>
           <Col sm={8} md={8} lg={10} className='full-height-container'>
             <Tab.Content className='full-height-container'>
+              <h4 style={{textAlign: 'right'}}>Lab's time remaining: {this.props.userLab.labTime}</h4>
               <Tab.Pane eventKey='#topology'>
                 <h2>Topology</h2>
                 {!this.props.userLab.hasTopology ?

@@ -6,3 +6,10 @@ export interface UserModule {
   module: Module;
   userLabs: UserLab[];
 }
+
+export function isOpen(status: string) {
+  return status === 'Open';
+}
+export function isCompleted(status: string) {
+  return status === 'Completed';
+}

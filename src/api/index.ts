@@ -92,6 +92,10 @@ export async function getUserLab(id: number) {
   return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;
 }
 
+export async function getLabStatus(id: number) {
+  return handleResponse(await api.get<UserLab>(`/user-lab/${id}`)).data;
+}
+
 export function getUserLabTopologyUrl(id: number) {
   return  `${process.env.REACT_APP_API_URL}/user-lab/${id}/topology`;
 }
