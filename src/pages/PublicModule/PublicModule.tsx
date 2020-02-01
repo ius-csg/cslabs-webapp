@@ -32,6 +32,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       published: false,
       shortName: '',
       specialCode: '',
+      type: 'SingleUser',
       updatedAt: ''
     },
     startingModule: false
@@ -113,7 +114,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
     if (this.isUserModuleReady()) {
       return 'Go to Module';
     }
-    return 'Start';
+    return this.state.module.type === 'SingleUser' ? 'Start' : 'Join';
   }
 
   getModule(): Module {
