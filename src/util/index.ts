@@ -1,5 +1,8 @@
 import {makeLogger} from './logger';
 import zxcvbn from 'zxcvbn';
+import {FieldInputProps} from 'formik';
+import {DateTime} from 'luxon';
+import {AxiosError} from 'axios';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -59,10 +62,72 @@ function logMessage(level: string, message: any, ...optionalParams: any[]) {
   logger.log(level, message, optionalParams);
 }
 
-export function isPassValid(password: string) {
-  if (password.length === 0) {
-    return true;
+export function isPassValid(password?: string) {
+  if (!password) {
+    return false;
   }
   const result = zxcvbn(password);
   return result.score >= 4;
+}
+
+export function getFieldValue<T>(field: FieldInputProps<T>) {
+  if (field.value === undefined || field.value === null) {
+    return '';
+  }
+  return field.value;
+}
+
+export interface MessageState {
+  message: string;
+  variant: 'danger' | 'success';
+}
+
+export function makeMessageState(): MessageState {
+  return {
+    message: '',
+    variant: 'danger'
+  };
+}
+
+export function delay(timeout: number) {
+  return new Promise(resolve => setTimeout(() => resolve(), timeout));
+}
+
+export function getLocalDateTimeString(dateTime: string)  {
+  return DateTime.fromISO(dateTime.replace('Z', '') + '+00:00').toLocaleString(DateTime.DATE_SHORT);
+}
+
+export interface AxiosErrorMessageParams {
+  connectionMsg?: string;
+  badRequestMsg?: string;
+  four04Msg?: string;
+  serverError?: string;
+}
+
+export function handleAxiosError(e: AxiosError, params: AxiosErrorMessageParams = {}) {
+  if (e.response) {
+    if (e.response.status === 400) {
+      const defaultMessage = typeof e.response.data === 'object' && e.response.data.message ? e.response.data.message : 'Bad Request';
+      return params.badRequestMsg || defaultMessage;
+    } else if (e.response.status === 404) {
+      return params.four04Msg || 'Not Found';
+    } else if (e.response.status === 500) {
+      // tslint:disable-next-line:no-console
+      console.error(e);
+      return params.serverError || 'A server error occurred, please try again later.';
+    } else {
+      // tslint:disable-next-line:no-console
+      console.error(e);
+      return 'Unknown Error';
+    }
+  } else if (e.request) {
+    if (e.request.status === 0) {
+      return params.connectionMsg || 'Could not connect to the server';
+    } else {
+      // tslint:disable-next-line:no-console
+      console.error(e);
+      return 'Unknown Error';
+    }
+  }
+  throw e;
 }

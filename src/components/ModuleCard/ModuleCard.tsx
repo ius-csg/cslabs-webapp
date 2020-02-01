@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {isAuthenticated} from '../../redux/selectors/entities';
 import {Link} from 'react-router-dom';
 import {UserModule} from '../../types/UserModule';
+import {getLocalDateTimeString} from '../../util';
 
 interface ModuleCardProps extends ReturnType<typeof mapStateToProps> {
   module: Module|UserModule;
@@ -31,7 +32,7 @@ class ModuleCardComponent extends Component<ModuleCardProps > {
           </Card.Text>
         </Card.Body>
         <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <small className='text-muted'>{module.updatedAt}</small>
+          <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
           {this.getStartButton()}
         </Card.Footer>
       </Card>

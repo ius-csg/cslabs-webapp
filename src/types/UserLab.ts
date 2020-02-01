@@ -7,6 +7,12 @@ export interface UserLab {
   userLabVms: UserLabVm[];
   hasTopology: boolean;
   hasReadme: boolean;
+
   labTime: string;
   status: string;
+
+  status: 'Started' | 'NotStarted' | 'Completed';
+
 }
+
+export type InitializationStatus = 'Initialized' | 'Initializing';

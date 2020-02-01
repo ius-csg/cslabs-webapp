@@ -11,12 +11,14 @@ import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
 import {getUserLabReadmeUrl, getUserLabTopologyUrl, getUserLab} from '../../api';
 import {UserLab} from '../../types/UserLab';
+import {LoadingButton} from '../../util/LoadingButton';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {
   statuses: {[key: number]: string};
   userLab: UserLab;
-
+  starting: boolean;
+  onStartLab: () => void;
 }
 
 interface LabEnvironmentState {
@@ -33,7 +35,6 @@ export function getIndicatorClassName(running: boolean) {
     !running ? styles['suspended'] : ''
   ].join(' ');
 }
-
 export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmentState> {
 
   state: LabEnvironmentState = {
@@ -59,12 +60,25 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     this.setState({ numPages: pdf.numPages, readmeLoaded: true});
   };
 
+  isLabAbleToStart() {
+    const status = this.props.userLab.status;
+    return status === 'NotStarted';
+  }
+
   render() {
     const { pageNumber, numPages } = this.state;
     return (
-      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={false}>
-        <Container className='full-height-container'>
-          <h2>Lab : {this.props.userLab.lab.name}</h2>
+      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={true}>
+        <Container fluid={true} className='full-height-container'>
+          <Row noGutters={true} className='justify-content-between'>
+            <h2>Lab : {this.props.userLab.lab.name}</h2>
+            {this.isLabAbleToStart() ?
+              <LoadingButton
+                loading={this.props.starting}
+                label='Start Lab'
+                onClick={this.props.onStartLab}
+              /> : null}
+          </Row>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
             <ListGroup style={{marginTop: 20}}>
@@ -91,7 +105,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 }
               </Tab.Pane>
               <Tab.Pane eventKey='#readme'>
-                <h1>Read Me</h1>
+                <h2>Read Me</h2>
                 {!this.props.userLab.hasReadme ?
                   <p style={{textAlign: 'center'}}>No Readme Available</p> :
                   <div style={{width: 1000}}>
@@ -113,13 +127,6 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
               </Tab.Pane>
               <Tab.Pane eventKey='#status'>
                 <h2>VM Status</h2>
-                <Container>
-                  <Row>
-                    <Col>Name</Col>
-                    <Col>Status</Col>
-                    <Col>Options</Col>
-                  </Row>
-                </Container>
                 <Status vms={this.props.userLab.userLabVms} statuses={this.props.statuses}/>
               </Tab.Pane>
               { this.props.userLab.userLabVms.map(vm =>
