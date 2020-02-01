@@ -3,6 +3,7 @@ import zxcvbn from 'zxcvbn';
 import {FieldInputProps} from 'formik';
 import {DateTime} from 'luxon';
 import {AxiosError} from 'axios';
+import humanizeDuration from 'humanize-duration';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -93,8 +94,20 @@ export function delay(timeout: number) {
   return new Promise(resolve => setTimeout(() => resolve(), timeout));
 }
 
+export function getLuxonObjectFromString(dateTime: string) {
+  return DateTime.fromISO(dateTime.replace('Z', '') + '+00:00');
+}
+
 export function getLocalDateTimeString(dateTime: string)  {
-  return DateTime.fromISO(dateTime.replace('Z', '') + '+00:00').toLocaleString(DateTime.DATE_SHORT);
+  return getLuxonObjectFromString(dateTime).toLocaleString(DateTime.DATE_SHORT);
+}
+
+export function getRemainingLabTime(dateTime: string) {
+  const milliseconds = getLuxonObjectFromString(dateTime).toLocal().diffNow().as('millisecond');
+  if (milliseconds < 0) {
+    return 'Times up!';
+  }
+  return humanizeDuration(milliseconds, { round: true , largest: 3});
 }
 
 export interface AxiosErrorMessageParams {

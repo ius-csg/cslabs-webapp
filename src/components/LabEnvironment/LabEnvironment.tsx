@@ -12,6 +12,7 @@ import {PDFDocumentProxy} from 'pdfjs-dist';
 import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {LoadingButton} from '../../util/LoadingButton';
+import {getRemainingLabTime} from '../../util';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {
@@ -71,7 +72,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 loading={this.props.starting}
                 label='Start Lab'
                 onClick={this.props.onStartLab}
-              /> : null}
+              /> : <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.props.userLab.endDateTime!)}</h6>}
           </Row>
           <Row className='fill-height'>
           <Col sm={4} md={4} lg={2}>
@@ -90,7 +91,6 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
           </Col>
           <Col sm={8} md={8} lg={10} className='full-height-container'>
             <Tab.Content className='full-height-container'>
-              <h4 style={{textAlign: 'right'}}>Lab's time remaining: {this.props.userLab.endDateTime}</h4>
               <Tab.Pane eventKey='#topology'>
                 <h2>Topology</h2>
                 {!this.props.userLab.hasTopology ?
