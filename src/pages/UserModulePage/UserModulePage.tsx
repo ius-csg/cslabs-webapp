@@ -26,6 +26,7 @@ class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState
          published: false,
          updatedAt: '',
          createdAt: '',
+         type: 'SingleUser',
          userModuleId: 0
        },
        userLabs: []
