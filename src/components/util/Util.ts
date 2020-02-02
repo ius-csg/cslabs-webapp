@@ -1,9 +1,6 @@
-import {FormEvent, useState} from 'react';
-import {FormControl, FormControlProps} from 'react-bootstrap';
+import {useState} from 'react';
 import axios from 'axios';
 import {FieldInputProps} from 'formik';
-
-export type BootstrapFormEvent = FormEvent<FormControl & FormControlProps>;
 
 export function makeAxios(token?: string) {
   token = token ? token : nullable(localStorage.getItem('token'));

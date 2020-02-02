@@ -38,10 +38,6 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
     startingModule: false
   };
 
-  constructor(props: PublicModuleProps) {
-    super(props);
-  }
-
   getId = () => Number(this.props.match.params.id);
 
   async componentDidMount() {

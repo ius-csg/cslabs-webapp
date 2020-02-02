@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
-import {Button, FormControlProps, Form, Col} from 'react-bootstrap';
+import {Button, Form, Col} from 'react-bootstrap';
 import styles from './ResetPassword.module.scss';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
@@ -11,13 +11,13 @@ export default class ResetPassword extends Component {
     password: '',
     confirmPass: ''
   };
-  onCurrentPasswordChange = (event: FormEvent<FormControlProps>) => {
+  onCurrentPasswordChange = (event: FormEvent<HTMLInputElement>) => {
     this.setState({currentPass: event.currentTarget.value});
   };
-  onPasswordChange = (event: FormEvent<FormControlProps>) => {
+  onPasswordChange = (event: FormEvent<HTMLInputElement>) => {
     this.setState({password: event.currentTarget.value});
   };
-  onConfirmPassChange = (event: FormEvent<FormControlProps>) => {
+  onConfirmPassChange = (event: FormEvent<HTMLInputElement>) => {
     this.setState({confirmPass: event.currentTarget.value});
   };
   isPassInvalid = () => {
