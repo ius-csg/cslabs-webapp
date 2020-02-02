@@ -6,12 +6,22 @@ import {ListGroup} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {RoutePaths} from '../../router/RoutePaths';
 import {UserModule} from '../../types/UserModule';
+import * as styles from './UserModulePage.module.scss';
+import {getUserLabStatusLabel, UserLabStatus} from '../../types/UserLab';
 
 type UserModuleLabsProps = RouteComponentProps<{id: string}>;
 
 export interface UserModuleLabsState {
   userModule: UserModule;
   moduleLab: {[key: number]: string};
+}
+
+export function getIndicatorClassName(status: UserLabStatus) {
+  return [
+    styles['lab-status-indicator'],
+    status === 'Started' ? styles['in-progress'] : '',
+    status === 'Completed' ? styles['completed'] : ''
+  ].join(' ');
 }
 
 class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState> {
@@ -52,8 +62,8 @@ class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState
         <ListGroup>
           {labs.map((l, i) => (
             <Link to={RoutePaths.userLab.replace(':id', String(l.id))} key={i}>
-              <ListGroup.Item key={this.state.userModule.id} >{l.lab.name}
-                <span style={{textAlign: 'right'}}>{l.lab.status}</span>
+              <ListGroup.Item key={this.state.userModule.id}  className={getIndicatorClassName(l.status)}>{l.lab.name}
+                <span style={{textAlign: 'right', float: 'right', fontSize: 12}}>{getUserLabStatusLabel(l.status)}</span>
               </ListGroup.Item>
             </Link>
           ))}

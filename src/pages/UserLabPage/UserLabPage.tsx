@@ -42,7 +42,13 @@ export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
         startUpVm(vm.id);
       }
     }
-    this.interval = setInterval(async () => this.setState({statuses: await getUserLabVmStatuses(this.state.userLab!.id)}), 5000);
+    this.interval = setInterval(async () => {
+      this.setState({
+        statuses: await getUserLabVmStatuses(this.state.userLab!.id),
+        userLab: await getUserLab(this.state.userLab!.id)
+      });
+
+    }, 5000);
   }
 
   startUserLab = async () => {
