@@ -102,7 +102,10 @@ export function getLocalDateTimeString(dateTime: string)  {
   return getLuxonObjectFromString(dateTime).toLocaleString(DateTime.DATE_SHORT);
 }
 
-export function getRemainingLabTime(dateTime: string) {
+export function getRemainingLabTime(dateTime?: string) {
+  if (!dateTime) {
+    return 'Invalid Value';
+  }
   const milliseconds = getLuxonObjectFromString(dateTime).toLocal().diffNow().as('millisecond');
   if (milliseconds < 0) {
     return 'Times up!';
