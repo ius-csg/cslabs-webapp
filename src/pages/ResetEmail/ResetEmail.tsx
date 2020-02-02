@@ -1,19 +1,20 @@
 import * as React from 'react';
 import {Component, FormEvent} from 'react';
-import {Button, FormControlProps, Form, Col} from 'react-bootstrap';
+import {Button, Form, Col} from 'react-bootstrap';
 import styles from '../ResetPassword/ResetPassword.module.scss';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
+
 export default class ResetEmail extends Component {
   state = {
     email: '',
     currentPass: ''
   };
 
-  onCurrentPasswordChange = (event: FormEvent<FormControlProps>) => {
+  onCurrentPasswordChange = (event: FormEvent<HTMLInputElement>) => {
     this.setState({currentPass: event.currentTarget.value});
   };
 
-  onEmailChange = (event: FormEvent<FormControlProps>) => {
+  onEmailChange = (event: FormEvent<HTMLInputElement>) => {
     this.setState({email: event.currentTarget.value});
   };
 

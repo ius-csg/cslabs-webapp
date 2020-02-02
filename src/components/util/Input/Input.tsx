@@ -1,7 +1,7 @@
 import React, {FormEvent, useContext} from 'react';
 import {ErrorMessage, Field, FieldProps} from 'formik';
 import styles from './Input.module.scss';
-import {Form, FormControlProps} from 'react-bootstrap';
+import {Form} from 'react-bootstrap';
 import {getFieldValue} from '../../../util';
 import {CapsLockContext} from '../../CapsLockContext/CapsLockContext';
 
@@ -39,7 +39,7 @@ export default function Input(props: InputProps) {
                   capsLockState.setCapsLock(capsLock);
                 }
               }}
-              onChange={(e: FormEvent<FormControlProps>) => field.onChange(e)}
+              onChange={(e: FormEvent<HTMLInputElement>) => field.onChange(e)}
               disabled={props.disabled}
               type={props.type || 'text'}
             />

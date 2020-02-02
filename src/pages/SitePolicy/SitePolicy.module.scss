@@ -13,7 +13,6 @@
     margin-top: 0;
     text-align: center;
     padding-top: 3rem;
-   // color: map-get($colors, primary)
 }
 
 .contact {
@@ -24,9 +23,10 @@
     padding-bottom: 5rem;
 }
 
-.accordion_toggle_header {
+.accordion-toggle-header {
     display: flex;
     justify-content: center;
+
     :hover {
         color: map-get($colors, secondary);
         cursor: pointer;

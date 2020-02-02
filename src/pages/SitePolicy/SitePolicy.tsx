@@ -18,7 +18,7 @@ export default class SitePolicy extends React.Component {
           <h5 className={styles['update']}>Last Updated: &nbsp; <i> January 6th, 2020 </i></h5>
           <Accordion>
             <Card>
-              <Accordion.Toggle as={Card.Header} eventKey='termsOfUse' className={styles['accordion_toggle_header']}>
+              <Accordion.Toggle as={Card.Header} eventKey='termsOfUse' className={styles['accordion-toggle-header']}>
                 <h4> TERMS OF USE </h4>
               </Accordion.Toggle>
               <Accordion.Collapse eventKey='termsOfUse'>
@@ -26,7 +26,7 @@ export default class SitePolicy extends React.Component {
               </Accordion.Collapse>
             </Card>
             <Card>
-              <Accordion.Toggle as={Card.Header} eventKey='dispute' className={styles['accordion_toggle_header']}>
+              <Accordion.Toggle as={Card.Header} eventKey='dispute' className={styles['accordion-toggle-header']}>
                 <h4> DISPUTE RESOLUTION</h4>
               </Accordion.Toggle>
               <Accordion.Collapse eventKey='dispute'>
@@ -34,7 +34,7 @@ export default class SitePolicy extends React.Component {
               </Accordion.Collapse>
             </Card>
             <Card>
-              <Accordion.Toggle as={Card.Header} eventKey='privacyPolicy' className={styles['accordion_toggle_header']}>
+              <Accordion.Toggle as={Card.Header} eventKey='privacyPolicy' className={styles['accordion-toggle-header']}>
                <h4> PRIVACY POLICY </h4>
               </Accordion.Toggle>
               <Accordion.Collapse eventKey='privacyPolicy'>
@@ -42,7 +42,7 @@ export default class SitePolicy extends React.Component {
               </Accordion.Collapse>
              </Card>
             <Card>
-              <Accordion.Toggle as={Card.Header} eventKey='cookiePolicy' className={styles['accordion_toggle_header']}>
+              <Accordion.Toggle as={Card.Header} eventKey='cookiePolicy' className={styles['accordion-toggle-header']}>
                <h4> COOKIE POLICY </h4>
               </Accordion.Toggle>
               <Accordion.Collapse eventKey='cookiePolicy'>
@@ -50,7 +50,7 @@ export default class SitePolicy extends React.Component {
               </Accordion.Collapse>
             </Card>
             <Card>
-              <Accordion.Toggle as={Card.Header} eventKey='disclaimer' className={styles['accordion_toggle_header']}>
+              <Accordion.Toggle as={Card.Header} eventKey='disclaimer' className={styles['accordion-toggle-header']}>
               <h4> DISCLAIMER </h4>
               </Accordion.Toggle>
               <Accordion.Collapse eventKey='disclaimer'>
