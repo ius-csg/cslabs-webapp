@@ -63,7 +63,7 @@ class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState
           {labs.map((l, i) => (
             <Link to={RoutePaths.userLab.replace(':id', String(l.id))} key={i}>
               <ListGroup.Item key={this.state.userModule.id}  className={getIndicatorClassName(l.status)}>{l.lab.name}
-                <span style={{textAlign: 'right', float: 'right', fontSize: 12}}>{getUserLabStatusLabel(l.status)}</span>
+                <span style={{textAlign: 'right', float: 'right'}}>{getUserLabStatusLabel(l.status)}</span>
               </ListGroup.Item>
             </Link>
           ))}
