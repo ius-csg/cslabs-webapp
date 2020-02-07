@@ -37,7 +37,7 @@ export class Status extends Component<StatusProps, StatusState> {
     if (this.props.vms.length > 0) {
       return (
         <>
-          <Container>
+          <Container fluid={true}>
             <Row>
               <Col>Name</Col>
               <Col>Status</Col>
