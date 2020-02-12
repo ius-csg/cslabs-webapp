@@ -20,7 +20,7 @@ import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
-
+import Contact   from '../pages/Contact/Contact';
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
@@ -35,6 +35,7 @@ const Routes = () => (
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
         <PrivateRoute path='/module/:id/' component={PublicModule}/>
         <Route exact={true} path={RoutePaths.forgotPassword} component={ForgotPassword}/>
+        <Route exact={true} path={RoutePaths.contactUs} component={Contact}/>
         <Route exact={true} path={RoutePaths.confirmForgotPassword} component={ConfirmForgotPassword}/>
         <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>
         <Route exact={true} path={RoutePaths.userLab} component={UserLabPage}/>

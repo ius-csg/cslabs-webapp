@@ -9,6 +9,7 @@ export enum RoutePaths {
   forgotPassword = '/forgotpassword',
   confirmForgotPassword = '/confirm-forgot-password/:passwordRecoveryCode',
   logout = '/logout',
+  contactUs = '/contact',
   home = '/',
   userModule = '/user-module/:id',
   userLab = '/user-lab/:id',
