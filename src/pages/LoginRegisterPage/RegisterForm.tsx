@@ -30,8 +30,7 @@ function RegisterForm(props: Props) {
   const [initialValues] = useState<RegisterFormValues>({
     firstName: '',
     lastName: '',
-    schoolEmail: '',
-    personalEmail: '',
+    email: '',
     gradYear: '',
     phoneNumber: '',
     confirmPass: '',
@@ -62,20 +61,16 @@ function RegisterForm(props: Props) {
       {({handleSubmit, isSubmitting, values}) => (
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId='firstName'>
-            <Form.Label column={true}>First Name</Form.Label>
+            <Form.Label column={true}>First Name*</Form.Label>
             <Input name={getFieldName('firstName')} placeholder='Enter First Name'/>
           </Form.Group>
           <Form.Group controlId='lastName'>
-            <Form.Label column={true}>Last Name</Form.Label>
+            <Form.Label column={true}>Last Name*</Form.Label>
             <Input name={getFieldName('lastName')} placeholder='Enter Last Name'/>
           </Form.Group>
-          <Form.Group controlId='schoolEmail'>
-            <Form.Label column={true}>School Email (Either personal or school email is required)</Form.Label>
-            <Input name={getFieldName('schoolEmail')} placeholder='Enter School Email'/>
-          </Form.Group>
-          <Form.Group controlId='personalEmail'>
-            <Form.Label column={true}>Personal Email (Either personal or school email is required)</Form.Label>
-            <Input name={getFieldName('personalEmail')} placeholder='Enter Personal Email'/>
+          <Form.Group controlId='email'>
+            <Form.Label column={true}>Email* (We will send you an email verification)</Form.Label>
+            <Input name={getFieldName('email')} placeholder='Enter Email'/>
           </Form.Group>
           <Form.Group controlId='gradYear'>
             <Form.Label column={true}>Graduation Year</Form.Label>
@@ -86,14 +81,14 @@ function RegisterForm(props: Props) {
             <Input name={getFieldName('phoneNumber')} type='tel' placeholder='Enter Phone Number'/>
           </Form.Group>
           <Form.Group controlId='password'>
-            <Form.Label column={true}>Password</Form.Label>
+            <Form.Label column={true}>Password*</Form.Label>
             <Input name={getFieldName('password')} type='password' placeholder='Enter Password'/>
           </Form.Group>
           <CapsLockAlert/>
           <PasswordStrength password={values.password}/>
           <PasswordRequirements/>
           <Form.Group controlId='confirmPass'>
-            <Form.Label column={true}>Confirm Password</Form.Label>
+            <Form.Label column={true}>Confirm Password*</Form.Label>
             <Input name={getFieldName('confirmPass')} type='password' placeholder='Confirm Password'/>
           </Form.Group>
           <Form.Group controlId='acceptedTerms'>
@@ -103,7 +98,7 @@ function RegisterForm(props: Props) {
             />
           </Form.Group>
           <Alert show={Boolean(errorMessage)} variant='danger'>{errorMessage}</Alert>
-          <p>*Note: We will send you an email verification for each email entered.</p>
+          <p>* items are required</p>
           <LoadingButton loading={isSubmitting} label='Register'/>
         </Form>
       )}

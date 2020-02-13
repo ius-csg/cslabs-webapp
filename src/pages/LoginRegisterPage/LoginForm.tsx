@@ -26,14 +26,14 @@ const getFieldName = (prop: keyof LoginFormValues) => prop;
 
 function LoginForm(props: Props) {
   const [initialValues] = useState<LoginFormValues>({
-    schoolEmail: '',
+    email: '',
     password: ''
   });
   const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = async (values: LoginFormValues) => {
     try {
-      const resp = await login(values.schoolEmail, values.password);
+      const resp = await login(values.email, values.password);
       await props.actions.setCurrentUser(resp.data);
       props.onRedirect('/my-modules');
     } catch (e) {
@@ -55,7 +55,7 @@ function LoginForm(props: Props) {
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId='schoolEmail'>
             <Form.Label column={true}>Email</Form.Label>
-            <Input name={getFieldName('schoolEmail')} placeholder='Enter Email' />
+            <Input name={getFieldName('email')} placeholder='Enter Email' />
           </Form.Group>
           <Form.Group controlId='password'>
             <Form.Label column={true}>Password</Form.Label>

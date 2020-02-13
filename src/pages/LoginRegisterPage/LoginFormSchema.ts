@@ -1,11 +1,11 @@
 import {object, ObjectSchema, string} from 'yup';
 
 export interface LoginFormValues {
-  schoolEmail: string;
+  email: string;
   password: string;
 }
 
 export const LoginFormSchema: ObjectSchema<LoginFormValues> = object({
-  schoolEmail: string().required('Required'),
+  email: string().required('Required'),
   password: string().required('Required')
 });
