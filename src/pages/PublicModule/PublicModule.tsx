@@ -132,7 +132,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
           <Card.Body>
             <Card.Title>{module.name}</Card.Title>
             <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden'}}>
-              {module.description.substring(0, 150)}
+              {module.description}
             </Card.Text>
           </Card.Body>
           <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

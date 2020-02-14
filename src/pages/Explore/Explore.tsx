@@ -25,7 +25,7 @@ class Explore extends React.Component<{}, ExploreState> {
   }
 
   render() {
-      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={'/modules/' + m.id} module={m} key={i}/>);
+      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={'/module/' + m.id} module={m} key={i}/>);
       return (
         <Layout>
           <h1>Welcome To CSG LABS</h1>
