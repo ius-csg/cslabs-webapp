@@ -22,14 +22,8 @@ export const confirmPasswordValidator =
 
 export const RegisterFormSchema: ObjectSchema<RegisterFormValues> = object({
   email: string()
-    .test('either-email', 'At least one email address is required', function(value: any) {
-    // tslint:disable-next-line:no-invalid-this
-    const { email } = this.parent;
-    if (email) {
-      return value !== undefined;
-    }
-    return true;
-  }).email(emailValidationMessage),
+    .email(emailValidationMessage)
+    .required('Required'),
   firstName: string().required('Required'),
   lastName: string().required('Required'),
   password: passwordValidator,
