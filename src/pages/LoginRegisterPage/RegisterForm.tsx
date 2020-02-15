@@ -30,8 +30,7 @@ function RegisterForm(props: Props) {
   const [initialValues] = useState<RegisterFormValues>({
     firstName: '',
     lastName: '',
-    schoolEmail: '',
-    personalEmail: '',
+    email: '',
     gradYear: '',
     phoneNumber: '',
     confirmPass: '',
@@ -69,20 +68,16 @@ function RegisterForm(props: Props) {
             <Form.Label column={true}>Last Name</Form.Label>
             <Input name={getFieldName('lastName')} placeholder='Enter Last Name'/>
           </Form.Group>
-          <Form.Group controlId='schoolEmail'>
-            <Form.Label column={true}>School Email (Either personal or school email is required)</Form.Label>
-            <Input name={getFieldName('schoolEmail')} placeholder='Enter School Email'/>
-          </Form.Group>
-          <Form.Group controlId='personalEmail'>
-            <Form.Label column={true}>Personal Email (Either personal or school email is required)</Form.Label>
-            <Input name={getFieldName('personalEmail')} placeholder='Enter Personal Email'/>
+          <Form.Group controlId='email'>
+            <Form.Label column={true}>Email - We will send you an email verification</Form.Label>
+            <Input name={getFieldName('email')} placeholder='Enter Email'/>
           </Form.Group>
           <Form.Group controlId='gradYear'>
-            <Form.Label column={true}>Graduation Year</Form.Label>
+            <Form.Label column={true}>Graduation Year - Optional</Form.Label>
             <Input name={getFieldName('gradYear')} type='number' placeholder='Enter Graduation Year'/>
           </Form.Group>
           <Form.Group controlId='phoneNumber'>
-            <Form.Label column={true}>Phone Number</Form.Label>
+            <Form.Label column={true}>Phone Number - Optional</Form.Label>
             <Input name={getFieldName('phoneNumber')} type='tel' placeholder='Enter Phone Number'/>
           </Form.Group>
           <Form.Group controlId='password'>
@@ -103,7 +98,6 @@ function RegisterForm(props: Props) {
             />
           </Form.Group>
           <Alert show={Boolean(errorMessage)} variant='danger'>{errorMessage}</Alert>
-          <p>*Note: We will send you an email verification for each email entered.</p>
           <LoadingButton loading={isSubmitting} label='Register'/>
         </Form>
       )}

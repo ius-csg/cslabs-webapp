@@ -130,8 +130,8 @@ export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
 }
 
-export async function verifyEmail(type: string, code: string) {
-  return handleResponse(await api.post<string>(`/user/verify-email`, {type: type, code: code}));
+export async function verifyEmail(code: string) {
+  return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
 
 function handleResponse<T>(response: AxiosResponse<T>) {

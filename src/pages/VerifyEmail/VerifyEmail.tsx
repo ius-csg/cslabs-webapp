@@ -4,7 +4,6 @@ import {verifyEmail} from '../../api';
 import {Spinner} from 'react-bootstrap';
 
 interface Params {
-  type: string;
   code: string;
 }
 
@@ -24,9 +23,9 @@ export class VerifyEmail extends Component<VerifyEmailProps, State> {
   };
 
   async componentDidMount() {
-    const {type, code} = this.props.match.params;
+    const {code} = this.props.match.params;
     try {
-      await verifyEmail(type, code);
+      await verifyEmail(code);
       this.setState({
         loading: false,
         verified: true
