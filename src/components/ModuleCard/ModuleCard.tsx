@@ -39,6 +39,7 @@ class ModuleCardComponent extends Component<ModuleCardProps > {
     );
   }
 
+
   getStartButton() {
     if (this.props.authenticated) {
       if (this.props.buttonLink) {
@@ -53,7 +54,15 @@ class ModuleCardComponent extends Component<ModuleCardProps > {
         return null;
       }
     } else {
-      return null;
+      if (this.props.buttonLink) {
+        return (
+          <Link to={this.props.buttonLink}>
+            <Button className='btn btn-primary' style={{width: 200}}>View</Button>
+          </Link>
+        );
+      } else {
+        return null;
+      }
     }
   }
 }

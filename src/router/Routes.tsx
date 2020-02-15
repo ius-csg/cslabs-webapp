@@ -26,14 +26,14 @@ const Routes = () => (
     <Router history={History} >
       <NavigationBar />
       <Switch>
-        <Route exact={true} path={RoutePaths.home} component={Home}/>
+        <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
         <Route exact={true} path={RoutePaths.explore} component={Explore}/>
         <Route exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
         <PrivateRoute exact={true} path={RoutePaths.profile} component={Profile}/>
         <PrivateRoute exact={true} path={RoutePaths.resetEmail} component={ResetEmail}/>
         <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
-        <PrivateRoute path='/module/:id/' component={PublicModule}/>
+        <Route exact={true} path={RoutePaths.module} component={PublicModule}/>
         <Route exact={true} path={RoutePaths.forgotPassword} component={ForgotPassword}/>
         <Route exact={true} path={RoutePaths.confirmForgotPassword} component={ConfirmForgotPassword}/>
         <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>

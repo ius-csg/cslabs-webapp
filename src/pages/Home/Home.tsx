@@ -16,7 +16,7 @@ class Home extends Component<ReturnType<typeof mapStateToProps>> {
     if (this.props.authenticated) {
       return <Redirect to={RoutePaths.myModules} />;
     } else {
-      return <Redirect to={RoutePaths.login} />;
+      return <Redirect to={RoutePaths.explore} />;
     }
     // return  (
     //   <Layout fluid={true} className='full-height-container'>

@@ -8,7 +8,7 @@ import {isAuthenticated} from '../../redux/selectors/entities';
 import {Link} from 'react-router-dom';
 import {RoutePaths} from '../../router/RoutePaths';
 import {Layout} from '../Layout/Layout';
-import {Alert, Card} from 'react-bootstrap';
+import {Alert, Button, Card} from 'react-bootstrap';
 import Styles from './PublicModule.module.scss';
 import {getLocalDateTimeString} from '../../util';
 import {LoadingButton} from '../../util/LoadingButton';
@@ -57,7 +57,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
     if (this.state.module !== undefined) {
       try {
         this.setState({startingModule: true});
-        const userModule = await startUserModule(String(this.state.module.specialCode));
+        const userModule = await startUserModule(String(this.state.module.id));
         this.setState({module: {...this.state.module, userModuleId: (userModule).id}, startingModule: false});
       } catch (e) {
         this.setState({message: 'Failed to start module!', startingModule: false});
@@ -91,7 +91,11 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
         return this.renderButton();
       }
     } else {
-      return null;
+      return (
+        <Link to={RoutePaths.login}>
+          <Button className='btn btn-primary' style={{width: 200}}>Login</Button>
+        </Link>
+      );
     }
   }
 
@@ -122,9 +126,9 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
 
   render() {
     const module = this.getModule();
-    if (!this.props.authenticated) {
-      return <Link to={RoutePaths.login}/>;
-    }
+    // if (!this.props.authenticated) {
+    //   return <Link to={RoutePaths.login}/>;
+    // }
     return (
       <Layout>
         <Alert style={{textAlign: 'center'}} show={Boolean(this.state.message)} variant='danger'>{this.state.message}</Alert>
@@ -148,3 +152,4 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
 
 const mapStateToProps = (state: WebState) => ({authenticated: isAuthenticated(state)});
 export default connect(mapStateToProps)(PublicModule);
+
