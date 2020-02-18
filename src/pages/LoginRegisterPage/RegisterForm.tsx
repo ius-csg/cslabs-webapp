@@ -2,12 +2,6 @@ import {useState} from 'react';
 import React from 'react';
 import {Alert, Form} from 'react-bootstrap';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
-import {
-  getErrorResponseMessage,
-  isBadRequest,
-  isServerError,
-  isUnknownError
-} from '../../components/util/Util';
 import {LoadingButton} from '../../util/LoadingButton';
 import {RegisterFormSchema, RegisterFormValues} from './RegisterFormSchema';
 import Input from '../../components/util/Input/Input';
@@ -19,6 +13,7 @@ import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {connect} from 'react-redux';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
 import {CapsLockAlert} from '../../components/util/CapsLockAlert';
+import {getErrorResponseMessage, isBadRequest, isServerError, isUnknownError} from '../../util';
 
 type Props  = {
   onRedirect: (redirect: string) => void;

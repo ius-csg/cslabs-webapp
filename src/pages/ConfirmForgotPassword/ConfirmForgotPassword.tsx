@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {Form, Col, Row, Alert} from 'react-bootstrap';
+import {Form, Col, Row} from 'react-bootstrap';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
 import {Redirect, RouteComponentProps} from 'react-router';
 import {Layout} from '../Layout/Layout';
@@ -14,6 +14,7 @@ import {LoadingButton} from '../../util/LoadingButton';
 import {confirmForgotPassword} from '../../api';
 import {delay, makeMessageState} from '../../util';
 import {RoutePaths} from '../../router/RoutePaths';
+import {Message} from '../../util/Message';
 
 type Props = RouteComponentProps<{ passwordRecoveryCode: string }>;
 
@@ -76,9 +77,7 @@ export default function ConfirmForgotPassword(props: Props) {
               <Form.Group as={Row}>
                 <LoadingButton loading={isSubmitting} label='Change Password'/>
               </Form.Group>
-              <Row className='flex-column'>
-                <Alert show={Boolean(messageState.message)} variant={messageState.variant}>{messageState.message}</Alert>
-              </Row>
+              <Message state={messageState} />
             </Col>
           </Form>
         )}
