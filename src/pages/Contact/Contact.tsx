@@ -1,68 +1,86 @@
 import * as React from 'react';
-import {Component, FormEvent} from 'react';
-import {Button, Form, Col} from 'react-bootstrap';
+import {FormEvent, useState} from 'react';
+import {Form, Col} from 'react-bootstrap';
 import styles from '../ResetPassword/ResetPassword.module.scss';
-import { Layout } from 'pages/Layout/Layout';
+import {Layout} from '../Layout/Layout';
+import {Formik} from 'formik';
+import Input from '../../components/util/Input/Input';
+import {ContactUsForm, ContactUsSchema} from './ContactUsSchema';
+import {LoadingButton} from '../../util/LoadingButton';
+import {makeMessageState} from '../../util';
+import {Message} from '../../util/Message';
+import {submitContactRequest} from '../../api';
 
-export default class ResetEmail extends Component {
-  state = {
-    email: '',
-    message: '',
-    file: ''
+const initialValues: ContactUsForm = {email: '', message: ''};
+
+export default function ResetEmail() {
+  const [files, setFiles] = useState<null | FileList>(null);
+  const [messageState, setMessageState] = useState(makeMessageState());
+  const onFileChange = (event: FormEvent<HTMLInputElement>) => {
+    setFiles(event.currentTarget!.files);
   };
 
-  onEmailChange = (event: FormEvent<HTMLInputElement>) => {
-    this.setState({email: event.currentTarget.value});
+  const onSubmit = async (form: ContactUsForm) => {
+    setMessageState({...messageState, message: ''});
+    try {
+      const formData = new FormData();
+      formData.append('email', form.email);
+      formData.append('message', form.message);
+      if (files !== null) {
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < files.length; i++) {
+          formData.append('screenshots', files[i]);
+        }
+      }
+      await submitContactRequest(formData);
+      setMessageState({message: 'Message sent!', variant: 'success'});
+    } catch {
+      setMessageState({message: 'An Error occurred, try again later', variant: 'danger'});
+    }
   };
-  onMessageChange = (event: FormEvent<HTMLInputElement>) => {
-    this.setState({message: event.currentTarget.value});
-  };
-  onFileChange = (event: FormEvent<HTMLInputElement>) => {
-    this.setState({file: event.currentTarget.value});
-  };
-  render() {
-    return (
-      <Layout>
-        <h1>Contact Us</h1>
-        <Form>
-          <Col sm='6'>
-            <Form.Group controlId='formBasicEmail'>
-              <Form.Label column={true}>Email</Form.Label>
-              <Form.Control
-                type='email'
-                value={this.state.email}
-                onChange={this.onEmailChange}
-                placeholder='Enter Email'
-              />
-            </Form.Group>
-            <Form.Group controlId='formBasicFile'>
-              <Form.Label column={true}>Screenshot (images files only)</Form.Label>
-              <Form.Control
-                type='file'
-                accept='image/*'
-                value={this.state.file}
-                onChange={this.onFileChange}
-                placeholder='Enter New Email'
-              />
-            </Form.Group>
-            <text>
-              If this was a bug report, please tell us what you were attempting to do, what happened, and what was supposed to happen.
-            </text>
-            <Form.Group controlId='formBasicCurrentPassword'>
-              <Form.Label column={true}>Message</Form.Label>
-              <Form.Control
-                type='text'
-                value={this.state.message}
-                placeholder=''
-                onChange={this.onMessageChange}
-              />
-            </Form.Group>
-            <Button className={styles['button']} variant='primary' type='submit'>Submit</Button>
-          </Col>
-        </Form>
-      </Layout>
 
-    );
-  }
+
+  return (
+    <Layout>
+      <h1>Contact Us</h1>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={ContactUsSchema}
+        onSubmit={onSubmit}
+      >
+        {({handleSubmit, isSubmitting}) => (
+          <Form onSubmit={handleSubmit}>
+            <Col sm='6' className='m-auto'>
+              <Form.Group controlId='formBasicEmail'>
+                <Form.Label column={true}>Email</Form.Label>
+                <Input name='email' placeholder='Enter Email' type='email' />
+              </Form.Group>
+              <Form.Group controlId='formBasicFile'>
+                <Form.Label column={true}>Screenshot - Optional</Form.Label>
+                <Form.Control
+                  type='file'
+                  accept='image/*'
+                  onChange={onFileChange}
+                  placeholder='Upload a screenshot'
+                  multiple={true}
+                />
+              </Form.Group>
+              <text>
+                If this is a bug report, please tell us what you were attempting to do, what happened, and what was
+                supposed to happen.
+              </text>
+              <Form.Group controlId='formBasicCurrentPassword'>
+                <Form.Label column={true}>Message</Form.Label>
+                <Input name='message' type='textarea' />
+              </Form.Group>
+              <LoadingButton loading={isSubmitting} className={styles['button']} type='submit' label='Submit'/>
+              <Message state={messageState} />
+            </Col>
+          </Form>
+        )}
+      </Formik>
+    </Layout>
+  );
+
 }
 

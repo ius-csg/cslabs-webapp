@@ -143,3 +143,7 @@ function handleResponse<T>(response: AxiosResponse<T>) {
   }
   throw response;
 }
+
+export async function submitContactRequest(form: FormData) {
+  return handleResponse(await api.post<string>(`/contact-us`, form));
+}
