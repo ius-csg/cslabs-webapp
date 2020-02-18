@@ -5,18 +5,13 @@ import {LoadingButton} from '../../util/LoadingButton';
 import {Formik} from 'formik';
 import * as React from 'react';
 import {useState} from 'react';
-import {
-  getErrorResponseMessage,
-  isBadRequest,
-  isServerError,
-  isUnknownError
-} from '../../components/util/Util';
 import {login} from '../../api';
 import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {CapsLockAlert} from '../../components/util/CapsLockAlert';
+import {getErrorResponseMessage, isBadRequest, isServerError, isUnknownError} from '../../util';
 
 type Props = {
   onRedirect: (redirect: string) => void;

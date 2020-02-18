@@ -1,31 +1,29 @@
 import * as React from 'react';
-import {FormEvent, useState} from 'react';
+import {useState} from 'react';
 import {Form, Col} from 'react-bootstrap';
 import styles from '../ResetPassword/ResetPassword.module.scss';
 import {Layout} from '../Layout/Layout';
-import {Formik} from 'formik';
+import {Formik, FormikHelpers} from 'formik';
 import Input from '../../components/util/Input/Input';
 import {ContactUsForm, ContactUsSchema} from './ContactUsSchema';
 import {LoadingButton} from '../../util/LoadingButton';
-import {makeMessageState} from '../../util';
+import {handleAxiosError, isBadRequest, makeMessageState} from '../../util';
 import {Message} from '../../util/Message';
 import {submitContactRequest} from '../../api';
+import {FileInput} from '../../components/util/FileInput';
 
-const initialValues: ContactUsForm = {email: '', message: ''};
+const initialValues: ContactUsForm = {email: '', message: '', screenshots: null};
 
-export default function ResetEmail() {
-  const [files, setFiles] = useState<null | FileList>(null);
+export default function ContactUs() {
   const [messageState, setMessageState] = useState(makeMessageState());
-  const onFileChange = (event: FormEvent<HTMLInputElement>) => {
-    setFiles(event.currentTarget!.files);
-  };
 
-  const onSubmit = async (form: ContactUsForm) => {
+  const onSubmit = async (form: ContactUsForm, formikHelpers: FormikHelpers<ContactUsForm>) => {
     setMessageState({...messageState, message: ''});
     try {
       const formData = new FormData();
       formData.append('email', form.email);
       formData.append('message', form.message);
+      const files = form.screenshots;
       if (files !== null) {
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < files.length; i++) {
@@ -34,11 +32,15 @@ export default function ResetEmail() {
       }
       await submitContactRequest(formData);
       setMessageState({message: 'Message sent!', variant: 'success'});
-    } catch {
-      setMessageState({message: 'An Error occurred, try again later', variant: 'danger'});
+    } catch(e) {
+      if(isBadRequest(e)) {
+        formikHelpers.setErrors(e.response.data);
+      } else {
+        setMessageState({message: handleAxiosError(e), variant: 'danger'});
+      }
+
     }
   };
-
 
   return (
     <Layout>
@@ -56,19 +58,13 @@ export default function ResetEmail() {
                 <Input name='email' placeholder='Enter Email' type='email' />
               </Form.Group>
               <Form.Group controlId='formBasicFile'>
-                <Form.Label column={true}>Screenshot - Optional</Form.Label>
-                <Form.Control
-                  type='file'
-                  accept='image/*'
-                  onChange={onFileChange}
-                  placeholder='Upload a screenshot'
-                  multiple={true}
-                />
+                <Form.Label column={true}>Screenshots - Optional</Form.Label>
+                <FileInput name='screenshots' accept='image/*'/>
               </Form.Group>
-              <text>
+              <p>
                 If this is a bug report, please tell us what you were attempting to do, what happened, and what was
                 supposed to happen.
-              </text>
+              </p>
               <Form.Group controlId='formBasicCurrentPassword'>
                 <Form.Label column={true}>Message</Form.Label>
                 <Input name='message' type='textarea' />
