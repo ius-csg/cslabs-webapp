@@ -41,28 +41,16 @@ class ModuleCardComponent extends Component<ModuleCardProps > {
 
 
   getStartButton() {
-    if (this.props.authenticated) {
-      if (this.props.buttonLink) {
-        return (
-          <Link to={this.props.buttonLink}>
-            <Button className='btn btn-primary' style={{width: 200}}>Start</Button>
-          </Link>
-        );
-      } else if (this.props.buttonAction) {
-        return (<Button onClick={this.props.buttonAction} className='btn btn-primary' style={{width: 200}}>Start</Button>);
-      } else {
-        return null;
-      }
+    if (this.props.buttonLink) {
+      return (
+        <Link to={this.props.buttonLink}>
+          <Button className='btn btn-primary' style={{width: 200}}>View</Button>
+        </Link>
+      );
+    } else if (this.props.buttonAction) {
+      return (<Button onClick={this.props.buttonAction} className='btn btn-primary' style={{width: 200}}>View</Button>);
     } else {
-      if (this.props.buttonLink) {
-        return (
-          <Link to={this.props.buttonLink}>
-            <Button className='btn btn-primary' style={{width: 200}}>View</Button>
-          </Link>
-        );
-      } else {
-        return null;
-      }
+      return null;
     }
   }
 }

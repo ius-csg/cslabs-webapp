@@ -57,7 +57,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
     if (this.state.module !== undefined) {
       try {
         this.setState({startingModule: true});
-        const userModule = await startUserModule(String(this.state.module.id));
+        const userModule = await startUserModule(String(this.state.module.specialCode));
         this.setState({module: {...this.state.module, userModuleId: (userModule).id}, startingModule: false});
       } catch (e) {
         this.setState({message: 'Failed to start module!', startingModule: false});
