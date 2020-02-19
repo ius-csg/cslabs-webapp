@@ -1,7 +1,6 @@
 import {AxiosResponse} from 'axios';
 import {Module} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
-import {makeAxios} from '../components/util/Util';
 import {Dispatch} from 'redux';
 import {setCurrentUser} from '../redux/actions/entities/currentUser';
 import {appDispatch} from '../redux/store';
@@ -9,6 +8,7 @@ import axiosRetry from 'axios-retry';
 import {RegisterFormValues} from '../pages/LoginRegisterPage/RegisterFormSchema';
 import {UserModule} from '../types/UserModule';
 import {InitializationStatus, UserLab} from '../types/UserLab';
+import {makeAxios} from '../util';
 
 let api = makeAxios();
 
@@ -130,8 +130,8 @@ export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
 }
 
-export async function verifyEmail(type: string, code: string) {
-  return handleResponse(await api.post<string>(`/user/verify-email`, {type: type, code: code}));
+export async function verifyEmail(code: string) {
+  return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
 
 function handleResponse<T>(response: AxiosResponse<T>) {
@@ -142,4 +142,8 @@ function handleResponse<T>(response: AxiosResponse<T>) {
     appDispatch(logout());
   }
   throw response;
+}
+
+export async function submitContactRequest(form: FormData) {
+  return handleResponse(await api.post<string>(`/contact-us`, form));
 }

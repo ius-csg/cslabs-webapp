@@ -4,8 +4,7 @@ export interface User {
   firstName: string;
   middleName?: string;
   lastName: string;
-  schoolEmail: string;
-  personalEmail: string;
+  email: string;
   graduationYear?: number;
   userType: 'guest' | 'member' | 'officer' | 'staff';
   createdAt: string;
