@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Button, Col, Container, ListGroup, Row, Tab} from 'react-bootstrap';
+import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab} from 'react-bootstrap';
 import {isRunning} from '../../types/UserLabVm';
 import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import * as styles from './LabEnvironment.module.scss';
 import {CenteredIcon} from '../../util/CenteredIcon';
-import {Status} from '../../pages/Status/Status';
+import {Status, performScrub, performShutdown} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
-import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
+import {getUserLabReadmeUrl, getUserLabTopologyUrl, resetVm, scrubVm, shutdownVm, startUpVm, stopVm} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {LoadingButton} from '../../util/LoadingButton';
 import {getRemainingLabTime} from '../../util';
@@ -40,9 +40,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
   state: LabEnvironmentState = {
     numPages: 1,
     readmeLoaded: false,
-    pageNumber: 1
+    pageNumber: 1,
   };
-
   canGoToPrevPage = () => this.state.pageNumber > 1;
   canGoToNextPage = () => this.state.pageNumber < this.state.numPages;
 
@@ -84,7 +83,19 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 <ListGroup.Item key={vm.labVm.name} action={true} href={'#' + vm.labVm.name} className={styles['vm-selector']}>
                   <span>
                     <CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))}  icon={faPowerOff} />
-                    <span>{vm.labVm.name}</span>
+                    <span>
+                      <Dropdown as={ButtonGroup}>
+                        <Button variant='success'>{vm.labVm.name}</Button>
+                        <Dropdown.Toggle split={true} variant='success' id='dropdown-split-basic' />
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
+                          <Dropdown.Item onClick={() => shutdownVm(vm.id)}>Shutdown</Dropdown.Item>
+                          <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
+                          <Dropdown.Item onClick={() => scrubVm(vm.id)}>Scrub</Dropdown.Item>
+                          <Dropdown.Item onClick={() => resetVm(vm.id)}>Reset</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </span>
                   </span>
                 </ListGroup.Item>)}
             </ListGroup>
