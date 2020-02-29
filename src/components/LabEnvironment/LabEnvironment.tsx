@@ -6,7 +6,7 @@ import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import * as styles from './LabEnvironment.module.scss';
 import {CenteredIcon} from '../../util/CenteredIcon';
-import {Status, performScrub, performShutdown} from '../../pages/Status/Status';
+import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
 import {getUserLabReadmeUrl, getUserLabTopologyUrl, resetVm, scrubVm, shutdownVm, startUpVm, stopVm} from '../../api';
