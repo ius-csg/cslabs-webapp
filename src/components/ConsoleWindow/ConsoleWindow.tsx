@@ -8,6 +8,7 @@ import {UserLabVm} from '../../types/UserLabVm';
 // import {VMPowerState} from '../../types/VMPowerState';
 import RFB from 'novnc-core';
 import {acquireTicket} from '../../api';
+import ConsolePopout from '../ConsoleWindow/ConsolePopout';
 
 interface ConsoleContainerProps {
   vm: UserLabVm;
@@ -27,11 +28,18 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   ref: RefObject<HTMLDivElement>;
   private resizeEventHandler?: () => void;
   private pasteEventHandler?: (e: any) => boolean;
+  private showWindowPortal: boolean;
 
   constructor(props: ConsoleContainerProps) {
     super(props);
     this.consoleWindowId = getNewConsoleWindowId();
     this.ref = React.createRef();
+    this.state = {
+      showWindowPortal: false
+    };
+
+    this.toggleWindowPortal = this.toggleWindowPortal.bind(this);
+    this.closeWindowPortal = this.closeWindowPortal.bind(this);
   }
 
   get rfb() {
@@ -57,6 +65,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
       log('Could not connect to vm', e);
     }
   };
+
 
   componentWillUnmount(): void {
     log('unmount ' + this.consoleWindowId);
@@ -110,6 +119,17 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     div.addEventListener('paste', this.pasteEventHandler);
   }
 
+  toggleWindowPortal() {
+    this.setState(state => ({
+      ...state,
+      showWindowPortal: !state.showWindowPortal,
+    }));
+  }
+
+  closeWindowPortal() {
+    this.setState({ showWindowPortal: false });
+  }
+
   setSize(parentWidth: number, after?: () => void) {
     parentWidth = parentWidth * .75;
     let height = parentWidth * .75;
@@ -141,6 +161,22 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
         >
           <div id={this.consoleWindowId} className='fill-height'/>
         </div>
+        <button onClick={this.toggleWindowPortal}>
+          {this.state.showWindowPortal ? 'Close the' : 'Open a'} Portal
+        </button>
+        {this.state.showWindowPortal && (
+          <ConsolePopout>
+            <div
+              className={combineClasses(styles['wmks-console-window-container'], 'full-height-container')}
+            >
+              <div id={this.consoleWindowId} className='fill-height'/>
+            </div>
+
+            <button onClick={() => this.closeWindowPortal()} >
+              Close me!
+            </button>
+          </ConsolePopout>
+        )}
       </div>
     );
   }
