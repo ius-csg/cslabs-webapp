@@ -8,7 +8,7 @@ import {isAuthenticated} from '../../redux/selectors/entities';
 import {Link} from 'react-router-dom';
 import {RoutePaths} from '../../router/RoutePaths';
 import {Layout} from '../Layout/Layout';
-import {Alert, Card} from 'react-bootstrap';
+import {Alert, Button, Card} from 'react-bootstrap';
 import Styles from './PublicModule.module.scss';
 import {getLocalDateTimeString} from '../../util';
 import {LoadingButton} from '../../util/LoadingButton';
@@ -91,7 +91,11 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
         return this.renderButton();
       }
     } else {
-      return null;
+      return (
+        <Link to={RoutePaths.login}>
+          <Button className='btn btn-primary' style={{width: 200}}>Login</Button>
+        </Link>
+      );
     }
   }
 
@@ -122,9 +126,9 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
 
   render() {
     const module = this.getModule();
-    if (!this.props.authenticated) {
-      return <Link to={RoutePaths.login}/>;
-    }
+    // if (!this.props.authenticated) {
+    //   return <Link to={RoutePaths.login}/>;
+    // }
     return (
       <Layout>
         <Alert style={{textAlign: 'center'}} show={Boolean(this.state.message)} variant='danger'>{this.state.message}</Alert>
@@ -132,7 +136,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
           <Card.Body>
             <Card.Title>{module.name}</Card.Title>
             <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden'}}>
-              {module.description.substring(0, 150)}
+              {module.description}
             </Card.Text>
           </Card.Body>
           <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -148,3 +152,4 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
 
 const mapStateToProps = (state: WebState) => ({authenticated: isAuthenticated(state)});
 export default connect(mapStateToProps)(PublicModule);
+
