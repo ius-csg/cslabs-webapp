@@ -6,7 +6,7 @@ export interface User {
   lastName: string;
   email: string;
   graduationYear?: number;
-  userType: 'guest' | 'member' | 'officer' | 'staff';
+  userType: 'guest' | 'member' | 'officer' | 'staff' | 'creator';
   createdAt: string;
   updatedAt: string;
   cardCodeHash?: string;
