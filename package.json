@@ -18,6 +18,7 @@
     "preinstall": "yarn run check-npm"
   },
   "dependencies": {
+    "@elastic/apm-rum-react": "^0.3.6",
     "@fortawesome/fontawesome-svg-core": "^1.2.24",
     "@fortawesome/free-brands-svg-icons": "^5.11.1",
     "@fortawesome/free-solid-svg-icons": "^5.11.1",

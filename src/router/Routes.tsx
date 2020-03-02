@@ -21,12 +21,13 @@ import SitePolicy from '../pages/SitePolicy/SitePolicy';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
 import Contact   from '../pages/Contact/Contact';
+import { ApmRoutes } from '@elastic/apm-rum-react/dist/lib'
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
       <NavigationBar />
       <Switch>
-        <Route exact={true} path={RoutePaths.home} component={Home}/>
+        <ApmRoutes exact={true} path={RoutePaths.home} component={Home}/>
         <Route exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
         <PrivateRoute exact={true} path={RoutePaths.profile} component={Profile}/>
         <PrivateRoute exact={true} path={RoutePaths.resetEmail} component={ResetEmail}/>
