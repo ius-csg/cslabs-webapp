@@ -4,7 +4,7 @@ import styles from './NavigationBar.module.scss';
 import {faBook, faList, faUser, faEnvelopeOpenText, faEdit, faUserCog} from '@fortawesome/free-solid-svg-icons';
 import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
-import {isAuthenticated, isCreator, isAdmin} from '../../redux/selectors/entities';
+import {isAuthenticated, isAdmin, isCreator} from '../../redux/selectors/entities';
 import {NavItem} from './NavItem';
 import {NavLogo} from './NavLogo';
 
@@ -15,8 +15,8 @@ const NavigationBarComponent =
     <Nav>
       <NavItem label='Explore' link='/explore' icon={faBook}/>
       {authenticated ? <NavItem label='My Modules' link='/my-modules' icon={faList}/> : null}
-      {creator ? <NavItem label='Module Editor' icon={faEdit} link='/ContentCreator'/> : null}
-      {admin ? <NavItem label='Module Editor' icon={faUserCog} link='/admin'/> : null}
+      {admin ? <NavItem label='Admin Panel' icon={faUserCog} link='/admin'/> : null}
+      {creator || admin ? <NavItem label='Module Editor' icon={faEdit} link='/ContentCreator'/> : null}
       <NavItem label='Account' link='/login' icon={faUser}/>
       <NavItem label='Contact Us' link='/contact' icon={faEnvelopeOpenText}/>
     </Nav>

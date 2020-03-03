@@ -20,19 +20,20 @@ export type mapIsAuthenticatedToPropsType = ReturnType<typeof mapIsAuthenticated
 export const mapIsAuthenticatedToProps = (state: WebState) => ({ authenticated: isAuthenticated(state)});
 
 export function isCreator(state: WebState) {
-  const user =  getCurrentUser(state);
-  return user.userType === 'creator';
-
+  const user: User | null = getCurrentUser(state);
+  if (user === null ) {
+    return false;
+  } else return user.userType === 'creator';
 }
 
 export type mapIsCreatorToPropsType = ReturnType<typeof mapIsCreatorToProps>;
 export const mapIsCreatorToProps = (state: WebState) => ({ userType: isCreator(state)});
 
 export function isAdmin(state: WebState) {
-  const user =  getCurrentUser(state);
-  return user.userType === 'admin';
-
+  const user: User| null =  getCurrentUser(state);
+  if(user == null){return false;}
+  else return user.userType === 'admin';
 }
 
-export type mapIsAdminToPropsType = ReturnType<typeof mapIsCreatorToProps>;
+export type mapIsAdminToPropsType = ReturnType<typeof mapIsAdminToProps>;
 export const mapIsAdminToProps = (state: WebState) => ({ userType: isCreator(state)});
