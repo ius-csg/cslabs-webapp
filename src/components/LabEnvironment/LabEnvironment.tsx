@@ -80,13 +80,13 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
               <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
               <ListGroup.Item action={true} href='#status'>Statuses</ListGroup.Item>
               {this.props.userLab.userLabVms.map(vm =>
-                <ListGroup.Item key={vm.labVm.name} action={true} href={'#' + vm.labVm.name} className={styles['vm-selector']}>
+                <ListGroup.Item key={vm.labVm.name} className={styles['vm-selector']}>
                   <span>
                     <CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))}  icon={faPowerOff} />
                     <span>
                       <Dropdown as={ButtonGroup}>
-                        <Button variant='success'>{vm.labVm.name}</Button>
-                        <Dropdown.Toggle split={true} variant='success' id='dropdown-split-basic' />
+                        <Button variant='light' href={'#' + vm.labVm.name}>{vm.labVm.name}</Button>
+                        <Dropdown.Toggle split={true} variant='light' id='dropdown-split-basic' />
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
                           <Dropdown.Item onClick={() => shutdownVm(vm.id)}>Shutdown</Dropdown.Item>
