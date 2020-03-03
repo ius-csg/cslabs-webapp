@@ -1,12 +1,16 @@
-import * as React from 'react';
-import {Component, ReactDOM} from 'react';
-import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
+import {Component} from 'react';
+import ReactDOM from 'react-dom';
 
-class ConsolePopout extends Component {
+
+interface Props {
+  closeWindowPortal: () => void;
+}
+
+class ConsolePopout extends Component<Props> {
   private containerEl: HTMLDivElement;
   private externalWindow: any;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.containerEl = document.createElement('div');
     this.externalWindow = null;
@@ -17,7 +21,7 @@ class ConsolePopout extends Component {
 
     this.externalWindow.document.body.appendChild(this.containerEl);
 
-    this.externalWindow.document.title = 'A React portal window';
+    this.externalWindow.document.title = 'VM Popout';
 
     this.externalWindow.addEventListener('beforeunload', () => {
       this.props.closeWindowPortal();

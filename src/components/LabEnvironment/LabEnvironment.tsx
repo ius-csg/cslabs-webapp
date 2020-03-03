@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Component} from 'react';
 import {Button, Col, Container, ListGroup, Row, Tab} from 'react-bootstrap';
 import {isRunning} from '../../types/UserLabVm';
-import ConsoleWindow from '../ConsoleWindow/ConsoleWindow';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import * as styles from './LabEnvironment.module.scss';
 import {CenteredIcon} from '../../util/CenteredIcon';
@@ -13,6 +12,7 @@ import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {LoadingButton} from '../../util/LoadingButton';
 import {getRemainingLabTime} from '../../util';
+import {ConsoleWindowContainer} from '../ConsoleWindow/ConsoleWindowContainer';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {
@@ -26,6 +26,7 @@ interface LabEnvironmentState {
   numPages: number;
   pageNumber: number;
   readmeLoaded: boolean;
+  show_vm: boolean;
 }
 
 export function getIndicatorClassName(running: boolean) {
@@ -40,7 +41,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
   state: LabEnvironmentState = {
     numPages: 1,
     readmeLoaded: false,
-    pageNumber: 1
+    pageNumber: 1,
+    show_vm: false
   };
 
   canGoToPrevPage = () => this.state.pageNumber > 1;
@@ -63,7 +65,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
   render() {
     const { pageNumber, numPages } = this.state;
     return (
-      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} unmountOnExit={true}>
+      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} activeKey={} onSelect={}>
         <Container fluid={true} className='full-height-container'>
           <Row noGutters={true} className='justify-content-between'>
             <h2>Lab : {this.props.userLab.lab.name}</h2>
@@ -125,7 +127,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
               </Tab.Pane>
               { this.props.userLab.userLabVms.map(vm =>
                 <Tab.Pane key={vm.labVm.name} eventKey={'#' + vm.labVm.name} className='full-height-container'>
-                  <ConsoleWindow vm={vm} status={this.props.statuses[vm.id]} />
+                  <ConsoleWindowContainer this.state.showVm={this.state.activeKey === ('#' + vm.labVm.name)}  vm={vm} status={this.props.statuses[vm.id]}/>
                 </Tab.Pane>
               )}
             </Tab.Content>
