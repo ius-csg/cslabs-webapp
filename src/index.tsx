@@ -12,7 +12,10 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import { store, persistor } from './redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
+import apm from './rum';
 
+apm.init();
+apm.setInitialPageLoadName('Explore');
 render((
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
