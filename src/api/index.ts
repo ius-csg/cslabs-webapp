@@ -147,3 +147,6 @@ function handleResponse<T>(response: AxiosResponse<T>) {
 export async function submitContactRequest(form: FormData) {
   return handleResponse(await api.post<string>(`/contact-us`, form));
 }
+export async function submitChangePasswordRequest(form: FormData) {
+  return handleResponse(await api.post<string>(`/change-password`, form));
+}
