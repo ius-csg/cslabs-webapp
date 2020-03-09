@@ -65,7 +65,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
   render() {
     const { pageNumber, numPages } = this.state;
     return (
-      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} activeKey={} onSelect={}>
+      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} /*activeKey={} onSelect={}*/>
         <Container fluid={true} className='full-height-container'>
           <Row noGutters={true} className='justify-content-between'>
             <h2>Lab : {this.props.userLab.lab.name}</h2>
@@ -126,8 +126,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 <Status vms={this.props.userLab.userLabVms} statuses={this.props.statuses}/>
               </Tab.Pane>
               { this.props.userLab.userLabVms.map(vm =>
-                <Tab.Pane key={vm.labVm.name} eventKey={'#' + vm.labVm.name} className='full-height-container'>
-                  <ConsoleWindowContainer this.state.showVm={this.state.activeKey === ('#' + vm.labVm.name)}  vm={vm} status={this.props.statuses[vm.id]}/>
+                <Tab.Pane key={vm.labVm.name} eventKey={'#' + vm.labVm.name} className='full-height-container' unmountOnExit={false}>
+                  <ConsoleWindowContainer /*this.state.showVm={this.state.activeKey === ('#' + vm.labVm.name)}*/ vm={vm} status={this.props.statuses[vm.id]}/>
                 </Tab.Pane>
               )}
             </Tab.Content>

@@ -14,7 +14,7 @@ export function ConsoleWindowContainer(props: Props) {
   return (
     <>
       <ConsoleWindow vm={props.vm} status={props.status}/>
-      <button onClick={() => setShowWindowPortal(!showWindowPortal)}>{showWindowPortal ? 'Close the' : 'Open a'} Portal</button>
+      <button onClick={() => setShowWindowPortal(!showWindowPortal)}>{showWindowPortal ? 'Close the' : 'Open a'} Popout Window</button>
       {showWindowPortal && (
         <ConsolePopout closeWindowPortal={() => setShowWindowPortal(false)}>
           <ConsoleWindow vm={props.vm} status={props.status}/>
