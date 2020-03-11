@@ -3,6 +3,7 @@ import * as React from 'react';
 import {useState} from 'react';
 import ConsolePopout from './ConsolePopout';
 import ConsoleWindow from './ConsoleWindow';
+import {Button, Col, Row} from 'react-bootstrap';
 
 interface Props {
   vm: UserLabVm;
@@ -14,7 +15,11 @@ export function ConsoleWindowContainer(props: Props) {
   return (
     <>
       <ConsoleWindow vm={props.vm} status={props.status}/>
-      <button onClick={() => setShowWindowPortal(!showWindowPortal)}>{showWindowPortal ? 'Close the' : 'Open a'} Popout Window</button>
+      <Row>
+        <Button onClick={() => setShowWindowPortal(!showWindowPortal)} as={Col} style={{marginLeft: 'auto', marginRight: 'auto'}} xs={3} sm={2}>
+          {showWindowPortal ? 'Close the' : 'Open a'} Popout Window
+        </Button>
+      </Row>
       {showWindowPortal && (
         <ConsolePopout closeWindowPortal={() => setShowWindowPortal(false)}>
           <ConsoleWindow vm={props.vm} status={props.status}/>

@@ -27,6 +27,7 @@ interface LabEnvironmentState {
   pageNumber: number;
   readmeLoaded: boolean;
   show_vm: boolean;
+  eventKey: string;
 }
 
 export function getIndicatorClassName(running: boolean) {
@@ -42,7 +43,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     numPages: 1,
     readmeLoaded: false,
     pageNumber: 1,
-    show_vm: false
+    show_vm: false,
+    eventKey: '#topology'
   };
 
   canGoToPrevPage = () => this.state.pageNumber > 1;
@@ -57,6 +59,10 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     this.setState({ numPages: pdf.numPages, readmeLoaded: true});
   };
 
+  onEventKeyChange = (eventKey: string) => {
+    this.setState( {eventKey: eventKey});
+  };
+
   isLabAbleToStart() {
     const status = this.props.userLab.status;
     return status === 'NotStarted';
@@ -65,7 +71,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
   render() {
     const { pageNumber, numPages } = this.state;
     return (
-      <Tab.Container defaultActiveKey='#topology' mountOnEnter={true} /*activeKey={} onSelect={}*/>
+      <Tab.Container activeKey={this.state.eventKey} onSelect={this.onEventKeyChange} mountOnEnter={true} unmountOnExit={false}>
         <Container fluid={true} className='full-height-container'>
           <Row noGutters={true} className='justify-content-between'>
             <h2>Lab : {this.props.userLab.lab.name}</h2>
@@ -77,61 +83,66 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
               /> : <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.props.userLab.endDateTime!)}</h6>}
           </Row>
           <Row className='fill-height'>
-          <Col sm={4} md={4} lg={2}>
-            <ListGroup style={{marginTop: 20}}>
-              <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
-              <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
-              <ListGroup.Item action={true} href='#status'>Statuses</ListGroup.Item>
-              {this.props.userLab.userLabVms.map(vm =>
-                <ListGroup.Item key={vm.labVm.name} action={true} href={'#' + vm.labVm.name} className={styles['vm-selector']}>
+            <Col sm={4} md={4} lg={2}>
+              <ListGroup style={{marginTop: 20}}>
+                <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
+                <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
+                <ListGroup.Item action={true} href='#status'>Statuses</ListGroup.Item>
+                {this.props.userLab.userLabVms.map(vm =>
+                  <ListGroup.Item key={vm.labVm.name} action={true} href={'#' + vm.labVm.name} className={styles['vm-selector']}>
                   <span>
                     <CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))}  icon={faPowerOff} />
                     <span>{vm.labVm.name}</span>
                   </span>
-                </ListGroup.Item>)}
-            </ListGroup>
-          </Col>
-          <Col sm={8} md={8} lg={10} className='full-height-container'>
-            <Tab.Content className='full-height-container'>
-              <Tab.Pane eventKey='#topology'>
-                <h2>Topology</h2>
-                {!this.props.userLab.hasTopology ?
-                  <p style={{textAlign: 'center'}}>No Topology Available</p> :
-                  <img src={getUserLabTopologyUrl(this.props.userLab.id)} style={{width: 1000, height: 700 }} alt={'topology'}/>
-                }
-              </Tab.Pane>
-              <Tab.Pane eventKey='#readme'>
-                <h2>Read Me</h2>
-                {!this.props.userLab.hasReadme ?
-                  <p style={{textAlign: 'center'}}>No Readme Available</p> :
-                  <div style={{width: 1000}}>
-                    { this.state.readmeLoaded ?
-                        <div>
-                        <span style={{marginRight: '1rem'}}>Page {pageNumber} of {numPages}</span>
-                        <Button style={{marginRight: '1rem'}} onClick={this.goToPrevPage} disabled={!this.canGoToPrevPage()}>Previous Page</Button>
-                        <Button onClick={this.goToNextPage} disabled={!this.canGoToNextPage()}>Next Page</Button>
-                      </div> : null
-                    }
-                    <Document
-                      file={getUserLabReadmeUrl(this.props.userLab.id)}
-                      onLoadSuccess={this.onDocumentLoadSuccess}
-                    >
-                      <Page pageNumber={pageNumber} width={1000}/>
-                    </Document>
-                  </div>
-                }
-              </Tab.Pane>
-              <Tab.Pane eventKey='#status'>
-                <h2>VM Status</h2>
-                <Status vms={this.props.userLab.userLabVms} statuses={this.props.statuses}/>
-              </Tab.Pane>
-              { this.props.userLab.userLabVms.map(vm =>
-                <Tab.Pane key={vm.labVm.name} eventKey={'#' + vm.labVm.name} className='full-height-container' unmountOnExit={false}>
-                  <ConsoleWindowContainer /*this.state.showVm={this.state.activeKey === ('#' + vm.labVm.name)}*/ vm={vm} status={this.props.statuses[vm.id]}/>
+                  </ListGroup.Item>)}
+              </ListGroup>
+            </Col>
+            <Col sm={8} md={8} lg={10} className='full-height-container'>
+              <Tab.Content className='full-height-container'>
+                <Tab.Pane eventKey='#topology'>
+                  <h2>Topology</h2>
+                  {!this.props.userLab.hasTopology ?
+                    <p style={{textAlign: 'center'}}>No Topology Available</p> :
+                    <img src={getUserLabTopologyUrl(this.props.userLab.id)} style={{width: 1000, height: 700 }} alt={'topology'}/>
+                  }
                 </Tab.Pane>
-              )}
-            </Tab.Content>
-          </Col>
+                <Tab.Pane eventKey='#readme'>
+                  <h2>Read Me</h2>
+                  {!this.props.userLab.hasReadme ?
+                    <p style={{textAlign: 'center'}}>No Readme Available</p> :
+                    <div style={{width: 1000}}>
+                      { this.state.readmeLoaded ?
+                        <div>
+                          <span style={{marginRight: '1rem'}}>Page {pageNumber} of {numPages}</span>
+                          <Button style={{marginRight: '1rem'}} onClick={this.goToPrevPage} disabled={!this.canGoToPrevPage()}>Previous Page</Button>
+                          <Button onClick={this.goToNextPage} disabled={!this.canGoToNextPage()}>Next Page</Button>
+                        </div> : null
+                      }
+                      <Document
+                        file={getUserLabReadmeUrl(this.props.userLab.id)}
+                        onLoadSuccess={this.onDocumentLoadSuccess}
+                      >
+                        <Page pageNumber={pageNumber} width={1000}/>
+                      </Document>
+                    </div>
+                  }
+                </Tab.Pane>
+                <Tab.Pane eventKey='#status'>
+                  <h2>VM Status</h2>
+                  <Status vms={this.props.userLab.userLabVms} statuses={this.props.statuses}/>
+                </Tab.Pane>
+                { this.props.userLab.userLabVms.map(vm =>
+                  <Tab.Pane
+                    key={vm.labVm.name}
+                    eventKey={'#' + vm.labVm.name}
+                    style={this.state.eventKey==='#' + vm.labVm.name ? {} : {display:'none !important'}}
+                    className='full-height-container'
+                  >
+                    <ConsoleWindowContainer vm={vm} status={this.props.statuses[vm.id]}/>
+                  </Tab.Pane>
+                )}
+              </Tab.Content>
+            </Col>
           </Row>
         </Container>
       </Tab.Container>
