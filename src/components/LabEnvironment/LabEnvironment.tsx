@@ -88,25 +88,31 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 <ListGroup.Item action={true} href='#topology'>Topology</ListGroup.Item>
                 <ListGroup.Item action={true} href='#readme'>Readme</ListGroup.Item>
                 <ListGroup.Item action={true} href='#status'>Statuses</ListGroup.Item>
-                {this.props.userLab.userLabVms.map(vm =>
-                  <ListGroup.Item key={vm.labVm.name} className={styles['vm-selector']}>
-                  <span>
-                    <CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))}  icon={faPowerOff} />
-                    <span>
-                      <Dropdown as={ButtonGroup}>
-                        <Button variant='light' href={'#' + vm.labVm.name}>{vm.labVm.name}</Button>
-                        <Dropdown.Toggle split={true} variant='light' id='dropdown-split-basic' />
-                        <Dropdown.Menu>
-                          <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
-                          <Dropdown.Item onClick={() => shutdownVm(vm.id)}>Shutdown</Dropdown.Item>
-                          <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
-                          <Dropdown.Item onClick={() => scrubVm(vm.id)}>Scrub</Dropdown.Item>
-                          <Dropdown.Item onClick={() => resetVm(vm.id)}>Reset</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </span>
-                  </span>
-                  </ListGroup.Item>)}
+                {this.props.userLab.userLabVms.map((vm, index) =>
+                  <Dropdown key={vm.id} as={ButtonGroup}>
+                    <Button
+                        variant='outline-secondary'
+                        style={{padding: '0.75rem 1.25rem', border: '1px solid rgba(0,0,0,0.125)', borderRadius: 0, color: 'black'}}
+                        href={'#' + vm.labVm.name}
+                        onClick={() => this.onEventKeyChange('#' + vm.labVm.name)}
+                    >
+                      <CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))}  icon={faPowerOff} />
+                      {vm.labVm.name}
+                    </Button>
+                    <Dropdown.Toggle
+                      split={true}
+                      variant='outline-secondary'
+                      id='dropdown-split-basic'
+                      style={{padding: '0.75rem 1.25rem', border: '1px solid rgba(0,0,0,0.125)', borderRadius: 0}}
+                    />
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
+                      <Dropdown.Item onClick={() => shutdownVm(vm.id)}>Shutdown</Dropdown.Item>
+                      <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
+                      <Dropdown.Item onClick={() => scrubVm(vm.id)}>Scrub</Dropdown.Item>
+                      <Dropdown.Item onClick={() => resetVm(vm.id)}>Reset</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>)}
               </ListGroup>
             </Col>
             <Col sm={8} md={8} lg={10} className='full-height-container'>
