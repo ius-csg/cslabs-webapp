@@ -9,7 +9,7 @@ import ResetEmail from '../pages/ResetEmail/ResetEmail';
 import ResetPassword from '../pages/ResetPassword/ResetPassword';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import {NavigationBar} from '../components/NavigationBar/NavigationBar';
-// import Explore from '../pages/Explore/Explore';
+import Explore from '../pages/Explore/Explore';
 import PublicModule from '../pages/PublicModule/PublicModule';
 import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
@@ -26,14 +26,14 @@ const Routes = () => (
     <Router history={History} >
       <NavigationBar />
       <Switch>
-        <Route exact={true} path={RoutePaths.home} component={Home}/>
+        <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
+        <Route exact={true} path={RoutePaths.explore} component={Explore}/>
         <Route exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
         <PrivateRoute exact={true} path={RoutePaths.profile} component={Profile}/>
         <PrivateRoute exact={true} path={RoutePaths.resetEmail} component={ResetEmail}/>
         <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
-        {/*<Route exact={true} path={RoutePaths.explore} component={Explore}/>*/}
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
-        <PrivateRoute path='/module/:id/' component={PublicModule}/>
+        <Route exact={true} path={RoutePaths.module} component={PublicModule}/>
         <Route exact={true} path={RoutePaths.forgotPassword} component={ForgotPassword}/>
         <Route exact={true} path={RoutePaths.contactUs} component={Contact}/>
         <Route exact={true} path={RoutePaths.confirmForgotPassword} component={ConfirmForgotPassword}/>
