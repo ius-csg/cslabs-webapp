@@ -92,7 +92,13 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                   <Dropdown key={vm.id} as={ButtonGroup}>
                     <Button
                         variant='outline-secondary'
-                        style={{padding: '0.75rem 1.25rem', border: '1px solid rgba(0,0,0,0.125)', borderRadius: 0, color: 'black'}}
+                        style={{
+                          textAlign: 'left',
+                          padding: '0.75rem 1.25rem',
+                          border: '1px solid rgba(0,0,0,0.125)',
+                          borderRadius: 0,
+                          borderTop: 0,
+                          color: 'black'}}
                         href={'#' + vm.labVm.name}
                         onClick={() => this.onEventKeyChange('#' + vm.labVm.name)}
                     >
@@ -103,7 +109,12 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                       split={true}
                       variant='outline-secondary'
                       id='dropdown-split-basic'
-                      style={{padding: '0.75rem 1.25rem', border: '1px solid rgba(0,0,0,0.125)', borderRadius: 0}}
+                      style={{
+                        padding: '0.75rem 1.25rem',
+                        border: '1px solid rgba(0,0,0,0.125)',
+                        borderTop: 0,
+                        borderLeft: 0,
+                        borderRadius: 0}}
                     />
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
