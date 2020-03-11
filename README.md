@@ -11,8 +11,11 @@ Read more about the default yarn scripts provided by `react-scripts` [here](docs
 
 ## Setup and running
 
-In the project directory run `yarn install` to install all the project's dependencies. 
-To run the application use `yarn start`. You also will need to run `yarn run watch:lint` to run the 
+* In the project directory run `yarn install` to install all the project's dependencies.
+* copy the `.env.example` file to `.env` file in the project directory
+* Make sure the backend is running (Run it from the Rider IDE)
+* To run the application use `yarn start`. 
+* You also will need to run `yarn run watch:lint` to run the 
 command line linter so you can see linting errors in for the entire project. Any PR's with lint issues
 will be rejected.
 
