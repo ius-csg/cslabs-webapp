@@ -5,12 +5,28 @@ import styles from './ResetPassword.module.scss';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
+import {submitChangePasswordRequest} from '../../api';
 export default class ResetPassword extends Component {
   state = {
     currentPass: '',
     password: '',
     confirmPass: ''
   };
+
+  componentDidMount(): void {
+    this.loadPasswordModules();
+  }
+
+  async loadPasswordModules() {
+    try {
+      const changePassword = await submitChangePasswordRequest;
+      this.setState({state: changePassword});
+    } catch (_) {
+      this.setState({state: 'error'});
+    }
+  }
+
+
   onCurrentPasswordChange = (event: FormEvent<HTMLInputElement>) => {
     this.setState({currentPass: event.currentTarget.value});
   };
