@@ -21,10 +21,14 @@ export class Status extends Component<StatusProps, StatusState> {
   state: StatusState = {loadingText: ''};
 
   performScrub = (vmId: number) => {
-    this.setState({loadingText: 'Scrubbing...'}, async () => {
-      await scrubVm(vmId);
-      this.setState({loadingText: ''});
-    });
+    if(window.confirm("Are you sure you wish to scrub this VM?"))
+    {
+      this.setState({loadingText: 'Scrubbing...'}, async () => {
+        await scrubVm(vmId);
+        this.setState({loadingText: ''});
+      });
+    }
+
   };
 
   performShutdown = async (vmId: number) => {
