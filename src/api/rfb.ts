@@ -7,9 +7,9 @@ import RFB from 'novnc-core';
 import {log, logError} from '../util';
 import {TicketResponse} from './index';
 
-export function connect(htmlId: string, ticketResponse: TicketResponse, onDisconnect: () => void) {
+export function connect(element: HTMLDivElement, ticketResponse: TicketResponse, onDisconnect: () => void) {
   try {
-    const rfb = new RFB(document.getElementById(htmlId) as any,
+    const rfb = new RFB(element as any,
       // @ts-ignore
       ticketResponse.url);
     rfb.scaleViewport = true;
