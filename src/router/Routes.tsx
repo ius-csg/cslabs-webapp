@@ -21,7 +21,7 @@ import SitePolicy from '../pages/SitePolicy/SitePolicy';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
 import Contact   from '../pages/Contact/Contact';
-import CreatorsModules from '../pages/ContentCreator/ModulesPage/CreatorsModules';
+import temp from '../pages/ContentCreator/ModulesPage/CreatorsModules';
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
@@ -43,7 +43,7 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
         <Route exact={true} path={RoutePaths.verifyEmail} component={VerifyEmail}/>
         <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>
-        <Route exact={true} path={RoutePaths.contentCreator} component={CreatorsModules}/>
+        <Route exact={true} path={RoutePaths.contentCreator} component={temp}/>
         <Route component={NotFound} />
       </Switch>
     </Router>
