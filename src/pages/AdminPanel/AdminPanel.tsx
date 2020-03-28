@@ -1,8 +1,8 @@
+import {Layout} from '../Layout/Layout';
+import styles from 'AdminPanel.scss';
 import React from 'react';
-import {Layout} from '../../Layout/Layout';
-import styles from '../../NotFound/NotFound.module.scss';
 
-const CreatorsModules = () => (
+const AdminPanel = () => (
   <Layout>
     <div className={styles['not-found']}>
       <label>This page is still under construction.</label>
@@ -10,4 +10,4 @@ const CreatorsModules = () => (
   </Layout>
 );
 
-export default CreatorsModules;
+export default AdminPanel;
