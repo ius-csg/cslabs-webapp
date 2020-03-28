@@ -15,13 +15,14 @@ import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
-import ModuleEditor from "../pages/ModuleEditor/ModuleEditor";
+import ModuleEditor from '../pages/ModuleEditor/ModuleEditor';
 import UserModulePage from '../pages/UserModulePage/UserModulePage';
 import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
 import Contact   from '../pages/Contact/Contact';
+import Sandbox from '../pages/Sandbox/Sandbox';
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
@@ -44,6 +45,7 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
         <Route exact={true} path={RoutePaths.verifyEmail} component={VerifyEmail}/>
         <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>
+        <Route exact={true} path={RoutePaths.sandbox} component={Sandbox}/>
         <Route component={NotFound} />
       </Switch>
     </Router>

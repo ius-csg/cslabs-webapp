@@ -7,7 +7,7 @@ import {Formik, FormikHelpers} from 'formik';
 import Input from '../../components/util/Input/Input';
 import {ModuleEditorForm, ModuleEditorSchema} from './ModuleEditorSchema';
 import {LoadingButton} from '../../util/LoadingButton';
-import {handleAxiosError, 
+import {handleAxiosError,
   isBadRequest, makeMessageState} from '../../util';
 import {Message} from '../../util/Message';
 // import {submitContactRequest} from '../../api';
@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 const initialValues: ModuleEditorForm = {moduleName: '', shareLink: '', description: ''};
 function generateLink(uuid:String)
 {
-  return 'https://iuscsg.org/cslabs/module/'+uuid //this may need to be automated somehow to not have hardcoded link before uuid.
+  return 'https://iuscsg.org/cslabs/module/'+uuid; // this may need to be automated somehow to not have hardcoded link before uuid.
 }
 export default function ModuleEditor() {
   const [messageState, setMessageState] = useState(makeMessageState());
@@ -47,7 +47,7 @@ export default function ModuleEditor() {
         initialValues={initialValues}
         validationSchema={ModuleEditorSchema}
         onSubmit={onSubmit}
-      > 
+      >
         {({handleSubmit, isSubmitting}) => (
           <Form onSubmit={handleSubmit}>
             <Col sm='6' className='m-auto'>
@@ -58,7 +58,7 @@ export default function ModuleEditor() {
               <Form.Group controlId='formBasicMessage'>
                 <Form.Label column={true}>Share This Link Once Done</Form.Label>
                 <Input name='link' placeholder='' type='link' defaultValue={generateLink(uuidv4())} disabled/>
-              </Form.Group>              
+              </Form.Group>
               <Form.Group controlId='formBasicMessage'>
                 <Form.Label column={true}>Module Description</Form.Label>
                 <Input name='description' placeholder='Description' type='textarea' />
