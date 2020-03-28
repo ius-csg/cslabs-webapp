@@ -1,8 +1,8 @@
 import {Layout} from '../Layout/Layout';
-import styles from 'AdminPanel.scss';
+import styles from './AdminPanel.scss';
 import React from 'react';
 
-const AdminPanel = () => (
+const AdminPage = () => (
   <Layout>
     <div className={styles['not-found']}>
       <label>This page is still under construction.</label>
@@ -10,4 +10,4 @@ const AdminPanel = () => (
   </Layout>
 );
 
-export default AdminPanel;
+export default AdminPage;

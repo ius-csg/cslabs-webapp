@@ -22,7 +22,7 @@ import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
 import Contact   from '../pages/Contact/Contact';
 import CreatorsModules from '../pages/ContentCreator/ModulesPage/CreatorsModules';
-import AdminPanel from '../pages/AdminPanel/AdminPanel';
+import AdminPage from '../pages/AdminPanel/AdminPanel';
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
@@ -45,7 +45,7 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.verifyEmail} component={VerifyEmail}/>
         <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>
         <Route exact={true} path={RoutePaths.contentCreator} component={CreatorsModules}/>
-        <Route exact={true} path={RoutePaths.adminPanel} component={AdminPanel}/>
+        <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
         <Route component={NotFound} />
       </Switch>
     </Router>
