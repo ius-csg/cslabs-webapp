@@ -19,6 +19,12 @@ Read more about the default yarn scripts provided by `react-scripts` [here](docs
 command line linter so you can see linting errors in for the entire project. Any PR's with lint issues
 will be rejected.
 
+## E2E Testing
+
+* Ensure the frontend and backend are setup and running
+* Run yarn test
+* To add new tests add `{what you are teting}.test.tsx` file and use the App.test.tsx file as an example.
+
 ## Development
 
 #### Official IDE
