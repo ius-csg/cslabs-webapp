@@ -6,7 +6,7 @@ import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import {CenteredIcon} from '../../util/CenteredIcon';
 import * as styles from '../../components/LabEnvironment/LabEnvironment.module.scss';
 import {getIndicatorClassName} from '../../components/LabEnvironment/LabEnvironment';
-import {shutdownVm, startUpVm, stopVm, scrubVm, resetVm} from '../../api';
+import {VmActionsMenu} from '../../components/VmActionsMenu/VmActionsMenu';
 
 interface StatusProps {
   vms: UserLabVm[];
@@ -19,19 +19,6 @@ interface StatusState {
 
 export class Status extends Component<StatusProps, StatusState> {
   state: StatusState = {loadingText: ''};
-
-  performScrub = (vmId: number) => {
-    this.setState({loadingText: 'Scrubbing...'}, async () => {
-      await scrubVm(vmId);
-      this.setState({loadingText: ''});
-    });
-  };
-
-  performShutdown = async (vmId: number) => {
-    this.setState({loadingText: 'Shutting Down...'});
-    setTimeout(() => this.setState({loadingText: ''}), 20000);
-    await shutdownVm(vmId);
-  };
 
   render() {
     if (this.props.vms.length > 0) {
@@ -59,13 +46,7 @@ export class Status extends Component<StatusProps, StatusState> {
                     <span>{this.state.loadingText}</span> :
                     <Dropdown drop='right'>
                       <Dropdown.Toggle id='dropdown-basic'/>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
-                        <Dropdown.Item onClick={() => this.performShutdown(vm.id)}>Shutdown</Dropdown.Item>
-                        <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
-                        <Dropdown.Item onClick={() => this.performScrub(vm.id)}>Scrub</Dropdown.Item>
-                        <Dropdown.Item onClick={() => resetVm(vm.id)}>Reset</Dropdown.Item>
-                      </Dropdown.Menu>
+                      <VmActionsMenu vm={vm}/>
                     </Dropdown>
                   }
                 </Col>

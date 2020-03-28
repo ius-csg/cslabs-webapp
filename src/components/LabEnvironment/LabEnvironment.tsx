@@ -8,11 +8,12 @@ import {CenteredIcon} from '../../util/CenteredIcon';
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
-import {getUserLabReadmeUrl, getUserLabTopologyUrl, resetVm, scrubVm, shutdownVm, startUpVm, stopVm} from '../../api';
+import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {LoadingButton} from '../../util/LoadingButton';
 import {getRemainingLabTime} from '../../util';
 import {ConsoleWindowContainer} from '../ConsoleWindow/ConsoleWindowContainer';
+import {VmActionsMenu} from '../VmActionsMenu/VmActionsMenu';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {
@@ -116,13 +117,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                         borderLeft: 0,
                         borderRadius: 0}}
                     />
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => startUpVm(vm.id)}>Start Up</Dropdown.Item>
-                      <Dropdown.Item onClick={() => shutdownVm(vm.id)}>Shutdown</Dropdown.Item>
-                      <Dropdown.Item onClick={() => stopVm(vm.id)}>Force Shutdown</Dropdown.Item>
-                      <Dropdown.Item onClick={() => scrubVm(vm.id)}>Scrub</Dropdown.Item>
-                      <Dropdown.Item onClick={() => resetVm(vm.id)}>Reset</Dropdown.Item>
-                    </Dropdown.Menu>
+                    <VmActionsMenu vm={vm}/>
                   </Dropdown>)}
               </ListGroup>
             </Col>
