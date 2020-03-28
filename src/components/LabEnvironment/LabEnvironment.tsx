@@ -1,10 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab} from 'react-bootstrap';
-import {isRunning} from '../../types/UserLabVm';
-import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
-import * as styles from './LabEnvironment.module.scss';
-import {CenteredIcon} from '../../util/CenteredIcon';
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
@@ -14,6 +10,7 @@ import {LoadingButton} from '../../util/LoadingButton';
 import {getRemainingLabTime} from '../../util';
 import {ConsoleWindowContainer} from '../ConsoleWindow/ConsoleWindowContainer';
 import {VmActionsMenu} from '../VmActionsMenu/VmActionsMenu';
+import {VmStatusIndicator} from '../util/VmStatusIndicator/VmStatusIndicator';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {
@@ -31,13 +28,7 @@ interface LabEnvironmentState {
   eventKey: string;
 }
 
-export function getIndicatorClassName(running: boolean) {
-  return [
-    styles['power-indicator'],
-    running ? styles['on'] : '',
-    !running ? styles['suspended'] : ''
-  ].join(' ');
-}
+
 export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmentState> {
 
   state: LabEnvironmentState = {
@@ -103,7 +94,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                         href={'#' + vm.labVm.name}
                         onClick={() => this.onEventKeyChange('#' + vm.labVm.name)}
                     >
-                      <CenteredIcon className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))}  icon={faPowerOff} />
+                      <VmStatusIndicator status={this.props.statuses[vm.id]}/>
                       {vm.labVm.name}
                     </Button>
                     <Dropdown.Toggle

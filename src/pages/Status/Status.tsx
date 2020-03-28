@@ -1,12 +1,10 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {ListGroup, Col, Dropdown, Container, Row} from 'react-bootstrap';
-import {isRunning, Statuses, UserLabVm} from '../../types/UserLabVm';
-import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
-import {CenteredIcon} from '../../util/CenteredIcon';
+import {Statuses, UserLabVm} from '../../types/UserLabVm';
 import * as styles from '../../components/LabEnvironment/LabEnvironment.module.scss';
-import {getIndicatorClassName} from '../../components/LabEnvironment/LabEnvironment';
 import {VmActionsMenu} from '../../components/VmActionsMenu/VmActionsMenu';
+import {VmStatusIndicator} from '../../components/util/VmStatusIndicator/VmStatusIndicator';
 
 interface StatusProps {
   vms: UserLabVm[];
@@ -36,10 +34,7 @@ export class Status extends Component<StatusProps, StatusState> {
               <ListGroup.Item key={vm.labVm.name} className={styles['vm-selector']}>
                 <Col>{vm.labVm.name}</Col>
                 <Col>
-                  <CenteredIcon
-                    className={getIndicatorClassName(isRunning(this.props.statuses[vm.id]))}
-                    icon={faPowerOff}
-                  />
+                  <VmStatusIndicator status={this.props.statuses[vm.id]}/>
                 </Col>
                 <Col>
                   {this.state.loadingText ?
