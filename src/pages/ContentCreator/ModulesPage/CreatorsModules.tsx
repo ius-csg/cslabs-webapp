@@ -7,14 +7,14 @@ import {Layout} from '../../Layout/Layout';
 import {HorizontallyCenteredSpinner} from '../../../components/util/HorizonallyCenteredSpinner';
 import {Message} from '../../../util/Message';
 
-interface ExploreState {
+interface State {
   modules: Module[];
   state: 'loading' | 'error' | 'success';
 }
 
-class Explore extends React.Component<{}, ExploreState> {
+class Explore extends React.Component<{}, State> {
 
-  state: ExploreState = {
+  state: State = {
     modules: [],
     state: 'loading'
   };
@@ -38,19 +38,20 @@ class Explore extends React.Component<{}, ExploreState> {
     return (
       <Layout>
         {this.state.state === 'loading' ? <HorizontallyCenteredSpinner/> :
-            this.state.state === 'error' ?
-              <Message state={{message: 'An error occurred, please try again later', variant: 'danger'}}/> :
-    <>
-    <h1>Explore</h1>
-    {cards.length === 0 ?
-      <p style={{textAlign: 'center', marginTop: '1rem'}}>No modules published at this time, please come back later.</p> :
-    <CardColumns>{cards}</CardColumns>
-    }
+          this.state.state === 'error' ?
+            <Message state={{message: 'An error occurred, please try again later', variant: 'danger'}}/> :
+            <>
+              <h1>Explore</h1>
+              {cards.length === 0 ?
+                <p style={{textAlign: 'center', marginTop: '1rem'}}>No modules published at this time, please come back
+                  later.</p> :
+                <CardColumns>{cards}</CardColumns>
+              }
 
-    </>
-  }
-    </Layout>
-  );
+            </>
+        }
+      </Layout>
+    );
   }
 }
 

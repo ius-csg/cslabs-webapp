@@ -26,14 +26,9 @@ export function isCreator(state: WebState) {
   } else return user.userType === 'creator';
 }
 
-export type mapIsCreatorToPropsType = ReturnType<typeof mapIsCreatorToProps>;
-export const mapIsCreatorToProps = (state: WebState) => ({ userType: isCreator(state)});
-
 export function isAdmin(state: WebState) {
   const user: User| null =  getCurrentUser(state);
   if(user == null){return false;}
   else return user.userType === 'admin';
 }
 
-export type mapIsAdminToPropsType = ReturnType<typeof mapIsAdminToProps>;
-export const mapIsAdminToProps = (state: WebState) => ({ userType: isCreator(state)});
