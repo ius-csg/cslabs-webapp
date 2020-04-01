@@ -30,7 +30,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       description: '',
       name: 'Loading',
       published: false,
-      shortName: '',
+      userId: 0,
       specialCode: '',
       type: 'SingleUser',
       updatedAt: ''

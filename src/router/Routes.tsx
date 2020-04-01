@@ -15,7 +15,7 @@ import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
-import ModuleEditor from "../pages/ModuleEditor/ModuleEditor";
+import ModuleEditor from '../pages/ModuleEditor/ModuleEditor';
 import UserModulePage from '../pages/UserModulePage/UserModulePage';
 import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
