@@ -5,6 +5,7 @@ export enum RoutePaths {
   explore = '/explore',
   module = '/module/:id/',
   myModules = '/my-modules',
+  moduleEditor = '/module-editor',
   resetEmail = '/resetemail',
   resetPassword = '/resetpassword',
   forgotPassword = '/forgotpassword',
@@ -15,5 +16,7 @@ export enum RoutePaths {
   userModule = '/user-module/:id',
   userLab = '/user-lab/:id',
   verifyEmail = '/verify-email/:code',
-  sitePolicy = '/policy'
+  sitePolicy = '/policy',
+  contentCreator = '/content-creator',
+  adminPanel = '/admin-panel'
 }

@@ -15,11 +15,3 @@ it('renders 404 page', () => {
   expect(result.find(NotFound).find('label').text()).toEqual('404');
 });
 
-it('renders home page', () => {
-  const result = mount(
-    <MemoryRouter initialEntries={[ '/' ]}>
-      <Home/>
-    </MemoryRouter>
-  );
-  expect(result.find(Home)).toHaveLength(1);
-});

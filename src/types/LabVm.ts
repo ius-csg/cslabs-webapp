@@ -1,4 +1,5 @@
-export interface LabVm {
-  id: number;
+import {Entity} from './Entity';
+
+export interface LabVm extends Entity {
   name: string;
 }
