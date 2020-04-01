@@ -1,4 +1,3 @@
-import {UserLab} from './UserLab';
 import {Module} from './Module';
 import {Lab} from './Lab';
 import {LabVm} from './LabVm';
@@ -6,7 +5,7 @@ import {Entity, EntityWithUuid} from './Entity';
 
 
 export interface ModuleForm extends Module {
-  labs: UserLab[];
+  labs: Lab[];
 }
 
 export interface LabForm extends Lab {
