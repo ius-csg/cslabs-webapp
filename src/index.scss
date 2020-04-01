@@ -104,7 +104,7 @@ hr {
 
 
 // fix a bug in react-bootstrap where fading items stay hidden
-.fade.show {
+.fade.show:not(.modal-backdrop) {
     opacity: 1;
 }
 

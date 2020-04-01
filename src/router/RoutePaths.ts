@@ -17,5 +17,6 @@ export enum RoutePaths {
   userLab = '/user-lab/:id',
   verifyEmail = '/verify-email/:code',
   sitePolicy = '/policy',
-  sandbox = '/sandbox'
+  contentCreator = '/content-creator',
+  adminPanel = '/admin-panel'
 }

@@ -1,11 +1,9 @@
 import * as React from 'react';
-import {ChangeEvent, Component, RefObject} from 'react';
+import {ChangeEvent, Component, CSSProperties, RefObject} from 'react';
 import {combineClasses, getClipboardFromEvent, log} from '../../util';
 import * as styles from './ConsoleWindow.module.scss';
-// import {acquireTicket} from '../../api';
 import {connect, getNewConsoleWindowId} from '../../api/rfb';
 import {UserLabVm} from '../../types/UserLabVm';
-// import {VMPowerState} from '../../types/VMPowerState';
 import RFB from 'novnc-core';
 import {acquireTicket} from '../../api';
 
@@ -20,11 +18,17 @@ interface ConsoleContainerState {
   pastedText: string;
 }
 
+const consoleWindowStyles: CSSProperties = {
+
+};
+
+
 class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerState> {
 
   consoleWindowId: string = '';
   state: ConsoleContainerState = {width: 0, height: 0, pastedText: ''};
   ref: RefObject<HTMLDivElement>;
+  consoleWindowRef: RefObject<HTMLDivElement>;
   private resizeEventHandler?: () => void;
   private pasteEventHandler?: (e: any) => boolean;
 
@@ -32,6 +36,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     super(props);
     this.consoleWindowId = getNewConsoleWindowId();
     this.ref = React.createRef();
+    this.consoleWindowRef = React.createRef();
   }
 
   get rfb() {
@@ -45,7 +50,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
     try {
       const ticketResponse = await acquireTicket(this.props.vm.id);
-      this.setState({rfb: connect(this.consoleWindowId, ticketResponse, () => {
+      this.setState({rfb: connect(this.consoleWindowRef.current!, ticketResponse, () => {
         log('Disconnected');
         this.setState({
           rfb: undefined
@@ -57,6 +62,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
       log('Could not connect to vm', e);
     }
   };
+
 
   componentWillUnmount(): void {
     log('unmount ' + this.consoleWindowId);
@@ -137,9 +143,10 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     return (
       <div ref={this.ref} className='full-height-container'>
         <div
+          style={consoleWindowStyles}
           className={combineClasses(styles['wmks-console-window-container'], 'full-height-container')}
         >
-          <div id={this.consoleWindowId} className='fill-height'/>
+          <div ref={this.consoleWindowRef} id={this.consoleWindowId} className='fill-height'/>
         </div>
       </div>
     );

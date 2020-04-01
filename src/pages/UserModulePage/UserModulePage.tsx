@@ -28,14 +28,17 @@ class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState
   state: UserModuleLabsState = {
      userModule: {
        id: 0,
+       createdAt: '',
+       updatedAt: '',
        module: {
          id: 0,
          name: '',
-         shortName: '',
          description: '',
+         userId: 0,
          published: false,
          updatedAt: '',
          createdAt: '',
+         specialCode: '',
          type: 'SingleUser',
          userModuleId: 0
        },
