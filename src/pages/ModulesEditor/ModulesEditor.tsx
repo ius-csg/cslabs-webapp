@@ -1,8 +1,8 @@
 import React from 'react';
-import {Layout} from '../../Layout/Layout';
-import styles from '../../NotFound/NotFound.module.scss';
+import {Layout} from '../Layout/Layout';
+import styles from '../NotFound/NotFound.module.scss';
 
-const CreatorsModules = () => (
+const ModulesEditor = () => (
   <Layout>
     <div className={styles['not-found']}>
       <label>This page is still under construction.</label>
@@ -10,4 +10,4 @@ const CreatorsModules = () => (
   </Layout>
 );
 
-export default CreatorsModules;
+export default ModulesEditor;

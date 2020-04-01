@@ -7,6 +7,7 @@ import {WebState} from '../../redux/types/WebState';
 import {isAuthenticated, isAdmin, isCreator} from '../../redux/selectors/entities';
 import {NavItem} from './NavItem';
 import {NavLogo} from './NavLogo';
+import {RoutePaths} from '../../router/RoutePaths';
 
 const NavigationBarComponent =
   ({authenticated, creator, admin}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
@@ -15,8 +16,8 @@ const NavigationBarComponent =
     <Nav>
       <NavItem label='Explore' link='/explore' icon={faBook}/>
       {authenticated ? <NavItem label='My Modules' link='/my-modules' icon={faList}/> : null}
-      {admin ? <NavItem label='Admin Panel' icon={faUserCog} link='/admin'/> : null}
-      {creator || admin ? <NavItem label='Module Editor' icon={faEdit} link='/ContentCreator'/> : null}
+      {admin ? <NavItem label='Admin Panel' icon={faUserCog} link={RoutePaths.adminPanel}/> : null}
+      {creator || admin ? <NavItem label='Module Editor' icon={faEdit} link={RoutePaths.contentCreator} /> : null}
       <NavItem label='Account' link='/login' icon={faUser}/>
       <NavItem label='Contact Us' link='/contact' icon={faEnvelopeOpenText}/>
     </Nav>

@@ -68,7 +68,7 @@ export default function ModuleEditor() {
               </Form.Group>
               <Form.Group>
                 <Form.Label column={true}>Share this link once saved</Form.Label>
-                <a target='_blank' href={generateLink(values.specialCode)}>{generateLink(values.specialCode)}</a>
+                <a target='_blank' rel='noopener' href={generateLink(values.specialCode)}>{generateLink(values.specialCode)}</a>
               </Form.Group>
               <Form.Group>
                 <Form.Label column={true}>Module Description</Form.Label>
