@@ -195,3 +195,5 @@ export function getResponseData<T>(e: any): T {
 export function getErrorResponseMessage(e: any): string {
   return e.response ? e.response.data ? e.response.data.message : '' : '';
 }
+
+export const propertyOf = <T>(name: keyof T) => name;

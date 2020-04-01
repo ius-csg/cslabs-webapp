@@ -1,13 +1,17 @@
-import {object, string} from 'yup';
+import {array, boolean, number, object, string, StringSchema} from 'yup';
+import {ModuleForm} from '../../types/editorTypes';
+import {ModuleType, moduleTypes} from '../../types/Module';
 
-export interface ModuleEditorForm {
-  moduleName: string;
-  shareLink: string;
-  description: string;
-}
 
-export const ModuleEditorSchema = object<ModuleEditorForm>({
-  moduleName: string().email('Must be an email').required('Required'),
-  shareLink: string().required('Required').min(4, 'Required'),
-  description: string().required('Required').min(4, 'Required')
+export const ModuleEditorSchema = object<ModuleForm>({
+  name: string().email('Must be an email').required('Required'),
+  specialCode : string().required('Required'),
+  description: string().required('Required').min(4, 'Required'),
+  updatedAt: string(),
+  createdAt: string(),
+  id: number(),
+  userId: number(),
+  type: string().oneOf(moduleTypes) as StringSchema<ModuleType>,
+  published: boolean(),
+  labs: array()
 });
