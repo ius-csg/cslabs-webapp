@@ -6,7 +6,7 @@ export interface User extends TrackableEntity {
   lastName: string;
   email: string;
   graduationYear?: number;
-  userType: 'guest' | 'member' | 'officer' | 'staff';
+  userType: 'guest' | 'creator' | 'admin';
   cardCodeHash?: string;
   terminationDate?: string;
 }
