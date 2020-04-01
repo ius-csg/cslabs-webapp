@@ -1,14 +1,12 @@
+import {TrackableEntity} from './Entity';
 
-export interface User {
-  id: number;
+export interface User extends TrackableEntity {
   firstName: string;
   middleName?: string;
   lastName: string;
   email: string;
   graduationYear?: number;
   userType: 'guest' | 'creator' | 'admin';
-  createdAt: string;
-  updatedAt: string;
   cardCodeHash?: string;
   terminationDate?: string;
 }

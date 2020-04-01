@@ -6,6 +6,7 @@ import {getPublicModules} from '../../api';
 import {Layout} from '../Layout/Layout';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {Message} from '../../util/Message';
+import {PageTitle} from '../../components/util/PageTitle';
 
 interface ExploreState {
   modules: Module[];
@@ -41,7 +42,7 @@ class Explore extends React.Component<{}, ExploreState> {
           this.state.state === 'error' ?
             <Message state={{message: 'An error occurred, please try again later', variant: 'danger'}}/> :
             <>
-              <h1>Explore</h1>
+              <PageTitle>Explore</PageTitle>
               {cards.length === 0 ?
                 <p style={{textAlign: 'center', marginTop: '1rem'}}>No modules published at this time, please come back later.</p> :
                 <CardColumns>{cards}</CardColumns>

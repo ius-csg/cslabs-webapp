@@ -15,6 +15,7 @@ import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
 import {RoutePaths} from './RoutePaths';
 import MyModules from '../pages/MyModules/MyModules';
+import ModuleEditor from '../pages/ModuleEditor/ModuleEditor';
 import UserModulePage from '../pages/UserModulePage/UserModulePage';
 import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
@@ -36,6 +37,7 @@ const Routes = () => (
         <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
         <Route exact={true} path={RoutePaths.module} component={PublicModule}/>
+        <Route exact={true} path={RoutePaths.moduleEditor} component={ModuleEditor}/>
         <Route exact={true} path={RoutePaths.forgotPassword} component={ForgotPassword}/>
         <Route exact={true} path={RoutePaths.contactUs} component={Contact}/>
         <Route exact={true} path={RoutePaths.confirmForgotPassword} component={ConfirmForgotPassword}/>

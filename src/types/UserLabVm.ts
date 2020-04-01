@@ -1,7 +1,7 @@
 import {LabVm} from './LabVm';
+import {Entity} from './Entity';
 
-export interface UserLabVm {
-  id: number;
+export interface UserLabVm extends Entity {
   proxmoxVmId: number;
   labVm: LabVm;
 }
