@@ -37,7 +37,8 @@ const Routes = () => (
         <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
         <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
         <Route exact={true} path={RoutePaths.module} component={PublicModule}/>
-        <Route exact={true} path={RoutePaths.moduleEditor} component={ModuleEditor}/>
+        <Route exact={true} path={RoutePaths.NewModule} component={ModuleEditor}/>
+        <Route exact={true} path={RoutePaths.EditModule} component={ModuleEditor}/>
         <Route exact={true} path={RoutePaths.forgotPassword} component={ForgotPassword}/>
         <Route exact={true} path={RoutePaths.contactUs} component={Contact}/>
         <Route exact={true} path={RoutePaths.confirmForgotPassword} component={ConfirmForgotPassword}/>

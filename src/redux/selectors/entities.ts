@@ -23,12 +23,12 @@ export function isCreator(state: WebState) {
   const user: User | null = getCurrentUser(state);
   if (user === null ) {
     return false;
-  } else return user.userType === 'creator';
+  } else return user.userType === 'Creator';
 }
 
 export function isAdmin(state: WebState) {
   const user: User| null =  getCurrentUser(state);
   if(user == null){return false;}
-  else return user.userType === 'admin';
+  else return user.userType === 'Admin';
 }
 

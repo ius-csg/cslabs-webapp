@@ -1,12 +1,13 @@
-import {UserLab} from './UserLab';
-import {Module} from './Module';
+import {BaseModule} from './Module';
 import {Lab} from './Lab';
 import {LabVm} from './LabVm';
 import {Entity, EntityWithUuid} from './Entity';
 
 
-export interface ModuleForm extends Module {
-  labs: UserLab[];
+export interface ModuleForm extends BaseModule {
+  labs: Lab[];
+  readme: File | null;
+  topology: File | null;
 }
 
 export interface LabForm extends Lab {

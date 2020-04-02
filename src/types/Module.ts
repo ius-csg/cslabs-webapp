@@ -1,12 +1,15 @@
 import {TrackableEntity} from './Entity';
 
-export interface Module extends TrackableEntity {
+export interface BaseModule  extends TrackableEntity {
   name: string;
   description: string;
   published: boolean;
   specialCode: string;
   type: ModuleType;
   userId: number;
+}
+
+export interface Module extends BaseModule {
   // if there is a user module instance, it's id will show here.
   userModuleId?: number;
 }

@@ -1,11 +1,13 @@
 
 export enum RoutePaths {
   login = '/login',
+  loginWithRedirect = '/login/?redirectTo=:redirect',
   profile = '/profile',
   explore = '/explore',
   module = '/module/:id/',
   myModules = '/my-modules',
-  moduleEditor = '/module-editor',
+  NewModule = '/module-editor',
+  EditModule = '/module-editor/:uuid',
   resetEmail = '/resetemail',
   resetPassword = '/resetpassword',
   forgotPassword = '/forgotpassword',

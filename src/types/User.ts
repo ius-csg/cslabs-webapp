@@ -6,10 +6,12 @@ export interface User extends TrackableEntity {
   lastName: string;
   email: string;
   graduationYear?: number;
-  userType: 'guest' | 'creator' | 'admin';
+  userType: UserType;
   cardCodeHash?: string;
   terminationDate?: string;
 }
+
+export type UserType = 'Guest' | 'Creator' | 'Admin';
 
 export interface UserWithToken extends User {
   token: string;

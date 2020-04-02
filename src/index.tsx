@@ -12,6 +12,9 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import { store, persistor } from './redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
+import {configureFontAwesome} from './font-awesome-config';
+
+configureFontAwesome();
 
 render((
   <Provider store={store}>

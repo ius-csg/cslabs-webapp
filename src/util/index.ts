@@ -4,6 +4,7 @@ import {FieldInputProps} from 'formik';
 import {DateTime} from 'luxon';
 import axios, {AxiosError} from 'axios';
 import humanizeDuration from 'humanize-duration';
+import {useState} from 'react';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -81,6 +82,7 @@ export function getFieldValue<T>(field: FieldInputProps<T>) {
 export interface MessageState {
   message: string;
   variant: 'danger' | 'success';
+  critical?: boolean;
 }
 
 export function makeMessageState(): MessageState {
@@ -88,6 +90,10 @@ export function makeMessageState(): MessageState {
     message: '',
     variant: 'danger'
   };
+}
+
+export function useMessage(message?: MessageState) {
+  return useState(message);
 }
 
 export function delay(timeout: number) {
