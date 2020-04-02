@@ -21,7 +21,8 @@ export function makeModuleForm(): ModuleForm {
     specialCode: uuid(),
     type: 'SingleUser',
     userId: 0,
-    userModuleId: undefined
+    readme: null,
+    topology: null
   };
 }
 
