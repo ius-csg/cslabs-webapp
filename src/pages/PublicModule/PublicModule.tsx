@@ -92,7 +92,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       }
     } else {
       return (
-        <Link to={RoutePaths.login}>
+        <Link to={RoutePaths.loginWithRedirect.replace(':redirect', RoutePaths.module.replace(':id', this.state.module.specialCode))}>
           <Button className='btn btn-primary' style={{width: 200}}>Login</Button>
         </Link>
       );

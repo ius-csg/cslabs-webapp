@@ -1,6 +1,7 @@
 
 export enum RoutePaths {
   login = '/login',
+  loginWithRedirect = '/login/?redirectTo=:redirect',
   profile = '/profile',
   explore = '/explore',
   module = '/module/:id/',

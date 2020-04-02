@@ -91,7 +91,7 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
         setInitialValues(await getModuleForEditor(uuid!));
         completeLoading();
       } catch (e) {
-        setMessage({message: handleAxiosError(e), variant: 'danger'});
+        setMessage({message: handleAxiosError(e), variant: 'danger', critical: true});
         setLoading(false);
       }
     }
@@ -153,7 +153,7 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
     </Formik>
   );
 
-  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : <ModuleFormComponent/>}</Layout>;
+  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : <ModuleFormComponent/>}</Layout>;
 
 }
 
