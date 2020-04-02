@@ -82,6 +82,7 @@ export function getFieldValue<T>(field: FieldInputProps<T>) {
 export interface MessageState {
   message: string;
   variant: 'danger' | 'success';
+  critical?: boolean;
 }
 
 export function makeMessageState(): MessageState {
