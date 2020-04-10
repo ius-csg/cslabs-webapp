@@ -13,10 +13,10 @@ interface Props {
 export function LabListItem({prefix,lab}: Props){
 //   const name = `${prefix}.${propertyOf<Lab>('name')}`;
     return (
-      <Row>
-        <Col>
+      <Row className='border-top' style={{marginTop: 8}} >
+        <Col style={{marginTop: 8}}>
           {lab.name} - <Link to={'#'}>Edit</Link></Col>
-        <Col className='d-flex justify-content-end'>
+        <Col className='d-flex justify-content-end' style={{marginTop: 8}}>
           <IconButton
             icon={faTrashAlt}
             size={'2x'}
