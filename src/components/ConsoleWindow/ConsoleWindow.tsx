@@ -37,11 +37,20 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     this.consoleWindowId = getNewConsoleWindowId();
     this.ref = React.createRef();
     this.consoleWindowRef = React.createRef();
+    window.addEventListener('beforeunload', this.beforeUnload);
   }
 
   get rfb() {
     return this.state.rfb;
   }
+
+  beforeUnload = (ev: BeforeUnloadEvent) => {
+    const prompt = 'Are you sure?';
+    if (ev) {
+      ev.returnValue = prompt;
+    }
+    return prompt;
+  };
 
   connectVM = async () => {
     if (this.rfb) {
@@ -67,6 +76,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   componentWillUnmount(): void {
     log('unmount ' + this.consoleWindowId);
     this.destroy();
+    window.removeEventListener('beforeunload', this.beforeUnload);
     const div: HTMLDivElement = this.ref.current as HTMLDivElement;
     if (this.resizeEventHandler) {
       div.removeEventListener('resize', this.resizeEventHandler);
