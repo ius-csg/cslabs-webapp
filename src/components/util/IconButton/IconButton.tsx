@@ -53,7 +53,11 @@ function IconButtonIcon(props: IconButtonProps) {
         icon={props.icon}
         size={props.size}
         className={styles['icon']}
-        style={{cursor: 'pointer', ...(props.customSize ? {fontSize: props.customSize} : {})}}
+        style={{
+          cursor: 'pointer',
+          ...(props.customSize ? {fontSize: props.customSize} : {}),
+          ...(props.color ? {color: props.color} : {})
+        }}
       />
       {props.children ? <span style={{marginLeft: '1rem'}}>{props.children}</span> : null}
     </React.Fragment>
