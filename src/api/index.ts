@@ -27,6 +27,10 @@ export interface TicketResponse {
   upid: string;
   user: string;
   url: string;
+  fastBaseUrl: string;
+  reliableBaseUrl: string;
+  healthCheckUrl: string;
+  useHttpsForHealthCheckRequest: string;
 }
 
 export const logout = () => (dispatch: Dispatch) => {
@@ -157,21 +161,18 @@ export async function submitContactRequest(form: FormData) {
 }
 
 
-const fastConnectionTester = makeAxios(process.env.REACT_APP_API_URL, undefined, 1000);
 
-export async function isFastConnectionAvailable() {
-  if(!process.env.REACT_APP_FAST_FULL_URL || !process.env.REACT_APP_FAST_TEST_URL) {
+
+export async function isFastConnectionAvailable(ticket: TicketResponse) {
+  if(!ticket.fastBaseUrl) {
     return false;
   }
+  const scheme = ticket.useHttpsForHealthCheckRequest ? 'https://' : 'http://';
+  const fastConnectionTester = makeAxios(scheme + ticket.fastBaseUrl, undefined, 1000);
   try {
-    await fastConnectionTester.get(process.env.REACT_APP_FAST_TEST_URL!);
+    await fastConnectionTester.get(ticket.healthCheckUrl);
     return true;
   } catch(e) {
     return false;
   }
-}
-
-
-export async function swapNoVncUrl(url: string, fastUrl: string) {
-  url.indexOf("/api2/")
 }

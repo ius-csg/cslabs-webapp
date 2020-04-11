@@ -5,7 +5,7 @@ import * as styles from './ConsoleWindow.module.scss';
 import {connect, getNewConsoleWindowId} from '../../api/rfb';
 import {UserLabVm} from '../../types/UserLabVm';
 import RFB from 'novnc-core';
-import {acquireTicket, isFastConnectionAvailable} from '../../api';
+import {acquireTicket} from '../../api';
 
 interface ConsoleContainerProps {
   vm: UserLabVm;
@@ -31,6 +31,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   consoleWindowRef: RefObject<HTMLDivElement>;
   private resizeEventHandler?: () => void;
   private pasteEventHandler?: (e: any) => boolean;
+  private unmounted: boolean = false;
 
   constructor(props: ConsoleContainerProps) {
     super(props);
@@ -60,18 +61,16 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     try {
 
       const ticketResponse = await acquireTicket(this.props.vm.id);
-      ticketResponse.
-      isFastConnectionAvailable()
-      this.setState({rfb: connect(this.consoleWindowRef.current!, ticketResponse, () => {
+      this.setState({rfb: await connect(this.consoleWindowRef.current!, ticketResponse, () => {
         log('Disconnected');
-        this.setState({
-          rfb: undefined
-        });
+        this.setState({rfb: undefined});
         setTimeout(() => this.connectVM(), 3000);
       })});
     } catch (e) {
-      setTimeout(() => this.connectVM(), 3000);
-      log('Could not connect to vm', e);
+      if(!this.unmounted) {
+        setTimeout(() => this.connectVM(), 3000);
+        log('Could not connect to vm', e);
+      }
     }
   };
 
@@ -98,6 +97,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
   destroy = () => {
     this.disconnect();
+    this.unmounted = true;
   };
 
   sendCtrlAltDelete = () => {
