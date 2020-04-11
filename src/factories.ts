@@ -18,32 +18,32 @@ export function makeModuleForm(): ModuleForm {
       createdAt : '',
       labDifficulty : 1,
       id: 1,
-      labType: 'temporary',
-      moduleId: 5,
+      type: 'Temporary',
       name: 'steve',
-      updatedAt: ''
+      updatedAt: '',
+      moduleId: 0
     }],
     description: '',
     name: '',
     published: false,
     specialCode: uuid(),
     type: 'SingleUser',
-    userId: 0,
-    readme: null,
-    topology: null
+    userId: 0
   };
 }
 
-export function makeLabForm(): LabForm {
+export function makeLabForm(moduleId: number): LabForm {
   return {
     ...makeTrackableEntity(),
     bridgeTemplates: [],
     estimatedCpusUsed: 1,
     estimatedMemoryUsedMb: 1024,
     labDifficulty: 1,
-    labType: 'class',
+    type: 'Class',
     labVms: [],
-    moduleId: 0,
-    name: ''
+    name: '',
+    readme: null,
+    topology: null,
+    moduleId: moduleId
   };
 }

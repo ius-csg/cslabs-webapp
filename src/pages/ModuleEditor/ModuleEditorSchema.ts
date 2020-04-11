@@ -1,4 +1,4 @@
-import {array, boolean, number, object, ObjectSchema, string, StringSchema} from 'yup';
+import {array, boolean, number, object, string, StringSchema} from 'yup';
 import {ModuleForm} from '../../types/editorTypes';
 import {ModuleType, moduleTypes} from '../../types/Module';
 
@@ -13,7 +13,5 @@ export const ModuleEditorSchema = object<ModuleForm>({
   userId: number(),
   type: string().oneOf(moduleTypes) as StringSchema<ModuleType>,
   published: boolean(),
-  labs: array(),
-  topology: object().nullable() as ObjectSchema<File>,
-  readme: object().nullable() as ObjectSchema<File>
+  labs: array()
 });

@@ -9,7 +9,7 @@ import {RegisterFormValues} from '../pages/LoginRegisterPage/RegisterFormSchema'
 import {UserModule} from '../types/UserModule';
 import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
-import {ModuleForm} from '../types/editorTypes';
+import {LabForm, ModuleForm} from '../types/editorTypes';
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -141,13 +141,22 @@ export async function startUserModule(id: string) {
 export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
-export async function getModuleForEditor(uuid: string) {
-  return handleResponse(await api.get<ModuleForm>(`/module/module-editor/${uuid}`)).data;
+export async function getModuleForEditor(moduleId: number) {
+  return handleResponse(await api.get<ModuleForm>(`/module/module-editor/${moduleId}`)).data;
+}
+
+export async function getLabForEditor(id: number) {
+  return handleResponse(await api.get<LabForm>(`/lab/lab-editor/${id}`)).data;
 }
 
 export async function saveModule(module: ModuleForm) {
   return handleResponse(await api.post<ModuleForm>(`/module`, module)).data;
 }
+
+export async function saveLab(moduleId: number, form: LabForm) {
+  return handleResponse(await api.post<LabForm>(`/module/${moduleId}`, form)).data;
+}
+
 
 function handleResponse<T>(response: AxiosResponse<T>) {
   if (response.status < 400) {

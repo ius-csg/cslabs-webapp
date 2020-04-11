@@ -6,16 +6,17 @@ import {Entity, EntityWithUuid} from './Entity';
 
 export interface ModuleForm extends BaseModule {
   labs: Lab[];
-  readme: File | null;
-  topology: File | null;
 }
 
 export interface LabForm extends Lab {
+  readme: File | null;
+  topology: File | null;
   labVms: LabVmForm[];
   bridgeTemplates: BridgeTemplate[];
   estimatedCpusUsed: number;
   estimatedMemoryUsedMb: number;
 }
+
 
 export interface LabVmForm extends LabVm {
   templateInterfaces: VmInterfaceTemplate[];

@@ -45,7 +45,7 @@ class CreatorsModuleCardComponent extends Component<CreatorsModuleCardProps > {
         </Card.Body>
         <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
-            <ButtonLink to={RoutePaths.EditModule.replace(':uuid', module.specialCode)} style={{width: 100}}>View</ButtonLink>
+            <ButtonLink to={RoutePaths.EditModule.replace(':moduleId', String(module.id))} style={{width: 100}}>View</ButtonLink>
         </Card.Footer>
       </Card>
     );
