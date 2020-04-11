@@ -1,4 +1,4 @@
-import * as styles from '../../LabEnvironment/LabEnvironment.module.scss';
+import styles from './VmStatusIndicator.module.scss';
 import {isRunning} from '../../../types/UserLabVm';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import {CenteredIcon} from '../../../util/CenteredIcon';
