@@ -23,6 +23,7 @@ import {RoutePaths} from '../../router/RoutePaths';
 import { LinkContainer } from 'react-router-bootstrap';
 import CheckBoxInput from '../../components/util/CheckBoxInput/CheckBoxInput';
 import {LabListEditor} from '../../components/LabListEditor/LabListEditor';
+import {PageTitle} from '../../components/util/PageTitle';
 
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
@@ -107,7 +108,7 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col className='d-flex justify-content-start align-items-center'>
-              <h1>Module Editor</h1>
+              <PageTitle>Module Editor</PageTitle>
               <LinkContainer style={{marginLeft: '1rem'}} to={RoutePaths.contentCreator}>
                 <Button type='button' variant='info'>Back</Button>
               </LinkContainer>

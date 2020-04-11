@@ -1,7 +1,7 @@
-import {Button, Card} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 import React, {Component} from 'react';
 import styles from './CreatorsModuleCard.module.scss';
-import {Module} from '../../types/Module';
+import {getModuleShareLink, Module} from '../../types/Module';
 import {WebState} from '../../redux/types/WebState';
 import {connect} from 'react-redux';
 import {isAuthenticated} from '../../redux/selectors/entities';
@@ -9,8 +9,10 @@ import {UserModule} from '../../types/UserModule';
 import {getLocalDateTimeString} from '../../util';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import {Link} from 'react-router-dom';
-
-const url = 'https://iuscsg.org';
+import {IconButton} from '../util/IconButton/IconButton';
+import {faCopy} from '@fortawesome/free-solid-svg-icons';
+import {RoutePaths} from '../../router/RoutePaths';
+import {ButtonLink} from '../util/ButtonLink';
 
 interface CreatorsModuleCardProps extends ReturnType<typeof mapStateToProps> {
   module: Module|UserModule;
@@ -35,34 +37,19 @@ class CreatorsModuleCardComponent extends Component<CreatorsModuleCardProps > {
               <b>Published: </b> {`${module.published}`} <br/>
               <b>Module type: </b> {`${module.type}`} <br/>
             </div>
-            <Link to={`/module/${module.specialCode}`}>Share Link</Link>
+            <Link style={{marginRight: '0.5rem'}} to={`/module/${module.specialCode}`}>Share Link</Link>
+            {<CopyToClipboard text={getModuleShareLink(module.specialCode)}>
+              <IconButton icon={faCopy} />
+            </CopyToClipboard>}
           </Card.Text>
         </Card.Body>
         <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
-          {<CopyToClipboard text={`Url: ${url}/module/${module.specialCode}`}>
-            <button className='btn btn-primary'>copy url</button>
-          </CopyToClipboard>}
-          {<Button className=''  style={{width: 100}}>Edit</Button>}
+            <ButtonLink to={RoutePaths.EditModule.replace(':uuid', module.specialCode)} style={{width: 100}}>View</ButtonLink>
         </Card.Footer>
       </Card>
     );
   }
-
-
-  /*getStartButton() {
-    if (this.props.buttonLink) {
-      return (
-        <Link to={this.props.buttonLink}>
-          <Button className='btn btn-primary' style={{width: 200}}>View</Button>
-        </Link>
-      );
-    } else if (this.props.buttonAction) {
-      return (<Button onClick={this.props.buttonAction} className='btn btn-primary' style={{width: 200}}>View</Button>);
-    } else {
-      return null;
-    }
-  }*/
 }
 const mapStateToProps = (state: WebState) => ({authenticated: isAuthenticated(state)});
 export const CreatorsModuleCard = connect(mapStateToProps)(CreatorsModuleCardComponent);

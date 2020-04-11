@@ -4,9 +4,11 @@ import {getEditorsModules} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {Message} from '../../util/Message';
 import {PageTitle} from '../../components/util/PageTitle';
-import {CardColumns} from 'react-bootstrap';
+import {CardColumns, Col, Row} from 'react-bootstrap';
 import {UserModule} from '../../types/UserModule';
 import {CreatorsModuleCard} from '../../components/CreatorsModuleCard/CreatorsModuleCard';
+import {RoutePaths} from '../../router/RoutePaths';
+import {ButtonLink} from '../../components/util/ButtonLink';
 
 interface ModulesState {
   modules: UserModule[];
@@ -41,10 +43,17 @@ class ModulesEditor extends React.Component<{}, ModulesState> {
           this.state.state === 'error' ?
             <Message state={{message: 'An error occurred, please try again later', variant: 'danger'}}/> :
             <>
-              <PageTitle>My Existing Modules</PageTitle>
-              <button className='btn btn-primary'>New Module</button>
+
+              <Row>
+                <Col className='d-flex justify-content-start align-items-center'>
+                  <PageTitle>My Existing Modules</PageTitle>
+                </Col>
+                <Col className='d-flex justify-content-end align-items-center'>
+                  <ButtonLink to={RoutePaths.NewModule} className='btn btn-primary'>New Module</ButtonLink>
+                </Col>
+              </Row>
               <hr/>
-                {cards.length === 0 ?
+              {cards.length === 0 ?
                 <p style={{textAlign: 'center', marginTop: '1rem'}}>You currently have no modules</p> :
                 <CardColumns>{cards}</CardColumns>
               }
