@@ -23,14 +23,14 @@ export function isCreator(state: WebState) {
   const user: User | null = getCurrentUser(state);
   if (user === null ) {
     return false;
-  } else return user.userType === 'Creator';
+  } else return user.role === 'Creator';
 }
 
 export function isAdmin(state: WebState) {
   const user: User| null =  getCurrentUser(state);
   if(user == null){return false;}
   else {
-    return (user.userType === 'Admin');
+    return (user.role === 'Admin');
   }
 }
 
