@@ -1,6 +1,6 @@
 import {Button, Card} from 'react-bootstrap';
 import React, {Component} from 'react';
-import Styles from './CreatorsModuleCard.module.scss';
+import styles from './CreatorsModuleCard.module.scss';
 import {Module} from '../../types/Module';
 import {WebState} from '../../redux/types/WebState';
 import {connect} from 'react-redux';
@@ -8,6 +8,7 @@ import {isAuthenticated} from '../../redux/selectors/entities';
 import {UserModule} from '../../types/UserModule';
 import {getLocalDateTimeString} from '../../util';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import {Link} from 'react-router-dom';
 
 const url = 'https://iuscsg.org';
 
@@ -24,17 +25,17 @@ class CreatorsModuleCardComponent extends Component<CreatorsModuleCardProps > {
       module = (this.props.module as UserModule).module;
     }
     return (
-      <Card border={'primary'} className={Styles.card}>
-        {/*<Card.Img variant='top' src={'../../assets/images/TestImage.jpg'}/>*/}
+      <Card border={'primary'} className={styles.card}>
         <Card.Header>
           <Card.Title>{module.name}</Card.Title>
-          <Card.Subtitle>{module.description.substring(0, 150)}</Card.Subtitle>
         </Card.Header>
         <Card.Body>
-          <Card.Text className={Styles.cardBody}>
-            <b>Published: </b> {`${module.published}`} <br/>
-            <b>Url: </b> {`${url}/module/${module.specialCode}`}<br/>
-            <b>Module type: </b> {`${module.type}`}
+          <Card.Text className={styles['card-body']}>
+            <div style={{marginBottom: '1rem'}}>
+              <b>Published: </b> {`${module.published}`} <br/>
+              <b>Module type: </b> {`${module.type}`} <br/>
+            </div>
+            <Link to={`/module/${module.specialCode}`}>Share Link</Link>
           </Card.Text>
         </Card.Body>
         <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

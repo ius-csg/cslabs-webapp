@@ -14,7 +14,7 @@ import {ModuleForm} from '../../types/editorTypes';
 import {makeModuleForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
-import {ModuleType} from '../../types/Module';
+import {getModuleShareLink, ModuleType} from '../../types/Module';
 import {RouteComponentProps} from 'react-router';
 import {getModuleForEditor, saveModule} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
@@ -27,9 +27,6 @@ const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
   {value: 'MultiUser', label: 'Multi User'}
 ];
-
-const generateLink = (uuid: string) => `${process.env.REACT_APP_URL!}/module/${uuid}`;
-
 
 type Props = RouteComponentProps<{ uuid?: string }>;
 
@@ -129,7 +126,7 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
             { !editing && (
               <Form.Group>
                 <Form.Label column={true}>Share Link</Form.Label>
-                <a target='_blank' rel='noopener' href={generateLink(values.specialCode)}>{generateLink(values.specialCode)}</a>
+                <a target='_blank' rel='noopener' href={getModuleShareLink(values.specialCode)}>{getModuleShareLink(values.specialCode)}</a>
               </Form.Group>
             )}
             <Form.Group>
@@ -156,4 +153,3 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : <ModuleFormComponent/>}</Layout>;
 
 }
-
