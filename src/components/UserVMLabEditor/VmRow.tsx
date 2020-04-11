@@ -15,7 +15,7 @@ interface VmRowProps {
   editable: boolean;
 }
 
-export function VmRow({vm, prefix, editable}: VmRowProps) {
+export function VmRow({vm, prefix, editable, onRemove}: VmRowProps) {
   const getFieldName = (name: keyof LabVm) => `${prefix}.${name}`;
   return (
     <ListRow>
@@ -27,12 +27,14 @@ export function VmRow({vm, prefix, editable}: VmRowProps) {
           <Col md={3} className='d-flex justify-content-start'/>
           <Col md={3} className='d-flex justify-content-start'/>
           <Col md={2} className='d-flex justify-content-end'>
-            <IconButton
-              icon={faTrashAlt}
-              size={'1x'}
-              link={'#'}
-              color={'black'}
-            />
+            {editable &&
+              <IconButton
+                icon={faTrashAlt}
+                size={'1x'}
+                onClick={onRemove}
+                color={'red'}
+              />
+            }
           </Col>
         </Row>
         <Row>

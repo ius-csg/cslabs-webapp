@@ -1,4 +1,4 @@
-import {LabForm, ModuleForm} from './types/editorTypes';
+import {LabForm, LabVmForm, ModuleForm} from './types/editorTypes';
 import uuid from 'uuid';
 import {TrackableEntity} from './types/Entity';
 
@@ -45,5 +45,14 @@ export function makeLabForm(moduleId: number): LabForm {
     readme: null,
     topology: null,
     moduleId: moduleId
+  };
+}
+
+export function makeLabVmForm(): LabVmForm {
+  return {
+    id: 0,
+    name: '',
+    templateInterfaces: [],
+    vmTemplateId: 0
   };
 }
