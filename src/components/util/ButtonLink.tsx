@@ -13,8 +13,8 @@ type Props = {
 
 export function ButtonLink({to, children, ...props}: Props) {
   return (
-    <LinkContainer to={to}>
-      <Button {...props}>{children}</Button>
+    <LinkContainer to={to} style={props.style}>
+      <Button type='button' {...props} >{children}</Button>
     </LinkContainer>
   );
 }

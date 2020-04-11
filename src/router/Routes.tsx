@@ -24,6 +24,7 @@ import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotP
 import Contact   from '../pages/Contact/Contact';
 import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPanel';
+import LabEditor from '../pages/LabEditor/LabEditor';
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
@@ -39,6 +40,8 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.module} component={PublicModule}/>
         <Route exact={true} path={RoutePaths.NewModule} component={ModuleEditor}/>
         <Route exact={true} path={RoutePaths.EditModule} component={ModuleEditor}/>
+        <Route exact={true} path={RoutePaths.EditLab} component={LabEditor}/>
+        <Route exact={true} path={RoutePaths.NewLab} component={LabEditor}/>
         <Route exact={true} path={RoutePaths.forgotPassword} component={ForgotPassword}/>
         <Route exact={true} path={RoutePaths.contactUs} component={Contact}/>
         <Route exact={true} path={RoutePaths.confirmForgotPassword} component={ConfirmForgotPassword}/>
