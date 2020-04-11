@@ -14,7 +14,15 @@ export function makeTrackableEntity(): TrackableEntity {
 export function makeModuleForm(): ModuleForm {
   return {
     ...makeTrackableEntity(),
-    labs: [],
+    labs: [{
+      createdAt : '',
+      labDifficulty : 1,
+      id: 1,
+      labType: 'temporary',
+      moduleId: 5,
+      name: 'steve',
+      updatedAt: ''
+    }],
     description: '',
     name: '',
     published: false,

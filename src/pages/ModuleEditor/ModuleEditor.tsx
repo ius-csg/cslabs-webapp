@@ -22,6 +22,7 @@ import {ModuleEditorSchema} from './ModuleEditorSchema';
 import {RoutePaths} from '../../router/RoutePaths';
 import { LinkContainer } from 'react-router-bootstrap';
 import CheckBoxInput from '../../components/util/CheckBoxInput/CheckBoxInput';
+import {LabListEditor} from '../../components/LabListEditor/LabListEditor';
 
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
@@ -144,6 +145,7 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
               <Form.Label column={true}>Module Description</Form.Label>
               <Input name={propertyOf<ModuleForm>('description')} placeholder='Description' type='textarea' disabled={!editing}/>
             </Form.Group>
+            <LabListEditor labs={values.labs} prefix={propertyOf<ModuleForm>('labs')}/>
           </Col>
         </Form>
       )}
