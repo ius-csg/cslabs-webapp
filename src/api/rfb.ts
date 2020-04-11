@@ -13,6 +13,7 @@ export function connect(element: HTMLDivElement, ticketResponse: TicketResponse,
       // @ts-ignore
       ticketResponse.url);
     rfb.scaleViewport = true;
+    rfb.resizeSession = true;
     rfb.addEventListener('connect', () => log('connect'));
     rfb.addEventListener('disconnect', () => onDisconnect());
     rfb.addEventListener('credentialsrequired', () => {
