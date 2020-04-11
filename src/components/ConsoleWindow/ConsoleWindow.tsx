@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {ChangeEvent, Component, CSSProperties, RefObject} from 'react';
-import {combineClasses, getClipboardFromEvent, log} from '../../util';
-import * as styles from './ConsoleWindow.module.scss';
+import {getClipboardFromEvent, log} from '../../util';
 import {connect, getNewConsoleWindowId} from '../../api/rfb';
 import {UserLabVm} from '../../types/UserLabVm';
 import RFB from 'novnc-core';
@@ -18,10 +17,24 @@ interface ConsoleContainerState {
   pastedText: string;
 }
 
-const consoleWindowStyles: CSSProperties = {
-
+const fullHeightStyles: CSSProperties = {
+  display: 'flex',
+  flex: '1 1 auto',
+  flexFlow: 'column'
 };
 
+const consoleWindowStyles: CSSProperties = {
+  position: 'relative',
+  background: 'black',
+  border: 'groove',
+  ...fullHeightStyles
+};
+
+const wmksConsoleWindowStyles: CSSProperties = {
+  flex: '1 1 auto',
+  display: 'flex',
+  flexDirection: 'column'
+};
 
 class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerState> {
 
@@ -151,12 +164,9 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   render() {
 
     return (
-      <div ref={this.ref} className='full-height-container'>
-        <div
-          style={consoleWindowStyles}
-          className={combineClasses(styles['wmks-console-window-container'], 'full-height-container')}
-        >
-          <div ref={this.consoleWindowRef} id={this.consoleWindowId} className='fill-height'/>
+      <div ref={this.ref} style={fullHeightStyles}>
+        <div style={consoleWindowStyles}>
+          <div ref={this.consoleWindowRef} id={this.consoleWindowId} className='wmksConsoleWindow' style={wmksConsoleWindowStyles}/>
         </div>
       </div>
     );
