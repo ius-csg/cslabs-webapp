@@ -5,7 +5,7 @@ import * as styles from './ConsoleWindow.module.scss';
 import {connect, getNewConsoleWindowId} from '../../api/rfb';
 import {UserLabVm} from '../../types/UserLabVm';
 import RFB from 'novnc-core';
-import {acquireTicket} from '../../api';
+import {acquireTicket, isFastConnectionAvailable} from '../../api';
 
 interface ConsoleContainerProps {
   vm: UserLabVm;
@@ -58,7 +58,10 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     }
 
     try {
+
       const ticketResponse = await acquireTicket(this.props.vm.id);
+      ticketResponse.
+      isFastConnectionAvailable()
       this.setState({rfb: connect(this.consoleWindowRef.current!, ticketResponse, () => {
         log('Disconnected');
         this.setState({

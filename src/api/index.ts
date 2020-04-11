@@ -11,13 +11,13 @@ import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
 import {ModuleForm} from '../types/editorTypes';
 
-let api = makeAxios();
+let api = makeAxios(process.env.REACT_APP_API_URL);
 
 function setToken(token?: string) {
   if (token) {
     localStorage.setItem('token', token);
   }
-  api = makeAxios(token);
+  api = makeAxios(process.env.REACT_APP_API_URL, token);
 }
 
 export interface TicketResponse {
@@ -39,7 +39,7 @@ export async function acquireTicket(id: number): Promise<TicketResponse> {
 }
 
 export async function startUpVm(id: number): Promise<string> {
-  const retry = makeAxios();
+  const retry = makeAxios(process.env.REACT_APP_API_URL);
   axiosRetry(retry, { retryDelay: (num) => 1000 * num, retries: 10});
   return (await retry.post<string>(`/virtual-machine/${id}/start`)).data;
 }
@@ -154,4 +154,24 @@ function handleResponse<T>(response: AxiosResponse<T>) {
 
 export async function submitContactRequest(form: FormData) {
   return handleResponse(await api.post<string>(`/contact-us`, form));
+}
+
+
+const fastConnectionTester = makeAxios(process.env.REACT_APP_API_URL, undefined, 1000);
+
+export async function isFastConnectionAvailable() {
+  if(!process.env.REACT_APP_FAST_FULL_URL || !process.env.REACT_APP_FAST_TEST_URL) {
+    return false;
+  }
+  try {
+    await fastConnectionTester.get(process.env.REACT_APP_FAST_TEST_URL!);
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+
+export async function swapNoVncUrl(url: string, fastUrl: string) {
+  url.indexOf("/api2/")
 }
