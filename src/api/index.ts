@@ -107,6 +107,9 @@ export async function getUserModules() {
 export async function getUserModule(id: number) {
   return handleResponse( await api.get<UserModule>(`/user-module/${id}`)).data;
 }
+export async function getEditorsModules() {
+  return handleResponse(await api.get<UserModule[]>(`module/modules-editor`)).data;
+}
 
 export async function getUserLab(id: number) {
   return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;

@@ -14,7 +14,7 @@ import {ModuleForm} from '../../types/editorTypes';
 import {makeModuleForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
-import {ModuleType} from '../../types/Module';
+import {getModuleShareLink, ModuleType} from '../../types/Module';
 import {RouteComponentProps} from 'react-router';
 import {getModuleForEditor, saveModule} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
@@ -22,14 +22,13 @@ import {ModuleEditorSchema} from './ModuleEditorSchema';
 import {RoutePaths} from '../../router/RoutePaths';
 import { LinkContainer } from 'react-router-bootstrap';
 import CheckBoxInput from '../../components/util/CheckBoxInput/CheckBoxInput';
+import {LabListEditor} from '../../components/LabListEditor/LabListEditor';
+import {PageTitle} from '../../components/util/PageTitle';
 
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
   {value: 'MultiUser', label: 'Multi User'}
 ];
-
-const generateLink = (uuid: string) => `${process.env.REACT_APP_URL!}/module/${uuid}`;
-
 
 type Props = RouteComponentProps<{ uuid?: string }>;
 
@@ -109,7 +108,7 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col className='d-flex justify-content-start align-items-center'>
-              <h1>Module Editor</h1>
+              <PageTitle>Module Editor</PageTitle>
               <LinkContainer style={{marginLeft: '1rem'}} to={RoutePaths.contentCreator}>
                 <Button type='button' variant='info'>Back</Button>
               </LinkContainer>
@@ -129,7 +128,7 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
             { !editing && (
               <Form.Group>
                 <Form.Label column={true}>Share Link</Form.Label>
-                <a target='_blank' rel='noopener' href={generateLink(values.specialCode)}>{generateLink(values.specialCode)}</a>
+                <a target='_blank' rel='noopener' href={getModuleShareLink(values.specialCode)}>{getModuleShareLink(values.specialCode)}</a>
               </Form.Group>
             )}
             <Form.Group>
@@ -147,6 +146,7 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
               <Form.Label column={true}>Module Description</Form.Label>
               <Input name={propertyOf<ModuleForm>('description')} placeholder='Description' type='textarea' disabled={!editing}/>
             </Form.Group>
+            <LabListEditor labs={values.labs} prefix={propertyOf<ModuleForm>('labs')}/>
           </Col>
         </Form>
       )}
@@ -156,4 +156,3 @@ export default function ModuleEditor({match: {params: {uuid}}}: Props) {
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : <ModuleFormComponent/>}</Layout>;
 
 }
-
