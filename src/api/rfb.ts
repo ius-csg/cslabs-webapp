@@ -5,20 +5,23 @@ import RFB from 'novnc-core';
  */
 
 import {log, logError} from '../util';
-import {TicketResponse} from './index';
+import {isFastConnectionAvailable, TicketResponse} from './index';
 
-export function connect(element: HTMLDivElement, ticketResponse: TicketResponse, onDisconnect: () => void) {
+export async function connect(element: HTMLDivElement, ticket: TicketResponse, onDisconnect: () => void) {
   try {
+    const fastConnectionAvailable = await isFastConnectionAvailable(ticket);
+    const url = `wss://${fastConnectionAvailable ? ticket.fastBaseUrl : ticket.reliableBaseUrl}${ticket.url}`;
     const rfb = new RFB(element as any,
       // @ts-ignore
-      ticketResponse.url);
+      url);
     rfb.scaleViewport = true;
+    rfb.resizeSession = true;
     rfb.addEventListener('connect', () => log('connect'));
     rfb.addEventListener('disconnect', () => onDisconnect());
     rfb.addEventListener('credentialsrequired', () => {
       rfb.sendCredentials({
-        username: ticketResponse.user,
-        password: ticketResponse.ticket
+        username: ticket.user,
+        password: ticket.ticket
       });
       log('credentialsrequired');
     });
