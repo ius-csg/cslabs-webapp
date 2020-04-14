@@ -2,17 +2,18 @@ import React from 'react';
 import {FieldArray} from 'formik';
 import {Col, Row} from 'react-bootstrap';
 import {BridgeListItem} from './BridgeListItem';
-import {Lab} from '../../types/Lab';
 import {IconButton} from '../util/IconButton/IconButton';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
+import {BridgeTemplate} from '../../types/editorTypes';
 
 
 interface Props {
-  labs: Lab[];
+  bridgeTemplates: BridgeTemplate[];
   prefix: string;
+  editing: boolean;
 }
 
-export function BridgeListEditor({labs, prefix}: Props) {
+export function BridgeListEditor({bridgeTemplates, prefix, editing}: Props) {
   return (
     <FieldArray
       name={prefix}
@@ -29,7 +30,15 @@ export function BridgeListEditor({labs, prefix}: Props) {
               />
             </Col>
           </Row>
-          {labs.map((lab,index) => <BridgeListItem prefix={`${prefix}.${index}`} key={index} bridgeTemplate={}/>)}
+          {bridgeTemplates.map((bridgeTemplate,index) =>
+            <BridgeListItem
+              prefix={`${prefix}.${index}`}
+              key={index}
+              bridgeTemplate={bridgeTemplate}
+              editing={editing}
+              onDelete={() => helpers.remove(index)}
+            />
+            )}
         </>
       }
     />

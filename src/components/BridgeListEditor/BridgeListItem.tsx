@@ -1,30 +1,31 @@
 import React from 'react';
 import {Col, Row} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
 import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {IconButton} from '../util/IconButton/IconButton';
 import {BridgeTemplate} from '../../types/editorTypes';
+import Input from '../util/Input/Input';
+import {propertyOf} from '../../util';
 
 interface Props {
   bridgeTemplate: BridgeTemplate;
   prefix: string;
+  onDelete: () => void;
+  editing: boolean;
 }
 
-export function BridgeListItem({prefix, bridgeTemplate}: Props){
+export function BridgeListItem({prefix, bridgeTemplate, onDelete, editing}: Props){
   return (
     <Row className='border-top' style={{marginTop: 8}} >
       <Col style={{marginTop: 8}}>
-        {bridgeTemplate.name} - <Link to={'#'}>Edit</Link></Col>
+        <Input name={`${prefix}.${propertyOf<BridgeTemplate>('name')}`} disabled={!editing}/> </Col>
       <Col className='d-flex justify-content-end' style={{marginTop: 8}}>
-        // check the portion of the prefix containing the index
-        if(prefix[1] != '0'){
-          <IconButton
-            icon={faTrashAlt}
-            size={'2x'}
-            link={'#'}
-            color={'black'}
-          />
-        }
+        <IconButton
+          icon={faTrashAlt}
+          size={'2x'}
+          link={'#'}
+          color={bridgeTemplate.isCoreBridge ? 'black' : 'red'}
+          onClick={bridgeTemplate.isCoreBridge ? undefined : onDelete}
+        />
       </Col>
     </Row>
   );
