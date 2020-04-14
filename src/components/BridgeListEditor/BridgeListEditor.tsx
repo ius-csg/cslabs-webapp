@@ -29,7 +29,7 @@ export function BridgeListEditor({labs, prefix}: Props) {
               />
             </Col>
           </Row>
-          {labs.map((lab,index) => <BridgeListItem prefix={`${prefix}.${index}`} key={index} lab={lab}/>)}
+          {labs.map((lab,index) => <BridgeListItem prefix={`${prefix}.${index}`} key={index} bridgeTemplate={}/>)}
         </>
       }
     />
