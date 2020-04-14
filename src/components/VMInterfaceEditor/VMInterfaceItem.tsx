@@ -1,12 +1,12 @@
 import React from 'react';
 import {Col, DropdownButton, Row} from 'react-bootstrap';
-import {LabVm} from '../../types/LabVm';
 import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {IconButton} from '../util/IconButton/IconButton';
+import {VmInterfaceTemplate} from '../../types/editorTypes';
 
 
 interface Props {
-  labVM: LabVm;
+  vmInterfaceTemplate: VmInterfaceTemplate;
   prefix: string;
 }
 
@@ -15,7 +15,7 @@ interface State {
   CurrentBridge: string;
 }
 
-export function VMInterfaceItem({prefix,labVM}: Props){
+export function VMInterfaceItem({prefix, vmInterfaceTemplate}: Props){
 //   const name = `${prefix}.${propertyOf<Lab>('name')}`;
   return (
     <Row className='border-top' style={{marginTop: 8}} >
@@ -25,6 +25,7 @@ export function VMInterfaceItem({prefix,labVM}: Props){
           title={`$CurrentInterface`}
         >
          <DropdownButton.Item as='button'>Placeholder</DropdownButton.Item>
+          // insert interfaces in dropdown
         </DropdownButton>
       </Col>
       <Col style={{marginTop: 8}}>
@@ -33,6 +34,7 @@ export function VMInterfaceItem({prefix,labVM}: Props){
           title={`$CurrentBridge`}
         >
           <DropdownButton.Item as='button'>Placeholder</DropdownButton.Item>
+          // insert bridges in dropdown
         </DropdownButton>
       </Col>
       <Col className='d-flex justify-content-end' style={{marginTop: 8}}>
