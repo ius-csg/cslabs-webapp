@@ -9,15 +9,15 @@ import {RegisterFormValues} from '../pages/LoginRegisterPage/RegisterFormSchema'
 import {UserModule} from '../types/UserModule';
 import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
-import {ModuleForm} from '../types/editorTypes';
+import {LabForm, ModuleForm} from '../types/editorTypes';
 
-let api = makeAxios();
+let api = makeAxios(process.env.REACT_APP_API_URL);
 
 function setToken(token?: string) {
   if (token) {
     localStorage.setItem('token', token);
   }
-  api = makeAxios(token);
+  api = makeAxios(process.env.REACT_APP_API_URL, token);
 }
 
 export interface TicketResponse {
@@ -27,6 +27,10 @@ export interface TicketResponse {
   upid: string;
   user: string;
   url: string;
+  fastBaseUrl: string;
+  reliableBaseUrl: string;
+  healthCheckUrl: string;
+  useHttpsForHealthCheckRequest: string;
 }
 
 export const logout = () => (dispatch: Dispatch) => {
@@ -39,7 +43,7 @@ export async function acquireTicket(id: number): Promise<TicketResponse> {
 }
 
 export async function startUpVm(id: number): Promise<string> {
-  const retry = makeAxios();
+  const retry = makeAxios(process.env.REACT_APP_API_URL);
   axiosRetry(retry, { retryDelay: (num) => 1000 * num, retries: 10});
   return (await retry.post<string>(`/virtual-machine/${id}/start`)).data;
 }
@@ -103,6 +107,9 @@ export async function getUserModules() {
 export async function getUserModule(id: number) {
   return handleResponse( await api.get<UserModule>(`/user-module/${id}`)).data;
 }
+export async function getEditorsModules() {
+  return handleResponse(await api.get<UserModule[]>(`module/modules-editor`)).data;
+}
 
 export async function getUserLab(id: number) {
   return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;
@@ -134,13 +141,22 @@ export async function startUserModule(id: string) {
 export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
-export async function getModuleForEditor(uuid: string) {
-  return handleResponse(await api.get<ModuleForm>(`/module/module-editor/${uuid}`)).data;
+export async function getModuleForEditor(moduleId: number) {
+  return handleResponse(await api.get<ModuleForm>(`/module/module-editor/${moduleId}`)).data;
+}
+
+export async function getLabForEditor(id: number) {
+  return handleResponse(await api.get<LabForm>(`/lab/lab-editor/${id}`)).data;
 }
 
 export async function saveModule(module: ModuleForm) {
   return handleResponse(await api.post<ModuleForm>(`/module`, module)).data;
 }
+
+export async function saveLab(moduleId: number, form: LabForm) {
+  return handleResponse(await api.post<LabForm>(`/module/${moduleId}`, form)).data;
+}
+
 
 function handleResponse<T>(response: AxiosResponse<T>) {
   if (response.status < 400) {
@@ -154,4 +170,21 @@ function handleResponse<T>(response: AxiosResponse<T>) {
 
 export async function submitContactRequest(form: FormData) {
   return handleResponse(await api.post<string>(`/contact-us`, form));
+}
+
+
+
+
+export async function isFastConnectionAvailable(ticket: TicketResponse) {
+  if(!ticket.fastBaseUrl) {
+    return false;
+  }
+  const scheme = ticket.useHttpsForHealthCheckRequest ? 'https://' : 'http://';
+  const fastConnectionTester = makeAxios(scheme + ticket.fastBaseUrl, undefined, 1000);
+  try {
+    await fastConnectionTester.get(ticket.healthCheckUrl);
+    return true;
+  } catch(e) {
+    return false;
+  }
 }

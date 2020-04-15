@@ -7,33 +7,42 @@ import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
 import {
   handleAxiosError,
-  isBadRequest, propertyOf, useMessage
+  isBadRequest, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
-import {ModuleForm} from '../../types/editorTypes';
-import {makeModuleForm} from '../../factories';
+import {LabForm} from '../../types/editorTypes';
+import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
-import {getModuleShareLink, ModuleType} from '../../types/Module';
 import {RouteComponentProps} from 'react-router';
-import {getModuleForEditor, saveModule} from '../../api';
+import {getLabForEditor, saveLab} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
-import {ModuleEditorSchema} from './ModuleEditorSchema';
+import {LabEditorSchema} from './LabEditorSchema';
 import {RoutePaths} from '../../router/RoutePaths';
-import { LinkContainer } from 'react-router-bootstrap';
-import CheckBoxInput from '../../components/util/CheckBoxInput/CheckBoxInput';
-import {LabListEditor} from '../../components/LabListEditor/LabListEditor';
 import {PageTitle} from '../../components/util/PageTitle';
+import {LabDifficulty, LabType} from '../../types/Lab';
+import {VmTable} from '../../components/UserVMLabEditor/VmTable';
+import {ButtonLink} from '../../components/util/ButtonLink';
+import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
 
-const moduleTypeOptions: DropdownOption<ModuleType>[] = [
-  {value: 'SingleUser', label: 'Single User'},
-  {value: 'MultiUser', label: 'Multi User'}
+const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
+  {value: 1, label: 'Easy'},
+  {value: 2, label: 'Medium'},
+  {value: 3, label: 'Hard'}
 ];
 
-type Props = RouteComponentProps<{ moduleId?: string }>;
+const labTypeOptions: DropdownOption<LabType>[] = [
+  {value: 'Temporary', label: 'Temporary ( lasts only a day but can be restarted multiple times)'},
+  {value: 'Class', label: 'Class ( lasts a semester)'},
+  {value: 'Permanent', label: 'Permanent (Lasts forever)'}
+];
 
-export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
-  const [initialValues, setInitialValues] = useState<ModuleForm>(makeModuleForm());
+const getEditModuleLink = (lab: LabForm) => RoutePaths.EditModule.replace(':moduleId', String(lab.moduleId));
+
+type Props = RouteComponentProps<{ moduleId: string; labId?: string }>;
+
+export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
+  const [initialValues, setInitialValues] = useState<LabForm>(makeLabForm(Number(moduleId)));
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = useState(false);
@@ -43,12 +52,12 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setMessage(undefined);
   }
 
-  const onSubmit = async (form: ModuleForm, formikHelpers: FormikHelpers<ModuleForm>) => {
+  const onSubmit = async (form: LabForm, formikHelpers: FormikHelpers<LabForm>) => {
     setMessage(undefined);
     try {
       setLoading(true);
       // objectToFormData(form)
-      setInitialValues(await saveModule(form));
+      setInitialValues(await saveLab(Number(moduleId), form));
       setLoading(false);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
@@ -77,9 +86,9 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   }
 
   useEffect(() => {
-    async function LoadModule() {
-      if (!moduleId) {
-        setInitialValues(makeModuleForm());
+    async function LoadLab() {
+      if (!labId) {
+        setInitialValues(makeLabForm(Number(moduleId)));
         setEditing(true);
         completeLoading();
         return;
@@ -87,7 +96,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
       try {
         setLoading(true);
         setEditing(false);
-        setInitialValues(await getModuleForEditor(Number(moduleId!)));
+        setInitialValues(await getLabForEditor(Number(labId)));
         completeLoading();
       } catch (e) {
         setMessage({message: handleAxiosError(e), variant: 'danger', critical: true});
@@ -95,23 +104,23 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
       }
     }
 
-    LoadModule();
-  }, [moduleId]);
+    LoadLab();
+  }, [labId]);
+
+  const getFieldName = (name: keyof LabForm) => name;
 
   const ModuleFormComponent = () => (
     <Formik
       initialValues={initialValues}
-      validationSchema={ModuleEditorSchema}
+      validationSchema={LabEditorSchema}
       onSubmit={onSubmit}
     >
       {({handleSubmit, isSubmitting, values}) => (
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col className='d-flex justify-content-start align-items-center'>
-              <PageTitle>Module Editor</PageTitle>
-              <LinkContainer style={{marginLeft: '1rem'}} to={RoutePaths.contentCreator}>
-                <Button type='button' variant='info'>Back</Button>
-              </LinkContainer>
+              <PageTitle>Lab Editor</PageTitle>
+              <ButtonLink to={getEditModuleLink(values)} style={{marginLeft: '1rem'}} variant='info'>Back</ButtonLink>
             </Col>
             <Col className='d-flex justify-content-end align-items-center'>
               {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
@@ -125,34 +134,20 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
           </Row>
           <Col sm='12' className='m-auto'>
             <Message state={message}/>
-            { !editing && (
-              <Form.Group>
-                <Form.Label column={true}>Share Link</Form.Label>
-                <a target='_blank' rel='noopener' href={getModuleShareLink(values.specialCode)}>{getModuleShareLink(values.specialCode)}</a>
-              </Form.Group>
-            )}
             <Form.Group>
-              <Form.Label column={true}>Module Name</Form.Label>
-              <Input name={propertyOf<ModuleForm>('name')} placeholder='Enter Module Name' disabled={!editing}/>
+              <Form.Label column={true}>Lab Name</Form.Label>
+              <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
             </Form.Group>
             <Form.Group>
-              <CheckBoxInput name={propertyOf<ModuleForm>('published')} label='Publish (Display on the explore page)' disabled={!editing}/>
+              <Form.Label column={true}>Lab Type</Form.Label>
+              <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
             </Form.Group>
             <Form.Group>
-              <Form.Label column={true}>Type</Form.Label>
-              <DropdownInput name={propertyOf<ModuleForm>('type')} dropdownData={moduleTypeOptions} disabled={!editing}/>
+              <Form.Label column={true}>Lab Difficulty</Form.Label>
+              <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
             </Form.Group>
-            <Form.Group>
-              <Form.Label column={true}>Module Description</Form.Label>
-              <Input name={propertyOf<ModuleForm>('description')} placeholder='Description' type='textarea' disabled={!editing}/>
-            </Form.Group>
-            <hr/>
-            <p>
-              Once you save your changes you can add and remove labs from this module. Note: Adding or editing a lab will cancel changes on this page
-            </p>
-            {values.id !== 0 &&
-              <LabListEditor labs={values.labs} prefix={propertyOf<ModuleForm>('labs')} moduleId={values.id}/>
-            }
+            <BridgeListEditor bridgeTemplates={values.bridgeTemplates} prefix={getFieldName('bridgeTemplates')} editing={editing}/>
+            <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
           </Col>
         </Form>
       )}

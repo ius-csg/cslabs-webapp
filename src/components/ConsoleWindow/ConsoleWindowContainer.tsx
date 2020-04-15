@@ -15,7 +15,7 @@ export function ConsoleWindowContainer(props: Props) {
   return (
     <>
       <ConsoleWindow vm={props.vm} status={props.status}/>
-      <Row>
+      <Row style={{marginTop: 20}}>
         <Button onClick={() => setShowWindowPortal(!showWindowPortal)} as={Col} style={{marginLeft: 'auto', marginRight: 'auto'}} xs={3} sm={2}>
           {showWindowPortal ? 'Close the' : 'Open a'} Popout Window
         </Button>

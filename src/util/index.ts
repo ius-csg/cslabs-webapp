@@ -156,13 +156,14 @@ export function handleAxiosError(e: AxiosError, params: AxiosErrorMessageParams 
   throw e;
 }
 
-export function makeAxios(token?: string) {
+export function makeAxios(baseUrl: string, token?: string, timeout?: number) {
   token = token ? token : nullable(localStorage.getItem('token'));
   return axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: baseUrl,
     ...(token ? {
       headers: {Authorization: `Bearer ${token}`}
-    } : {})
+    } : {}),
+    timeout: timeout
   });
 }
 

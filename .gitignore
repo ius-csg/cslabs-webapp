@@ -25,4 +25,3 @@ yarn-debug.log*
 yarn-error.log*
 public/semantic/
 /.env
-/src/react-app-env.d.ts

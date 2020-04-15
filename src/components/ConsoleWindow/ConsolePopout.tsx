@@ -13,12 +13,30 @@ class ConsolePopout extends Component<Props> {
   constructor(props: Props) {
     super(props);
     this.containerEl = document.createElement('div');
+    this.containerEl.style.minHeight = '100vh';
+    this.containerEl.style.flexFlow = 'column';
+    this.containerEl.style.display = 'flex';
     this.externalWindow = null;
   }
 
-  componentDidMount() {
-    this.externalWindow = window.open('', '', 'width=600,height=400,left=200,top=200');
+  createStyle() {
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(`
+      .wmksConsoleWindow > div {
+        flex-grow: 1;
+      }
+      .wmksConsoleWindow > div > canvas {
+         width: auto !important;
+         height: 97vh !important;
+      }
+    `));
+    return style;
+  }
 
+  componentDidMount() {
+    this.externalWindow = window.open('', '', 'width=800,height=600,left=200,top=200');
+    this.externalWindow!.document.body.style.margin = '0';
+    this.externalWindow!.document.body.appendChild(this.createStyle());
     this.externalWindow!.document.body.appendChild(this.containerEl);
 
     this.externalWindow!.document.title = 'VM Popout';
