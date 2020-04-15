@@ -16,8 +16,7 @@ function getLabEditorLink(lab: Lab) {
   return RoutePaths.EditLab.replace(':moduleId', String(lab.moduleId)).replace(':labId', String(lab.id));
 }
 
-export function LabListItem({prefix,lab}: Props){
-//   const name = `${prefix}.${propertyOf<Lab>('name')}`;
+export function LabListItem({prefix, lab}: Props){
     return (
       <ListRow>
         <Col style={{marginTop: 8}}>

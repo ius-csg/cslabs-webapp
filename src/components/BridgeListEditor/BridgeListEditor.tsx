@@ -5,6 +5,7 @@ import {BridgeListItem} from './BridgeListItem';
 import {IconButton} from '../util/IconButton/IconButton';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {BridgeTemplate} from '../../types/editorTypes';
+import {makeBridgeTemplate} from '../../factories';
 
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function BridgeListEditor({bridgeTemplates, prefix, editing}: Props) {
+
   return (
     <FieldArray
       name={prefix}
@@ -25,8 +27,11 @@ export function BridgeListEditor({bridgeTemplates, prefix, editing}: Props) {
               <IconButton
                 icon={faPlusCircle}
                 size={'2x'}
-                link={'#'}
                 color={'black'}
+                onClick={() => {
+                  console.log(prefix, helpers, makeBridgeTemplate());
+                  helpers.push(makeBridgeTemplate());
+                }}
               />
             </Col>
           </Row>

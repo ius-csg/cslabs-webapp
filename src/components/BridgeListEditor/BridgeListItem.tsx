@@ -21,8 +21,7 @@ export function BridgeListItem({prefix, bridgeTemplate, onDelete, editing}: Prop
       <Col className='d-flex justify-content-end' style={{marginTop: 8}}>
         <IconButton
           icon={faTrashAlt}
-          size={'2x'}
-          link={'#'}
+          size={'1x'}
           color={bridgeTemplate.isCoreBridge ? 'black' : 'red'}
           onClick={bridgeTemplate.isCoreBridge ? undefined : onDelete}
         />
