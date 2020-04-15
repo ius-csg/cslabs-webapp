@@ -29,7 +29,6 @@ export function BridgeListEditor({bridgeTemplates, prefix, editing}: Props) {
                 size={'2x'}
                 color={'black'}
                 onClick={() => {
-                  console.log(prefix, helpers, makeBridgeTemplate());
                   helpers.push(makeBridgeTemplate());
                 }}
               />

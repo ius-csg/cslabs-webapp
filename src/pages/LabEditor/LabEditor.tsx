@@ -24,6 +24,7 @@ import {LabDifficulty, LabType} from '../../types/Lab';
 import {VmTable} from '../../components/UserVMLabEditor/VmTable';
 import {ButtonLink} from '../../components/util/ButtonLink';
 import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
+import {VMInterfaceEditor} from '../../components/VMInterfaceEditor/VMInterfaceEditor';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -147,6 +148,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
               <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
             </Form.Group>
             <BridgeListEditor bridgeTemplates={values.bridgeTemplates} prefix={getFieldName('bridgeTemplates')} editing={editing}/>
+            <VMInterfaceEditor bridgeTemplates={values.bridgeTemplates} vmInterfaceTemplates={values.vmInterfaceTemplates} prefix={getFieldName('vmInterfaceTemplates')}/>
             <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
           </Col>
         </Form>

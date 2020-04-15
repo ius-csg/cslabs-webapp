@@ -2,17 +2,22 @@ import React from 'react';
 import {FieldArray} from 'formik';
 import {Col, Row} from 'react-bootstrap';
 import {VMInterfaceItem} from './VMInterfaceItem';
-import {Lab} from '../../types/Lab';
 import {IconButton} from '../util/IconButton/IconButton';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
+import {range} from '../util/Util';
+import {BridgeTemplate, VmInterfaceTemplate} from '../../types/editorTypes';
+import {makeVmInterfaceTemplate} from '../../factories';
 
 
 interface Props {
-  labs: Lab[];
+  bridgeTemplates: BridgeTemplate[];
+  vmInterfaceTemplates: VmInterfaceTemplate[];
   prefix: string;
 }
 
-export function VMInterfaceEditor({labs, prefix}: Props) {
+export function VMInterfaceEditor({vmInterfaceTemplates, prefix, bridgeTemplates}: Props) {
+  const interfaceNumbers = vmInterfaceTemplates.map(i => i.interfaceNumber);
+  const interfaceOptions = range(0, 10).map((value => ({value: value, label: String(value)}))).filter(o => interfaceNumbers.includes(o.value));
   return (
     <FieldArray
       name={prefix}
@@ -28,12 +33,23 @@ export function VMInterfaceEditor({labs, prefix}: Props) {
               <IconButton
                 icon={faPlusCircle}
                 size={'2x'}
-                link={'#'}
                 color={'black'}
+                onClick={() => {
+                  helpers.push(makeVmInterfaceTemplate(Math.max(...interfaceNumbers)+1));
+                }}
               />
             </Col>
           </Row>
-          {labs.map((lab,index) => <VMInterfaceItem prefix={`${prefix}.${index}`} key={index} labVM={labVm}/>)}
+          {vmInterfaceTemplates.map((vmInterfaceTemplate,index) =>
+            <VMInterfaceItem
+              prefix={`${prefix}.${index}`}
+              key={index}
+              bridgeTemplates={bridgeTemplates}
+              vmInterfaceTemplate={vmInterfaceTemplate}
+              interfaceOptions={interfaceOptions}
+              onDelete={() => helpers.remove(index)}
+            />
+            )}
         </>
       }
     />
