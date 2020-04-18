@@ -23,7 +23,9 @@ import {PageTitle} from '../../components/util/PageTitle';
 import {LabDifficulty, LabType} from '../../types/Lab';
 import {VmTable} from '../../components/UserVMLabEditor/VmTable';
 import {ButtonLink} from '../../components/util/ButtonLink';
-
+import {FileInput} from '../../components/util/FileInput';
+import {Modal} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
   {value: 2, label: 'Medium'},
@@ -31,9 +33,9 @@ const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
 ];
 
 const labTypeOptions: DropdownOption<LabType>[] = [
-  {value: 'Temporary', label: 'Temporary ( lasts only a day but can be restarted multiple times)'},
-  {value: 'Class', label: 'Class ( lasts a semester)'},
-  {value: 'Permanent', label: 'Permanent (Lasts forever)'}
+  {value: 'Temporary', label: 'Temporary (lasts only a day but can be restarted multiple times)'},
+  {value: 'Class', label: 'Class (lasts a semester)'},
+  {value: 'Permanent', label: 'Permanent (lasts forever)'}
 ];
 
 const getEditModuleLink = (lab: LabForm) => RoutePaths.EditModule.replace(':moduleId', String(lab.moduleId));
@@ -107,8 +109,46 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   }, [labId]);
 
   const getFieldName = (name: keyof LabForm) => name;
+  function VirtualMachineTemplateModal(props:any) {
+    return (
+      <Modal
+        {...props}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            VM Library
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Select or Upload VM</h4>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Published</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ubuntu</td>
+                <td>03/20/2019</td>
+              </tr>
+            </tbody>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.onHide}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+    const [modalShow, setModalShow] = React.useState(false);
 
   const ModuleFormComponent = () => (
+    <Layout>
     <Formik
       initialValues={initialValues}
       validationSchema={LabEditorSchema}
@@ -137,6 +177,14 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
               <Form.Label column={true}>Lab Name</Form.Label>
               <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
             </Form.Group>
+            <Form.Group controlId='formBasicFile'>
+                <Form.Label column={true}>Upload Topology Image</Form.Label>
+                <FileInput name='topology' accept='image/*'/>
+              </Form.Group>
+              <Form.Group controlId='formBasicFile'>
+                <Form.Label column={true}>Upload PDF ReadMe</Form.Label>
+                <FileInput name='readMe' accept='.pdf' />
+              </Form.Group>
             <Form.Group>
               <Form.Label column={true}>Lab Type</Form.Label>
               <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
@@ -145,11 +193,24 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
               <Form.Label column={true}>Lab Difficulty</Form.Label>
               <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
             </Form.Group>
+            <Button variant="primary" onClick={() => setModalShow(true)}>
+              Choose VM Template
+            </Button>
+
+      <VirtualMachineTemplateModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
             <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
           </Col>
         </Form>
       )}
+
     </Formik>
+
+  </Layout>  
+
+
   );
 
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : <ModuleFormComponent/>}</Layout>;
