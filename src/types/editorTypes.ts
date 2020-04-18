@@ -37,4 +37,5 @@ export interface VmInterfaceTemplate extends Entity {
 export interface VmTemplate extends Entity {
   isCoreRouter: boolean;
   name: string;
+  published: boolean;
 }
