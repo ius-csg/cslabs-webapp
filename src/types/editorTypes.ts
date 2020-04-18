@@ -33,3 +33,8 @@ export interface VmInterfaceTemplate extends Entity {
   interfaceNumber: number;
   bridgeTemplateUuid: string; // links to the uuid of the bridge.
 }
+
+export interface VmTemplate extends Entity {
+  isCoreRouter: boolean;
+  name: string;
+}
