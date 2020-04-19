@@ -9,7 +9,7 @@ import {RegisterFormValues} from '../pages/LoginRegisterPage/RegisterFormSchema'
 import {UserModule} from '../types/UserModule';
 import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
-import {LabForm, ModuleForm} from '../types/editorTypes';
+import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -175,6 +175,10 @@ export async function submitContactRequest(form: FormData) {
 export async function uploadVmTemplate(form: FormData, config: AxiosRequestConfig) {
   return handleResponse(await api.post<string>(`/vm-template`, form, config));
 }
+export async function getVmTemplates() {
+  return handleResponse(await api.get<VmTemplate[]>(`/vm-template`)).data;
+}
+
 
 export interface ProgressEvent {
   loaded: number;

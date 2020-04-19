@@ -1,9 +1,9 @@
 import {Alert, Button, Form, Modal, ProgressBar} from 'react-bootstrap';
 import * as React from 'react';
 import {VmTemplateTable} from './VmTemplateTable';
-import {FormEvent, useState} from 'react';
+import {FormEvent, useEffect, useState} from 'react';
 import {VmTemplate} from '../../types/editorTypes';
-import {uploadVmTemplate} from '../../api';
+import {getVmTemplates, uploadVmTemplate} from '../../api';
 import {handleAxiosError} from '../../util';
 
 interface Props {
@@ -13,9 +13,13 @@ interface Props {
 }
 
 export function VmTemplateModal({open, onCancel, onSelect}: Props) {
-  const [vmTemplates] = useState<VmTemplate[]>([]);
+  const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
   const [uploadPercentage, setUploadPercentage] = useState<number|undefined>(undefined);
   const [error, setError] = useState('');
+  useEffect(() => {
+    async function loadTemplates(){ setVmTemplates(await getVmTemplates());}
+    loadTemplates();
+  }, [setVmTemplates]);
   const onFileChange = async (event: FormEvent<HTMLInputElement>) => {
     setError('');
     const currentTarget: HTMLInputElement = event.currentTarget!;
@@ -38,8 +42,14 @@ export function VmTemplateModal({open, onCancel, onSelect}: Props) {
       }
       setUploadPercentage(undefined);
       currentTarget.value = '';
+      setVmTemplates(await getVmTemplates());
     }
   };
+  const loadingLabel = uploadPercentage === undefined ? '' :
+    (uploadPercentage === 100 ?
+        'Importing Ova File' :
+        (uploadPercentage! > 5 ?`${uploadPercentage}%` : '')
+    );
   return (
     <Modal show={open} size='lg' centered={true} onHide={onCancel}>
       <Modal.Header closeButton={true}>
@@ -55,7 +65,7 @@ export function VmTemplateModal({open, onCancel, onSelect}: Props) {
               style={{marginTop: '1rem'}}
               animated={true}
               now={uploadPercentage}
-              label={uploadPercentage > 5 ?`${uploadPercentage}%` : ''}
+              label={loadingLabel}
             />
           }
           {Boolean(error) &&  <Alert style={{marginTop: '1rem'}} variant='danger'>{error}</Alert>}
