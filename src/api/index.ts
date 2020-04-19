@@ -1,4 +1,4 @@
-import {AxiosResponse} from 'axios';
+import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {Module} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {Dispatch} from 'redux';
@@ -172,6 +172,14 @@ export async function submitContactRequest(form: FormData) {
   return handleResponse(await api.post<string>(`/contact-us`, form));
 }
 
+export async function uploadVmTemplate(form: FormData, config: AxiosRequestConfig) {
+  return handleResponse(await api.post<string>(`/vm-template`, form, config));
+}
+
+export interface ProgressEvent {
+  loaded: number;
+  total: number;
+}
 
 
 

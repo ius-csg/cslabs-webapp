@@ -24,8 +24,8 @@ import {LabDifficulty, LabType} from '../../types/Lab';
 import {VmTable} from '../../components/UserVMLabEditor/VmTable';
 import {ButtonLink} from '../../components/util/ButtonLink';
 import {FileInput} from '../../components/util/FileInput';
-import {Modal} from 'react-bootstrap';
-import {Table} from 'react-bootstrap';
+import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
+
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
   {value: 2, label: 'Medium'},
@@ -109,44 +109,8 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   }, [labId]);
 
   const getFieldName = (name: keyof LabForm) => name;
-  function VirtualMachineTemplateModal(props:any) {
-    return (
-      <Modal
-        {...props}
-        size="lg"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            VM Library
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h4>Select or Upload VM</h4>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Published</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Ubuntu</td>
-                <td>03/20/2019</td>
-              </tr>
-            </tbody>
-          </Table>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-    const [modalShow, setModalShow] = React.useState(false);
 
+  const [showVmTemplateLibrary, setShowVmTemplateLibrary] = useState(false);
   const ModuleFormComponent = () => (
     <Layout>
     <Formik
@@ -154,61 +118,64 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
       validationSchema={LabEditorSchema}
       onSubmit={onSubmit}
     >
-      {({handleSubmit, isSubmitting, values}) => (
-        <Form onSubmit={handleSubmit}>
-          <Row>
-            <Col className='d-flex justify-content-start align-items-center'>
-              <PageTitle>Lab Editor</PageTitle>
-              <ButtonLink to={getEditModuleLink(values)} style={{marginLeft: '1rem'}} variant='info'>Back</ButtonLink>
-            </Col>
-            <Col className='d-flex justify-content-end align-items-center'>
-              {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
-              <LoadingButton
-                loading={isSubmitting}
-                type='button'
-                onClick={() => onAction(handleSubmit)}
-                label={values.id ? (!editing ? 'Edit' : 'Save'): 'Create'}
-              />
-            </Col>
-          </Row>
-          <Col sm='12' className='m-auto'>
-            <Message state={message}/>
-            <Form.Group>
-              <Form.Label column={true}>Lab Name</Form.Label>
-              <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
-            </Form.Group>
-            <Form.Group controlId='formBasicFile'>
-                <Form.Label column={true}>Upload Topology Image</Form.Label>
-                <FileInput name='topology' accept='image/*'/>
+      {({handleSubmit, isSubmitting, values, setFieldValue}) => (
+        <>
+          <Form onSubmit={handleSubmit}>
+            <Row>
+              <Col className='d-flex justify-content-start align-items-center'>
+                <PageTitle>Lab Editor</PageTitle>
+                <ButtonLink to={getEditModuleLink(values)} style={{marginLeft: '1rem'}} variant='info'>Back</ButtonLink>
+              </Col>
+              <Col className='d-flex justify-content-end align-items-center'>
+                {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
+                <LoadingButton
+                  loading={isSubmitting}
+                  type='button'
+                  onClick={() => onAction(handleSubmit)}
+                  label={values.id ? (!editing ? 'Edit' : 'Save'): 'Create'}
+                />
+              </Col>
+            </Row>
+            <Col sm='12' className='m-auto'>
+              <Message state={message}/>
+              <Form.Group>
+                <Form.Label column={true}>Lab Name</Form.Label>
+                <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
               </Form.Group>
               <Form.Group controlId='formBasicFile'>
-                <Form.Label column={true}>Upload PDF ReadMe</Form.Label>
-                <FileInput name='readMe' accept='.pdf' />
+                  <Form.Label column={true}>Upload Topology Image</Form.Label>
+                  <FileInput name='topology' accept='image/*'/>
+                </Form.Group>
+                <Form.Group controlId='formBasicFile'>
+                  <Form.Label column={true}>Upload PDF ReadMe</Form.Label>
+                  <FileInput name='readMe' accept='.pdf' />
+                </Form.Group>
+              <Form.Group>
+                <Form.Label column={true}>Lab Type</Form.Label>
+                <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
               </Form.Group>
-            <Form.Group>
-              <Form.Label column={true}>Lab Type</Form.Label>
-              <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label column={true}>Lab Difficulty</Form.Label>
-              <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
-            </Form.Group>
-            <Button variant="primary" onClick={() => setModalShow(true)}>
-              Choose VM Template
-            </Button>
-
-      <VirtualMachineTemplateModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      />
-            <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
-          </Col>
-        </Form>
+              <Form.Group>
+                <Form.Label column={true}>Lab Difficulty</Form.Label>
+                <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
+              </Form.Group>
+              <Button variant='primary' onClick={() => setShowVmTemplateLibrary(true)}>
+                Choose VM Template
+              </Button>
+              <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
+            </Col>
+          </Form>
+          <VmTemplateModal
+            open={showVmTemplateLibrary}
+            onCancel={() => setShowVmTemplateLibrary(false)}
+            onSelect={(vmTemplateId?: number) => {
+              // setFieldValue()
+            }}
+          />
+        </>
       )}
-
     </Formik>
 
-  </Layout>  
+  </Layout>
 
 
   );
