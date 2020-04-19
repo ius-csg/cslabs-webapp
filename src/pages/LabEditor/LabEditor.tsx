@@ -23,6 +23,8 @@ import {PageTitle} from '../../components/util/PageTitle';
 import {LabDifficulty, LabType} from '../../types/Lab';
 import {VmTable} from '../../components/UserVMLabEditor/VmTable';
 import {ButtonLink} from '../../components/util/ButtonLink';
+import {FileInput} from '../../components/util/FileInput';
+import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -31,9 +33,9 @@ const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
 ];
 
 const labTypeOptions: DropdownOption<LabType>[] = [
-  {value: 'Temporary', label: 'Temporary ( lasts only a day but can be restarted multiple times)'},
-  {value: 'Class', label: 'Class ( lasts a semester)'},
-  {value: 'Permanent', label: 'Permanent (Lasts forever)'}
+  {value: 'Temporary', label: 'Temporary (lasts only a day but can be restarted multiple times)'},
+  {value: 'Class', label: 'Class (lasts a semester)'},
+  {value: 'Permanent', label: 'Permanent (lasts forever)'}
 ];
 
 const getEditModuleLink = (lab: LabForm) => RoutePaths.EditModule.replace(':moduleId', String(lab.moduleId));
@@ -108,48 +110,74 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
 
   const getFieldName = (name: keyof LabForm) => name;
 
+  const [showVmTemplateLibrary, setShowVmTemplateLibrary] = useState(false);
   const ModuleFormComponent = () => (
+    <Layout>
     <Formik
       initialValues={initialValues}
       validationSchema={LabEditorSchema}
       onSubmit={onSubmit}
     >
-      {({handleSubmit, isSubmitting, values}) => (
-        <Form onSubmit={handleSubmit}>
-          <Row>
-            <Col className='d-flex justify-content-start align-items-center'>
-              <PageTitle>Lab Editor</PageTitle>
-              <ButtonLink to={getEditModuleLink(values)} style={{marginLeft: '1rem'}} variant='info'>Back</ButtonLink>
+      {({handleSubmit, isSubmitting, values, setFieldValue}) => (
+        <>
+          <Form onSubmit={handleSubmit}>
+            <Row>
+              <Col className='d-flex justify-content-start align-items-center'>
+                <PageTitle>Lab Editor</PageTitle>
+                <ButtonLink to={getEditModuleLink(values)} style={{marginLeft: '1rem'}} variant='info'>Back</ButtonLink>
+              </Col>
+              <Col className='d-flex justify-content-end align-items-center'>
+                {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
+                <LoadingButton
+                  loading={isSubmitting}
+                  type='button'
+                  onClick={() => onAction(handleSubmit)}
+                  label={values.id ? (!editing ? 'Edit' : 'Save'): 'Create'}
+                />
+              </Col>
+            </Row>
+            <Col sm='12' className='m-auto'>
+              <Message state={message}/>
+              <Form.Group>
+                <Form.Label column={true}>Lab Name</Form.Label>
+                <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
+              </Form.Group>
+              <Form.Group controlId='formBasicFile'>
+                  <Form.Label column={true}>Upload Topology Image</Form.Label>
+                  <FileInput name='topology' accept='image/*'/>
+                </Form.Group>
+                <Form.Group controlId='formBasicFile'>
+                  <Form.Label column={true}>Upload PDF ReadMe</Form.Label>
+                  <FileInput name='readMe' accept='.pdf' />
+                </Form.Group>
+              <Form.Group>
+                <Form.Label column={true}>Lab Type</Form.Label>
+                <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label column={true}>Lab Difficulty</Form.Label>
+                <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
+              </Form.Group>
+              <Button variant='primary' onClick={() => setShowVmTemplateLibrary(true)}>
+                Choose VM Template
+              </Button>
+              <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
             </Col>
-            <Col className='d-flex justify-content-end align-items-center'>
-              {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
-              <LoadingButton
-                loading={isSubmitting}
-                type='button'
-                onClick={() => onAction(handleSubmit)}
-                label={values.id ? (!editing ? 'Edit' : 'Save'): 'Create'}
-              />
-            </Col>
-          </Row>
-          <Col sm='12' className='m-auto'>
-            <Message state={message}/>
-            <Form.Group>
-              <Form.Label column={true}>Lab Name</Form.Label>
-              <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label column={true}>Lab Type</Form.Label>
-              <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label column={true}>Lab Difficulty</Form.Label>
-              <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
-            </Form.Group>
-            <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
-          </Col>
-        </Form>
+          </Form>
+          <VmTemplateModal
+            open={showVmTemplateLibrary}
+            onCancel={() => setShowVmTemplateLibrary(false)}
+            onSelect={(vmTemplateId?: number) => {
+              // setFieldValue()
+            }}
+          />
+        </>
       )}
     </Formik>
+
+  </Layout>
+
+
   );
 
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : <ModuleFormComponent/>}</Layout>;
