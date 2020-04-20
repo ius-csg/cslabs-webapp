@@ -7,10 +7,10 @@ import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
 import {
   handleAxiosError,
-  isBadRequest, useMessage
+  isBadRequest, propertyOf, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
-import {LabForm} from '../../types/editorTypes';
+import {LabForm, LabVmForm} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
@@ -25,6 +25,8 @@ import {VmTable} from '../../components/UserVMLabEditor/VmTable';
 import {ButtonLink} from '../../components/util/ButtonLink';
 import {FileInput} from '../../components/util/FileInput';
 import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
+import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
+import {objectToFormData} from 'object-to-formdata';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -54,11 +56,11 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   }
 
   const onSubmit = async (form: LabForm, formikHelpers: FormikHelpers<LabForm>) => {
+    form = {...form, moduleId: Number(moduleId)};
     setMessage(undefined);
     try {
       setLoading(true);
-      // objectToFormData(form)
-      setInitialValues(await saveLab(Number(moduleId), form));
+      setInitialValues(await saveLab(objectToFormData(form)));
       setLoading(false);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
@@ -110,7 +112,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
 
   const getFieldName = (name: keyof LabForm) => name;
 
-  const [showVmTemplateLibrary, setShowVmTemplateLibrary] = useState(false);
+  const [selectedVm, setSelectedVm] = useState<number|undefined>();
   const ModuleFormComponent = () => (
     <Layout>
     <Formik
@@ -144,11 +146,11 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
               </Form.Group>
               <Form.Group controlId='formBasicFile'>
                   <Form.Label column={true}>Upload Topology Image</Form.Label>
-                  <FileInput name='topology' accept='image/*'/>
+                  <FileInput name='topology' accept='image/*' disabled={!editing} />
                 </Form.Group>
                 <Form.Group controlId='formBasicFile'>
                   <Form.Label column={true}>Upload PDF ReadMe</Form.Label>
-                  <FileInput name='readMe' accept='.pdf' />
+                  <FileInput name='readMe' accept='.pdf' disabled={!editing} />
                 </Form.Group>
               <Form.Group>
                 <Form.Label column={true}>Lab Type</Form.Label>
@@ -158,28 +160,27 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                 <Form.Label column={true}>Lab Difficulty</Form.Label>
                 <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
               </Form.Group>
-              <Button variant='primary' onClick={() => setShowVmTemplateLibrary(true)}>
-                Choose VM Template
-              </Button>
-              <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
+              <BridgeListEditor bridgeTemplates={values.bridgeTemplates} prefix={getFieldName('bridgeTemplates')} editing={editing}/>
+              <VmTable
+                bridgeTemplates={values.bridgeTemplates}
+                prefix={getFieldName('labVms')}
+                vms={values.labVms}
+                editable={editing}
+                onOpenTemplateSelection={(index) => setSelectedVm(index)}
+              />
             </Col>
           </Form>
           <VmTemplateModal
-            open={showVmTemplateLibrary}
-            onCancel={() => setShowVmTemplateLibrary(false)}
-            onSelect={(vmTemplateId?: number) => {
-              // setFieldValue()
+            open={selectedVm !== undefined}
+            onCancel={() => setSelectedVm(undefined)}
+            onSelect={(vmTemplateId: number) => {
+              setFieldValue(`${getFieldName('labVms')}.${selectedVm}.${propertyOf<LabVmForm>('vmTemplateId')}`, vmTemplateId);
             }}
           />
         </>
       )}
     </Formik>
-
   </Layout>
-
-
   );
-
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : <ModuleFormComponent/>}</Layout>;
-
 }

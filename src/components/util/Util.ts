@@ -20,3 +20,11 @@ export type FormikSetFieldValue = (field: string, value: any, shouldValidate?: b
 export function useQuery<T extends {[key: string]: string | undefined}>() {
   return queryString.decode(useLocation().search.substring(1)) as T;
 }
+
+export function range(start: number, end: number) {
+  const arr = [];
+  for (let i = start; i <= end; i++) {
+    arr.push(i);
+  }
+  return arr;
+}

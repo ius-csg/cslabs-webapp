@@ -1,4 +1,4 @@
-import {LabForm, LabVmForm, ModuleForm} from './types/editorTypes';
+import {BridgeTemplate, LabForm, LabVmForm, ModuleForm, VmInterfaceTemplate} from './types/editorTypes';
 import uuid from 'uuid';
 import {TrackableEntity} from './types/Entity';
 
@@ -35,7 +35,9 @@ export function makeModuleForm(): ModuleForm {
 export function makeLabForm(moduleId: number): LabForm {
   return {
     ...makeTrackableEntity(),
-    bridgeTemplates: [],
+    bridgeTemplates: [
+      makeBridgeTemplate('Core Bridge', true)
+    ],
     estimatedCpusUsed: 1,
     estimatedMemoryUsedMb: 1024,
     labDifficulty: 1,
@@ -54,5 +56,22 @@ export function makeLabVmForm(): LabVmForm {
     name: '',
     templateInterfaces: [],
     vmTemplateId: 0
+  };
+}
+
+export function makeBridgeTemplate(name: string = '', isCoreBridge: boolean = false): BridgeTemplate {
+  return{
+    isCoreBridge: isCoreBridge,
+    name: name,
+    id: 0,
+    uuid: uuid()
+  };
+}
+
+export function makeVmInterfaceTemplate(interfaceNumber: number = 0): VmInterfaceTemplate {
+  return{
+    interfaceNumber: interfaceNumber,
+    id: 0,
+    bridgeTemplateUuid: uuid()
   };
 }

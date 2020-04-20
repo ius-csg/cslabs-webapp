@@ -153,8 +153,8 @@ export async function saveModule(module: ModuleForm) {
   return handleResponse(await api.post<ModuleForm>(`/module`, module)).data;
 }
 
-export async function saveLab(moduleId: number, form: LabForm) {
-  return handleResponse(await api.post<LabForm>(`/module/${moduleId}`, form)).data;
+export async function saveLab(form: FormData) {
+  return handleResponse(await api.post<LabForm>(`/lab`, form)).data;
 }
 
 
