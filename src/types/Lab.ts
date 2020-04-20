@@ -9,4 +9,5 @@ export interface Lab extends TrackableEntity {
 
 
 export type LabType = 'Temporary' | 'Class' | 'Permanent';
+export const labTypes: LabType[] = ['Temporary', 'Class', 'Permanent'];
 export type LabDifficulty = 1 | 2 | 3;

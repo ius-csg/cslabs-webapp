@@ -11,6 +11,8 @@ export interface ModuleForm extends BaseModule {
 export interface LabForm extends Lab {
   readme: File | null;
   topology: File | null;
+  hasReadme?: boolean;
+  hasTopology?: boolean;
   labVms: LabVmForm[];
   bridgeTemplates: BridgeTemplate[];
   estimatedCpusUsed: number;

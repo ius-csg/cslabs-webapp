@@ -18,7 +18,7 @@ export function BridgeListItem({prefix, bridgeTemplate, onDelete, editing}: Prop
   return (
     <ListRow>
       <Col>
-        <Input name={`${prefix}.${propertyOf<BridgeTemplate>('name')}`} disabled={!editing}/> </Col>
+        <Input name={`${prefix}.${propertyOf<BridgeTemplate>('name')}`} disabled={!editing || bridgeTemplate.isCoreBridge}/> </Col>
       <Col className='d-flex justify-content-end'>
         <IconButton
           icon={faTrashAlt}

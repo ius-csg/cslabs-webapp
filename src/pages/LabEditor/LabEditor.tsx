@@ -15,7 +15,7 @@ import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
 import {RouteComponentProps} from 'react-router';
-import {getLabForEditor, saveLab} from '../../api';
+import {getLabForEditor, getUserLabReadmeUrl, getUserLabTopologyUrl, saveLab} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {LabEditorSchema} from './LabEditorSchema';
 import {RoutePaths} from '../../router/RoutePaths';
@@ -26,7 +26,6 @@ import {ButtonLink} from '../../components/util/ButtonLink';
 import {FileInput} from '../../components/util/FileInput';
 import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
 import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
-import {objectToFormData} from 'object-to-formdata';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -60,7 +59,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     setMessage(undefined);
     try {
       setLoading(true);
-      setInitialValues(await saveLab(objectToFormData(form)));
+      setInitialValues(await saveLab(form));
       setLoading(false);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
@@ -141,23 +140,25 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
             <Col sm='12' className='m-auto'>
               <Message state={message}/>
               <Form.Group>
-                <Form.Label column={true}>Lab Name</Form.Label>
+                <Form.Label>Lab Name</Form.Label>
                 <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
               </Form.Group>
-              <Form.Group controlId='formBasicFile'>
-                  <Form.Label column={true}>Upload Topology Image</Form.Label>
-                  <FileInput name='topology' accept='image/*' disabled={!editing} />
-                </Form.Group>
-                <Form.Group controlId='formBasicFile'>
-                  <Form.Label column={true}>Upload PDF ReadMe</Form.Label>
-                  <FileInput name='readMe' accept='.pdf' disabled={!editing} />
-                </Form.Group>
               <Form.Group>
-                <Form.Label column={true}>Lab Type</Form.Label>
+                <Form.Label>Upload Topology Image (Only jpg supported)</Form.Label>
+                <FileInput name={getFieldName('topology')} accept='image/jpg' disabled={!editing} />
+                {values.hasTopology && <a href={getUserLabTopologyUrl(values.id)} target='_blank'>View Current</a>}
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Upload PDF Readme (only pdfs supported)</Form.Label>
+                <FileInput name={getFieldName('readme')} accept='.pdf' disabled={!editing} />
+                {values.hasReadme && <a href={getUserLabReadmeUrl(values.id)} target='_blank'>View Current</a>}
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Lab Type</Form.Label>
                 <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
               </Form.Group>
               <Form.Group>
-                <Form.Label column={true}>Lab Difficulty</Form.Label>
+                <Form.Label>Lab Difficulty</Form.Label>
                 <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
               </Form.Group>
               <BridgeListEditor bridgeTemplates={values.bridgeTemplates} prefix={getFieldName('bridgeTemplates')} editing={editing}/>
@@ -175,6 +176,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
             onCancel={() => setSelectedVm(undefined)}
             onSelect={(vmTemplateId: number) => {
               setFieldValue(`${getFieldName('labVms')}.${selectedVm}.${propertyOf<LabVmForm>('vmTemplateId')}`, vmTemplateId);
+              setSelectedVm(undefined);
             }}
           />
         </>

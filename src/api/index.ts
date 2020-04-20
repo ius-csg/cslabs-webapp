@@ -153,8 +153,13 @@ export async function saveModule(module: ModuleForm) {
   return handleResponse(await api.post<ModuleForm>(`/module`, module)).data;
 }
 
-export async function saveLab(form: FormData) {
-  return handleResponse(await api.post<LabForm>(`/lab`, form)).data;
+export async function saveLab(form: LabForm) {
+  const {topology, readme, ...json} = form;
+  const data = new FormData();
+  data.append('topology', topology!);
+  data.append('readme', readme!);
+  data.append('json', JSON.stringify(json));
+  return handleResponse(await api.post<LabForm>(`/lab`, data)).data;
 }
 
 

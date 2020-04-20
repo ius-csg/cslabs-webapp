@@ -68,10 +68,10 @@ export function makeBridgeTemplate(name: string = '', isCoreBridge: boolean = fa
   };
 }
 
-export function makeVmInterfaceTemplate(interfaceNumber: number = 0): VmInterfaceTemplate {
+export function makeVmInterfaceTemplate(interfaceNumber: number = 0, bridgeTemplateUuid: string = ''): VmInterfaceTemplate {
   return{
     interfaceNumber: interfaceNumber,
     id: 0,
-    bridgeTemplateUuid: uuid()
+    bridgeTemplateUuid: bridgeTemplateUuid
   };
 }

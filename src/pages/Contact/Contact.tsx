@@ -59,7 +59,7 @@ export default function ContactUs() {
               </Form.Group>
               <Form.Group controlId='formBasicFile'>
                 <Form.Label column={true}>Screenshots - Optional</Form.Label>
-                <FileInput name='screenshots' accept='image/*'/>
+                <FileInput name='screenshots' accept='image/*' multiple={true}/>
               </Form.Group>
               <p>
                 If this is a bug report, please tell us what you were attempting to do, what happened, and what was

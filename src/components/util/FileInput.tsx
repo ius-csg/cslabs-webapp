@@ -16,7 +16,13 @@ export function FileInput({name, accept, multiple, disabled}: Props) {
     <Field name={name}>
       {(fieldProps: FieldProps) => {
         const {form} = fieldProps;
-        const onFileChange = (event: FormEvent<HTMLInputElement>) => form.setFieldValue(name, event.currentTarget!.files);
+        const onFileChange = (event: FormEvent<HTMLInputElement>) => {
+          if(multiple) {
+            form.setFieldValue(name, event.currentTarget!.files);
+          } else {
+            form.setFieldValue(name, event.currentTarget!.files!.item(0));
+          }
+        };
         return (
           <>
             <Form.Control
