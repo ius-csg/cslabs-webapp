@@ -8,7 +8,7 @@ import {handleAxiosError} from '../../util';
 
 interface Props {
   open: boolean;
-  onSelect: (vmTemplateId?: number) => void;
+  onSelect: (vmTemplateId: number) => void;
   onCancel: () => void;
 }
 

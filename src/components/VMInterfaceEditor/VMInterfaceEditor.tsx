@@ -13,33 +13,40 @@ interface Props {
   bridgeTemplates: BridgeTemplate[];
   vmInterfaceTemplates: VmInterfaceTemplate[];
   prefix: string;
+  editable: boolean;
 }
 
-export function VMInterfaceEditor({vmInterfaceTemplates, prefix, bridgeTemplates}: Props) {
+export function VMInterfaceEditor({vmInterfaceTemplates, prefix, bridgeTemplates, editable}: Props) {
   const interfaceNumbers = vmInterfaceTemplates.map(i => i.interfaceNumber);
-  const interfaceOptions = range(0, 10).map((value => ({value: value, label: String(value)}))).filter(o => interfaceNumbers.includes(o.value));
+  const interfaceOptions = range(0, 10)
+    .map((value => ({value: value, label: String(value)})))
+    .filter(o => !interfaceNumbers.includes(o.value));
   return (
     <FieldArray
       name={prefix}
       render={helpers =>
         <>
           <Row>
-            <Col>Interfaces</Col>
-          </Row>
-          <Row>
-            <Col>Interface</Col>
-            <Col>Bridge</Col>
+            <Col>
+              <h6>Interfaces</h6>
+            </Col>
             <Col className='d-flex justify-content-end align-items-center'>
               <IconButton
                 icon={faPlusCircle}
                 size={'2x'}
                 color={'black'}
+                hideIcon={!editable}
                 onClick={() => {
-                  helpers.push(makeVmInterfaceTemplate(Math.max(...interfaceNumbers)+1));
+                  helpers.push(makeVmInterfaceTemplate(interfaceNumbers.length !== 0 ? Math.max(...interfaceNumbers) + 1 : 0));
                 }}
               />
             </Col>
           </Row>
+          {vmInterfaceTemplates.length === 0 && (
+            <Row>
+              <Col><p>No Interfaces Added</p></Col>
+            </Row>
+          )}
           {vmInterfaceTemplates.map((vmInterfaceTemplate,index) =>
             <VMInterfaceItem
               prefix={`${prefix}.${index}`}
@@ -48,6 +55,7 @@ export function VMInterfaceEditor({vmInterfaceTemplates, prefix, bridgeTemplates
               vmInterfaceTemplate={vmInterfaceTemplate}
               interfaceOptions={interfaceOptions}
               onDelete={() => helpers.remove(index)}
+              editable={editable}
             />
             )}
         </>

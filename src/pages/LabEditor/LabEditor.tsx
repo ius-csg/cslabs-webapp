@@ -7,10 +7,10 @@ import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
 import {
   handleAxiosError,
-  isBadRequest, useMessage
+  isBadRequest, propertyOf, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
-import {LabForm} from '../../types/editorTypes';
+import {LabForm, LabVmForm} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
@@ -26,7 +26,6 @@ import {ButtonLink} from '../../components/util/ButtonLink';
 import {FileInput} from '../../components/util/FileInput';
 import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
 import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
-import {VMInterfaceEditor} from '../../components/VMInterfaceEditor/VMInterfaceEditor';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -112,7 +111,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
 
   const getFieldName = (name: keyof LabForm) => name;
 
-  const [showVmTemplateLibrary, setShowVmTemplateLibrary] = useState(false);
+  const [selectedVm, setSelectedVm] = useState<number|undefined>();
   const ModuleFormComponent = () => (
     <Layout>
     <Formik
@@ -160,19 +159,21 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                 <Form.Label column={true}>Lab Difficulty</Form.Label>
                 <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
               </Form.Group>
-              <Button variant='primary' onClick={() => setShowVmTemplateLibrary(true)}>
-                Choose VM Template
-              </Button>
               <BridgeListEditor bridgeTemplates={values.bridgeTemplates} prefix={getFieldName('bridgeTemplates')} editing={editing}/>
-              <VMInterfaceEditor bridgeTemplates={values.bridgeTemplates} vmInterfaceTemplates={values.vmInterfaceTemplates} prefix={getFieldName('vmInterfaceTemplates')}/>
-              <VmTable prefix={getFieldName('labVms')} vms={values.labVms} editable={editing}/>
+              <VmTable
+                bridgeTemplates={values.bridgeTemplates}
+                prefix={getFieldName('labVms')}
+                vms={values.labVms}
+                editable={editing}
+                onOpenTemplateSelection={(index) => setSelectedVm(index)}
+              />
             </Col>
           </Form>
           <VmTemplateModal
-            open={showVmTemplateLibrary}
-            onCancel={() => setShowVmTemplateLibrary(false)}
-            onSelect={(vmTemplateId?: number) => {
-              // setFieldValue()
+            open={selectedVm !== undefined}
+            onCancel={() => setSelectedVm(undefined)}
+            onSelect={(vmTemplateId: number) => {
+              setFieldValue(`${getFieldName('labVms')}.${selectedVm}.${propertyOf<LabVmForm>('vmTemplateId')}`, vmTemplateId);
             }}
           />
         </>
