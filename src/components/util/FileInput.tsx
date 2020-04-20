@@ -8,9 +8,10 @@ interface Props {
   name: string;
   accept: string;
   multiple?: boolean;
+  disabled?: boolean;
 }
 
-export function FileInput({name, accept, multiple}: Props) {
+export function FileInput({name, accept, multiple, disabled}: Props) {
   return (
     <Field name={name}>
       {(fieldProps: FieldProps) => {
@@ -24,6 +25,7 @@ export function FileInput({name, accept, multiple}: Props) {
               name={name}
               onChange={onFileChange}
               multiple={multiple === undefined ? true : multiple}
+              disabled={disabled}
             />
             <ErrorMessage
               render={msg => <div className={styles['form-errors']}>{msg}</div>}

@@ -24,7 +24,7 @@ export function VmTable(props: Props) {
       render={helpers =>
         <>
           <Row style={{marginBottom: '1rem'}}>
-            <Col>Virtual Machines</Col>
+            <Col><h5>Virtual Machines</h5></Col>
             <Col className='d-flex justify-content-end align-items-center'>
               {editable &&
               <IconButton
@@ -37,6 +37,11 @@ export function VmTable(props: Props) {
               }
             </Col>
           </Row>
+          {props.vms.length === 0 && (
+            <Row>
+              <Col><p>No Vms Added</p></Col>
+            </Row>
+          )}
           {props.vms.map((vm: LabVmForm, i) =>
             <VmRow
               key={i}

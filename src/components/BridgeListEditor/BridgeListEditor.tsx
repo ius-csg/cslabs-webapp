@@ -22,18 +22,24 @@ export function BridgeListEditor({bridgeTemplates, prefix, editing}: Props) {
       render={helpers =>
         <>
           <Row>
-            <Col>Bridges</Col>
+            <Col><h5>Bridges</h5></Col>
             <Col className='d-flex justify-content-end align-items-center'>
-              <IconButton
-                icon={faPlusCircle}
-                size={'2x'}
-                color={'black'}
-                onClick={() => {
-                  helpers.push(makeBridgeTemplate());
-                }}
-              />
+              { editing &&
+                <IconButton
+                  icon={faPlusCircle}
+                  size={'2x'}
+                  color={'black'}
+                  onClick={() => {
+                    helpers.push(makeBridgeTemplate());
+                  }}
+                />}
             </Col>
           </Row>
+          {bridgeTemplates.length === 0 && (
+            <Row>
+              <Col><p>No Bridges Added</p></Col>
+            </Row>
+          )}
           {bridgeTemplates.map((bridgeTemplate,index) =>
             <BridgeListItem
               prefix={`${prefix}.${index}`}

@@ -27,7 +27,7 @@ export function VmRow({vm, prefix, editable, onRemove, bridgeTemplates, onOpenTe
             <Input name={getFieldName('name')} disabled={!editable} />
           </Col>
           <Col md={3} className='d-flex justify-content-start'>
-            <Button variant='primary' onClick={() => onOpenTemplateSelection(index)}>
+            <Button variant='primary' disabled={!editable} onClick={() => onOpenTemplateSelection(index)}>
               {vm.vmTemplateId === 0 ? 'Choose VM Template' : 'Vm Selected'}
             </Button>
           </Col>

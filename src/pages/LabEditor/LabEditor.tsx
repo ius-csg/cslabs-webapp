@@ -26,6 +26,7 @@ import {ButtonLink} from '../../components/util/ButtonLink';
 import {FileInput} from '../../components/util/FileInput';
 import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
 import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
+import {objectToFormData} from 'object-to-formdata';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -55,11 +56,11 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   }
 
   const onSubmit = async (form: LabForm, formikHelpers: FormikHelpers<LabForm>) => {
+    form = {...form, moduleId: Number(moduleId)};
     setMessage(undefined);
     try {
       setLoading(true);
-      // objectToFormData(form)
-      setInitialValues(await saveLab(Number(moduleId), form));
+      setInitialValues(await saveLab(objectToFormData(form)));
       setLoading(false);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
@@ -145,11 +146,11 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
               </Form.Group>
               <Form.Group controlId='formBasicFile'>
                   <Form.Label column={true}>Upload Topology Image</Form.Label>
-                  <FileInput name='topology' accept='image/*'/>
+                  <FileInput name='topology' accept='image/*' disabled={!editing} />
                 </Form.Group>
                 <Form.Group controlId='formBasicFile'>
                   <Form.Label column={true}>Upload PDF ReadMe</Form.Label>
-                  <FileInput name='readMe' accept='.pdf' />
+                  <FileInput name='readMe' accept='.pdf' disabled={!editing} />
                 </Form.Group>
               <Form.Group>
                 <Form.Label column={true}>Lab Type</Form.Label>
