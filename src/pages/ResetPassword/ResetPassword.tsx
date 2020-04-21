@@ -4,12 +4,13 @@ import {AccountManagementLayout} from '../../components/AccountManagementLayout/
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
 import {object, string} from 'yup';
 import {useState} from 'react';
-import {makeMessageState} from '../../util';
+import {handleAxiosError, makeMessageState} from '../../util';
 import {submitChangePasswordRequest} from '../../api';
 import {Formik} from 'formik';
 import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
-import {confirmPasswordValidator, passwordValidator} from '../LoginRegisterPage/RegisterFormSchema';
+import {makeConfirmPasswordValidator, passwordValidator} from '../LoginRegisterPage/RegisterFormSchema';
+import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
 
 interface ChangePasswordRequestForm {
   currentPassword: string;
@@ -20,7 +21,7 @@ interface ChangePasswordRequestForm {
 const ChangePasswordRequestSchema = object<ChangePasswordRequestForm>({
   currentPassword: string().required('Required'),
   newPassword: passwordValidator,
-  confirmPassword: confirmPasswordValidator
+  confirmPassword: makeConfirmPasswordValidator('newPassword')
 });
 
 const getFieldName = (prop: keyof ChangePasswordRequestForm) => prop;
@@ -38,7 +39,7 @@ export default function ResetPassword(){
         });
         setMessageState({message: 'Password successfully changed', variant: 'success'});
       } catch (e) {
-        setMessageState({message: 'An Error occurred, try again later', variant: 'danger'});
+        setMessageState({message: handleAxiosError(e), variant: 'danger'});
       }
     };
 
@@ -50,7 +51,7 @@ export default function ResetPassword(){
           validationSchema={ChangePasswordRequestSchema}
           onSubmit={onSubmit}
         >
-          {({handleSubmit, isSubmitting}) => (
+          {({handleSubmit, isSubmitting, values}) => (
             <Form onSubmit={handleSubmit}>
               <Col sm='6'>
                 <Form.Group controlId='formBasicCurrentPassword'>
@@ -60,11 +61,12 @@ export default function ResetPassword(){
                 <Form.Group controlId='formBasicPassword'>
                   <Form.Label>New Password</Form.Label>
                   <Input type='password' name={getFieldName('newPassword')} placeholder='Enter New Password'/>
+                  <PasswordStrength password={values.newPassword}/>
                   <PasswordRequirements/>
                 </Form.Group>
                 <Form.Group controlId='formBasicConfirmPassword'>
                   <Form.Label>Confirm Password</Form.Label>
-                  <Input type='password' name={getFieldName('newPassword')} placeholder='Confirm New Password'/>
+                  <Input type='password' name={getFieldName('confirmPassword')} placeholder='Confirm New Password'/>
                 </Form.Group>
                 <Form.Group as={Row}>
                   <LoadingButton loading={isSubmitting} label='Reset Password'/>
