@@ -6,13 +6,13 @@ import {Redirect, RouteComponentProps} from 'react-router';
 import {Layout} from '../Layout/Layout';
 import {Formik} from 'formik';
 import {object} from 'yup';
-import {confirmPasswordValidator, passwordValidator} from '../LoginRegisterPage/RegisterFormSchema';
+import {makeConfirmPasswordValidator, passwordValidator} from '../LoginRegisterPage/RegisterFormSchema';
 import Input from '../../components/util/Input/Input';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
 import {CapsLockAlert} from '../../components/util/CapsLockAlert';
 import {LoadingButton} from '../../util/LoadingButton';
 import {confirmForgotPassword} from '../../api';
-import {delay, makeMessageState} from '../../util';
+import {delay, handleAxiosError, makeMessageState} from '../../util';
 import {RoutePaths} from '../../router/RoutePaths';
 import {Message} from '../../util/Message';
 
@@ -25,7 +25,7 @@ interface ConfirmForgotPasswordForm {
 
 const ConfirmForgotPasswordSchema = object<ConfirmForgotPasswordForm>({
   password: passwordValidator,
-  confirmPass: confirmPasswordValidator
+  confirmPass: makeConfirmPasswordValidator('password')
 });
 
 const getFieldName = (prop: keyof ConfirmForgotPasswordForm) => prop;
@@ -47,7 +47,7 @@ export default function ConfirmForgotPassword(props: Props) {
       await delay(1500);
       setRedirect(RoutePaths.login);
     } catch (e) {
-      setMessageState({message: 'An Error occurred, try again later', variant: 'danger'});
+      setMessageState({message: handleAxiosError(e), variant: 'danger'});
     }
   };
 

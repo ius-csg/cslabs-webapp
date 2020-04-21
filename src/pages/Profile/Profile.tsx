@@ -16,7 +16,7 @@ const Profile = (props: ProfileProps) => (
     <h2>{props.user.email}</h2>
     <ul style={{listStyleType: 'none'}}>
       {/*<li><Link to={RoutePaths.resetEmail}>Manage Email Addresses</Link></li>*/}
-      {/*<li><Link to={RoutePaths.resetPassword}>Change Password</Link></li>*/}
+      <li><Link to={RoutePaths.resetPassword}>Change Password</Link></li>
       <li><Link to={RoutePaths.logout}>Log Out</Link></li>
     </ul>
   </AccountManagementLayout>

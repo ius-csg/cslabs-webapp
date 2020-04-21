@@ -176,6 +176,13 @@ function handleResponse<T>(response: AxiosResponse<T>) {
 export async function submitContactRequest(form: FormData) {
   return handleResponse(await api.post<string>(`/contact-us`, form));
 }
+interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+export async function submitChangePasswordRequest(form: ChangePasswordRequest) {
+  return handleResponse(await api.post<string>(`/user/change-password`, form));
+}
 
 export async function uploadVmTemplate(form: FormData, config: AxiosRequestConfig) {
   return handleResponse(await api.post<string>(`/vm-template`, form, config));

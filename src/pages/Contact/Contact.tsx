@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {useState} from 'react';
 import {Form, Col} from 'react-bootstrap';
-import styles from '../ResetPassword/ResetPassword.module.scss';
 import {Layout} from '../Layout/Layout';
 import {Formik, FormikHelpers} from 'formik';
 import Input from '../../components/util/Input/Input';
@@ -69,7 +68,7 @@ export default function ContactUs() {
                 <Form.Label column={true}>Message</Form.Label>
                 <Input name='message' type='textarea' />
               </Form.Group>
-              <LoadingButton loading={isSubmitting} className={styles['button']} type='submit' label='Submit'/>
+              <LoadingButton loading={isSubmitting} type='submit' label='Submit'/>
               <Message state={messageState} />
             </Col>
           </Form>
