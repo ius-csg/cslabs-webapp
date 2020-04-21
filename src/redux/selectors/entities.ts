@@ -18,3 +18,19 @@ export function isAuthenticated(state: WebState) {
 
 export type mapIsAuthenticatedToPropsType = ReturnType<typeof mapIsAuthenticatedToProps>;
 export const mapIsAuthenticatedToProps = (state: WebState) => ({ authenticated: isAuthenticated(state)});
+
+export function isCreator(state: WebState) {
+  const user: User | null = getCurrentUser(state);
+  if (user === null ) {
+    return false;
+  } else return user.role === 'Creator';
+}
+
+export function isAdmin(state: WebState) {
+  const user: User| null =  getCurrentUser(state);
+  if(user == null){return false;}
+  else {
+    return (user.role === 'Admin');
+  }
+}
+

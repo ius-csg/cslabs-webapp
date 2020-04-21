@@ -1,14 +1,13 @@
-import {LabVm} from './LabVm';
+import {TrackableEntity} from './Entity';
 
-export interface Lab {
-  id: number;
+export interface Lab extends TrackableEntity {
   name: string;
-  status: string;
-  labType: string;
+  type: LabType;
+  labDifficulty: LabDifficulty;
   moduleId: number;
-  userId: number;
-  labDifficulty: number;
-  labVms?: LabVm[];
-  estimatedCpusUsed: number;
-  estimatedMemoryUsedMb: number;
 }
+
+
+export type LabType = 'Temporary' | 'Class' | 'Permanent';
+export const labTypes: LabType[] = ['Temporary', 'Class', 'Permanent'];
+export type LabDifficulty = 1 | 2 | 3;

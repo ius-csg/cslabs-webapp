@@ -8,14 +8,21 @@ interface Props {
   name: string;
   accept: string;
   multiple?: boolean;
+  disabled?: boolean;
 }
 
-export function FileInput({name, accept, multiple}: Props) {
+export function FileInput({name, accept, multiple, disabled}: Props) {
   return (
     <Field name={name}>
       {(fieldProps: FieldProps) => {
         const {form} = fieldProps;
-        const onFileChange = (event: FormEvent<HTMLInputElement>) => form.setFieldValue(name, event.currentTarget!.files);
+        const onFileChange = (event: FormEvent<HTMLInputElement>) => {
+          if(multiple) {
+            form.setFieldValue(name, event.currentTarget!.files);
+          } else {
+            form.setFieldValue(name, event.currentTarget!.files!.item(0));
+          }
+        };
         return (
           <>
             <Form.Control
@@ -24,6 +31,7 @@ export function FileInput({name, accept, multiple}: Props) {
               name={name}
               onChange={onFileChange}
               multiple={multiple === undefined ? true : multiple}
+              disabled={disabled}
             />
             <ErrorMessage
               render={msg => <div className={styles['form-errors']}>{msg}</div>}

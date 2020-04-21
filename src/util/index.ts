@@ -4,6 +4,7 @@ import {FieldInputProps} from 'formik';
 import {DateTime} from 'luxon';
 import axios, {AxiosError} from 'axios';
 import humanizeDuration from 'humanize-duration';
+import {useState} from 'react';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -81,6 +82,7 @@ export function getFieldValue<T>(field: FieldInputProps<T>) {
 export interface MessageState {
   message: string;
   variant: 'danger' | 'success';
+  critical?: boolean;
 }
 
 export function makeMessageState(): MessageState {
@@ -88,6 +90,10 @@ export function makeMessageState(): MessageState {
     message: '',
     variant: 'danger'
   };
+}
+
+export function useMessage(message?: MessageState) {
+  return useState(message);
 }
 
 export function delay(timeout: number) {
@@ -150,13 +156,14 @@ export function handleAxiosError(e: AxiosError, params: AxiosErrorMessageParams 
   throw e;
 }
 
-export function makeAxios(token?: string) {
+export function makeAxios(baseUrl: string, token?: string, timeout?: number) {
   token = token ? token : nullable(localStorage.getItem('token'));
   return axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
+    baseURL: baseUrl,
     ...(token ? {
       headers: {Authorization: `Bearer ${token}`}
-    } : {})
+    } : {}),
+    timeout: timeout
   });
 }
 
@@ -194,4 +201,14 @@ export function getResponseData<T>(e: any): T {
 
 export function getErrorResponseMessage(e: any): string {
   return e.response ? e.response.data ? e.response.data.message : '' : '';
+}
+
+export const propertyOf = <T>(name: keyof T) => name;
+
+export function convertArrayToDictionary<T>(arr: T[], key: keyof T): {[key: string]: T} {
+  const obj: any = {};
+  for (const item of arr) {
+    obj[(item as any)[key]] = item;
+  }
+  return obj;
 }

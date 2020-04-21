@@ -1,8 +1,8 @@
 import {Lab} from './Lab';
 import {UserLabVm} from './UserLabVm';
+import {Entity} from './Entity';
 
-export interface UserLab {
-  id: number;
+export interface UserLab extends Entity {
   lab: Lab;
   userLabVms: UserLabVm[];
   hasTopology: boolean;

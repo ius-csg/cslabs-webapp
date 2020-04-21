@@ -1,4 +1,4 @@
-import {AxiosResponse} from 'axios';
+import {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {Module} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {Dispatch} from 'redux';
@@ -9,14 +9,15 @@ import {RegisterFormValues} from '../pages/LoginRegisterPage/RegisterFormSchema'
 import {UserModule} from '../types/UserModule';
 import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
+import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 
-let api = makeAxios();
+let api = makeAxios(process.env.REACT_APP_API_URL);
 
 function setToken(token?: string) {
   if (token) {
     localStorage.setItem('token', token);
   }
-  api = makeAxios(token);
+  api = makeAxios(process.env.REACT_APP_API_URL, token);
 }
 
 export interface TicketResponse {
@@ -26,6 +27,10 @@ export interface TicketResponse {
   upid: string;
   user: string;
   url: string;
+  fastBaseUrl: string;
+  reliableBaseUrl: string;
+  healthCheckUrl: string;
+  useHttpsForHealthCheckRequest: string;
 }
 
 export const logout = () => (dispatch: Dispatch) => {
@@ -38,7 +43,7 @@ export async function acquireTicket(id: number): Promise<TicketResponse> {
 }
 
 export async function startUpVm(id: number): Promise<string> {
-  const retry = makeAxios();
+  const retry = makeAxios(process.env.REACT_APP_API_URL);
   axiosRetry(retry, { retryDelay: (num) => 1000 * num, retries: 10});
   return (await retry.post<string>(`/virtual-machine/${id}/start`)).data;
 }
@@ -102,6 +107,9 @@ export async function getUserModules() {
 export async function getUserModule(id: number) {
   return handleResponse( await api.get<UserModule>(`/user-module/${id}`)).data;
 }
+export async function getEditorsModules() {
+  return handleResponse(await api.get<UserModule[]>(`module/modules-editor`)).data;
+}
 
 export async function getUserLab(id: number) {
   return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;
@@ -133,6 +141,27 @@ export async function startUserModule(id: string) {
 export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
+export async function getModuleForEditor(moduleId: number) {
+  return handleResponse(await api.get<ModuleForm>(`/module/module-editor/${moduleId}`)).data;
+}
+
+export async function getLabForEditor(id: number) {
+  return handleResponse(await api.get<LabForm>(`/lab/lab-editor/${id}`)).data;
+}
+
+export async function saveModule(module: ModuleForm) {
+  return handleResponse(await api.post<ModuleForm>(`/module`, module)).data;
+}
+
+export async function saveLab(form: LabForm) {
+  const {topology, readme, ...json} = form;
+  const data = new FormData();
+  data.append('topology', topology!);
+  data.append('readme', readme!);
+  data.append('json', JSON.stringify(json));
+  return handleResponse(await api.post<LabForm>(`/lab`, data)).data;
+}
+
 
 function handleResponse<T>(response: AxiosResponse<T>) {
   if (response.status < 400) {
@@ -153,4 +182,33 @@ interface ChangePasswordRequest {
 }
 export async function submitChangePasswordRequest(form: ChangePasswordRequest) {
   return handleResponse(await api.post<string>(`/user/change-password`, form));
+}
+
+export async function uploadVmTemplate(form: FormData, config: AxiosRequestConfig) {
+  return handleResponse(await api.post<string>(`/vm-template`, form, config));
+}
+export async function getVmTemplates() {
+  return handleResponse(await api.get<VmTemplate[]>(`/vm-template`)).data;
+}
+
+
+export interface ProgressEvent {
+  loaded: number;
+  total: number;
+}
+
+
+
+export async function isFastConnectionAvailable(ticket: TicketResponse) {
+  if(!ticket.fastBaseUrl) {
+    return false;
+  }
+  const scheme = ticket.useHttpsForHealthCheckRequest ? 'https://' : 'http://';
+  const fastConnectionTester = makeAxios(scheme + ticket.fastBaseUrl, undefined, 1000);
+  try {
+    await fastConnectionTester.get(ticket.healthCheckUrl);
+    return true;
+  } catch(e) {
+    return false;
+  }
 }
