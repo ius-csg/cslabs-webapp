@@ -24,6 +24,7 @@ export interface LabVmForm extends LabVm {
   templateInterfaces: VmInterfaceTemplate[];
   // links to the template id created after uploading a vm with an ova file
   vmTemplateId: number;
+  isCoreRouter: boolean;
 }
 
 export interface BridgeTemplate extends EntityWithUuid {

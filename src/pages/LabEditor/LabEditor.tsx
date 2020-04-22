@@ -6,16 +6,17 @@ import {Formik, FormikHelpers} from 'formik';
 import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
 import {
+  convertArrayToDictionary, Dictionary,
   handleAxiosError,
   propertyOf, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
-import {LabForm, LabVmForm} from '../../types/editorTypes';
+import {LabForm, LabVmForm, VmTemplate} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
 import {RouteComponentProps} from 'react-router';
-import {getLabForEditor, getUserLabReadmeUrl, getUserLabTopologyUrl, saveLab} from '../../api';
+import {getLabForEditor, getUserLabReadmeUrl, getUserLabTopologyUrl, getVmTemplates, saveLab} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {LabEditorSchema} from './LabEditorSchema';
 import {RoutePaths} from '../../router/RoutePaths';
@@ -48,7 +49,8 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = useState(false);
-
+  const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
+  const vmTemplateDictionary = convertArrayToDictionary(vmTemplates, 'id') as Dictionary<VmTemplate>;
   function completeLoading() {
     setLoading(false);
     setMessage(undefined);
@@ -75,6 +77,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
 
   useEffect(() => {
     async function LoadLab() {
+      setVmTemplates(await getVmTemplates());
       if (!labId) {
         setInitialValues(makeLabForm(Number(moduleId)));
         setEditing(true);
@@ -96,7 +99,6 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   }, [labId]);
 
   const getFieldName = (name: keyof LabForm) => name;
-
 
   const [selectedVm, setSelectedVm] = useState<number|undefined>();
   const renderForm = () => (
@@ -153,11 +155,14 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                    vms={values.labVms}
                    editable={editing}
                    onOpenTemplateSelection={(index) => setSelectedVm(index)}
+                   vmTemplateDictionary={vmTemplateDictionary}
                  />
                </Col>
              </Form>
              <VmTemplateModal
+               vmTemplates={vmTemplates}
                open={selectedVm !== undefined}
+               onReloadVms={async () => setVmTemplates(await getVmTemplates())}
                onCancel={() => setSelectedVm(undefined)}
                onSelect={(vmTemplateId: number) => {
                  setFieldValue(`${getFieldName('labVms')}.${selectedVm}.${propertyOf<LabVmForm>('vmTemplateId')}` as any, vmTemplateId);

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {FieldArray} from 'formik';
 import {VmRow} from './VmRow';
-import {BridgeTemplate, LabVmForm} from '../../types/editorTypes';
+import {BridgeTemplate, LabVmForm, VmTemplate} from '../../types/editorTypes';
 import {Col, Row} from 'react-bootstrap';
 import {IconButton} from '../util/IconButton/IconButton';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {makeLabVmForm} from '../../factories';
+import {Dictionary} from '../../util';
 
 
 interface Props {
@@ -14,14 +15,23 @@ interface Props {
   editable: boolean;
   bridgeTemplates: BridgeTemplate[];
   onOpenTemplateSelection: (index: number) => void;
+  vmTemplateDictionary: Dictionary<VmTemplate>;
 }
 
 export function VmTable(props: Props) {
-  const {editable, bridgeTemplates, prefix, onOpenTemplateSelection} = props;
+  const {editable, bridgeTemplates, prefix, onOpenTemplateSelection, vms, vmTemplateDictionary} = props;
   return (
     <FieldArray
       name={prefix}
-      render={helpers =>
+      render={helpers => {
+        if(vms.filter(t => t.isCoreRouter).length === 0 && editable && Object.keys(vmTemplateDictionary).length > 0) {
+          const coreRouter = Object.values<VmTemplate>(vmTemplateDictionary).find(t => t.isCoreRouter);
+          if(!coreRouter) {
+            console.error('No Core Router provided in database');
+          }
+          helpers.push(makeLabVmForm('Core Router', true, coreRouter?.id ?? 0));
+        }
+        return (
         <>
           <Row style={{marginBottom: '1rem'}}>
             <Col><h5>Virtual Machines</h5></Col>
@@ -44,6 +54,7 @@ export function VmTable(props: Props) {
           )}
           {props.vms.map((vm: LabVmForm, i) =>
             <VmRow
+              vmTemplateDictionary={vmTemplateDictionary}
               key={i}
               prefix={`${prefix}.${i}`}
               onRemove={() => helpers.remove(i)}
@@ -54,7 +65,8 @@ export function VmTable(props: Props) {
               onOpenTemplateSelection={onOpenTemplateSelection}
             />)}
         </>
-      }
+        );
+      }}
     />
   );
 }

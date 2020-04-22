@@ -272,7 +272,7 @@ export function getErrorResponseMessage(e: any): string {
 }
 
 export const propertyOf = <T>(name: keyof T) => name;
-
+export type Dictionary<T> = {[key: number]: T};
 export function convertArrayToDictionary<T>(arr: T[], key: keyof T): {[key: string]: T} {
   const obj: any = {};
   for (const item of arr) {

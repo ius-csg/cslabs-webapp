@@ -40,12 +40,13 @@ export function makeLabForm(moduleId: number): LabForm {
   };
 }
 
-export function makeLabVmForm(): LabVmForm {
+export function makeLabVmForm(name: string = '', isCoreRouter: boolean = false, vmTemplateId: number = 0): LabVmForm {
   return {
     id: 0,
-    name: '',
+    name: name,
     templateInterfaces: [],
-    vmTemplateId: 0
+    vmTemplateId: vmTemplateId,
+    isCoreRouter: isCoreRouter
   };
 }
 

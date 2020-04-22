@@ -3,23 +3,21 @@ import * as React from 'react';
 import {VmTemplateTable} from './VmTemplateTable';
 import {FormEvent, useEffect, useState} from 'react';
 import {VmTemplate} from '../../types/editorTypes';
-import {getVmTemplates, uploadVmTemplate} from '../../api';
+import {uploadVmTemplate} from '../../api';
 import {handleAxiosError} from '../../util';
 
 interface Props {
   open: boolean;
   onSelect: (vmTemplateId: number) => void;
   onCancel: () => void;
+  onReloadVms: () => Promise<void>;
+  vmTemplates: VmTemplate[];
 }
 
-export function VmTemplateModal({open, onCancel, onSelect}: Props) {
-  const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
+export function VmTemplateModal({open, onCancel, onSelect, onReloadVms, vmTemplates}: Props) {
   const [uploadPercentage, setUploadPercentage] = useState<number|undefined>(undefined);
   const [error, setError] = useState('');
-  useEffect(() => {
-    async function loadTemplates(){ setVmTemplates(await getVmTemplates());}
-    loadTemplates();
-  }, [setVmTemplates]);
+  useEffect(() => { onReloadVms(); }, []);
   const onFileChange = async (event: FormEvent<HTMLInputElement>) => {
     setError('');
     const currentTarget: HTMLInputElement = event.currentTarget!;
@@ -42,7 +40,7 @@ export function VmTemplateModal({open, onCancel, onSelect}: Props) {
       }
       setUploadPercentage(undefined);
       currentTarget.value = '';
-      setVmTemplates(await getVmTemplates());
+      onReloadVms();
     }
   };
   const loadingLabel = uploadPercentage === undefined ? '' :
@@ -58,7 +56,7 @@ export function VmTemplateModal({open, onCancel, onSelect}: Props) {
       <Modal.Body>
         <>
           <h4>Select or Upload VM</h4>
-          <VmTemplateTable templates={vmTemplates} onSelect={onSelect} />
+          <VmTemplateTable templates={vmTemplates.filter(t => !t.isCoreRouter)} onSelect={onSelect} />
           {uploadPercentage === undefined && <Form.Control type='file' accept='.ova' name='ova' onChange={onFileChange} />}
           {uploadPercentage !== undefined &&
             <ProgressBar
