@@ -153,6 +153,10 @@ export async function saveModule(module: ModuleForm): Promise<ModuleForm> {
   return handleResponse(await api.post<ModuleForm>(`/module`, module)).data;
 }
 
+export async function deleteLab(id: number) {
+  return handleResponse(await api.delete(`/lab/${id}`)).data;
+}
+
 export async function saveLab(form: LabForm): Promise<LabForm> {
   const {topology, readme, ...json} = form;
   const data = new FormData();

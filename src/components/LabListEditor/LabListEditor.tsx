@@ -2,14 +2,15 @@ import React from 'react';
 import {FieldArray} from 'formik';
 import {Col, Row} from 'react-bootstrap';
 import {LabListItem} from './LabListItem';
-import {Lab} from '../../types/Lab';
 import {IconButton} from '../util/IconButton/IconButton';
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {RoutePaths} from '../../router/RoutePaths';
+import {LabItem} from '../../types/editorTypes';
+import {deleteLab} from '../../api';
 
 
 interface Props {
-  labs: Lab[];
+  labs: LabItem[];
   prefix: string;
   moduleId: number;
 }
@@ -34,7 +35,17 @@ export function LabListEditor({labs, prefix, moduleId}: Props) {
               />
             </Col>
           </Row>
-          {labs.map((lab,index) => <LabListItem prefix={`${prefix}.${index}`} key={index} lab={lab}/>)}
+          {labs.map((lab,index) =>
+            <LabListItem
+              prefix={`${prefix}.${index}`}
+              key={index}
+              lab={lab}
+              onDelete={async () => {
+                await deleteLab(lab.id);
+                helpers.remove(index);
+              }}
+            />
+          )}
         </>
       }
     />

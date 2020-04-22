@@ -5,7 +5,11 @@ import {Entity, EntityWithUuid} from './Entity';
 
 
 export interface ModuleForm extends BaseModule {
-  labs: Lab[];
+  labs: LabItem[];
+}
+
+export interface LabItem extends Lab {
+  hasUserLabs: boolean;
 }
 
 export interface LabForm extends Lab {
