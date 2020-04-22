@@ -2,6 +2,8 @@
 // import 'babel-polyfill';
 // tslint:disable-next-line
 import 'react-app-polyfill/ie11';
+// tslint:disable-next-line
+import 'react-app-polyfill/stable';
 import './types.d';
 import * as React from 'react';
 import App from './App';
