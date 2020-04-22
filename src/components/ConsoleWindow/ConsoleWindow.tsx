@@ -9,6 +9,7 @@ import {acquireTicket} from '../../api';
 interface ConsoleContainerProps {
   vm: UserLabVm;
   status: string;
+  inPopout: boolean;
 }
 interface ConsoleContainerState {
   rfb?: RFB;
@@ -119,17 +120,17 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     }
   };
 
-  componentDidMount(): void {
+  async componentDidMount() {
     const div: HTMLDivElement = this.ref.current as HTMLDivElement;
-    this.setSize(div.offsetWidth, async () => {
-      // if (this.props.vm.powerState === VMPowerState.POWERED_ON) {
-      //
-      // }
-      await this.connectVM();
-    });
-
-    this.resizeEventHandler = () => this.setSize(div.offsetWidth);
-    div.addEventListener('resize', this.resizeEventHandler);
+    // this.setSize(div.offsetWidth, div.offsetHeight, async () => {
+    //   // if (this.props.vm.powerState === VMPowerState.POWERED_ON) {
+    //   //
+    //   // }
+    //
+    // });
+    await this.connectVM();
+    // this.resizeEventHandler = () => this.setSize(div.offsetWidth, div.offsetHeight);
+    // div.addEventListener('resize', this.resizeEventHandler);
 
     this.pasteEventHandler = (e: any) => {
       if (this.rfb !== undefined) {
@@ -142,14 +143,12 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
     div.addEventListener('paste', this.pasteEventHandler);
   }
 
-  setSize(parentWidth: number, after?: () => void) {
-    parentWidth = parentWidth * .75;
-    let height = parentWidth * .75;
-    if (height > (window.innerHeight * .75)) {
-      height = window.innerHeight  * .75;
-      parentWidth = height * 1.25;
+  setSize(parentWidth: number, parentHeight: number, after?: () => void) {
+    if (this.rfb) {
+      this.rfb!.get_display().autoscale(parentWidth, parentHeight, false);
     }
-    this.setState({width: parentWidth, height: height}, after);
+
+    this.setState({width: parentWidth, height: parentHeight}, after);
   }
 
   onPaste = () => {
@@ -168,6 +167,20 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
     return (
       <div ref={this.ref} style={fullHeightStyles}>
+        {!this.props.inPopout &&
+        <style>
+          {`
+            .wmksConsoleWindow > div {
+              flex-grow: 1;
+            }
+            .wmksConsoleWindow > div > canvas {
+              width: auto !important;
+              height: 77vh !important;
+            }
+
+          `}
+        </style>
+        }
         <div style={consoleWindowStyles}>
           <div ref={this.consoleWindowRef} id={this.consoleWindowId} className='wmksConsoleWindow' style={wmksConsoleWindowStyles}/>
         </div>
