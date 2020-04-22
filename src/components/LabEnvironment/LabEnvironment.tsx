@@ -119,7 +119,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                   <h2>Topology</h2>
                   {!this.props.userLab.hasTopology ?
                     <p style={{textAlign: 'center'}}>No Topology Available</p> :
-                    <img src={getUserLabTopologyUrl(this.props.userLab.id)} style={{width: 1000, height: 700 }} alt={'topology'}/>
+                    <img src={getUserLabTopologyUrl(this.props.userLab.lab.id)} style={{width: 1000, height: 700 }} alt={'topology'}/>
                   }
                 </Tab.Pane>
                 <Tab.Pane eventKey='#readme'>
@@ -135,7 +135,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                         </div> : null
                       }
                       <Document
-                        file={getUserLabReadmeUrl(this.props.userLab.id)}
+                        file={getUserLabReadmeUrl(this.props.userLab.lab.id)}
                         onLoadSuccess={this.onDocumentLoadSuccess}
                       >
                         <Page pageNumber={pageNumber} width={1000}/>

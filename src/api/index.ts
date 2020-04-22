@@ -120,11 +120,11 @@ export async function startUserLab(id: number) {
 }
 
 export function getUserLabTopologyUrl(id: number) {
-  return  `${process.env.REACT_APP_API_URL}/user-lab/${id}/topology`;
+  return  `${process.env.REACT_APP_API_URL}/lab/${id}/topology`;
 }
 
 export function getUserLabReadmeUrl(id: number) {
-  return  `${process.env.REACT_APP_API_URL}/user-lab/${id}/readme`;
+  return  `${process.env.REACT_APP_API_URL}/lab/${id}/readme`;
 }
 
 export async function getUserLabInitializationStatus(id: number) {
