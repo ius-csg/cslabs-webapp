@@ -149,7 +149,7 @@ export async function getLabForEditor(id: number) {
   return handleResponse(await api.get<LabForm>(`/lab/lab-editor/${id}`)).data;
 }
 
-export async function saveModule(module: ModuleForm) {
+export async function saveModule(module: ModuleForm): Promise<ModuleForm> {
   return handleResponse(await api.post<ModuleForm>(`/module`, module)).data;
 }
 

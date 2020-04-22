@@ -15,7 +15,7 @@ import {makeModuleForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
 import {getModuleShareLink, ModuleType} from '../../types/Module';
-import {RouteComponentProps} from 'react-router';
+import {Redirect, RouteComponentProps} from 'react-router';
 import {getModuleForEditor, saveModule} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {ModuleEditorSchema} from './ModuleEditorSchema';
@@ -37,6 +37,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = useState(false);
+  const [redirect, setRedirect] = useState();
 
   function completeLoading() {
     setLoading(false);
@@ -46,9 +47,13 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   const onSubmit = async (form: ModuleForm, {setErrors}: FormikHelpers<ModuleForm>) => {
     setMessage(undefined);
     try {
-      setInitialValues(await saveModule(form));
+      const response = await saveModule(form);
+      setInitialValues(response);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
+      if(!moduleId) {
+        setRedirect(RoutePaths.EditModule.replace(':moduleId', String(response.id)));
+      }
     } catch (e) {
       setMessage({message: handleAxiosError(e, {}, setErrors), variant: 'danger', critical: false});
     }
@@ -62,6 +67,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
 
   useEffect(() => {
     async function LoadModule() {
+      setRedirect(undefined);
       if (!moduleId) {
         setInitialValues(makeModuleForm());
         setEditing(true);
@@ -90,6 +96,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     >
       {({handleSubmit, isSubmitting, values}) => (
         <Form onSubmit={handleSubmit}>
+          {redirect && <Redirect to={redirect} />}
           <Row>
             <Col className='d-flex justify-content-start align-items-center'>
               <PageTitle>Module Editor</PageTitle>

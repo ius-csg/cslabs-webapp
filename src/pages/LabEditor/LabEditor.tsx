@@ -15,7 +15,7 @@ import {LabForm, LabVmForm, VmTemplate} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
-import {RouteComponentProps} from 'react-router';
+import {Redirect, RouteComponentProps} from 'react-router';
 import {getLabForEditor, getUserLabReadmeUrl, getUserLabTopologyUrl, getVmTemplates, saveLab} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {LabEditorSchema} from './LabEditorSchema';
@@ -50,6 +50,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = useState(false);
   const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
+  const [redirect, setRedirect] = useState();
   const vmTemplateDictionary = convertArrayToDictionary(vmTemplates, 'id') as Dictionary<VmTemplate>;
   function completeLoading() {
     setLoading(false);
@@ -64,6 +65,9 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
       setInitialValues(response);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
+      if(!labId) {
+        setRedirect(RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', String(response.id)));
+      }
     } catch (e) {
       setMessage({message: handleAxiosError(e, {}, setErrors, 'json'), variant: 'danger', critical: false});
     }
@@ -113,6 +117,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
           {loading ? <HorizontallyCenteredSpinner/> : (
            <>
              <Form onSubmit={handleSubmit}>
+               {redirect && <Redirect to={redirect} />}
                <Row>
                  <Col className='d-flex justify-content-start align-items-center'>
                    <PageTitle>Lab Editor</PageTitle>

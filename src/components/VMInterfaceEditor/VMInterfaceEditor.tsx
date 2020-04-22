@@ -15,9 +15,10 @@ interface Props {
   vmInterfaceTemplates: VmInterfaceTemplate[];
   prefix: string;
   editable: boolean;
+  isCoreRouter: boolean;
 }
 
-export function VMInterfaceEditor({vmInterfaceTemplates, prefix, bridgeTemplates, editable}: Props) {
+export function VMInterfaceEditor({vmInterfaceTemplates, prefix, bridgeTemplates, editable, isCoreRouter}: Props) {
   const interfaceNumbers = vmInterfaceTemplates.map(i => i.interfaceNumber);
   const interfaceOptions = range(0, 10)
     .map((value => ({value: value, label: String(value)})))
@@ -30,11 +31,12 @@ export function VMInterfaceEditor({vmInterfaceTemplates, prefix, bridgeTemplates
       render={helpers => {
         const doesNotContainCoreBridgeInterface = vmInterfaceTemplates.filter(t => bridgesByUuid[t.bridgeTemplateUuid]?.isCoreBridge).length === 0;
         if(coreBridgeTemplate && doesNotContainCoreBridgeInterface && editable) {
-          helpers.push(makeVmInterfaceTemplate(interfaceNumbers.length !== 0 ? Math.max(...interfaceNumbers) + 1 : 0, coreBridgeTemplate.uuid));
+          const defaultValue = isCoreRouter ? 1: 0;
+          helpers.push(makeVmInterfaceTemplate(interfaceNumbers.length !== 0 ? Math.max(...interfaceNumbers) + 1 : defaultValue, coreBridgeTemplate.uuid));
         }
        return (
          <>
-           <Row>
+           <Row style={{marginBottom: '1rem'}}>
              <Col>
                <h6>Interfaces</h6>
              </Col>

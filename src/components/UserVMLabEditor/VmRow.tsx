@@ -55,6 +55,7 @@ export function VmRow({vm, prefix, editable, onRemove, bridgeTemplates, onOpenTe
           </Col>
         </Row>
         <VMInterfaceEditor
+          isCoreRouter={vm.isCoreRouter}
           bridgeTemplates={bridgeTemplates}
           vmInterfaceTemplates={vm.templateInterfaces}
           prefix={getFieldName('templateInterfaces')}
