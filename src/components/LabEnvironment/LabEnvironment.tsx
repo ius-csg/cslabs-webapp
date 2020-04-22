@@ -58,8 +58,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
   };
 
   isLabAbleToStart() {
-    const status = this.props.userLab.status;
-    return status === 'NotStarted';
+    return this.props.userLab.status !== 'Started';
   }
 
   render() {
