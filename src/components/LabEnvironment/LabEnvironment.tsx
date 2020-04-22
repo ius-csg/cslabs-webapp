@@ -7,10 +7,12 @@ import {PDFDocumentProxy} from 'pdfjs-dist';
 import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {LoadingButton} from '../../util/LoadingButton';
-import {getRemainingLabTime} from '../../util';
+import {combineClasses, getRemainingLabTime} from '../../util';
 import {ConsoleWindowContainer} from '../ConsoleWindow/ConsoleWindowContainer';
 import {VmActionsMenu} from '../VmActionsMenu/VmActionsMenu';
 import {VmStatusIndicator} from '../util/VmStatusIndicator/VmStatusIndicator';
+import styles from './LabEnvironment.module.scss';
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 interface LabEnvironmentProps {
@@ -150,8 +152,11 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                   <Tab.Pane
                     key={vm.labVm.name}
                     eventKey={'#' + vm.labVm.name}
-                    style={this.state.eventKey==='#' + vm.labVm.name ? {} : {display:'none !important'}}
-                    className='full-height-container'
+                    style={this.state.eventKey === '#' + vm.labVm.name ? {} : {display: 'none !important'}}
+                    className={combineClasses(
+                      'full-height-container',
+                      (this.state.eventKey !== '#' + vm.labVm.name ? `${styles['hide']} ${styles['force']}` : '')
+                    )}
                   >
                     <ConsoleWindowContainer vm={vm} status={this.props.statuses[vm.id]}/>
                   </Tab.Pane>
@@ -163,5 +168,5 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
       </Tab.Container>
     );
   }
-
 }
+
