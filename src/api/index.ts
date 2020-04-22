@@ -153,7 +153,7 @@ export async function saveModule(module: ModuleForm) {
   return handleResponse(await api.post<ModuleForm>(`/module`, module)).data;
 }
 
-export async function saveLab(form: LabForm) {
+export async function saveLab(form: LabForm): Promise<LabForm> {
   const {topology, readme, ...json} = form;
   const data = new FormData();
   data.append('topology', topology!);

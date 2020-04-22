@@ -14,7 +14,7 @@ interface Props {
   moduleId: number;
 }
 function getNewLabEditorLink(moduleId: number) {
-  return RoutePaths.EditLab.replace(':moduleId', String(moduleId));
+  return RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', '');
 }
 
 export function LabListEditor({labs, prefix, moduleId}: Props) {

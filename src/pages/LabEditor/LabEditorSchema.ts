@@ -4,8 +4,8 @@ import {LabDifficulty, LabType, labTypes} from '../../types/Lab';
 
 export const LabEditorSchema = object<LabForm>({
   name: string().min(3, 'Must at least be 3 characters').required('Required'),
-  updatedAt: string(),
-  createdAt: string(),
+  updatedAt: string().notRequired(),
+  createdAt: string().notRequired(),
   id: number(),
   type: string().oneOf(labTypes) as StringSchema<LabType>,
   topology: object().nullable() as ObjectSchema<File>,

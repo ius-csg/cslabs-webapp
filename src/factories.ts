@@ -5,24 +5,14 @@ import {TrackableEntity} from './types/Entity';
 
 export function makeTrackableEntity(): TrackableEntity {
   return {
-    id: 0,
-    createdAt: '',
-    updatedAt: ''
+    id: 0
   };
 }
 
 export function makeModuleForm(): ModuleForm {
   return {
     ...makeTrackableEntity(),
-    labs: [{
-      createdAt : '',
-      labDifficulty : 1,
-      id: 1,
-      type: 'Temporary',
-      name: 'steve',
-      updatedAt: '',
-      moduleId: 0
-    }],
+    labs: [],
     description: '',
     name: '',
     published: false,

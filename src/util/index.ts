@@ -1,6 +1,6 @@
 import {makeLogger} from './logger';
 import zxcvbn from 'zxcvbn';
-import {FieldInputProps} from 'formik';
+import {FieldInputProps, FormikErrors} from 'formik';
 import {DateTime} from 'luxon';
 import axios, {AxiosError} from 'axios';
 import humanizeDuration from 'humanize-duration';
@@ -104,7 +104,10 @@ export function getLuxonObjectFromString(dateTime: string) {
   return DateTime.fromISO(dateTime.replace('Z', '') + '+00:00');
 }
 
-export function getLocalDateTimeString(dateTime: string)  {
+export function getLocalDateTimeString(dateTime?: string | null)  {
+  if(!dateTime) {
+    return 'No Date';
+  }
   return getLuxonObjectFromString(dateTime).toLocaleString(DateTime.DATE_SHORT);
 }
 
@@ -128,10 +131,74 @@ export interface AxiosErrorMessageParams {
 
 
 
-export function handleAxiosError(e: AxiosError, params: AxiosErrorMessageParams = {}) {
+/**
+ * Converts a dictionary of keys with "." notation into an object structure
+ *
+ * eg.
+ *
+ * {
+ *   "item.revisionTitle": ["Required"],
+ *   "items.0.name": ["Required"]
+ * }
+ *
+ * into
+ *
+ * {
+ *   "item": {
+ *     "revisionTitle": ["Required"]
+ *   },
+ *   "items": [
+ *     {
+ *       "name": ["Required"]
+ *     }
+ *   ]
+ * }
+ * @param errorsDictionary
+ */
+function convertAspNetCoreErrorsToFormikErrors(errorsDictionary: {[key: string]: string[]}): FormikErrors<any> {
+  const keys = Object.keys(errorsDictionary);
+  const errors: any = {};
+  for (const key of keys) {
+    const currentError = errorsDictionary[key];
+    const keyParts = key.split('.');
+    let currentErrors = errors;
+    for (let i = 0; i < keyParts.length; i++) {
+      const nextKey = (i + 1) < keyParts.length ? keyParts[i + 1] : undefined;
+      const currentKey = keyParts[i];
+      if (currentErrors[currentKey] === undefined && nextKey !== undefined) {
+        if(!isNaN(parseInt(nextKey, 10))) {
+          currentErrors[currentKey] = [];
+        } else {
+          currentErrors[currentKey] = {};
+        }
+      }
+      // hit tail
+      if (nextKey === undefined) {
+        currentErrors[currentKey] = currentError;
+      }
+      currentErrors = errors[currentKey];
+    }
+  }
+  return errors;
+}
+
+export type SetErrors<T> = (errors: FormikErrors<T>) => void;
+
+const getErrorMessage = (errors: any): string[] => Array.isArray(errors['']) ? errors[''] : errors;
+
+export function handleAxiosError(e: AxiosError, params: AxiosErrorMessageParams = {}, setErrors?: SetErrors<any>, errorsPrefix?: string) {
   if (e.response) {
     if (e.response.status === 400) {
       const defaultMessage = typeof e.response.data === 'object' && e.response.data.message ? e.response.data.message : 'Bad Request';
+      if (e.response.data.errors && setErrors) {
+        const errors = !!errorsPrefix ? e.response.data.errors[errorsPrefix]: e.response.data.errors;
+        setErrors(convertAspNetCoreErrorsToFormikErrors(errors));
+        if (Array.isArray(errors['']) || Array.isArray(errors)) {
+          return getErrorMessage(errors).join('\n');
+        }
+        return '';
+      }
+
       return params.badRequestMsg || defaultMessage;
     } else if (e.response.status === 404) {
       return params.four04Msg || 'Not Found';
@@ -155,6 +222,7 @@ export function handleAxiosError(e: AxiosError, params: AxiosErrorMessageParams 
   }
   throw e;
 }
+
 
 export function makeAxios(baseUrl: string, token?: string, timeout?: number) {
   token = token ? token : nullable(localStorage.getItem('token'));

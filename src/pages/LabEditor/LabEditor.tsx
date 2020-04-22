@@ -7,7 +7,7 @@ import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
 import {
   handleAxiosError,
-  isBadRequest, propertyOf, useMessage
+  propertyOf, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
 import {LabForm, LabVmForm} from '../../types/editorTypes';
@@ -54,22 +54,16 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     setMessage(undefined);
   }
 
-  const onSubmit = async (form: LabForm, formikHelpers: FormikHelpers<LabForm>) => {
+  const onSubmit = async (form: LabForm, {setErrors}: FormikHelpers<LabForm>) => {
     form = {...form, moduleId: Number(moduleId)};
     setMessage(undefined);
     try {
-      setLoading(true);
-      setInitialValues(await saveLab(form));
-      setLoading(false);
+      const response = await saveLab(form);
+      setInitialValues(response);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
     } catch (e) {
-      setLoading(false);
-      if (isBadRequest(e)) {
-        formikHelpers.setErrors(e.response.data);
-      } else {
-        setMessage({message: handleAxiosError(e), variant: 'danger'});
-      }
+      setMessage({message: handleAxiosError(e, {}, setErrors, 'json'), variant: 'danger', critical: false});
     }
   };
 
@@ -77,14 +71,6 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     setInitialValues({...initialValues});
     setEditing(false);
     setMessage(undefined);
-  }
-
-  function onAction(submitForm: () => void | Promise<void>) {
-    if (!editing) {
-      setEditing(true);
-      return;
-    }
-    submitForm();
   }
 
   useEffect(() => {
@@ -111,78 +97,79 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
 
   const getFieldName = (name: keyof LabForm) => name;
 
+
   const [selectedVm, setSelectedVm] = useState<number|undefined>();
-  const ModuleFormComponent = () => (
-    <Layout>
+  const renderForm = () => (
     <Formik
       initialValues={initialValues}
       validationSchema={LabEditorSchema}
+      enableReinitialize={true}
       onSubmit={onSubmit}
     >
       {({handleSubmit, isSubmitting, values, setFieldValue}) => (
         <>
-          <Form onSubmit={handleSubmit}>
-            <Row>
-              <Col className='d-flex justify-content-start align-items-center'>
-                <PageTitle>Lab Editor</PageTitle>
-                <ButtonLink to={getEditModuleLink(values)} style={{marginLeft: '1rem'}} variant='info'>Back</ButtonLink>
-              </Col>
-              <Col className='d-flex justify-content-end align-items-center'>
-                {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
-                <LoadingButton
-                  loading={isSubmitting}
-                  type='button'
-                  onClick={() => onAction(handleSubmit)}
-                  label={values.id ? (!editing ? 'Edit' : 'Save'): 'Create'}
-                />
-              </Col>
-            </Row>
-            <Col sm='12' className='m-auto'>
-              <Message state={message}/>
-              <Form.Group>
-                <Form.Label>Lab Name</Form.Label>
-                <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Upload Topology Image (Only jpg supported)</Form.Label>
-                <FileInput name={getFieldName('topology')} accept='image/jpg' disabled={!editing} />
-                {values.hasTopology && <a href={getUserLabTopologyUrl(values.id)} target='_blank'>View Current</a>}
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Upload PDF Readme (only pdfs supported)</Form.Label>
-                <FileInput name={getFieldName('readme')} accept='.pdf' disabled={!editing} />
-                {values.hasReadme && <a href={getUserLabReadmeUrl(values.id)} target='_blank'>View Current</a>}
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Lab Type</Form.Label>
-                <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label>Lab Difficulty</Form.Label>
-                <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
-              </Form.Group>
-              <BridgeListEditor bridgeTemplates={values.bridgeTemplates} prefix={getFieldName('bridgeTemplates')} editing={editing}/>
-              <VmTable
-                bridgeTemplates={values.bridgeTemplates}
-                prefix={getFieldName('labVms')}
-                vms={values.labVms}
-                editable={editing}
-                onOpenTemplateSelection={(index) => setSelectedVm(index)}
-              />
-            </Col>
-          </Form>
-          <VmTemplateModal
-            open={selectedVm !== undefined}
-            onCancel={() => setSelectedVm(undefined)}
-            onSelect={(vmTemplateId: number) => {
-              setFieldValue(`${getFieldName('labVms')}.${selectedVm}.${propertyOf<LabVmForm>('vmTemplateId')}`, vmTemplateId);
-              setSelectedVm(undefined);
-            }}
-          />
+          {loading ? <HorizontallyCenteredSpinner/> : (
+           <>
+             <Form onSubmit={handleSubmit}>
+               <Row>
+                 <Col className='d-flex justify-content-start align-items-center'>
+                   <PageTitle>Lab Editor</PageTitle>
+                   <ButtonLink to={getEditModuleLink(values)} style={{marginLeft: '1rem'}} variant='info'>Back</ButtonLink>
+                 </Col>
+                 <Col className='d-flex justify-content-end align-items-center'>
+                   {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
+                   {!editing && <Button type='button' onClick={() => setEditing(true)}>Edit</Button>}
+                   {editing && <LoadingButton loading={isSubmitting} type='submit' label={values.id ? 'Save' : 'Create'}/>}
+                 </Col>
+               </Row>
+               <Col sm='12' className='m-auto'>
+                 <Message state={message}/>
+                 <Form.Group>
+                   <Form.Label>Lab Name</Form.Label>
+                   <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
+                 </Form.Group>
+                 <Form.Group>
+                   <Form.Label>Upload Topology Image (Only jpg supported)</Form.Label>
+                   <FileInput name={getFieldName('topology')} accept='image/jpg' disabled={!editing} />
+                   {values.hasTopology && <a href={getUserLabTopologyUrl(values.id)} target='_blank'>View Current</a>}
+                 </Form.Group>
+                 <Form.Group>
+                   <Form.Label>Upload PDF Readme (only pdfs supported)</Form.Label>
+                   <FileInput name={getFieldName('readme')} accept='.pdf' disabled={!editing} />
+                   {values.hasReadme && <a href={getUserLabReadmeUrl(values.id)} target='_blank'>View Current</a>}
+                 </Form.Group>
+                 <Form.Group>
+                   <Form.Label>Lab Type</Form.Label>
+                   <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
+                 </Form.Group>
+                 <Form.Group>
+                   <Form.Label>Lab Difficulty</Form.Label>
+                   <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
+                 </Form.Group>
+                 <BridgeListEditor bridgeTemplates={values.bridgeTemplates} prefix={getFieldName('bridgeTemplates')} editing={editing}/>
+                 <VmTable
+                   bridgeTemplates={values.bridgeTemplates}
+                   prefix={getFieldName('labVms')}
+                   vms={values.labVms}
+                   editable={editing}
+                   onOpenTemplateSelection={(index) => setSelectedVm(index)}
+                 />
+               </Col>
+             </Form>
+             <VmTemplateModal
+               open={selectedVm !== undefined}
+               onCancel={() => setSelectedVm(undefined)}
+               onSelect={(vmTemplateId: number) => {
+                 setFieldValue(`${getFieldName('labVms')}.${selectedVm}.${propertyOf<LabVmForm>('vmTemplateId')}` as any, vmTemplateId);
+                 setSelectedVm(undefined);
+               }}
+             />
+           </>
+          )}
+
         </>
       )}
     </Formik>
-  </Layout>
   );
-  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : <ModuleFormComponent/>}</Layout>;
+  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : renderForm()}</Layout>;
 }

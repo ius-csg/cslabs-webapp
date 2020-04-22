@@ -7,7 +7,7 @@ import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
 import {
   handleAxiosError,
-  isBadRequest, propertyOf, useMessage
+  propertyOf, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
 import {ModuleForm} from '../../types/editorTypes';
@@ -43,22 +43,14 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setMessage(undefined);
   }
 
-  const onSubmit = async (form: ModuleForm, formikHelpers: FormikHelpers<ModuleForm>) => {
+  const onSubmit = async (form: ModuleForm, {setErrors}: FormikHelpers<ModuleForm>) => {
     setMessage(undefined);
     try {
-      setLoading(true);
-      // objectToFormData(form)
       setInitialValues(await saveModule(form));
-      setLoading(false);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
     } catch (e) {
-      setLoading(false);
-      if (isBadRequest(e)) {
-        formikHelpers.setErrors(e.response.data);
-      } else {
-        setMessage({message: handleAxiosError(e), variant: 'danger'});
-      }
+      setMessage({message: handleAxiosError(e, {}, setErrors), variant: 'danger', critical: false});
     }
   };
 
@@ -66,14 +58,6 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setInitialValues({...initialValues});
     setEditing(false);
     setMessage(undefined);
-  }
-
-  function onAction(submitForm: () => void | Promise<void>) {
-    if (!editing) {
-      setEditing(true);
-      return;
-    }
-    submitForm();
   }
 
   useEffect(() => {
@@ -98,7 +82,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     LoadModule();
   }, [moduleId]);
 
-  const ModuleFormComponent = () => (
+  const renderForm = () => (
     <Formik
       initialValues={initialValues}
       validationSchema={ModuleEditorSchema}
@@ -115,12 +99,8 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
             </Col>
             <Col className='d-flex justify-content-end align-items-center'>
               {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
-              <LoadingButton
-                loading={isSubmitting}
-                type='button'
-                onClick={() => onAction(handleSubmit)}
-                label={values.id ? (!editing ? 'Edit' : 'Save'): 'Create'}
-              />
+              {!editing && <Button type='button' onClick={() => setEditing(true)}>Edit</Button>}
+              {editing && <LoadingButton loading={isSubmitting} type='submit' label={values.id ? 'Save' : 'Create'}/>}
             </Col>
           </Row>
           <Col sm='12' className='m-auto'>
@@ -159,6 +139,6 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     </Formik>
   );
 
-  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : <ModuleFormComponent/>}</Layout>;
+  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : message?.critical ? <Message state={message} /> : renderForm()}</Layout>;
 
 }

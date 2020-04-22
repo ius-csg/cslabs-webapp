@@ -8,8 +8,8 @@ export interface EntityWithUuid extends Entity {
 }
 
 export interface TrackableEntity extends Entity {
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export type TrackableEntityWithUuid = TrackableEntity  &  EntityWithUuid;
