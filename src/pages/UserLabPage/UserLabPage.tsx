@@ -3,7 +3,13 @@ import {RouteComponentProps} from 'react-router';
 import {Component} from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
-import {getUserLab, getUserLabVmStatuses, getUserLabInitializationStatus, startUpVm, startUserLab} from '../../api';
+import {
+  getUserLab,
+  getUserLabVmStatuses,
+  getUserLabInitializationStatus,
+  startUserLab,
+  turnOnUserLab
+} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {handleAxiosError} from '../../util';
 import {Alert} from 'react-bootstrap';
@@ -36,19 +42,11 @@ export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
   async startVmsAndInitiateStatuses(userLab: UserLab) {
     const statuses = await getUserLabVmStatuses(userLab.id);
     this.setState({statuses: statuses});
-    for (const vm of userLab.userLabVms) {
-      if (this.state.statuses[vm.id] === 'stopped') {
-        // noinspection ES6MissingAwait
-        startUpVm(vm.id);
-      }
-    }
-    this.interval = setInterval(async () => {
-      this.setState({
-        statuses: await getUserLabVmStatuses(this.state.userLab!.id),
-        userLab: await getUserLab(this.state.userLab!.id)
-      });
-
-    }, 5000);
+    await turnOnUserLab(userLab.id);
+    this.interval = setInterval(async () => this.setState({
+      statuses: await getUserLabVmStatuses(this.state.userLab!.id),
+      userLab: await getUserLab(this.state.userLab!.id)
+    }), 5000);
   }
 
   startUserLab = async () => {

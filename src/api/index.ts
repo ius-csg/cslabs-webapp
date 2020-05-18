@@ -48,6 +48,14 @@ export async function startUpVm(id: number): Promise<string> {
   return (await retry.post<string>(`/virtual-machine/${id}/start`)).data;
 }
 
+export async function turnOnUserLab(id: number): Promise<string> {
+  const retry = makeAxios(process.env.REACT_APP_API_URL);
+  axiosRetry(retry, { retryDelay: (num) => 1000 * num, retries: 10});
+  return (await retry.post<string>(`/user-lab/${id}/turn-on`)).data;
+}
+
+
+
 export async function shutdownVm(id: number): Promise<string> {
   return (await api.post<string>(`/virtual-machine/${id}/shutdown`)).data;
 }
