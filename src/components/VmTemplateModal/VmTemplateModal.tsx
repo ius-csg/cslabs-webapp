@@ -67,6 +67,8 @@ export function VmTemplateModal({open, onCancel, onSelect, onReloadVms, vmTempla
             />
           }
           {Boolean(error) &&  <Alert style={{marginTop: '1rem'}} variant='danger'>{error}</Alert>}
+          <br/>
+          <i>We currently support ova files only.</i>
         </>
       </Modal.Body>
       <Modal.Footer>
