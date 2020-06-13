@@ -197,17 +197,21 @@ export async function submitChangePasswordRequest(form: ChangePasswordRequest) {
   return handleResponse(await api.post<string>(`/user/change-password`, form));
 }
 
-export async function uploadVmTemplate(form: UploadForm, onUploadProgress: (progressEvent: any) => void) {
-  return handleResponse(await api.post<string>(`/vm-template`, uploadFormToFormData(form), {onUploadProgress: onUploadProgress}));
+export async function uploadVmTemplate(form: UploadForm, onUploadProgress: (progress: number) => void) {
+  return handleResponse(await api.post<string>(`/vm-template`, uploadFormToFormData(form), {
+    onUploadProgress: (e: ProgressEvent) => onUploadProgress(e.loaded / e.total * 100)
+  }));
 }
 
 export async function uploadVmTemplateByUrl(form: UploadByUrlForm) {
   return handleResponse(await api.post<string>(`/vm-template/from-url`, form)).data;
 }
+
 export interface UploadProgress {
   progress: number;
   status: UploadStatus;
 }
+
 export type UploadStatus = 'Downloading' | 'Complete' | 'Error' | 'NotFound';
 
 export async function getUploadProgress(requestId: string): Promise<UploadProgress> {

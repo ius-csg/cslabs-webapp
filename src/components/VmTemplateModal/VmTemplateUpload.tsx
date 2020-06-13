@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {Form, Col, ProgressBar, Alert, Row} from 'react-bootstrap';
+import {Form, Col, ProgressBar, Row} from 'react-bootstrap';
 import {Formik} from 'formik';
 import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
-import {handleAxiosError} from '../../util';
+import {handleAxiosError, useMessage} from '../../util';
 import {FileInput} from '../util/FileInput';
 import {getUploadProgress, uploadVmTemplate, uploadVmTemplateByUrl} from '../../api';
 import {
@@ -15,30 +15,43 @@ import {
   NamedUpload, UploadByUrlForm, UploadForm
 } from './VmTemplateUploadSchema';
 import {useInterval} from '../../hooks/useInterval';
+import {Message} from '../../util/Message';
 
 
 type Props = {byUrl: boolean; reloadVms: () => void};
 export function VmTemplateUpload({byUrl, reloadVms}: Props) {
-  const [initialValues] = useState(getInitialUploadValues(byUrl));
+  const [initialValues, setInitialValues] = useState(getInitialUploadValues(byUrl));
   const [uploadPercentage, setUploadPercentage] = useState<number|undefined>(undefined);
   const uploading = uploadPercentage !== undefined;
-  const [error, setError] = useState('');
+  const [message, setMessage] = useMessage();
+  const setError = (msg: string) => setMessage({message: msg, variant: 'danger'});
   const [byUrlRequestId, setByUrlRequestId] = useState<string | undefined>();
+  function clearForm()  {
+    setInitialValues({} as any);
+    setInitialValues(getInitialUploadValues(byUrl));
+  }
+  const onImportComplete = () => {
+    setByUrlRequestId(undefined);
+    setUploadPercentage(undefined);
+    clearForm();
+    setMessage({message: 'Successfully imported', variant: 'success'});
+    reloadVms();
+  };
   const loadingLabel = uploadPercentage === undefined ? '' :
     (uploadPercentage === 100 ?
         'Importing Ova File' :
-        (uploadPercentage! > 5 ?`${uploadPercentage}%` : '')
+        (uploadPercentage! > 5 ?`${uploadPercentage.toFixed(2)}%` : '')
     );
   const getFieldName = (name: keyof (UploadForm & UploadByUrlForm)) => name;
   const onSubmit = async (form: NamedUpload) => {
-    setError('');
+    setMessage(undefined);
     try {
       if (isUploadForm(form)) {
-        await uploadVmTemplate(form, (e: ProgressEvent) => setUploadPercentage(Math.round((e.loaded * 100) / e.total)));
-        setUploadPercentage(undefined);
-        reloadVms();
+        await uploadVmTemplate(form, (percent) => setUploadPercentage(percent));
+        onImportComplete();
       } else if(isUploadByUrlForm(form)){
         setByUrlRequestId(await uploadVmTemplateByUrl(form));
+        setUploadPercentage(0);
       }
     } catch(e) {
       setByUrlRequestId(undefined);
@@ -52,9 +65,7 @@ export function VmTemplateUpload({byUrl, reloadVms}: Props) {
       const status = await getUploadProgress(byUrlRequestId!);
       setUploadPercentage(status.progress);
       if(status.status === 'Complete') {
-        setByUrlRequestId(undefined);
-        setUploadPercentage(undefined);
-        reloadVms();
+        onImportComplete();
       } else if(status.status === 'Downloading') {
         setUploadPercentage(status.progress);
       } else {
@@ -71,6 +82,7 @@ export function VmTemplateUpload({byUrl, reloadVms}: Props) {
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize={true}
       validationSchema={getUploadSchema(byUrl)}
       onSubmit={onSubmit}
     >
@@ -108,7 +120,7 @@ export function VmTemplateUpload({byUrl, reloadVms}: Props) {
                 label={loadingLabel}
               />
               }
-              {Boolean(error) && <Alert style={{marginTop: '1rem'}} variant='danger'>{error}</Alert>}
+              <Message state={message} />
               <br/>
               <i>We currently support ova files with one vm per ova file.</i>
             </Col>
