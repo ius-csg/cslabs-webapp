@@ -31,17 +31,15 @@ class CreatorsModuleCardComponent extends Component<CreatorsModuleCardProps > {
         <Card.Header>
           <Card.Title>{module.name}</Card.Title>
         </Card.Header>
-        <Card.Body>
-          <Card.Text className={styles['card-body']}>
-            <div style={{marginBottom: '1rem'}}>
-              <b>Published: </b> {`${module.published}`} <br/>
-              <b>Module type: </b> {`${module.type}`} <br/>
-            </div>
-            <Link style={{marginRight: '0.5rem'}} to={`/module/${module.specialCode}`}>Share Link</Link>
-            {<CopyToClipboard text={getModuleShareLink(module.specialCode)}>
-              <IconButton icon={faCopy} />
-            </CopyToClipboard>}
-          </Card.Text>
+        <Card.Body className={styles['card-body']}>
+          <div style={{marginBottom: '1rem'}}>
+            <b>Published: </b> {`${module.published}`} <br/>
+            <b>Module type: </b> {`${module.type}`} <br/>
+          </div>
+          <Link style={{marginRight: '0.5rem'}} to={`/module/${module.specialCode}`}>Share Link</Link>
+          {<CopyToClipboard text={getModuleShareLink(module.specialCode)}>
+            <IconButton icon={faCopy} />
+          </CopyToClipboard>}
         </Card.Body>
         <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
