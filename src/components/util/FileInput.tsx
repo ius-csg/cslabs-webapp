@@ -30,7 +30,7 @@ export function FileInput({name, accept, multiple, disabled}: Props) {
               accept={accept}
               name={name}
               onChange={onFileChange}
-              multiple={multiple === undefined ? true : multiple}
+              multiple={multiple ?? false}
               disabled={disabled}
             />
             <ErrorMessage

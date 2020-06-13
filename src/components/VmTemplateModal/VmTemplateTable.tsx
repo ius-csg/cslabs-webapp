@@ -18,7 +18,7 @@ export function VmTemplateTable({templates, onSelect}: Props) {
       </thead>
       <tbody>
       {templates.map((template, index) => (
-        <tr key={index} onClick={() => onSelect(template.id)}>
+        <tr key={index} onClick={() => onSelect(template.id)} style={{cursor: 'pointer'}}>
           <td>{template.name}</td>
           <td>{template.published ? 'Yes' : 'No'}</td>
         </tr>

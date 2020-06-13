@@ -280,3 +280,6 @@ export function convertArrayToDictionary<T>(arr: T[], key: keyof T): {[key: stri
   }
   return obj;
 }
+
+
+export const cast = <T>(value: T): T => value;

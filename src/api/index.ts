@@ -1,4 +1,4 @@
-import {AxiosRequestConfig, AxiosResponse} from 'axios';
+import {AxiosResponse} from 'axios';
 import {Module} from '../types/Module';
 import {User, UserWithToken} from '../types/User';
 import {Dispatch} from 'redux';
@@ -10,6 +10,7 @@ import {UserModule} from '../types/UserModule';
 import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
+import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -196,8 +197,25 @@ export async function submitChangePasswordRequest(form: ChangePasswordRequest) {
   return handleResponse(await api.post<string>(`/user/change-password`, form));
 }
 
-export async function uploadVmTemplate(form: FormData, config: AxiosRequestConfig) {
-  return handleResponse(await api.post<string>(`/vm-template`, form, config));
+export async function uploadVmTemplate(form: UploadForm, onUploadProgress: (progress: number) => void) {
+  return handleResponse(await api.post<string>(`/vm-template`, uploadFormToFormData(form), {
+    onUploadProgress: (e: ProgressEvent) => onUploadProgress(e.loaded / e.total * 100)
+  }));
+}
+
+export async function uploadVmTemplateByUrl(form: UploadByUrlForm) {
+  return handleResponse(await api.post<string>(`/vm-template/from-url`, form)).data;
+}
+
+export interface UploadProgress {
+  progress: number;
+  status: UploadStatus;
+}
+
+export type UploadStatus = 'Downloading' | 'Complete' | 'Error' | 'NotFound';
+
+export async function getUploadProgress(requestId: string): Promise<UploadProgress> {
+  return handleResponse(await api.get<UploadProgress>(`/vm-template/upload-status/${requestId}`)).data;
 }
 export async function getVmTemplates() {
   return handleResponse(await api.get<VmTemplate[]>(`/vm-template`)).data;
