@@ -12,15 +12,16 @@ interface Props {
   bridgeTemplates: BridgeTemplate[];
   prefix: string;
   editing: boolean;
+  containsCoreRouter: boolean;
 }
 
-export function BridgeListEditor({bridgeTemplates, prefix, editing}: Props) {
+export function BridgeListEditor({bridgeTemplates, prefix, editing, containsCoreRouter}: Props) {
 
   return (
     <FieldArray
       name={prefix}
       render={helpers => {
-        if(bridgeTemplates.filter(t => t.isCoreBridge).length === 0 && editing) {
+        if(bridgeTemplates.filter(t => t.isCoreBridge).length === 0 && editing && containsCoreRouter) {
           helpers.push(makeBridgeTemplate('Core Bridge', true));
         }
         return (

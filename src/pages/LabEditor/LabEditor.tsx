@@ -81,9 +81,11 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
 
   useEffect(() => {
     async function LoadLab() {
-      setVmTemplates(await getVmTemplates());
+      const loadedVmTemplates = await getVmTemplates();
+      const containsCoreRouter = loadedVmTemplates.filter(vm => vm.isCoreRouter).length !== 0;
+      setVmTemplates(loadedVmTemplates);
       if (!labId) {
-        setInitialValues(makeLabForm(Number(moduleId)));
+        setInitialValues(makeLabForm(Number(moduleId), containsCoreRouter));
         setEditing(true);
         completeLoading();
         return;
@@ -153,7 +155,12 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                    <Form.Label>Lab Difficulty</Form.Label>
                    <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
                  </Form.Group>
-                 <BridgeListEditor bridgeTemplates={values.bridgeTemplates} prefix={getFieldName('bridgeTemplates')} editing={editing}/>
+                 <BridgeListEditor
+                   bridgeTemplates={values.bridgeTemplates}
+                   prefix={getFieldName('bridgeTemplates')}
+                   editing={editing}
+                   containsCoreRouter={vmTemplates.filter(vm => vm.isCoreRouter).length !== 0}
+                 />
                  <VmTable
                    bridgeTemplates={values.bridgeTemplates}
                    prefix={getFieldName('labVms')}

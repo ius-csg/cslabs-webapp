@@ -22,11 +22,11 @@ export function makeModuleForm(): ModuleForm {
   };
 }
 
-export function makeLabForm(moduleId: number): LabForm {
+export function makeLabForm(moduleId: number, containsCoreRouter: boolean = false): LabForm {
   return {
     ...makeTrackableEntity(),
     bridgeTemplates: [
-      makeBridgeTemplate('Core Bridge', true)
+      ...(containsCoreRouter ? [makeBridgeTemplate('Core Bridge', true)] : [])
     ],
     estimatedCpusUsed: 1,
     estimatedMemoryUsedMb: 1024,
