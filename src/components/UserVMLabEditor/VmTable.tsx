@@ -27,6 +27,7 @@ export function VmTable(props: Props) {
         if(vms.filter(t => t.isCoreRouter).length === 0 && editable && Object.keys(vmTemplateDictionary).length > 0) {
           const coreRouter = Object.values<VmTemplate>(vmTemplateDictionary).find(t => t.isCoreRouter);
           if(!coreRouter) {
+            // tslint:disable-next-line:no-console
             console.error('No Core Router provided in database');
           } else {
             helpers.push(makeLabVmForm('Core Router', true, coreRouter?.id ?? 0));
