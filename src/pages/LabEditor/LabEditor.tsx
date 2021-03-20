@@ -27,6 +27,7 @@ import {ButtonLink} from '../../components/util/ButtonLink';
 import {FileInput} from '../../components/util/FileInput';
 import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
 import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
+import {LabTypes} from '../../components/LabTypesPopover/LabTypesPopover';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -105,7 +106,6 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   }, [labId]);
 
   const getFieldName = (name: keyof LabForm) => name;
-
   const [selectedVm, setSelectedVm] = useState<number|undefined>();
   const renderForm = () => (
     <Formik
@@ -148,7 +148,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                    {values.hasReadme && <a href={getUserLabReadmeUrl(values.id)} target='_blank'>View Current</a>}
                  </Form.Group>
                  <Form.Group>
-                   <Form.Label>Lab Type</Form.Label>
+                   <Form.Label>Lab Type <LabTypes /></Form.Label>
                    <DropdownInput name={getFieldName('type')} dropdownData={labTypeOptions} disabled={!editing}/>
                  </Form.Group>
                  <Form.Group>
