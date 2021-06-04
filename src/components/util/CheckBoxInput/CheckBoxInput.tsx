@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ErrorMessage, Field, FieldProps} from 'formik';
 import styles from './CheckBoxInput.module.scss';
 import {Form} from 'react-bootstrap';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 import {FormikSetFieldValue} from '../Util';
 
 interface InputProps {
@@ -17,7 +17,7 @@ interface InputProps {
 
 const CheckBoxInput = (props: InputProps) => {
   // get a unique id for this specific instance.
-  const [id] = useState(uuid());
+  const [id] = useState(uuid.v4());
   return (
     <React.Fragment>
       <Field name={props.name}>

@@ -1,7 +1,6 @@
 import {BridgeTemplate, LabForm, LabVmForm, ModuleForm, VmInterfaceTemplate} from './types/editorTypes';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 import {TrackableEntity} from './types/Entity';
-
 
 export function makeTrackableEntity(): TrackableEntity {
   return {
@@ -16,7 +15,7 @@ export function makeModuleForm(): ModuleForm {
     description: '',
     name: '',
     published: false,
-    specialCode: uuid(),
+    specialCode: uuid.v4(),
     type: 'SingleUser',
     userId: 0
   };
@@ -55,7 +54,7 @@ export function makeBridgeTemplate(name: string = '', isCoreBridge: boolean = fa
     isCoreBridge: isCoreBridge,
     name: name,
     id: 0,
-    uuid: uuid()
+    uuid: uuid.v4()
   };
 }
 
