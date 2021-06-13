@@ -15,7 +15,7 @@ export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
           <ListGroup>
             <ListGroupItem variant='danger' action={true} href='#statistics'>Application Statistics</ListGroupItem>
             <ListGroupItem variant='danger' action={true} href='#cluster-management'>Cluster Management</ListGroupItem>
-            <ListGroupItem variant='danger' action={true} href='#user-management'>Cluster Management</ListGroupItem>
+            <ListGroupItem variant='danger' action={true} href='#user-management'>User Management</ListGroupItem>
           </ListGroup>
         </Col>
         <Col xs={8}>
