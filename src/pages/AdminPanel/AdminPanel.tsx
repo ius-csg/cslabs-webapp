@@ -6,7 +6,6 @@ import {AdminPanelLayout} from '../../components/AdminPanelLayout/AdminPanelLayo
 const AdminPage = () => (
   <Layout>
     <div className={styles['not-found']}>
-      <label>This page is still under construction.</label>
       <AdminPanelLayout/>
     </div>
   </Layout>
