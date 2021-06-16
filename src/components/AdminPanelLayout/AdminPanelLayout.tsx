@@ -1,6 +1,9 @@
 import React from 'react';
 import {Layout} from '../../pages/Layout/Layout';
-import {Col, ListGroup, ListGroupItem, Row, TabContainer, TabContent, TabPane} from 'react-bootstrap';
+import {Col, ListGroup, ListGroupItem, Row, TabContainer, TabContent} from 'react-bootstrap';
+import {StatisticsPane} from './StatisticsPane';
+import {ClusterPane} from './ClusterPane';
+import {UsersPane} from './UsersPane';
 
 interface AdminPanelLayoutProps {
   defaultActivePanel?: '#statistics'|'#cluster-management'|'#user-management';
@@ -20,15 +23,9 @@ export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
         </Col>
         <Col xs={8}>
           <TabContent>
-            <TabPane eventKey='#statistics'>
-              <p>The statistics panel is still under construction</p>
-            </TabPane>
-            <TabPane eventKey='#cluster-management'>
-              <p>The cluster management panel is still under construction</p>
-            </TabPane>
-            <TabPane eventKey='#user-management'>
-              <p>The user-management panel is still under construction</p>
-            </TabPane>
+            <StatisticsPane/>
+            <ClusterPane/>
+            <UsersPane/>
           </TabContent>
         </Col>
       </Row>
