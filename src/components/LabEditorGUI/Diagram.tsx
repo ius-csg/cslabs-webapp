@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Diagram, {createSchema, useSchema } from 'beautiful-react-diagrams';
 import WanNode from './WanNode';
 import SwitchNode from './SwitchNode';
@@ -6,23 +6,25 @@ import VmNode from './VmNode';
 
 // initial diagram model
 const initialSchema = createSchema({
-  nodes: [
-    {
-      id: 'wan-node',
-      coordinates: [250, 60],
-      render: WanNode,
-      disableDrag: true
-    },
-    {
-      id: 'switch-node',
-      coordinates: [250, 170],
-      render: SwitchNode,
-      inputs: [{ id: 'port-2', alignment: 'right' }]
-    }
-  ],
-  links: [
-    { input: 'wan-node', output: 'switch-node', readonly: true }
-  ]
+  // nodes: [
+  //   // {
+  //   //   id: 'wan-node',
+  //   //   coordinates: [250, 60],
+  //   //   render: WanNode,
+  //   //   outputs: [{id: 'wan-input'}],
+  //   //   disableDrag: true
+  //   // },
+  //   {
+  //     id: 'switch-node',
+  //     coordinates: [250, 170],
+  //     render: SwitchNode,
+  //     inputs: [{ id: 'port-2', alignment: 'right' }],
+  //     outputs: [{ id: 'output', alignment: 'left' }]
+  //   }
+  // ],
+  // links: [
+  //   // { input: 'wan-input', output: 'port-2', readonly: true }
+  // ]
 });
 
 const UncontrolledDiagram = () => {
@@ -39,7 +41,7 @@ const UncontrolledDiagram = () => {
       ],
       render: VmNode,
       data: {onClick: deleteNodeFromSchema},
-      inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
+      inputs: [{ id: `${schema.nodes.length}` }, { id: `second${schema.nodes.length}`}], // id must be unique each time for connection to be made
       outputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }]
     });
   };
@@ -56,6 +58,7 @@ const UncontrolledDiagram = () => {
       ],
       render: SwitchNode,
       inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
+      outputs: [{ id: `${schema.nodes.length}`}, { id: `second${schema.nodes.length}`}]
     });
   };
 
@@ -63,6 +66,26 @@ const UncontrolledDiagram = () => {
     const nodeToRemove: any = schema.nodes.find(node => node.id === id);
     removeNode(nodeToRemove);
   };
+
+  const [internetConnection, toggleInternetConection] = useState(false);
+
+  useEffect(() => {
+    if (internetConnection === true) {
+      addNode({
+        id: 'wan-node',
+        content: `Node ${schema.nodes.length + 1}`,
+        coordinates: [250, 60],
+        render: WanNode,
+        data: {onClick: deleteNodeFromSchema},
+        inputs: [{ id: `${schema.nodes.length}` }, { id: `second${schema.nodes.length}`}], // id must be unique each time for connection to be made
+        outputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }]
+      });
+    }
+    else if (internetConnection === false && schema.nodes.find(node => node.id === 'wan-node') !== undefined) {
+      const nodeToRemove: any = schema.nodes.find(node => node.id === 'wan-node');
+      removeNode(nodeToRemove);
+    }
+  }, [internetConnection]);
 
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
@@ -72,6 +95,12 @@ const UncontrolledDiagram = () => {
 
   return (
     <>
+      <div>
+        <label>
+          Should this lab have a connection to the internet?
+          <input type='checkbox' id='internet-connection' name='internet-connection' onChange={() => toggleInternetConection(!internetConnection)}/>
+        </label>
+      </div>
       <div>
         <button onClick={addNewSwitch}>Add Switch</button>
         <button onClick={addNewVM}>Add VM</button>

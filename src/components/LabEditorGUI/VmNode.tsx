@@ -35,7 +35,8 @@ const VmNode = ({data, id, inputs}: any) => {
 
   return (
     <ContextContainer menuItems={menuItems}>
-    <div style={{display:'flex', flexDirection:'column'}} onDoubleClick={() => setNameChange(true)}>
+    <div  onDoubleClick={() => setNameChange(true)}>
+      <div style={{display:'flex', flexDirection:'column'}}>
       <img src={VmSVG} alt='VM' style={{height:'3em'}}/>
       {nameChange &&
       <form onSubmit={handleSubmit}>
@@ -45,9 +46,12 @@ const VmNode = ({data, id, inputs}: any) => {
       {!nameChange && <div>
         {vmName}
       </div>}
+      </div>
+      <div style={{display:'flex'}}>
       {inputs.map((port: any) => React.cloneElement(port, {
-        style: { width: '50px', height: '50px', background: '#1B263B', position: 'absolute', top: '25px', right: '15px', opacity: '0%' }
+        style: {height: '10px', width: '10px', background: '#000000', margin: '5px'}
       }))}
+      </div>
     </div>
     </ContextContainer>
   );
