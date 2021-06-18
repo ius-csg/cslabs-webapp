@@ -4,7 +4,7 @@ import WanNode from './WanNode';
 import SwitchNode from './SwitchNode';
 import VmNode from './VmNode';
 
-// the diagram model
+// initial diagram model
 const initialSchema = createSchema({
   nodes: [
     {
@@ -17,54 +17,19 @@ const initialSchema = createSchema({
       id: 'switch-node',
       coordinates: [250, 170],
       render: SwitchNode,
-      inputs: [{ id: 'port-2', alignment: 'right' }],
-
-    },
-    {
-      id: 'vm-node',
-      coordinates: [300, 250],
-      render: VmNode,
-      inputs: [{ id: '1', alignment: 'left' }],
-    },
+      inputs: [{ id: 'port-2', alignment: 'right' }]
+    }
   ],
   links: [
-    { input: 'wan-node', output: 'switch-node', readonly: true },
-    { input: 'switch-node', output: 'vm-node' }
+    { input: 'wan-node', output: 'switch-node', readonly: true }
   ]
 });
 
 const UncontrolledDiagram = () => {
-  // create diagrams schema
-  const [schema, { onChange, addNode }] = useSchema(initialSchema);
-
-  // // function to remove nodes
-  // const deleteNodeFromSchema = (id) => {
-  //   const nodeToRemove = schema.nodes.find(node => node.id === id);
-  //   removeNode(nodeToRemove);
-  // };
-
-  // function to add nodes
-  // type Node = {
-  //   id: string;
-  //   content: string;
-  //   coordinates: number[];
-  //   render: any;
-  //   inputs: any;
-  //   outputs: any;
-  //   disableDrag: boolean;
-  // };
+  // create diagram schema
+  const [schema, { onChange, addNode, removeNode }] = useSchema(initialSchema);
 
   const addNewVM = () => {
-    // const nextNode: any = {
-    //   id: `node-${schema.nodes.length + 1}`,
-    //   content: `Node ${schema.nodes.length + 1}`,
-    //   coordinates: [
-    //     Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
-    //     Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
-    //   ],
-    //   render: VmNode,
-    //   inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }] // id must be unique each time for connection to be made
-    // };
     addNode({
       id: `node-${schema.nodes.length + 1}`,
       content: `Node ${schema.nodes.length + 1}`,
@@ -73,7 +38,9 @@ const UncontrolledDiagram = () => {
         Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
       ],
       render: VmNode,
-      inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }] // id must be unique each time for connection to be made
+      data: {onClick: deleteNodeFromSchema},
+      inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
+      outputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }]
     });
   };
 
@@ -90,6 +57,11 @@ const UncontrolledDiagram = () => {
       render: SwitchNode,
       inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
     });
+  };
+
+  const deleteNodeFromSchema = (id: string) => {
+    const nodeToRemove: any = schema.nodes.find(node => node.id === id);
+    removeNode(nodeToRemove);
   };
 
   // This use effect hook can be used to get information from the GUI

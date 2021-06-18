@@ -2,8 +2,8 @@ import React, {FormEvent, useState} from 'react';
 import VmSVG from '../../assets/icons/computer-desktop.svg';
 import ContextContainer from './ContextContainer';
 
-const VmNode = (props: any) => {
-  const { inputs } = props;
+const VmNode = ({data, id, inputs}: any) => {
+  // const { inputs } = inputs;
 
   const [vmName, setvmName] = useState('default vm');
   const [nameChange, setNameChange] = useState(false);
@@ -15,12 +15,20 @@ const VmNode = (props: any) => {
 
   const menuItems = [
     {
-      text: 'Item 1',
-      onClick: () => { console.log('Item 1 clicked!'); }
+      text: 'Link OS',
+      onClick: () => { console.log('Link OS clicked!'); }
     },
     {
-      text: 'Item 2',
-      onClick: () => { console.log('Item 2 clicked!'); }
+      text: 'Rename',
+      onClick: () => { console.log('Rename clicked!'); setNameChange(true);}
+    },
+    {
+      text: 'Remove',
+      onClick: () => { data.onClick(id);}
+    },
+    {
+      text: 'Duplicate',
+      onClick: () => { console.log('Duplicate clicked!'); }
     }
   ];
 
