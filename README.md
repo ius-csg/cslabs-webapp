@@ -38,10 +38,12 @@ See the [Linting](#linting) section to make sure the linter is running in WebSto
 
 #### Git Workflow
 
-The main branch is master. When some work needs to be done, you will branch off from master using the 
+The main branch is master, which will hold the current production version.
+When some work needs to be done, you will branch off from **dev** using the 
 naming convention `<initials>-<feature-name>` for your branch.
-After the work has completed, the developer should create a PR in Github to merge the branch back into master and notify the project lead
-to review. Any PR's with linting issues will be rejected so make sure you run the linter via `yarn run lint` before submitting a PR. 
+After the work has completed, the developer should create a PR in Github to merge the branch back into dev and notify the project lead
+to review. Please make sure to submit a PR to merge into **dev** branch and not master. Any PR's with linting issues will be rejected so
+make sure you run the linter via `yarn run lint` before submitting a PR. 
 To run the linter while developing run `yarn run watch:lint`.
 
 

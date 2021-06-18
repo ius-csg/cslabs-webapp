@@ -4,7 +4,7 @@ import React from 'react';
 // TODO: replace dummy data with actual data from database retrieved with API call(s)
 const users = [{'id':1, 'firstname':'John', 'lastname':'User', 'role':'Student'}, {'id':2, 'firstname':'Bill', 'lastname':'Buddy', 'role':'Admin'}];
 
-// TODO: figure out how to get this list to flow horizonally
+// TODO: figure out how to get this list to flow horizontally
 const userList = users.map((d) =>
   <ListGroup key={d.id}>
     <ListGroupItem key={d.firstname}>
