@@ -77,6 +77,10 @@ export async function getModule(id: number) {
   return ( await api.get<Module>(`/modules/${id}`)).data;
 }
 
+export async function getUserList() {
+  return ( await api.get<User[]>(`/user/`) ).data;
+}
+
 export async function login(email: string, password: string): Promise<AxiosResponse<UserWithToken>> {
   const resp = await api.post<UserWithToken>('/user/authenticate', {email: email, password: password });
   setToken(resp.data.token);
