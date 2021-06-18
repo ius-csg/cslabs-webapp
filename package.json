@@ -44,6 +44,7 @@
     "@types/zxcvbn": "^4.4.0",
     "axios": "^0.19.2",
     "axios-retry": "^3.1.2",
+    "beautiful-react-diagrams": "^0.5.1",
     "browser-detect": "^0.2.28",
     "connected-react-router": "^6.6.1",
     "formik": "2.0.3",
