@@ -1,5 +1,8 @@
 import React, {useEffect} from 'react';
 import Diagram, {createSchema, useSchema } from 'beautiful-react-diagrams';
+import WanNode from './WanNode';
+import SwitchNode from './SwitchNode';
+import VmNode from './VmNode';
 
 // the diagram model
 const initialSchema = createSchema({
@@ -41,38 +44,68 @@ const UncontrolledDiagram = () => {
   // };
 
   // function to add nodes
+  // type Node = {
+  //   id: string;
+  //   content: string;
+  //   coordinates: number[];
+  //   render: any;
+  //   inputs: any;
+  //   outputs: any;
+  //   disableDrag: boolean;
+  // };
+
   const addNewVM = () => {
-    const nextNode = {
+    // const nextNode: any = {
+    //   id: `node-${schema.nodes.length + 1}`,
+    //   content: `Node ${schema.nodes.length + 1}`,
+    //   coordinates: [
+    //     Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
+    //     Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
+    //   ],
+    //   render: VmNode,
+    //   inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }] // id must be unique each time for connection to be made
+    // };
+    addNode({
       id: `node-${schema.nodes.length + 1}`,
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: [
-        schema.nodes[schema.nodes.length - 1].coordinates[0] + 100,
-        schema.nodes[schema.nodes.length - 1].coordinates[1],
+        Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
+        Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
       ],
       render: VmNode,
-      inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
-    };
-    addNode(nextNode);
+      inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }] // id must be unique each time for connection to be made
+    });
   };
 
   const addNewSwitch = () => {
-    const nextNode = {
+    // const nextNode = {
+    //   id: `node-${schema.nodes.length + 1}`,
+    //   content: `Node ${schema.nodes.length + 1}`,
+    //   coordinates: [
+    //     Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
+    //     Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
+    //   ],
+    //   render: SwitchNode,
+    //   inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
+    // };
+    // @ts-ignore
+    schema.links.push({ input: 'wan-node', output: `node-${schema.nodes.length + 1}`, readonly: true })
+    addNode({
       id: `node-${schema.nodes.length + 1}`,
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: [
-        schema.nodes[schema.nodes.length - 1].coordinates[0] + 100,
-        schema.nodes[schema.nodes.length - 1].coordinates[1],
+        Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
+        Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
       ],
       render: SwitchNode,
       inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
-    };
-    schema.links.push({ input: 'wan-node', output: `node-${schema.nodes.length + 1}`, readonly: true })
-    addNode(nextNode);
+    });
   };
 
+  // This use effect hook can be used to get information from the GUI
   useEffect(() => {
-    console.log(schema);
-    console.log(schema.nodes.length);
+    // console.log(schema);
+    // console.log(schema.nodes.length);
   }, [schema]);
 
   return (
