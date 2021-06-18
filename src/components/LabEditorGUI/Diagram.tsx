@@ -78,16 +78,6 @@ const UncontrolledDiagram = () => {
   };
 
   const addNewSwitch = () => {
-    // const nextNode = {
-    //   id: `node-${schema.nodes.length + 1}`,
-    //   content: `Node ${schema.nodes.length + 1}`,
-    //   coordinates: [
-    //     Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
-    //     Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
-    //   ],
-    //   render: SwitchNode,
-    //   inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
-    // };
     // @ts-ignore
     schema.links.push({ input: 'wan-node', output: `node-${schema.nodes.length + 1}`, readonly: true })
     addNode({
