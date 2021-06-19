@@ -45,6 +45,7 @@ export function LoginRegisterPage({authenticated}: LoginProps) {
         </Tabs>
       </Col>
     </Layout>
+
   );
 }
 const mapDispatchToProps = (dispatch: Dispatch) => ({actions: bindActionCreators({setCurrentUser: setCurrentUser}, dispatch)});
