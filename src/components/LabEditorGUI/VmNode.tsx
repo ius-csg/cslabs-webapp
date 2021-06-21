@@ -47,9 +47,9 @@ const VmNode = ({data, id, inputs}: any) => {
         {vmName}
       </div>}
       </div>
-      <div style={{display:'flex'}}>
+      <div style={{display:'flex', position:'absolute', top:'-20px'}}>
       {inputs.map((port: any) => React.cloneElement(port, {
-        style: {height: '10px', width: '10px', background: '#000000', margin: '5px'}
+        style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
       }))}
       </div>
     </div>

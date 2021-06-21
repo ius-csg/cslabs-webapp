@@ -32,33 +32,47 @@ const UncontrolledDiagram = () => {
   const [schema, { onChange, addNode, removeNode }] = useSchema(initialSchema);
 
   const addNewVM = () => {
+    // Handles starting location if this is the first node created
+    let startingCoords: any;
+    if (schema.nodes.length === 0) {
+      startingCoords = [250, 60];
+    }
+    else {
+      startingCoords = [
+        Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
+        Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
+      ];
+    }
     addNode({
       id: `node-${schema.nodes.length + 1}`,
       content: `Node ${schema.nodes.length + 1}`,
-      coordinates: [
-        Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
-        Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
-      ],
+      coordinates: startingCoords,
       render: VmNode,
       data: {onClick: deleteNodeFromSchema},
-      inputs: [{ id: `${schema.nodes.length}` }, { id: `second${schema.nodes.length}`}], // id must be unique each time for connection to be made
-      outputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }]
+      inputs: [{ id: `${schema.nodes.length}` }, { id: `second${schema.nodes.length}`}] // id must be unique each time for connection to be made
     });
   };
 
   const addNewSwitch = () => {
-    // @ts-ignore
-    schema.links.push({ input: 'wan-node', output: `node-${schema.nodes.length + 1}`, readonly: true })
+    let startingCoords: any;
+    if (schema.nodes.length === 0) {
+      startingCoords = [250, 60];
+    }
+    else {
+      startingCoords = [
+        Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
+        Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
+      ];
+      // // @ts-ignore
+      // schema.links.push({ input: 'wan-node', output: `node-${schema.nodes.length + 1}`, readonly: true });
+    }
     addNode({
       id: `node-${schema.nodes.length + 1}`,
       content: `Node ${schema.nodes.length + 1}`,
-      coordinates: [
-        Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
-        Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
-      ],
+      coordinates: startingCoords,
       render: SwitchNode,
-      inputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }], // id must be unique each time for connection to be made
-      outputs: [{ id: `${schema.nodes.length}`}, { id: `second${schema.nodes.length}`}]
+      inputs: [{ id: `${schema.nodes.length}-in`}], // id must be unique each time for connection to be made
+      outputs: [{ id: `${schema.nodes.length}-out`}, { id: `second${schema.nodes.length}-out`}]
     });
   };
 
@@ -74,11 +88,11 @@ const UncontrolledDiagram = () => {
       addNode({
         id: 'wan-node',
         content: `Node ${schema.nodes.length + 1}`,
-        coordinates: [250, 60],
+        coordinates: [250, 30],
         render: WanNode,
         data: {onClick: deleteNodeFromSchema},
-        inputs: [{ id: `${schema.nodes.length}` }, { id: `second${schema.nodes.length}`}], // id must be unique each time for connection to be made
-        outputs: [{ id: `${schema.nodes.length}`, alignment: 'left' }]
+        outputs: [{ id: 'wan-output'}],
+        disableDrag: true
       });
     }
     else if (internetConnection === false && schema.nodes.find(node => node.id === 'wan-node') !== undefined) {
@@ -89,7 +103,7 @@ const UncontrolledDiagram = () => {
 
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
-    // console.log(schema);
+    console.log(schema);
     // console.log(schema.nodes.length);
   }, [schema]);
 
@@ -105,7 +119,7 @@ const UncontrolledDiagram = () => {
         <button onClick={addNewSwitch}>Add Switch</button>
         <button onClick={addNewVM}>Add VM</button>
       </div>
-      <div style={{ height: '22.5rem' }}>
+      <div style={{ height: '50vh' }}>
         <Diagram schema={schema} onChange={onChange} />
       </div>
     </>
