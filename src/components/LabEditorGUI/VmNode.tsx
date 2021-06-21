@@ -35,7 +35,7 @@ const VmNode = ({data, id, inputs}: any) => {
 
   return (
     <ContextContainer menuItems={menuItems}>
-    <div  onDoubleClick={() => setNameChange(true)}>
+    <div  onDoubleClick={() => setNameChange(true)} onClick={() => data.setActiveNode(id)}>
       <div style={{display:'flex', flexDirection:'column'}}>
       <img src={VmSVG} alt='VM' style={{height:'3em'}}/>
       {nameChange &&
