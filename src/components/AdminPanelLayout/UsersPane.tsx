@@ -15,7 +15,6 @@ class UsersPane extends React.Component<{}, UsersPaneState> {
 
   constructor(props: {}) {
     super(props);
-    this.renderNoUsers();
   }
 
   componentWillMount() {
@@ -24,17 +23,8 @@ class UsersPane extends React.Component<{}, UsersPaneState> {
 
   async loadUsers() {
     const users = await getUserList();
-    this.setState({ users: users});
+    this.setState({users: users});
   }
-
-  renderNoUsers() {
-    return (
-      <div style={{textAlign: 'center', marginTop: '2rem'}}>
-        <h6>There was an error loading registered users.</h6>
-      </div>
-    );
-  }
-
 
   render() {
     return (
@@ -42,16 +32,16 @@ class UsersPane extends React.Component<{}, UsersPaneState> {
         <TabPane key='user-management' eventKey='#user-management'>
           <ListGroup>
             <ListGroupItem key={u.id}>
-              <span style={styles.userSpan}>
+              <span style={styles.nameSpan}>
                 {u.firstName}
               </span>
-              <span style={styles.userSpan}>
+              <span style={styles.nameSpan}>
                 {u.lastName}
               </span>
-              <span style={styles.userSpan}>
+              <span style={styles.emailSpan}>
                 {u.email}
               </span>
-              <span style={styles.userSpan}>
+              <span style={styles.roleSpan}>
                 {u.role}
               </span>
             </ListGroupItem>
@@ -63,8 +53,17 @@ class UsersPane extends React.Component<{}, UsersPaneState> {
 }
 
 const styles = {
-  userSpan: {
-    margin: '10px'
+  nameSpan: {
+    display: 'inline-block',
+    width: '25%'
+  },
+  emailSpan: {
+    display: 'inline-block',
+    width: '40%'
+  },
+  roleSpan: {
+    display: 'inline-block',
+    width: '10%'
   }
 };
 
