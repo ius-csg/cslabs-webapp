@@ -3,7 +3,7 @@ import {Layout} from '../../pages/Layout/Layout';
 import {Col, ListGroup, ListGroupItem, Row, TabContainer, TabContent} from 'react-bootstrap';
 import {StatisticsPane} from './StatisticsPane';
 import {ClusterPane} from './ClusterPane';
-import {UsersPane} from './UsersPane';
+import UsersPane from './UsersPane';
 
 interface AdminPanelLayoutProps {
   defaultActivePanel?: '#statistics'|'#cluster-management'|'#user-management';
