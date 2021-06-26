@@ -16,6 +16,9 @@ class UsersPane extends React.Component<{}, UsersPaneState> {
   constructor(props: {}) {
     super(props);
     this.renderNoUsers();
+  }
+
+  componentWillMount() {
     this.loadUsers();
   }
 
@@ -27,33 +30,42 @@ class UsersPane extends React.Component<{}, UsersPaneState> {
   renderNoUsers() {
     return (
       <div style={{textAlign: 'center', marginTop: '2rem'}}>
-        <h6>Loading registered users.</h6>
+        <h6>There was an error loading registered users.</h6>
       </div>
     );
   }
 
-  // TODO: figure out how to get this list to flow horizontally
+
   render() {
     return (
       this.state.users.map((u) =>
         <TabPane key='user-management' eventKey='#user-management'>
           <ListGroup>
-            <ListGroup key={u.id}>
-              <ListGroupItem key={u.firstName}>
+            <ListGroupItem key={u.id}>
+              <span style={styles.userSpan}>
                 {u.firstName}
-              </ListGroupItem>
-              <ListGroupItem key={u.lastName}>
+              </span>
+              <span style={styles.userSpan}>
                 {u.lastName}
-              </ListGroupItem>
-              <ListGroupItem key={u.role}>
+              </span>
+              <span style={styles.userSpan}>
+                {u.email}
+              </span>
+              <span style={styles.userSpan}>
                 {u.role}
-              </ListGroupItem>
-            </ListGroup>
+              </span>
+            </ListGroupItem>
           </ListGroup>
         </TabPane>
       )
     );
   }
 }
+
+const styles = {
+  userSpan: {
+    margin: '10px'
+  }
+};
 
 export default UsersPane;
