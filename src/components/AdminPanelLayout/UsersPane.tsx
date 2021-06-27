@@ -1,4 +1,4 @@
-import {TabPane, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {TabPane, Table} from 'react-bootstrap';
 import React from 'react';
 import {User} from '../../types/User';
 import {getUserList} from '../../api';
@@ -28,43 +28,28 @@ class UsersPane extends React.Component<{}, UsersPaneState> {
 
   render() {
     return (
-      this.state.users.map((u) =>
-        <TabPane key='user-management' eventKey='#user-management'>
-          <ListGroup>
-            <ListGroupItem key={u.id}>
-              <span style={styles.nameSpan}>
-                {u.firstName}
-              </span>
-              <span style={styles.nameSpan}>
-                {u.lastName}
-              </span>
-              <span style={styles.emailSpan}>
-                {u.email}
-              </span>
-              <span style={styles.roleSpan}>
-                {u.role}
-              </span>
-            </ListGroupItem>
-          </ListGroup>
-        </TabPane>
-      )
+      <TabPane key='user-management' eventKey='#user-management'>
+        <Table striped={true} bordered={true} hover={true}>
+          <thead style={{backgroundColor: '#adb5bd'}}>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+          </thead>
+          <tbody>
+          {this.state.users.map((u) => (
+            <tr key={u.id} style={{cursor: 'pointer'}}>
+              <td>{u.firstName} {u.lastName}</td>
+              <td>{u.email}</td>
+              <td>{u.role}</td>
+            </tr>
+          ))}
+          </tbody>
+        </Table>
+      </TabPane>
     );
   }
 }
-
-const styles = {
-  nameSpan: {
-    display: 'inline-block',
-    width: '25%'
-  },
-  emailSpan: {
-    display: 'inline-block',
-    width: '40%'
-  },
-  roleSpan: {
-    display: 'inline-block',
-    width: '10%'
-  }
-};
 
 export default UsersPane;

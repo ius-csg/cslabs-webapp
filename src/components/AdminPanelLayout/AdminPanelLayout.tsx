@@ -1,9 +1,10 @@
 import React from 'react';
 import {Layout} from '../../pages/Layout/Layout';
-import {Col, ListGroup, ListGroupItem, Row, TabContainer, TabContent} from 'react-bootstrap';
+import {Col, ListGroup, Row, TabContainer, TabContent} from 'react-bootstrap';
 import {StatisticsPane} from './StatisticsPane';
 import {ClusterPane} from './ClusterPane';
 import UsersPane from './UsersPane';
+import {DowntimeScheduler} from './DowntimeScheduler';
 
 interface AdminPanelLayoutProps {
   defaultActivePanel?: '#statistics'|'#cluster-management'|'#user-management';
@@ -15,10 +16,19 @@ export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
     <TabContainer defaultActiveKey={(props.defaultActivePanel) ? props.defaultActivePanel : '#statistics'}>
       <Row>
         <Col xs={4}>
-          <ListGroup>
-            <ListGroupItem variant='danger' action={true} href='#statistics'>Application Statistics</ListGroupItem>
-            <ListGroupItem variant='danger' action={true} href='#cluster-management'>Cluster Management</ListGroupItem>
-            <ListGroupItem variant='danger' action={true} href='#user-management'>User Management</ListGroupItem>
+          <ListGroup style={styles.listGroup}>
+            <ListGroup.Item action={true} href='#statistics'>
+              <span>Application Statistics</span>
+            </ListGroup.Item>
+            <ListGroup.Item action={true} href='#cluster-management'>
+              <span>Cluster Management</span>
+              </ListGroup.Item>
+            <ListGroup.Item action={true} href='#user-management'>
+              <span>User Management</span>
+            </ListGroup.Item>
+            <ListGroup.Item action={true} href='#downtime-scheduler'>
+              <span>Downtime Scheduler</span>
+            </ListGroup.Item>
           </ListGroup>
         </Col>
         <Col xs={8}>
@@ -26,9 +36,19 @@ export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
             <StatisticsPane/>
             <ClusterPane/>
             <UsersPane/>
+            <DowntimeScheduler/>
           </TabContent>
         </Col>
       </Row>
     </TabContainer>
   </Layout>
 );
+
+const styles = {
+  listGroup: {
+    marginTop: '20px',
+    '&.active': {
+      backgroundColor: '#d9534f'
+    }
+  }
+};
