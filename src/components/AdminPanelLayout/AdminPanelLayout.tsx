@@ -16,18 +16,18 @@ export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
     <TabContainer defaultActiveKey={(props.defaultActivePanel) ? props.defaultActivePanel : '#statistics'}>
       <Row>
         <Col xs={4}>
-          <ListGroup style={styles.listGroup}>
+          <ListGroup style={{marginTop: '20px'}}>
             <ListGroup.Item action={true} href='#statistics'>
-              <span>Application Statistics</span>
+              Application Statistics
             </ListGroup.Item>
             <ListGroup.Item action={true} href='#cluster-management'>
-              <span>Cluster Management</span>
+              Cluster Management
               </ListGroup.Item>
             <ListGroup.Item action={true} href='#user-management'>
-              <span>User Management</span>
+              User Management
             </ListGroup.Item>
             <ListGroup.Item action={true} href='#downtime-scheduler'>
-              <span>Downtime Scheduler</span>
+              Downtime Scheduler
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -43,12 +43,3 @@ export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
     </TabContainer>
   </Layout>
 );
-
-const styles = {
-  listGroup: {
-    marginTop: '20px',
-    '&.active': {
-      backgroundColor: '#d9534f'
-    }
-  }
-};
