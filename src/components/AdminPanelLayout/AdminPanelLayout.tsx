@@ -1,6 +1,6 @@
 import React from 'react';
 import {Layout} from '../../pages/Layout/Layout';
-import {Col, ListGroup, Row, TabContainer, TabContent} from 'react-bootstrap';
+import {Col, ListGroup, Row, TabContainer, TabContent, TabPane} from 'react-bootstrap';
 import {StatisticsPane} from './StatisticsPane';
 import {ClusterPane} from './ClusterPane';
 import UsersPane from './UsersPane';
@@ -10,6 +10,13 @@ interface AdminPanelLayoutProps {
   defaultActivePanel?: '#statistics'|'#cluster-management'|'#user-management';
 }
 
+const panes = [
+  {label: 'Application Statistics', eventKey: '#statistics', component: StatisticsPane},
+  {label: 'Cluster Management', eventKey: '#cluster-management', component: ClusterPane},
+  {label: 'User Management', eventKey: '#user-management', component: UsersPane},
+  {label: 'Downtime Scheduler', eventKey: '#downtime-scheduler', component: DowntimeScheduler}
+];
+
 export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
   <Layout>
     <h1>Admin Console</h1>
@@ -17,26 +24,20 @@ export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
       <Row>
         <Col xs={4}>
           <ListGroup style={{marginTop: '20px'}}>
-            <ListGroup.Item action={true} href='#statistics'>
-              Application Statistics
-            </ListGroup.Item>
-            <ListGroup.Item action={true} href='#cluster-management'>
-              Cluster Management
+            {panes.map(pane => (
+              <ListGroup.Item key={pane.eventKey} action={true} href={pane.eventKey}>
+                {pane.label}
               </ListGroup.Item>
-            <ListGroup.Item action={true} href='#user-management'>
-              User Management
-            </ListGroup.Item>
-            <ListGroup.Item action={true} href='#downtime-scheduler'>
-              Downtime Scheduler
-            </ListGroup.Item>
+            ))}
           </ListGroup>
         </Col>
         <Col xs={8}>
           <TabContent>
-            <StatisticsPane/>
-            <ClusterPane/>
-            <UsersPane/>
-            <DowntimeScheduler/>
+            {panes.map(pane => (
+              <TabPane key={pane.eventKey} eventKey={pane.eventKey}>
+                {pane.component}
+              </TabPane>
+            ))}
           </TabContent>
         </Col>
       </Row>
