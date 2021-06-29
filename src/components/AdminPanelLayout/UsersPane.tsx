@@ -16,7 +16,7 @@ const UsersPane = () => {
     setLoading(false);
   });
 
-  return <Layout>{loading ? <HorizontallyCenteredSpinner/> :
+  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
     <Table striped={true} bordered={true} hover={true}>
       <thead style={{backgroundColor: '#adb5bd'}}>
       <tr>
@@ -35,7 +35,7 @@ const UsersPane = () => {
       ))}
       </tbody>
     </Table>
-  }</Layout>;
+  )}</Layout>;
 
 };
 
