@@ -3,7 +3,7 @@ import {Layout} from '../../pages/Layout/Layout';
 import {Col, ListGroup, Row, TabContainer, TabContent, TabPane} from 'react-bootstrap';
 import {StatisticsPane} from './StatisticsPane';
 import {ClusterPane} from './ClusterPane';
-import UsersPane from './UsersPane';
+// import UsersPane from './UsersPane';
 import {DowntimeScheduler} from './DowntimeScheduler';
 
 interface AdminPanelLayoutProps {
@@ -13,7 +13,7 @@ interface AdminPanelLayoutProps {
 const panes = [
   {label: 'Application Statistics', eventKey: '#statistics', component: StatisticsPane},
   {label: 'Cluster Management', eventKey: '#cluster-management', component: ClusterPane},
-  {label: 'User Management', eventKey: '#user-management', component: UsersPane},
+  // {label: 'User Management', eventKey: '#user-management', component: UsersPane},
   {label: 'Downtime Scheduler', eventKey: '#downtime-scheduler', component: DowntimeScheduler}
 ];
 
@@ -35,7 +35,7 @@ export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
           <TabContent>
             {panes.map(pane => (
               <TabPane key={pane.eventKey} eventKey={pane.eventKey}>
-                {pane.component}
+                {pane.component()}
               </TabPane>
             ))}
           </TabContent>
