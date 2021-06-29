@@ -1,7 +1,6 @@
 .context-menu {
   position: fixed;
   background-color: #d6d8db;
-  z-index: 10;
   padding: 10px 0;
   cursor: default;
 }

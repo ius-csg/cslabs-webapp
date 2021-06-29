@@ -14,7 +14,6 @@ const ContextMenu = ({parentRef, items}:any) => {
 
     const showMenu = (event: any) => {
       event.preventDefault();
-
       setVisibility(true);
       setX(event.clientX);
       setY(event.clientY);

@@ -2,6 +2,8 @@ import React from 'react';
 import switchSVG from '../../assets/icons/switch.svg';
 import changeSelected from '../../redux/actions/changeGUI';
 import {useDispatch, useSelector} from 'react-redux';
+import ContextContainer from './ContextContainer';
+
 const SwitchNode = ({data, id, inputs, outputs}: any) => {
 
   const selectedNode = useSelector((state: any) => state.gui);
@@ -13,20 +15,42 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
     setTimeout(() => dispatch(changeSelected({selectedID: id})), 10);
   };
 
-  return (
-    <div style={id === selectedNode.selectedID ? {border:'3px solid #ABDEF6', borderRadius:'5px', cursor:'default'} : {cursor:'default'}}>
-    <div style={{marginTop: '0px'}} onClick={handleSelect}>
-      {inputs.map((port: any) => React.cloneElement(port, {
-        style: {height:'10px', width:'10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-      }))}
-      <img src={switchSVG} alt='Switch' draggable={false} style={{height:'3.5em'}} />
+  const menuItems = [
+    {
+      text: 'Remove',
+      onClick: () => {
+        data.onClick(id);
+      }
+    },
+    {
+      text: 'Duplicate',
+      onClick: () => {
+        data.Duplicate(id);
+      }
+    }
+  ];
 
-      <div style={{display:'flex'}}>
-      {outputs.map((port: any) => React.cloneElement(port, {
-        style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-      }))}
-      </div>
-    </div>
+  return (
+    <div
+      style={id === selectedNode.selectedID ? {
+      border: '3px solid #ABDEF6',
+      borderRadius: '5px',
+      cursor: 'default'
+    } : {cursor: 'default'}}
+    >
+      <ContextContainer menuItems={menuItems}>
+        <div style={{marginTop: '0px'}} onClick={handleSelect}>
+          {inputs.map((port: any) => React.cloneElement(port, {
+            style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
+          }))}
+          <img src={switchSVG} alt='Switch' draggable={false} style={{height: '3.5em'}}/>
+          <div style={{display: 'flex'}}>
+            {outputs.map((port: any) => React.cloneElement(port, {
+              style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
+            }))}
+          </div>
+        </div>
+      </ContextContainer>
     </div>
   );
 };

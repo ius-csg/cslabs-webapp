@@ -1,9 +1,7 @@
 import React, {FormEvent, useState} from 'react';
 import VmSVG from '../../assets/icons/computer-desktop.svg';
 import ContextContainer from './ContextContainer';
-// import changeSelected from '../../redux/actions/changeGUI';
 import {useSelector} from 'react-redux';
-
 
 
 const VmNode = ({data, id, inputs}: any) => {
@@ -24,7 +22,6 @@ const VmNode = ({data, id, inputs}: any) => {
     setNameChange(false);
   }
 
-
   const menuItems = [
     {
       text: 'Link OS',
@@ -35,7 +32,6 @@ const VmNode = ({data, id, inputs}: any) => {
     {
       text: 'Rename',
       onClick: () => {
-        console.log('Rename clicked!');
         setNameChange(true);
       }
     },
@@ -48,11 +44,10 @@ const VmNode = ({data, id, inputs}: any) => {
     {
       text: 'Duplicate',
       onClick: () => {
-        console.log('Duplicate clicked!');
+        data.Duplicate(id);
       }
     }
   ];
-
 
   return (
     <div style={id === selectedNode.selectedID ? {border:'3px solid #ABDEF6', borderRadius:'5px', cursor:'default'} : {cursor:'default'}}>

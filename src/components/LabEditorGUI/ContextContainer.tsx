@@ -8,7 +8,6 @@ const Container = ({ children, menuItems }: any) => {
   return (
     <div className='container' ref={containerRef}>
       {children}
-
       <ContextMenu
         parentRef={containerRef}
         items={menuItems}
