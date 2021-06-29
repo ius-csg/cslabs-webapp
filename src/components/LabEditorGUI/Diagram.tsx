@@ -58,7 +58,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       ];
     }
     addNode({
-      id: `node-${schema.nodes.length + 1}`,
+      id: `vm-node-${schema.nodes.length + 1}`,
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: startingCoords,
       render: VmNode,
@@ -78,7 +78,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       ];
     }
     addNode({
-      id: `node-${schema.nodes.length + 1}`,
+      id: `switch-node-${schema.nodes.length + 1}`,
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: startingCoords,
       render: SwitchNode,
@@ -138,7 +138,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       <div style={{height: '50vh', zIndex:-1}} onClick={unSelectNode}>
         <Diagram schema={schema} onChange={onChange}/>
       </div>
-      <button onClick={()=> deleteNodeFromSchema('node-1')}>delete Test</button>
     </>
   );
 };
