@@ -1,53 +1,79 @@
 import {Table} from 'react-bootstrap';
-import React from 'react';
+import React, {useState} from 'react';
 import {User} from '../../types/User';
 import {getUserList} from '../../api';
+import {useMount} from '../../hooks/useMount';
+import {HorizontallyCenteredSpinner} from '../util/HorizonallyCenteredSpinner';
+import {Layout} from '../../pages/Layout/Layout';
 
-interface UsersPaneState {
-  users: User[];
-}
 
-class UsersPane extends React.Component<{}, UsersPaneState> {
+const UsersPane = () => {
+  const [users, setUsers] = useState();
+  const [loading, setLoading] = useState(true);
 
-  state:UsersPaneState = {
-    users: []
-  };
+  useMount(async () => {
+    setUsers(await getUserList());
+    completeLoading();
+  });
 
-  constructor(props: {}) {
-    super(props);
+  function completeLoading() {
+    setLoading(false);
   }
 
-  componentWillMount() {
-    this.loadUsers();
-  }
-
-  async loadUsers() {
-    const users = await getUserList();
-    this.setState({users: users});
-  }
-
-  render() {
-    return (
-      <Table striped={true} bordered={true} hover={true}>
-        <thead style={{backgroundColor: '#adb5bd'}}>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
+  const renderUserList = () => (
+    <Table striped={true} bordered={true} hover={true}>
+      <thead style={{backgroundColor: '#adb5bd'}}>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+      </tr>
+      </thead>
+      <tbody>
+      {users.map((u: User) => (
+        <tr key={u.id} style={{cursor: 'pointer'}}>
+          <td>{u.firstName} {u.lastName}</td>
+          <td>{u.email}</td>
+          <td>{u.role}</td>
         </tr>
-        </thead>
-        <tbody>
-        {this.state.users.map((u) => (
-          <tr key={u.id} style={{cursor: 'pointer'}}>
-            <td>{u.firstName} {u.lastName}</td>
-            <td>{u.email}</td>
-            <td>{u.role}</td>
-          </tr>
-        ))}
-        </tbody>
-      </Table>
-    );
-  }
-}
+      ))}
+      </tbody>
+    </Table>
+  );
+
+  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : renderUserList()}</Layout>;
+
+};
 
 export default UsersPane;
+
+// interface UsersPaneState {
+//   users: User[];
+// }
+//
+// class UsersPane extends React.Component<{}, UsersPaneState> {
+//
+//   state:UsersPaneState = {
+//     users: []
+//   };
+//
+//   constructor(props: {}) {
+//     super(props);
+//   }
+//
+//   componentWillMount() {
+//     this.loadUsers();
+//   }
+//
+//   async loadUsers() {
+//     const users = await getUserList();
+//     this.setState({users: users});
+//   }
+//
+//   render() {
+//     return (
+//     );
+//   }
+// }
+//
+// export default UsersPane;
