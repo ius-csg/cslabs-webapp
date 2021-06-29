@@ -6,3 +6,4 @@ export const setCurrentUser = (user: User|null): Action => ({
   type: CurrentUserTypes.SET_USER,
   data: user
 });
+
