@@ -13,14 +13,10 @@ const UsersPane = () => {
 
   useMount(async () => {
     setUsers(await getUserList());
-    completeLoading();
+    setLoading(false);
   });
 
-  function completeLoading() {
-    setLoading(false);
-  }
-
-  const renderUserList = () => (
+  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : () => (
     <Table striped={true} bordered={true} hover={true}>
       <thead style={{backgroundColor: '#adb5bd'}}>
       <tr>
@@ -39,9 +35,7 @@ const UsersPane = () => {
       ))}
       </tbody>
     </Table>
-  );
-
-  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : renderUserList()}</Layout>;
+  )}</Layout>;
 
 };
 
