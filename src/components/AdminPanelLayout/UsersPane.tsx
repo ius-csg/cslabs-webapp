@@ -46,34 +46,3 @@ const UsersPane = () => {
 };
 
 export default UsersPane;
-
-// interface UsersPaneState {
-//   users: User[];
-// }
-//
-// class UsersPane extends React.Component<{}, UsersPaneState> {
-//
-//   state:UsersPaneState = {
-//     users: []
-//   };
-//
-//   constructor(props: {}) {
-//     super(props);
-//   }
-//
-//   componentWillMount() {
-//     this.loadUsers();
-//   }
-//
-//   async loadUsers() {
-//     const users = await getUserList();
-//     this.setState({users: users});
-//   }
-//
-//   render() {
-//     return (
-//     );
-//   }
-// }
-//
-// export default UsersPane;
