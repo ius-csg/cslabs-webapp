@@ -25,10 +25,14 @@ import Contact   from '../pages/Contact/Contact';
 import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPanel';
 import LabEditor from '../pages/LabEditor/LabEditor';
+import {Alerts} from '../components/Alert/Alerts';
+
+
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
       <NavigationBar />
+        <Alerts/>
       <Switch>
         <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
         <Route exact={true} path={RoutePaths.explore} component={Explore}/>
