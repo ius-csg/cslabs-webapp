@@ -5,9 +5,10 @@ import {StatisticsPane} from './StatisticsPane';
 import {ClusterPane} from './ClusterPane';
 import UsersPane from './UsersPane';
 import {DowntimeScheduler} from './DowntimeScheduler';
+import {cast} from '../../util';
 
 interface AdminPanelLayoutProps {
-  defaultActivePanel?: '#statistics'|'#cluster-management'|'#user-management';
+  defaultActivePanel?: AdminTabKeys;
 }
 
 const panes = [
@@ -15,12 +16,14 @@ const panes = [
   {label: 'Cluster Management', eventKey: '#cluster-management', component: <ClusterPane/>},
   {label: 'User Management', eventKey: '#user-management', component: <UsersPane/>},
   {label: 'Downtime Scheduler', eventKey: '#downtime-scheduler', component: <DowntimeScheduler/>}
-];
+] as const;
+
+type AdminTabKeys = typeof panes[number]['eventKey'];
 
 export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
   <Layout>
     <h1>Admin Console</h1>
-    <TabContainer defaultActiveKey={(props.defaultActivePanel) ? props.defaultActivePanel : '#statistics'}>
+    <TabContainer defaultActiveKey={cast<AdminTabKeys>(props.defaultActivePanel ? props.defaultActivePanel : '#statistics')}>
       <Row>
         <Col xs={4}>
           <ListGroup style={{marginTop: '20px'}}>
