@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Button} from 'react-bootstrap';
+import {Alert} from 'react-bootstrap';
 
 export const Alerts = () => {
 
@@ -7,15 +7,12 @@ export const Alerts = () => {
 
     if (show) {
         return (
-          <Alert variant='danger' onClose={() => setShow(false)}>
+          <div className='d-block'>
+             <Alert dismissible={true} variant='danger' onClose={() => setShow(false)}>
             <Alert.Heading>Warning! CSLabs will be unavailable until August 24th, 2021 for maintenance.
-            <div className='d-flex justify-content-end'>
-            <Button onClick={() => setShow(false)} variant='outline-light'>
-              X //add x icon
-            </Button>
-            </div>
             </Alert.Heading>
           </Alert>
+          </div>
         );
     }
   else {

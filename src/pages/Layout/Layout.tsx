@@ -5,7 +5,6 @@ import {BrowserSupportAlert} from '../../components/BrowserSupportAlert/BrowserS
 import {Alerts} from '../../components/Alert/Alerts';
 
 
-
 interface LayoutProps {
   fluid?: boolean;
   children: any;
@@ -14,7 +13,7 @@ interface LayoutProps {
 }
 export const Layout = (props: LayoutProps) => (
   <Container style={{marginTop: 20, marginBottom: 20, ...props.style || {}}} {...{fluid: props.fluid}} className={props.className}>
-    <Alerts/>
+      <Alerts/>
     {props.children}
     <CookieAlert />
     <BrowserSupportAlert/>

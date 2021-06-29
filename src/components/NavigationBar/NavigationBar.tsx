@@ -10,6 +10,7 @@ import {NavLogo} from './NavLogo';
 import {RoutePaths} from '../../router/RoutePaths';
 
 
+
 const NavigationBarComponent =
   ({authenticated, creator, admin}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
   <Container>
