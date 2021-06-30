@@ -15,7 +15,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
   const onKeyDown = (e: any) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
-      if (schema.nodes.find(node => node.id === nodeToDelete)){
+      if (schema.nodes.find(node => node.id === nodeToDelete && e.target.toString() !== '[object HTMLInputElement]')){
         deleteNodeFromSchema(nodeToDelete);
       }
     }
@@ -66,7 +66,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: startingCoords,
       render: VmNode,
-      data: {onClick: deleteNodeFromSchema, Duplicate: duplicateNode, Select: selectNode},
+      data: {Delete: deleteNodeFromSchema, Duplicate: duplicateNode, Select: selectNode},
       inputs: [{id: `${schema.nodes.length}`}, {id: `second${schema.nodes.length}`}] // id must be unique each time for connection to be made
     });
   };
@@ -79,7 +79,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: startingCoords,
       render: SwitchNode,
-      data: {onClick: deleteNodeFromSchema, Duplicate: duplicateNode},
+      data: {Delete: deleteNodeFromSchema, Duplicate: duplicateNode},
       inputs: [{id: `${schema.nodes.length}-in`}], // id must be unique each time for connection to be made
       outputs: [{id: `${schema.nodes.length}-out`}, {id: `second${schema.nodes.length}-out`}]
     });
@@ -102,7 +102,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
     const outputs: any = [];
     if (nodeToDuplicate.outputs) {
       for (const i of nodeToDuplicate.outputs) {
-        inputs.push({id: `${i.id}${schema.nodes.length}-out`});
+        outputs.push({id: `${i.id}${schema.nodes.length}-out`});
       }
     }
 

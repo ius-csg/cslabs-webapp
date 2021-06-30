@@ -19,7 +19,7 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
     {
       text: 'Remove',
       onClick: () => {
-        data.onClick(id);
+        data.Delete(id);
       }
     },
     {
@@ -39,12 +39,14 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
     } : {cursor: 'default'}}
     >
       <ContextContainer menuItems={menuItems}>
-        <div style={{marginTop: '0px'}} onClick={handleSelect}>
-          {inputs.map((port: any) => React.cloneElement(port, {
-            style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-          }))}
-          <img src={switchSVG} alt='Switch' draggable={false} style={{height: '3.5em'}}/>
-          <div style={{display: 'flex'}}>
+        <div style={{marginTop: '0px', display:'flex', flexDirection: 'column'}} onClick={handleSelect}>
+          <div style={{display:'flex', alignSelf:'start'}}>
+            {inputs.map((port: any) => React.cloneElement(port, {
+              style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
+            }))}
+          </div>
+          <img src={switchSVG} alt='Switch' draggable={false} style={{height: '3.5em', pointerEvents:'none'}}/>
+          <div style={{display: 'flex', alignSelf:'start'}}>
             {outputs.map((port: any) => React.cloneElement(port, {
               style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
             }))}
