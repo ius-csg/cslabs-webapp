@@ -7,9 +7,9 @@ export const Alerts = () => {
 
     if (show) {
         return (
-          <div className='d-block'>
+          <div className='d-block text-center'>
              <Alert dismissible={true} variant='danger' onClose={() => setShow(false)}>
-            <Alert.Heading>Warning! CSLabs will be unavailable until August 24th, 2021 for maintenance.
+            <Alert.Heading>CSLabs will be unavailable until August 24th, 2021 for maintenance.
             </Alert.Heading>
           </Alert>
           </div>
