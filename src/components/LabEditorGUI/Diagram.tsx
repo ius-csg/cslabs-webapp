@@ -67,7 +67,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       coordinates: startingCoords,
       render: VmNode,
       data: {Delete: deleteNodeFromSchema, Duplicate: duplicateNode, Select: selectNode},
-      inputs: [{id: `${schema.nodes.length}`}, {id: `second${schema.nodes.length}`}] // id must be unique each time for connection to be made
+      inputs: [{id: `first-${schema.nodes.length}`}, {id: `second-${schema.nodes.length}`}, {id: `third-${schema.nodes.length}`}, {id: `fourth-${schema.nodes.length}`}] // id must be unique each time for connection to be made
     });
   };
 
@@ -142,6 +142,21 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
     // console.log(schema);
+
+    // Prevents having more than one connection per port
+    const portsInUse: any = [];
+    let count = 0;
+    if (schema.links) {
+      for (const port of schema.links) {
+        if (portsInUse.includes(port.input) || portsInUse.includes(port.output)) {
+          schema.links.splice(count, 1);
+        }
+        portsInUse.push(port.input);
+        portsInUse.push(port.output);
+        count ++;
+      }
+    }
+
     // console.log(schema.nodes.length);
   }, [schema]);
 
