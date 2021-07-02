@@ -15,10 +15,18 @@
 
     body {
         font-size: 20px;
-        padding-bottom: 400px;
+        padding-bottom: 350px;
     }
 
     p {
         font-size: 15px;
+    }
+
+    img {
+        //padding-top: 70px;
+        padding-left: 20px;
+        width: 50%;
+        height: auto;
+        float: left;
     }
 }
