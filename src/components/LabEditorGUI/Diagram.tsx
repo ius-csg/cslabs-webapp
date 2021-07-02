@@ -5,12 +5,15 @@ import SwitchNode from './SwitchNode';
 import VmNode from './VmNode';
 import changeSelected, {changeSelectedNode} from '../../redux/actions/changeGUI';
 import {useDispatch, useSelector} from 'react-redux';
+import SelectSwitch from './SelectSwitch';
 
 
 // initial diagram model
 const initialSchema = createSchema({});
 
 const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
+
+  const [selectSwitchVisible, setSelectSwitchVisible] = useState(false);
 
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
   const onKeyDown = (e: any) => {
@@ -71,7 +74,22 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
     });
   };
 
-  const addNewSwitch = () => {
+  const addNewSwitch = (ports: number) => {
+    const totalPortsOut = [];
+    const totalPortsIn = [];
+    if (ports === 5) {
+      totalPortsIn.push({id: `1-${schema.nodes.length}-in`});
+      for (let port = 1; port < (ports); port++) {
+        totalPortsOut.push({id: `${port}-${schema.nodes.length}-out`});
+      }
+    }
+    else {
+      for (let port = 0; port < (ports/2); port++) {
+        totalPortsOut.push({id: `${port}-${schema.nodes.length}-out`});
+        totalPortsIn.push({id: `${port}-${schema.nodes.length}-in`});
+      }
+    }
+
     const startingCoords = handleFirstNode(schema.nodes.length);
 
     addNode({
@@ -80,8 +98,8 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       coordinates: startingCoords,
       render: SwitchNode,
       data: {Delete: deleteNodeFromSchema, Duplicate: duplicateNode},
-      inputs: [{id: `${schema.nodes.length}-in`}], // id must be unique each time for connection to be made
-      outputs: [{id: `${schema.nodes.length}-out`}, {id: `second${schema.nodes.length}-out`}]
+      inputs: totalPortsIn,
+      outputs: totalPortsOut
     });
   };
 
@@ -174,10 +192,11 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
         </label>
       </div>
       <div>
-        <button onClick={addNewSwitch}>Add Switch</button>
+        <button onClick={() => setSelectSwitchVisible(true)}>Add Switch</button>
         <button onClick={addNewVM}>Add VM</button>
       </div>
       <div style={{height: '50vh', zIndex:-1}} onClick={unSelectNode}>
+        {selectSwitchVisible && <SelectSwitch addSwitch={addNewSwitch} close={() => setSelectSwitchVisible(false)}/>}
         <Diagram schema={schema} onChange={onChange}/>
       </div>
     </>
