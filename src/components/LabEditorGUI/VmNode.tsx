@@ -59,7 +59,7 @@ const VmNode = ({data, id, inputs}: any) => {
               style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
             }))}
             </div>
-            <img src={VmSVG} alt='VM' draggable={false} style={{height: '3em', userSelect:'none', pointerEvents:'none'}}/>
+            <img src={VmSVG} alt='VM' draggable={false} style={{height: '50px', userSelect:'none', pointerEvents:'none'}}/>
             {nameChange &&
             <form onSubmit={handleSubmit}>
               <input
