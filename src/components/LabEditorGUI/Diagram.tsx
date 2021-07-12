@@ -7,7 +7,6 @@ import changeSelected, {changeSelectedNode} from '../../redux/actions/changeGUI'
 import {useDispatch, useSelector} from 'react-redux';
 import SelectSwitch from './SelectSwitch';
 
-
 // initial diagram model
 const initialSchema = createSchema({});
 
@@ -16,11 +15,21 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
   const [selectSwitchVisible, setSelectSwitchVisible] = useState(false);
 
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
+
   const onKeyDown = (e: any) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
       if (schema.nodes.find(node => node.id === nodeToDelete && e.target.toString() !== '[object HTMLInputElement]')){
         deleteNodeFromSchema(nodeToDelete);
       }
+    }
+    else if (e.which === 90 && e.ctrlKey) {
+      if (e.shiftKey) {
+        console.log('redo');
+      }
+      else {
+        console.log('undo');
+      }
+
     }
   };
 
@@ -174,8 +183,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
         count ++;
       }
     }
-
-    // console.log(schema.nodes.length);
   }, [schema]);
 
   return (
