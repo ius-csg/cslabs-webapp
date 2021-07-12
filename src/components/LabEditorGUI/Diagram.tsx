@@ -192,7 +192,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
         </label>
       </div>
       <div>
-        <button onClick={() => setSelectSwitchVisible(true)}>Add Switch</button>
+        <button onClick={() => setSelectSwitchVisible(!selectSwitchVisible)}>Add Switch</button>
         <button onClick={addNewVM}>Add VM</button>
       </div>
       <div style={{height: '50vh', zIndex:-1}} onClick={unSelectNode}>

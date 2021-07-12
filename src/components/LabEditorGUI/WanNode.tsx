@@ -9,7 +9,7 @@ const WanNode = (props: any) => {
     <div style={{marginTop: '0px'}}>
       <img src={cloud} alt='WAN' draggable={false} style={{height:'65px', pointerEvents:'none'}}/>
       {outputs.map((port: any) => React.cloneElement(port, {
-        style: { width: '70px', height: '20px', background: '#00000', position: 'absolute', top: '40px'}
+        style: {height: '10px', width: '10px', background: '#000000', cursor: 'pointer'}
       }))}
     </div>
 

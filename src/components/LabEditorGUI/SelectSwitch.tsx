@@ -1,4 +1,14 @@
 import React from 'react';
+// @ts-ignore
+import FivePort from '../../assets/images/LabEditor/FivePortSwitch.PNG';
+// @ts-ignore
+import EightPort from '../../assets/images/LabEditor/EightPortSwitch.PNG';
+// @ts-ignore
+import SixteenPort from '../../assets/images/LabEditor/SixteenPortSwitch.PNG';
+// @ts-ignore
+import TwentyFourPort from '../../assets/images/LabEditor/Twenty-FourPortSwitch.PNG';
+// @ts-ignore
+import FortyEightPort from '../../assets/images/LabEditor/Forty-EightPortSwitch.PNG';
 
 const SelectSwitch = ({close, addSwitch}: any) => {
   const handleSelect = (ports: number) => {
@@ -7,21 +17,50 @@ const SelectSwitch = ({close, addSwitch}: any) => {
   };
 
   return (
-    <div style={{position:'absolute', left:'0', right:'0', top:0, bottom:0, zIndex:1000, background:'gray', opacity:'95%'}}>
-      <div style={{display:'flex', flexDirection:'column', background:'darkgray', margin:'15em'}}>
-      <div style={{display:'flex', justifyContent:'flex-end', padding:'2em'}}>
-        <button onClick={close}>close</button>
+      <div
+        style={{
+        position:'absolute',
+        left: 0,
+        right: 0,
+        zIndex: 2000,
+        backgroundColor: 'rgba(230, 230, 230, 0.95)'
+      }}
+      >
+        <button onClick={close} style={{position:'absolute', right:'2em', top:'1em'}}>X</button>
+        <h2 style={{display: 'flex', justifyContent: 'center', paddingTop:'1em'}}>Select a Switch</h2>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
+            <button onClick={() => handleSelect(5)} style={{height: '8em', border:'none', background:'none'}}>
+              <img src={FivePort} style={{height: '4.75em'}}/>
+            </button>
+            5 Port
+          </div>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
+            <button onClick={() => handleSelect(8)} style={{height: '8em', border:'none', background:'none'}}>
+              <img src={EightPort} style={{height: '4.75em'}}/>
+            </button>
+            8 Port
+          </div>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
+            <button onClick={() => handleSelect(16)} style={{height: '8em', border:'none', background:'none'}}>
+              <img src={SixteenPort} style={{height: '7em'}}/>
+            </button>
+            16 Port
+          </div>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
+            <button onClick={() => handleSelect(24)} style={{height: '8em', border:'none', background:'none'}}>
+              <img src={TwentyFourPort} style={{height: '7em'}}/>
+            </button>
+            24 Port
+          </div>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
+            <button onClick={() => handleSelect(48)} style={{height: '8em', border:'none', background:'none'}}>
+              <img src={FortyEightPort} style={{height: '7em'}}/>
+            </button>
+            48 Port
+          </div>
+        </div>
       </div>
-      <h2 style={{display:'flex', justifyContent:'center'}}>Select a Switch</h2>
-      <div style={{display:'flex', justifyContent:'center'}}>
-        <button onClick={() => handleSelect(5)}>5 Port</button>
-        <button onClick={() => handleSelect(8)}>8 Port</button>
-        <button onClick={() => handleSelect(16)}>16 Port</button>
-        <button onClick={() => handleSelect(24)}>24 Port</button>
-        <button onClick={() => handleSelect(48)}>48 Port</button>
-      </div>
-      </div>
-    </div>
   );
 };
 
