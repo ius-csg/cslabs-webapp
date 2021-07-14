@@ -3,6 +3,8 @@
   background-color: #d6d8db;
   padding: 10px 0;
   cursor: default;
+  border-radius: 5px;
+  z-index: 2000;
 }
 
 .context-menu__item {

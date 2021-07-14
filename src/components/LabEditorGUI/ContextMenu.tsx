@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './ContextMenu.css';
 
 const ContextMenu = ({parentRef, items}:any) => {
@@ -12,11 +12,16 @@ const ContextMenu = ({parentRef, items}:any) => {
       return;
     }
 
+    // @ts-ignore
+    const rect = document.getElementById('diagram').getBoundingClientRect();
+
     const showMenu = (event: any) => {
       event.preventDefault();
       setVisibility(true);
       setX(event.clientX);
       setY(event.clientY);
+      // const clickPosition = [x - rect.left, y - rect.top];
+      // console.log(clickPosition);
     };
 
     const closeMenu = () => {
@@ -36,6 +41,7 @@ const ContextMenu = ({parentRef, items}:any) => {
     top: y,
     left: x
   };
+
 
   return isVisible ?  (
     <div className='context-menu' style={style}>

@@ -1,6 +1,6 @@
 import React, {FormEvent, useState} from 'react';
 import VmSVG from '../../assets/icons/computer-desktop.svg';
-import ContextContainer from './ContextContainer';
+// import ContextContainer from './ContextContainer';
 import {useSelector} from 'react-redux';
 
 
@@ -22,36 +22,36 @@ const VmNode = ({data, id, inputs}: any) => {
     setNameChange(false);
   }
 
-  const menuItems = [
-    {
-      text: 'Link OS',
-      onClick: () => {
-        console.log('Link OS clicked!');
-      }
-    },
-    {
-      text: 'Rename',
-      onClick: () => {
-        setNameChange(true);
-      }
-    },
-    {
-      text: 'Remove',
-      onClick: () => {
-        data.Delete(id);
-      }
-    },
-    {
-      text: 'Duplicate',
-      onClick: () => {
-        data.Duplicate(id);
-      }
-    }
-  ];
+  // const menuItems = [
+  //   {
+  //     text: 'Link OS',
+  //     onClick: () => {
+  //       console.log('Link OS clicked!');
+  //     }
+  //   },
+  //   {
+  //     text: 'Rename',
+  //     onClick: () => {
+  //       setNameChange(true);
+  //     }
+  //   },
+  //   {
+  //     text: 'Remove',
+  //     onClick: () => {
+  //       data.Delete(id);
+  //     }
+  //   },
+  //   {
+  //     text: 'Duplicate',
+  //     onClick: () => {
+  //       data.Duplicate(id);
+  //     }
+  //   }
+  // ];
 
   return (
     <div style={id === selectedNode.selectedID ? {border:'3px solid #ABDEF6', borderRadius:'5px', cursor:'default'} : {cursor:'default'}}>
-      <ContextContainer menuItems={menuItems}>
+      {/*<ContextContainer menuItems={menuItems}>*/}
         <div onDoubleClick={() => setNameChange(true)} onClick={handleSelect}>
           <div style={{display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex'}}>
@@ -74,7 +74,7 @@ const VmNode = ({data, id, inputs}: any) => {
             </div>}
           </div>
         </div>
-      </ContextContainer>
+      {/*</ContextContainer>*/}
       </div>
   );
 };

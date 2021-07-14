@@ -6,6 +6,7 @@ import VmNode from './VmNode';
 import changeSelected, {changeSelectedNode} from '../../redux/actions/changeGUI';
 import {useDispatch, useSelector} from 'react-redux';
 import SelectSwitch from './SelectSwitch';
+import ContextContainer from './ContextContainer';
 
 // initial diagram model
 const initialSchema = createSchema({});
@@ -14,19 +15,19 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
 
   const [selectSwitchVisible, setSelectSwitchVisible] = useState(false);
 
+  // const [contextClickPos, setContextClickPos] = useState([]);
+
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
 
   const onKeyDown = (e: any) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
-      if (schema.nodes.find(node => node.id === nodeToDelete && e.target.toString() !== '[object HTMLInputElement]')){
+      if (schema.nodes.find(node => node.id === nodeToDelete && e.target.toString() !== '[object HTMLInputElement]')) {
         deleteNodeFromSchema(nodeToDelete);
       }
-    }
-    else if (e.which === 90 && e.ctrlKey) {
+    } else if (e.which === 90 && e.ctrlKey) {
       if (e.shiftKey) {
         console.log('redo');
-      }
-      else {
+      } else {
         console.log('undo');
       }
 
@@ -91,9 +92,8 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       for (let port = 0; port < (ports); port++) {
         totalPortsOut.push({id: `${port}-${schema.nodes.length}-out`});
       }
-    }
-    else {
-      for (let port = 0; port < (ports/2); port++) {
+    } else {
+      for (let port = 0; port < (ports / 2); port++) {
         totalPortsOut.push({id: `${port}-${schema.nodes.length}-out`});
         totalPortsIn.push({id: `${port}-${schema.nodes.length}-in`});
       }
@@ -168,7 +168,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
 
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
-    // console.log(schema);
+    console.log(schema);
 
     // Prevents having more than one connection per port
     const portsInUse: any = [];
@@ -180,10 +180,111 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
         }
         portsInUse.push(port.input);
         portsInUse.push(port.output);
-        count ++;
+        count++;
       }
     }
   }, [schema]);
+
+
+  // TEST... DELETE THIS
+
+
+  const [clickPosition, setClickPosition] = useState([0, 0]);
+
+
+  const showMenu = (event: any) => {
+    // @ts-ignore
+    const rect = document.getElementById('diagram').getBoundingClientRect();
+    event.preventDefault();
+    setClickPosition([event.clientX - rect.left, event.clientY - rect.top]);
+
+    menuItems = getMenuItems();
+  };
+
+  useEffect(() => {
+    // @ts-ignore
+    window.addEventListener('contextmenu', showMenu);
+
+    return () => {
+      window.removeEventListener('contextmenu', showMenu);
+    };
+  });
+
+  const getMenuItems = () => {
+    console.log(clickPosition);
+    for (const node of schema.nodes) {
+      if ((clickPosition[0] >= node.coordinates[0] && clickPosition[0] - 20 <= node.coordinates[0] + 50)
+        && (clickPosition[1] >= node.coordinates[1] && clickPosition[1] - 20 <= node.coordinates[1] + 100)) {
+        if (node.id.includes('vm')) {
+          console.log(node.coordinates);
+          // Custom VM Menu
+          return ([
+            {
+              text: 'Link OS',
+              onClick: () => {
+                console.log('Link OS');
+              }
+            },
+            {
+              text: 'Rename',
+              onClick: () => {
+                // TODO implement rename
+                console.log('rename');
+              }
+            },
+            {
+              text: 'Remove',
+              onClick: () => {
+                deleteNodeFromSchema(node.id);
+              }
+            },
+            {
+              text: 'Duplicate',
+              onClick: () => {
+                duplicateNode(node.id);
+              }
+            }
+          ]);
+        } else if (node.id.includes('switch')) {
+          return ([
+            {
+              text: 'Remove',
+              onClick: () => {
+                deleteNodeFromSchema(node.id);
+              }
+            },
+            {
+              text: 'Duplicate',
+              onClick: () => {
+                duplicateNode(node.id);
+              }
+            }
+          ]);
+        }
+      }
+    }
+    return ([
+      {
+        text: 'Add Switch',
+        onClick: () => {
+          setSelectSwitchVisible(!selectSwitchVisible);
+        }
+      },
+      {
+        text: 'Add VM',
+        onClick: () => {
+          addNewVM();
+        }
+      }
+    ]);
+  };
+
+  let menuItems = getMenuItems();
+
+  useEffect(() => {
+    menuItems = getMenuItems();
+  }, [clickPosition]);
+
 
   return (
     <>
@@ -202,12 +303,15 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
         <button onClick={() => setSelectSwitchVisible(!selectSwitchVisible)}>Add Switch</button>
         <button onClick={addNewVM}>Add VM</button>
       </div>
-      <div style={{height: '50vh', zIndex:-1}} onClick={unSelectNode}>
-        {selectSwitchVisible && <SelectSwitch addSwitch={addNewSwitch} close={() => setSelectSwitchVisible(false)}/>}
-        <Diagram schema={schema} onChange={onChange}/>
-      </div>
+      <ContextContainer style={{height: '50vh'}} menuItems={menuItems} schema={schema}>
+        <div id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelectNode}>
+          {selectSwitchVisible &&
+          <SelectSwitch addSwitch={addNewSwitch} close={() => setSelectSwitchVisible(false)}/>}
+          <Diagram schema={schema} onChange={onChange}/>
+        </div>
+      </ContextContainer>
     </>
   );
-};
+  };
 
 export default UncontrolledDiagram;
