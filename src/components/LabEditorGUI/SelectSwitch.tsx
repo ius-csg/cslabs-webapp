@@ -9,6 +9,7 @@ import SixteenPort from '../../assets/images/LabEditor/SixteenPortSwitch.PNG';
 import TwentyFourPort from '../../assets/images/LabEditor/Twenty-FourPortSwitch.PNG';
 // @ts-ignore
 import FortyEightPort from '../../assets/images/LabEditor/Forty-EightPortSwitch.PNG';
+import closeIcon from '../../assets/icons/close.svg';
 
 const SelectSwitch = ({close, addSwitch}: any) => {
   const handleSelect = (ports: number) => {
@@ -26,7 +27,7 @@ const SelectSwitch = ({close, addSwitch}: any) => {
         backgroundColor: 'rgba(230, 230, 230, 0.95)'
       }}
       >
-        <button onClick={close} style={{position:'absolute', right:'2em', top:'1em'}}>X</button>
+        <button onClick={close} style={{position:'absolute', right:'2em', top:'1em', border:'none', width:30, height:30, background:'none'}}><img src={closeIcon}/></button>
         <h2 style={{display: 'flex', justifyContent: 'center', paddingTop:'1em'}}>Select a Switch</h2>
         <div style={{display: 'flex', justifyContent: 'center'}}>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
