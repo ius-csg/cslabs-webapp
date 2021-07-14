@@ -1,12 +1,12 @@
-import React, {FormEvent, useState} from 'react';
+import React, { useState} from 'react';
 import VmSVG from '../../assets/icons/computer-desktop.svg';
 // import ContextContainer from './ContextContainer';
 import {useSelector} from 'react-redux';
 
 
-const VmNode = ({data, id, inputs}: any) => {
+const VmNode = ({data, id, inputs, content}: any) => {
 
-  const [vmName, setvmName] = useState('default vm');
+  // const [vmName, setvmName] = useState(content);
   const [nameChange, setNameChange] = useState(false);
 
   const selectedNode = useSelector((state: any) => state.gui);
@@ -17,10 +17,14 @@ const VmNode = ({data, id, inputs}: any) => {
     setTimeout(() => data.Select(id), 10);
   };
 
-  function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    setNameChange(false);
-  }
+  // function handleSubmit(event: FormEvent) {
+  //   event.preventDefault();
+  //   setNameChange(false);
+  // }
+  //
+  // const setContent = () => {
+  //   content = 'new';
+  // };
 
   // const menuItems = [
   //   {
@@ -60,17 +64,17 @@ const VmNode = ({data, id, inputs}: any) => {
             }))}
             </div>
             <img src={VmSVG} alt='VM' draggable={false} style={{height: '50px', userSelect:'none', pointerEvents:'none'}}/>
-            {nameChange &&
-            <form onSubmit={handleSubmit}>
-              <input
-                type='text'
-                value={vmName}
-                onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => setvmName(ev.target.value)}
-              />
-              <input type='submit' style={{display: 'none'}}/>
-            </form>}
-            {!nameChange && <div>
-              {vmName}
+            {/*{nameChange &&*/}
+            {/*<form onSubmit={handleSubmit}>*/}
+            {/*  <input*/}
+            {/*    type='text'*/}
+            {/*    value={content}*/}
+            {/*    onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => setContent()}*/}
+            {/*  />*/}
+            {/*  <input type='submit' style={{display: 'none'}}/>*/}
+            {/*</form>}*/}
+            {!nameChange && <div style={{display:'flex', justifyContent:'center'}}>
+              <h5>{content}</h5>
             </div>}
           </div>
         </div>

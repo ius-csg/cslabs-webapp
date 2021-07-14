@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import Diagram, {createSchema, useSchema} from 'beautiful-react-diagrams';
 import WanNode from './WanNode';
 import SwitchNode from './SwitchNode';
@@ -13,9 +13,15 @@ const initialSchema = createSchema({});
 
 const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
 
+  let rect: any = null;
+  useEffect(() => {
+    // @ts-ignore
+    rect = document.getElementById('diagram').getBoundingClientRect();
+  });
+
+
   const [selectSwitchVisible, setSelectSwitchVisible] = useState(false);
 
-  // const [contextClickPos, setContextClickPos] = useState([]);
 
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
 
@@ -49,9 +55,14 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
     dispatch(changeSelectedNode({selectedID: id}));
   };
 
-  const unSelectNode = () => {
-    if (selectedNode.selectedID !== 'none') {
+  const unSelect = (e: any) => {
+    if (selectedNode.selectedID !== 'none' && e.target.toString() !== '[object HTMLInputElement]') {
       dispatch(changeSelected({selectedID: 'none'}));
+      if (renameTextBox === true) {
+        handleSubmit();
+        toggleRenameTextBox(false);
+      }
+
     }
   };
   // create diagram schema
@@ -135,7 +146,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
 
     addNode({
       id: `${nodeToDuplicate.id}-duplicate${schema.nodes.length + 1}`,
-      content: `Node ${schema.nodes.length + 1}`,
+      content: nodeToDuplicate.content,
       coordinates: [
         Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
         Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
@@ -186,18 +197,36 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
   }, [schema]);
 
 
-  // TEST... DELETE THIS
-
-
+  // Deals with context menu and it's options
+  const [renameTextBox, toggleRenameTextBox] = useState(false);
+  const [textBoxPosition, setTextBoxPosition] = useState([0, 0]);
+  const [nodeName, setNodeName] = useState<any>('');
   const [clickPosition, setClickPosition] = useState([0, 0]);
+  const [nodeToRename, setNodeToRename] = useState('');
+
+  const handleSubmit = () => {
+    if (nodeName !== '' && nodeName.length < 25) {
+      const node = schema.nodes.find(nodes => nodeToRename);
+      if (node) {
+        deleteNodeFromSchema(node.id);
+        addNode({
+          id: node.id,
+          content: nodeName,
+          coordinates: node.coordinates,
+          render: VmNode,
+          data: node.data,
+          inputs: node.inputs,
+          outputs: node.outputs
+        });
+      }
+      toggleRenameTextBox(false);
+    }
+  };
+
 
 
   const showMenu = (event: any) => {
-    // @ts-ignore
-    const rect = document.getElementById('diagram').getBoundingClientRect();
-    event.preventDefault();
     setClickPosition([event.clientX - rect.left, event.clientY - rect.top]);
-
     menuItems = getMenuItems();
   };
 
@@ -210,13 +239,12 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
     };
   });
 
+
   const getMenuItems = () => {
-    console.log(clickPosition);
     for (const node of schema.nodes) {
       if ((clickPosition[0] >= node.coordinates[0] && clickPosition[0] - 20 <= node.coordinates[0] + 50)
         && (clickPosition[1] >= node.coordinates[1] && clickPosition[1] - 20 <= node.coordinates[1] + 100)) {
         if (node.id.includes('vm')) {
-          console.log(node.coordinates);
           // Custom VM Menu
           return ([
             {
@@ -228,8 +256,10 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
             {
               text: 'Rename',
               onClick: () => {
-                // TODO implement rename
-                console.log('rename');
+                setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
+                toggleRenameTextBox(true);
+                setNodeToRename(node.id);
+                setNodeName(node.content);
               }
             },
             {
@@ -246,6 +276,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
             }
           ]);
         } else if (node.id.includes('switch')) {
+          // Custom Switch Menu
           return ([
             {
               text: 'Remove',
@@ -281,10 +312,27 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
 
   let menuItems = getMenuItems();
 
-  useEffect(() => {
-    menuItems = getMenuItems();
-  }, [clickPosition]);
+  // useEffect(() => {
+  //   menuItems = getMenuItems();
+  // }, [clickPosition]);
 
+  const handleInputChange = (event: any) => {
+    setNodeName(event.target.value);
+  };
+
+  const rename = (event: any) => {
+    for (const node of schema.nodes) {
+      if (((event.clientX - rect.left) >= node.coordinates[0] && (event.clientX - rect.left) - 20 <= node.coordinates[0] + 50)
+        && ((event.clientY - rect.top) >= node.coordinates[1] && (event.clientY - rect.top) - 20 <= node.coordinates[1] + 100)) {
+        setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
+        setNodeToRename(node.id);
+        setNodeName(node.content);
+        toggleRenameTextBox(true);
+      }
+    }
+  };
+
+  // (ev: React.ChangeEvent<HTMLInputElement>): void => setNodeName(ev.target.value)
 
   return (
     <>
@@ -304,10 +352,19 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
         <button onClick={addNewVM}>Add VM</button>
       </div>
       <ContextContainer style={{height: '50vh'}} menuItems={menuItems} schema={schema}>
-        <div id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelectNode}>
+        <div id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelect} onDoubleClick={rename}>
           {selectSwitchVisible &&
           <SelectSwitch addSwitch={addNewSwitch} close={() => setSelectSwitchVisible(false)}/>}
-          <Diagram schema={schema} onChange={onChange}/>
+          <Diagram schema={schema} onChange={onChange} />
+          {renameTextBox &&
+          <form onSubmit={handleSubmit} style={{position:'absolute', left:`${textBoxPosition[0]}px`, top:`${textBoxPosition[1]}px`, zIndex:1000}}>
+            <input
+              type='text'
+              value={nodeName}
+              onChange={handleInputChange}
+            />
+            <input type='submit' style={{display: 'none'}}/>
+          </form>}
         </div>
       </ContextContainer>
     </>
