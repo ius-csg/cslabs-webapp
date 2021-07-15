@@ -3,7 +3,6 @@ import switchSVG from '../../assets/icons/switch.svg';
 import longSwitchSVG from '../../assets/icons/switch-48port.svg';
 import changeSelected from '../../redux/actions/changeGUI';
 import {useDispatch, useSelector} from 'react-redux';
-import ContextContainer from './ContextContainer';
 
 const SwitchNode = ({data, id, inputs, outputs}: any) => {
 
@@ -16,21 +15,6 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
     setTimeout(() => dispatch(changeSelected({selectedID: id})), 10);
   };
 
-  const menuItems = [
-    {
-      text: 'Remove',
-      onClick: () => {
-        data.Delete(id);
-      }
-    },
-    {
-      text: 'Duplicate',
-      onClick: () => {
-        data.Duplicate(id);
-      }
-    }
-  ];
-
   return (
     <div
       style={id === selectedNode.selectedID ? {
@@ -39,7 +23,6 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
         cursor: 'default'
       } : {cursor: 'default'}}
     >
-      <ContextContainer menuItems={menuItems}>
         {outputs.length >= 8 &&
         <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}} onClick={handleSelect}>
           <div style={{display: 'flex', alignSelf: 'start'}}>
@@ -83,7 +66,6 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
             </div>
           </div>
           }
-      </ContextContainer>
     </div>);
 };
 

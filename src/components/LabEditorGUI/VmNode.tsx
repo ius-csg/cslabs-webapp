@@ -1,62 +1,27 @@
 import React, { useState} from 'react';
 import VmSVG from '../../assets/icons/computer-desktop.svg';
-// import ContextContainer from './ContextContainer';
-import {useSelector} from 'react-redux';
+
+import {useDispatch, useSelector} from 'react-redux';
+import changeSelected from '../../redux/actions/changeGUI';
 
 
 const VmNode = ({data, id, inputs, content}: any) => {
 
-  // const [vmName, setvmName] = useState(content);
   const [nameChange, setNameChange] = useState(false);
 
   const selectedNode = useSelector((state: any) => state.gui);
 
+  const dispatch = useDispatch();
+
   const handleSelect = () => {
     // Timeout will override the deselect click event in the diagram div
     // There might be a better way to handle this
-    setTimeout(() => data.Select(id), 10);
+    setTimeout(() => dispatch(changeSelected({selectedID: id})), 10);
   };
-
-  // function handleSubmit(event: FormEvent) {
-  //   event.preventDefault();
-  //   setNameChange(false);
-  // }
-  //
-  // const setContent = () => {
-  //   content = 'new';
-  // };
-
-  // const menuItems = [
-  //   {
-  //     text: 'Link OS',
-  //     onClick: () => {
-  //       console.log('Link OS clicked!');
-  //     }
-  //   },
-  //   {
-  //     text: 'Rename',
-  //     onClick: () => {
-  //       setNameChange(true);
-  //     }
-  //   },
-  //   {
-  //     text: 'Remove',
-  //     onClick: () => {
-  //       data.Delete(id);
-  //     }
-  //   },
-  //   {
-  //     text: 'Duplicate',
-  //     onClick: () => {
-  //       data.Duplicate(id);
-  //     }
-  //   }
-  // ];
 
   return (
     <div style={id === selectedNode.selectedID ? {border:'3px solid #ABDEF6', borderRadius:'5px', cursor:'default'} : {cursor:'default'}}>
-      {/*<ContextContainer menuItems={menuItems}>*/}
-        <div onDoubleClick={() => setNameChange(true)} onClick={handleSelect}>
+        <div onDoubleClick={() => setNameChange(true)} onClick={handleSelect} onContextMenu={handleSelect}>
           <div style={{display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex'}}>
             {inputs.map((port: any) => React.cloneElement(port, {
@@ -64,21 +29,11 @@ const VmNode = ({data, id, inputs, content}: any) => {
             }))}
             </div>
             <img src={VmSVG} alt='VM' draggable={false} style={{height: '50px', userSelect:'none', pointerEvents:'none'}}/>
-            {/*{nameChange &&*/}
-            {/*<form onSubmit={handleSubmit}>*/}
-            {/*  <input*/}
-            {/*    type='text'*/}
-            {/*    value={content}*/}
-            {/*    onChange={(ev: React.ChangeEvent<HTMLInputElement>): void => setContent()}*/}
-            {/*  />*/}
-            {/*  <input type='submit' style={{display: 'none'}}/>*/}
-            {/*</form>}*/}
             {!nameChange && <div style={{display:'flex', justifyContent:'center'}}>
               <h5>{content}</h5>
             </div>}
           </div>
         </div>
-      {/*</ContextContainer>*/}
       </div>
   );
 };

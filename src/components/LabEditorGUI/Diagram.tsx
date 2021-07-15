@@ -11,7 +11,7 @@ import ContextContainer from './ContextContainer';
 // initial diagram model
 const initialSchema = createSchema({});
 
-const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
+const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuType, textBoxPosition, setTextBoxPosition, nodeToRename, setNodeToRename}:any) => {
 
   let rect: any = null;
   useEffect(() => {
@@ -36,7 +36,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
       } else {
         console.log('undo');
       }
-
     }
   };
 
@@ -62,9 +61,9 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
         handleSubmit();
         toggleRenameTextBox(false);
       }
-
     }
   };
+
   // create diagram schema
   const [schema, {onChange, addNode, removeNode}] = useSchema(initialSchema);
 
@@ -199,102 +198,50 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
 
   // Deals with context menu and it's options
   const [renameTextBox, toggleRenameTextBox] = useState(false);
-  const [textBoxPosition, setTextBoxPosition] = useState([0, 0]);
-  const [nodeName, setNodeName] = useState<any>('');
-  const [clickPosition, setClickPosition] = useState([0, 0]);
-  const [nodeToRename, setNodeToRename] = useState('');
+
+  const [newNodeName, setNewNodeName] = useState<any>('');
+  // const [clickPosition, setClickPosition] = useState([0, 0]);
+
 
   const handleSubmit = () => {
-    if (nodeName !== '' && nodeName.length < 25) {
-      const node = schema.nodes.find(nodes => nodeToRename);
-      if (node) {
-        deleteNodeFromSchema(node.id);
+    const nodeToChange: any = schema.nodes.find(node => node.id === nodeToRename);
+    if (newNodeName !== '' && newNodeName.length < 25) {
+      if (nodeToChange) {
+        deleteNodeFromSchema(nodeToChange.id);
         addNode({
-          id: node.id,
-          content: nodeName,
-          coordinates: node.coordinates,
+          id: nodeToChange.id,
+          content: newNodeName,
+          coordinates: nodeToChange.coordinates,
           render: VmNode,
-          data: node.data,
-          inputs: node.inputs,
-          outputs: node.outputs
+          data: nodeToChange.data,
+          inputs: nodeToChange.inputs,
+          outputs: nodeToChange.outputs
         });
       }
       toggleRenameTextBox(false);
     }
   };
 
-
-
   const showMenu = (event: any) => {
-    setClickPosition([event.clientX - rect.left, event.clientY - rect.top]);
-    menuItems = getMenuItems();
-  };
-
-  useEffect(() => {
-    // @ts-ignore
-    window.addEventListener('contextmenu', showMenu);
-
-    return () => {
-      window.removeEventListener('contextmenu', showMenu);
-    };
-  });
-
-
-  const getMenuItems = () => {
+    const xClickPos = event.clientX - rect.left;
+    const yClickPos = event.clientY - rect.top;
+    setMenuType('default');
     for (const node of schema.nodes) {
-      if ((clickPosition[0] >= node.coordinates[0] && clickPosition[0] - 20 <= node.coordinates[0] + 50)
-        && (clickPosition[1] >= node.coordinates[1] && clickPosition[1] - 20 <= node.coordinates[1] + 100)) {
+      if ((xClickPos >= node.coordinates[0] && xClickPos - 20 <= node.coordinates[0] + 50)
+        && (yClickPos >= node.coordinates[1] && yClickPos - 20 <= node.coordinates[1] + 100)) {
         if (node.id.includes('vm')) {
-          // Custom VM Menu
-          return ([
-            {
-              text: 'Link OS',
-              onClick: () => {
-                console.log('Link OS');
-              }
-            },
-            {
-              text: 'Rename',
-              onClick: () => {
-                setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
-                toggleRenameTextBox(true);
-                setNodeToRename(node.id);
-                setNodeName(node.content);
-              }
-            },
-            {
-              text: 'Remove',
-              onClick: () => {
-                deleteNodeFromSchema(node.id);
-              }
-            },
-            {
-              text: 'Duplicate',
-              onClick: () => {
-                duplicateNode(node.id);
-              }
-            }
-          ]);
-        } else if (node.id.includes('switch')) {
-          // Custom Switch Menu
-          return ([
-            {
-              text: 'Remove',
-              onClick: () => {
-                deleteNodeFromSchema(node.id);
-              }
-            },
-            {
-              text: 'Duplicate',
-              onClick: () => {
-                duplicateNode(node.id);
-              }
-            }
-          ]);
+          setMenuType('vm');
+        }
+        else if (node.id.includes('switch')) {
+          setMenuType('switch');
         }
       }
     }
-    return ([
+  };
+
+  const getMenuItems = (menuType: string) => {
+    if (menuType === 'default') {
+      return ([
       {
         text: 'Add Switch',
         onClick: () => {
@@ -308,26 +255,93 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
         }
       }
     ]);
+    }
+    else if (menuType === 'vm') {
+      return ([
+        {
+          text: 'Link OS',
+          onClick: () => {
+            console.log('Link OS');
+          }
+        },
+        {
+          text: 'Rename',
+          onClick: () => {
+            if (schema.nodes.find(nodes => nodes.id === selectedNode)) {
+              const node: any = schema.nodes.find(nodes => nodes.id === selectedNode);
+              setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
+              toggleRenameTextBox(true);
+              setNodeToRename(node.id);
+              setNewNodeName(node.content);
+            }
+
+          }
+        },
+        {
+          text: 'Remove',
+          onClick: () => {
+            deleteNodeFromSchema(selectedNode);
+          }
+        },
+        {
+          text: 'Duplicate',
+          onClick: () => {
+            duplicateNode(selectedNode);
+          }
+        }
+      ]);
+    }
+    else if (menuType === 'switch') {
+      return ([
+        {
+          text: 'Remove',
+          onClick: () => {
+            deleteNodeFromSchema(selectedNode);
+          }
+        },
+        {
+          text: 'Duplicate',
+          onClick: () => {
+            duplicateNode(selectedNode);
+          }
+        }
+      ]);
+    }
+    return;
   };
 
-  let menuItems = getMenuItems();
+ let menuItems = getMenuItems(menuType);
 
-  // useEffect(() => {
-  //   menuItems = getMenuItems();
-  // }, [clickPosition]);
+  useEffect(()=> {
+    menuItems = getMenuItems(menuType);
+  }, [selectedNode]);
+
+
+
+
+  useEffect(() => {
+    window.addEventListener('contextmenu', showMenu);
+
+    return () => {
+      window.removeEventListener('contextmenu', showMenu);
+    };
+  });
+
 
   const handleInputChange = (event: any) => {
-    setNodeName(event.target.value);
+    setNewNodeName(event.target.value);
   };
 
   const rename = (event: any) => {
     for (const node of schema.nodes) {
       if (((event.clientX - rect.left) >= node.coordinates[0] && (event.clientX - rect.left) - 20 <= node.coordinates[0] + 50)
         && ((event.clientY - rect.top) >= node.coordinates[1] && (event.clientY - rect.top) - 20 <= node.coordinates[1] + 100)) {
-        setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
-        setNodeToRename(node.id);
-        setNodeName(node.content);
-        toggleRenameTextBox(true);
+        if (node.id.includes('vm')) {
+          setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
+          setNodeToRename(node.id);
+          setNewNodeName(node.content);
+          toggleRenameTextBox(true);
+        }
       }
     }
   };
@@ -360,7 +374,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete}:any) => {
           <form onSubmit={handleSubmit} style={{position:'absolute', left:`${textBoxPosition[0]}px`, top:`${textBoxPosition[1]}px`, zIndex:1000}}>
             <input
               type='text'
-              value={nodeName}
+              value={newNodeName}
               onChange={handleInputChange}
             />
             <input type='submit' style={{display: 'none'}}/>
