@@ -99,7 +99,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
     const totalPortsIn = [];
     if (ports === 5) {
       totalPortsIn.push({id: `1-${schema.nodes.length}-in`}, {id: `2-${schema.nodes.length}-in`});
-      for (let port = 0; port < (ports); port++) {
+      for (let port = 2; port < (ports); port++) {
         totalPortsOut.push({id: `${port}-${schema.nodes.length}-out`});
       }
     } else {
