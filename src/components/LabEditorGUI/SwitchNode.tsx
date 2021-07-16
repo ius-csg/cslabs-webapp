@@ -4,7 +4,7 @@ import longSwitchSVG from '../../assets/icons/switch-48port.svg';
 import changeSelected from '../../redux/actions/changeGUI';
 import {useDispatch, useSelector} from 'react-redux';
 
-const SwitchNode = ({data, id, inputs, outputs}: any) => {
+const SwitchNode = ({id, inputs, outputs}: any) => {
 
   const selectedNode = useSelector((state: any) => state.gui);
   const dispatch = useDispatch();
@@ -23,8 +23,9 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
         cursor: 'default'
       } : {cursor: 'default'}}
     >
+      <div onContextMenu={handleSelect} onClick={handleSelect}>
         {outputs.length >= 8 &&
-        <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}} onClick={handleSelect}>
+        <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}}>
           <div style={{display: 'flex', alignSelf: 'start'}}>
             {inputs.map((port: any) => React.cloneElement(port, {
               style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
@@ -52,7 +53,7 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
         </div>
         }
         {outputs.length < 8 &&
-          <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}} onClick={handleSelect}>
+          <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', alignSelf: 'start'}}>
               {inputs.map((port: any) => React.cloneElement(port, {
                 style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
@@ -66,6 +67,7 @@ const SwitchNode = ({data, id, inputs, outputs}: any) => {
             </div>
           </div>
           }
+      </div>
     </div>);
 };
 

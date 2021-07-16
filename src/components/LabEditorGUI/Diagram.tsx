@@ -3,7 +3,7 @@ import Diagram, {createSchema, useSchema} from 'beautiful-react-diagrams';
 import WanNode from './WanNode';
 import SwitchNode from './SwitchNode';
 import VmNode from './VmNode';
-import changeSelected, {changeSelectedNode} from '../../redux/actions/changeGUI';
+import changeSelected from '../../redux/actions/changeGUI';
 import {useDispatch, useSelector} from 'react-redux';
 import SelectSwitch from './SelectSwitch';
 import ContextContainer from './ContextContainer';
@@ -21,7 +21,9 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
 
 
   const [selectSwitchVisible, setSelectSwitchVisible] = useState(false);
-
+  const [renameTextBox, toggleRenameTextBox] = useState(false);
+  const [newNodeName, setNewNodeName] = useState<any>('');
+  const [internetConnection, toggleInternetConnection] = useState(false);
 
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
 
@@ -41,7 +43,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
 
   useEffect(() => {
     setNodeToDelete(selectedNode);
-  }, [selectedNode]);
+  }, [selectedNode, setNodeToDelete]);
 
   useEffect(() => {
     window.addEventListener('keydown', onKeyDown);
@@ -50,12 +52,8 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
 
   const dispatch = useDispatch();
 
-  const selectNode = (id: string) => {
-    dispatch(changeSelectedNode({selectedID: id}));
-  };
-
   const unSelect = (e: any) => {
-    if (selectedNode.selectedID !== 'none' && e.target.toString() !== '[object HTMLInputElement]') {
+    if (selectedNode !== 'none' && e.target.toString() !== '[object HTMLInputElement]') {
       dispatch(changeSelected({selectedID: 'none'}));
       if (renameTextBox === true) {
         handleSubmit();
@@ -89,7 +87,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: startingCoords,
       render: VmNode,
-      data: {Delete: deleteNodeFromSchema, Duplicate: duplicateNode, Select: selectNode},
       inputs: [{id: `first-${schema.nodes.length}`}, {id: `second-${schema.nodes.length}`}, {id: `third-${schema.nodes.length}`}, {id: `fourth-${schema.nodes.length}`}] // id must be unique each time for connection to be made
     });
   };
@@ -116,7 +113,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: startingCoords,
       render: SwitchNode,
-      data: {Delete: deleteNodeFromSchema, Duplicate: duplicateNode},
       inputs: totalPortsIn,
       outputs: totalPortsOut
     });
@@ -151,13 +147,10 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
         Number(schema.nodes[schema.nodes.length - 1].coordinates[1])
       ],
       render: nodeToDuplicate.render,
-      data: nodeToDuplicate.data,
       inputs: inputs,
       outputs: outputs
     });
   };
-
-  const [internetConnection, toggleInternetConnection] = useState(false);
 
   useEffect(() => {
     if (internetConnection === true) {
@@ -166,7 +159,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
         content: `Node ${schema.nodes.length + 1}`,
         coordinates: [250, 30],
         render: WanNode,
-        data: {onClick: deleteNodeFromSchema},
         outputs: [{id: 'wan-output'}],
         disableDrag: true
       });
@@ -197,12 +189,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
 
 
   // Deals with context menu and it's options
-  const [renameTextBox, toggleRenameTextBox] = useState(false);
-
-  const [newNodeName, setNewNodeName] = useState<any>('');
-  // const [clickPosition, setClickPosition] = useState([0, 0]);
-
-
   const handleSubmit = () => {
     const nodeToChange: any = schema.nodes.find(node => node.id === nodeToRename);
     if (newNodeName !== '' && newNodeName.length < 25) {

@@ -30,37 +30,37 @@ const SelectSwitch = ({close, addSwitch}: any) => {
         <button
           onClick={close}
           style={{position:'absolute', right:'2em', top:'1em', border:'none', width:30, height:30, background:'none'}}>
-          <img src={closeIcon}/>
+          <img src={closeIcon} alt='Close'/>
         </button>
         <h2 style={{display: 'flex', justifyContent: 'center', paddingTop:'1em'}}>Select a Switch</h2>
         <div style={{display: 'flex', justifyContent: 'center'}}>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
             <button onClick={() => handleSelect(5)} style={{height: '8em', border:'none', background:'none'}}>
-              <img src={FivePort} style={{height: '4.75em'}}/>
+              <img src={FivePort} alt='FivePort' style={{height: '4.75em'}}/>
             </button>
             5 Port
           </div>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
             <button onClick={() => handleSelect(8)} style={{height: '8em', border:'none', background:'none'}}>
-              <img src={EightPort} style={{height: '4.75em'}}/>
+              <img src={EightPort} alt='EightPort' style={{height: '4.75em'}}/>
             </button>
             8 Port
           </div>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
             <button onClick={() => handleSelect(16)} style={{height: '8em', border:'none', background:'none'}}>
-              <img src={SixteenPort} style={{height: '7em'}}/>
+              <img src={SixteenPort} alt='SixteenPort' style={{height: '7em'}}/>
             </button>
             16 Port
           </div>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
             <button onClick={() => handleSelect(24)} style={{height: '8em', border:'none', background:'none'}}>
-              <img src={TwentyFourPort} style={{height: '7em'}}/>
+              <img src={TwentyFourPort} alt='TwentyFourPort' style={{height: '7em'}}/>
             </button>
             24 Port
           </div>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '15px'}}>
             <button onClick={() => handleSelect(48)} style={{height: '8em', border:'none', background:'none'}}>
-              <img src={FortyEightPort} style={{height: '7em'}}/>
+              <img src={FortyEightPort} alt='FortyEightPort' style={{height: '7em'}}/>
             </button>
             48 Port
           </div>
