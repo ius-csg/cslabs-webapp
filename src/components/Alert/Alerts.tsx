@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Alert} from 'react-bootstrap';
+import styles from './Alert.module.scss';
 
 export const Alerts = () => {
 
@@ -8,7 +9,7 @@ export const Alerts = () => {
     if (show) {
         return (
           <div className='d-inline text-center'>
-             <Alert dismissible={true} variant='danger' onClose={() => setShow(false)}>
+             <Alert className={styles['Alert']} dismissible={true} variant='danger' onClose={() => setShow(false)}>
             <Alert.Heading>CSLabs will be unavailable until August 24th, 2021 for maintenance.
             </Alert.Heading>
           </Alert>
