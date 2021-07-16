@@ -9,7 +9,7 @@ export const Alerts = () => {
     if (show) {
         return (
           <div className='d-inline text-center'>
-             <Alert className={styles['Alert']} dismissible={true} variant='danger' onClose={() => setShow(false)}>
+             <Alert className={styles['Alert']} dismissible={true}  onClose={() => setShow(false)}>
             <Alert.Heading>CSLabs will be unavailable until August 24th, 2021 for maintenance.
             </Alert.Heading>
           </Alert>
@@ -22,4 +22,3 @@ export const Alerts = () => {
 
 };
 
-// danger, warning, info
