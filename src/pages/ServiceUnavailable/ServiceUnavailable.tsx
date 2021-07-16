@@ -11,8 +11,8 @@ const ServiceUnavailable = () => (
       <h1>503</h1>
       <h2>Service Unavailable</h2>
       <body>Sorry, our servers are unavailable at the moment. We are actively working to get
-      them back up as soon as possible</body>
-      <p>Somebody ping Dr. Doyle and tell him to go kick the servers</p>
+      them back up.</body>
+      <body>For more information, please contact your local CSG administrator</body>
     </div>
   </Layout>
 );
