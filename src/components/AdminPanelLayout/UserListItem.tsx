@@ -1,14 +1,14 @@
 import React, {FormEvent, useState} from 'react';
 import {Role, User} from '../../types/User';
-import {LoginFormValues} from '../../pages/LoginRegisterPage/LoginFormSchema';
 
-export interface ChangeUserRoleRequestSchema extends LoginFormValues {
+export interface ChangeUserRoleRequestSchema {
   newRole: string;
   userId: number;
 }
 
 interface Props {
   user: User;
+  updateRolesFunction: (u: User) => void;
 }
 
 const roleOptions = [
@@ -19,15 +19,13 @@ const roleOptions = [
 
 const UserListItem = (props: Props) => {
 
-  const [hasChanged, setHasChanged] = useState(false);
   const [currentRole, setCurrentRole] = useState<Role>(props.user.role);
 
-  const handleRoleChange = (event: FormEvent<HTMLSelectElement>) => {
+  const handleRoleChange = (event: FormEvent<HTMLSelectElement>, user: User) => {
     if (event.currentTarget.value !== currentRole) {
       setCurrentRole(event.currentTarget.value as Role);
-      if (!hasChanged) {
-        setHasChanged(true);
-      }
+      user.role = currentRole;
+      props.updateRolesFunction(user);
     }
   };
 
@@ -35,9 +33,9 @@ const UserListItem = (props: Props) => {
     <td>{props.user.firstName} {props.user.lastName}</td>
     <td>{props.user.email}</td>
     <td>
-      <select value={currentRole} onChange={event => handleRoleChange(event)}>
+      <select value={currentRole} onChange={event => handleRoleChange(event, props.user)}>
         {roleOptions.map((role => (
-          <option value={role.value}>{role.label}</option>
+          <option key={role.value} value={role.value}>{role.label}</option>
         )))}
       </select>
     </td>
