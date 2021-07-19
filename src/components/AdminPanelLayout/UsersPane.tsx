@@ -44,7 +44,7 @@ const UsersPane = () => {
       </tbody>
     </Table>
   )}
-    <Button variant={'outline-primary'} onClick={commitUsers}>Commit</Button>
+    <Button style={{float: 'right'}} variant={'outline-primary'} onClick={commitUsers}>Commit</Button>
   </Layout>;
 
 };
