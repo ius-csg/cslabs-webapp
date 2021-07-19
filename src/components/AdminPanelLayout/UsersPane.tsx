@@ -10,31 +10,22 @@ import UserListItem, {ChangeUserRoleRequestSchema} from './UserListItem';
 const UsersPane = () => {
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(true);
-  const [usersToUpdate, setUsersToUpdate] = useState<User[]>([]);
+  const [updateRequests, setUpdateRequests] = useState<ChangeUserRoleRequestSchema[]>([]);
 
   useMount(async () => {
     setUsers(await getUserList());
     setLoading(false);
   });
 
-  const addUserToUpdate = (user: User) => {
-    const listToUpdate = usersToUpdate;
-    listToUpdate.push(user);
-    setUsersToUpdate(listToUpdate);
+  const addUserToUpdate = (request: ChangeUserRoleRequestSchema) => {
+    const listToUpdate = updateRequests;
+    listToUpdate.push(request);
+    setUpdateRequests(listToUpdate);
   };
 
   const commitUsers = () => {
-    const updateRequest: ChangeUserRoleRequestSchema[] = [];
-    for (const user of usersToUpdate) {
-      updateRequest.push({
-        userId: user.id,
-        newRole: user.role
-      });
-    }
-
-    changeUserRole(updateRequest);
-
-    setUsersToUpdate([]);
+    changeUserRole(updateRequests);
+    setUpdateRequests([]);
   };
 
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
@@ -48,7 +39,7 @@ const UsersPane = () => {
       </thead>
       <tbody>
       {users.map((u: User) => (
-        <UserListItem key={u.id} user={u} updateRolesFunction={addUserToUpdate} />
+        <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate} />
       ))}
       </tbody>
     </Table>

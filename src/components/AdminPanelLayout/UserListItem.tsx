@@ -8,7 +8,7 @@ export interface ChangeUserRoleRequestSchema {
 
 interface Props {
   user: User;
-  updateRolesFunction: (u: User) => void;
+  onRoleChange: (r: ChangeUserRoleRequestSchema) => void;
 }
 
 const roleOptions = [
@@ -22,11 +22,14 @@ const UserListItem = (props: Props) => {
   const [currentRole, setCurrentRole] = useState<Role>(props.user.role);
 
   const handleRoleChange = (event: FormEvent<HTMLSelectElement>, user: User) => {
-    if (event.currentTarget.value !== currentRole) {
-      setCurrentRole(event.currentTarget.value as Role);
-      user.role = currentRole;
-      props.updateRolesFunction(user);
-    }
+    setCurrentRole(event.currentTarget.value as Role);
+    user.role = event.currentTarget.value as Role;
+    const newRequest: ChangeUserRoleRequestSchema =
+      {
+        userId: user.id,
+        newRole: event.currentTarget.value
+      };
+    props.onRoleChange(newRequest);
   };
 
   return <tr style={{cursor: 'pointer'}}>
