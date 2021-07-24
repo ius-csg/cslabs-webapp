@@ -1,7 +1,32 @@
 @import "../../theme";
 
-.Alert {
+.warning{
     border-radius: 0 !important;
-    background: black;
+    background: yellow;
+    color: black;
+}
+
+.notice {
+    border-radius: 0 !important;
+    background: darkslategrey;
     color: white;
 }
+
+.info {
+    border-radius: 0 !important;
+    background: #3871dc;
+    color: white;
+}
+
+/*Each banner type has a different scheme:
+For Warning:
+banner should be: red4 (cc0000)
+Text should be: white (ffffff)
+
+For Info:
+banner should be: blue3 (6fa8dc)
+Text should be: black (000000)
+
+For Notice:
+banner should be: yellow4 (f1c232)
+Text should be: black (000000)*/
