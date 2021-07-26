@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import SelectSwitch from './SelectSwitch';
 import ContextContainer from './ContextContainer';
 
+
 // initial diagram model
 const initialSchema = createSchema({});
 
@@ -187,12 +188,17 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   useEffect(() => {
     console.log(schema);
 
-    // Prevents having more than one connection per port
+
     const portsInUse: any = [];
     let count = 0;
     if (schema.links) {
       for (const port of schema.links) {
+        // Prevents having more than one connection per port
         if (portsInUse.includes(port.input) || portsInUse.includes(port.output)) {
+          schema.links.splice(count, 1);
+        }
+        // Prevents connecting two ports on same node
+        if (port.input.includes(port.output.slice(0, 14)) === true) {
           schema.links.splice(count, 1);
         }
         portsInUse.push(port.input);
