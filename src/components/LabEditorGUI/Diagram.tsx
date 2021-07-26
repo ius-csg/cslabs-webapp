@@ -11,7 +11,7 @@ import ContextContainer from './ContextContainer';
 // initial diagram model
 const initialSchema = createSchema({});
 
-const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuType, textBoxPosition, setTextBoxPosition, nodeToRename, setNodeToRename}:any) => {
+const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBoxPosition, nodeToRename, setNodeToRename}:any) => {
 
   let rect: any = null;
   useEffect(() => {
@@ -29,8 +29,8 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
 
   const onKeyDown = (e: any) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
-      if (schema.nodes.find(node => node.id === nodeToDelete && e.target.toString() !== '[object HTMLInputElement]')) {
-        deleteNodeFromSchema(nodeToDelete);
+      if (schema.nodes.find(node => node.id === selectedNode && e.target.toString() !== '[object HTMLInputElement]')) {
+        deleteNodeFromSchema(selectedNode);
       }
     } else if (e.which === 90 && e.ctrlKey) {
       if (e.shiftKey) {
@@ -40,10 +40,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
       }
     }
   };
-
-  useEffect(() => {
-    setNodeToDelete(selectedNode);
-  }, [selectedNode, setNodeToDelete]);
 
   useEffect(() => {
     window.addEventListener('keydown', onKeyDown);
@@ -87,7 +83,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
       content: `Node ${schema.nodes.length + 1}`,
       coordinates: startingCoords,
       render: VmNode,
-      inputs: [{id: `first-${schema.nodes.length}`}, {id: `second-${schema.nodes.length}`}, {id: `third-${schema.nodes.length}`}, {id: `fourth-${schema.nodes.length}`}] // id must be unique each time for connection to be made
+      inputs: [{id: `vm-node-${schema.nodes.length + 1}-port1`}, {id: `vm-node-${schema.nodes.length + 1}-port2`}, {id: `vm-node-${schema.nodes.length + 1}-port3`}, {id: `vm-node-${schema.nodes.length + 1}-port4`}] // id must be unique each time for connection to be made
     });
   };
 
@@ -95,14 +91,14 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
     const totalPortsOut = [];
     const totalPortsIn = [];
     if (ports === 5) {
-      totalPortsIn.push({id: `1-${schema.nodes.length}-in`}, {id: `2-${schema.nodes.length}-in`});
+      totalPortsIn.push({id: `switch-node-${schema.nodes.length + 1}-port1`}, {id: `switch-node-${schema.nodes.length + 1}-port2`});
       for (let port = 2; port < (ports); port++) {
-        totalPortsOut.push({id: `${port}-${schema.nodes.length}-out`});
+        totalPortsOut.push({id: `switch-node-${schema.nodes.length + 1}-port${port}`});
       }
     } else {
       for (let port = 0; port < (ports / 2); port++) {
-        totalPortsOut.push({id: `${port}-${schema.nodes.length}-out`});
-        totalPortsIn.push({id: `${port}-${schema.nodes.length}-in`});
+        totalPortsOut.push({id: `switch-node-${schema.nodes.length + 1}-port${port}-in`});
+        totalPortsIn.push({id: `switch-node-${schema.nodes.length + 1}-port${port}-out`});
       }
     }
 
@@ -120,27 +116,47 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
 
   const deleteNodeFromSchema = (id: string) => {
     const nodeToRemove: any = schema.nodes.find(node => node.id === id);
+    // Manually remove all connections involving the node before deleting
+    // This prevents an error when deleting the last node of a connection between the same types of nodes
+    let count = 0;
+    if (schema.links) {
+      for (const i of schema.links) {
+        if (i.input.includes(id) || i.output.includes(id)) {
+          schema.links.splice(count, 1);
+        }
+        count++;
+      }
+    }
+
     removeNode(nodeToRemove);
   };
 
   const duplicateNode = (id: string) => {
     const nodeToDuplicate: any = schema.nodes.find(node => node.id === id);
     const inputs: any = [];
+    let name = '';
+    if (id.includes('vm')) {
+      name = 'vm-node';
+    }
+    else if (id.includes('switch')) {
+      name = 'switch-node';
+    }
+
     if (nodeToDuplicate.inputs) {
-      for (const i of nodeToDuplicate.inputs) {
-        inputs.push({id: `${i.id}${schema.nodes.length}-in`});
+      for (let i = 0; i < nodeToDuplicate.inputs.length; i++) {
+        inputs.push({id: `${name}-${schema.nodes.length + 1}-port${i+1}`});
       }
     }
 
     const outputs: any = [];
     if (nodeToDuplicate.outputs) {
-      for (const i of nodeToDuplicate.outputs) {
-        outputs.push({id: `${i.id}${schema.nodes.length}-out`});
+      for (let i = 0; i < nodeToDuplicate.outputs.length; i++) {
+        outputs.push({id: `${name}-${schema.nodes.length + 1}-port${i+1}`});
       }
     }
 
     addNode({
-      id: `${nodeToDuplicate.id}-duplicate${schema.nodes.length + 1}`,
+      id: `${name}-${schema.nodes.length + 1}`,
       content: nodeToDuplicate.content,
       coordinates: [
         Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
@@ -163,8 +179,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
         disableDrag: true
       });
     } else if (internetConnection === false && schema.nodes.find(node => node.id === 'wan-node') !== undefined) {
-      const nodeToRemove: any = schema.nodes.find(node => node.id === 'wan-node');
-      removeNode(nodeToRemove);
+        deleteNodeFromSchema('wan-node');
     }
   }, [internetConnection]);
 
@@ -199,7 +214,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
           content: newNodeName,
           coordinates: nodeToChange.coordinates,
           render: VmNode,
-          data: nodeToChange.data,
           inputs: nodeToChange.inputs,
           outputs: nodeToChange.outputs
         });
@@ -247,6 +261,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
         {
           text: 'Link OS',
           onClick: () => {
+            // TODO put link OS function here
             console.log('Link OS');
           }
         },
@@ -260,7 +275,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
               setNodeToRename(node.id);
               setNewNodeName(node.content);
             }
-
           }
         },
         {
@@ -332,8 +346,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
     }
   };
 
-  // (ev: React.ChangeEvent<HTMLInputElement>): void => setNodeName(ev.target.value)
-
   return (
     <>
       <div>
@@ -352,7 +364,7 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
         <button onClick={addNewVM}>Add VM</button>
       </div>
       <ContextContainer style={{height: '50vh'}} menuItems={menuItems} schema={schema}>
-        <div id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelect} onDoubleClick={rename}>
+        <div id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelect} onContextMenu={unSelect} onDoubleClick={rename}>
           {selectSwitchVisible &&
           <SelectSwitch addSwitch={addNewSwitch} close={() => setSelectSwitchVisible(false)}/>}
           <Diagram schema={schema} onChange={onChange} />
@@ -369,6 +381,6 @@ const UncontrolledDiagram = ({nodeToDelete, setNodeToDelete, menuType, setMenuTy
       </ContextContainer>
     </>
   );
-  };
+};
 
 export default UncontrolledDiagram;
