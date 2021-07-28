@@ -10,9 +10,11 @@ const ServiceUnavailable = () => (
       <img src={image} alt={'broken_server.png'}/>
       <h1>503</h1>
       <h2>Service Unavailable</h2>
-      <body>Sorry, our servers are unavailable at the moment. We are actively working to get
-      them back up.</body>
-      <body>For more information, please contact your local CSG administrator</body>
+      <div>
+        Sorry, our servers are unavailable at the moment. We are actively working to get
+        them back up.
+      </div>
+      <div>For more information, please contact your local CSG administrator</div>
     </div>
   </Layout>
 );
