@@ -8,6 +8,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import SelectSwitch from './SelectSwitch';
 import ContextContainer from './ContextContainer';
 
+// tslint:disable-next-line:no-import-side-effect
+import './Link.scss';
+
 
 // initial diagram model
 const initialSchema = createSchema({});
@@ -25,8 +28,30 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const [renameTextBox, toggleRenameTextBox] = useState(false);
   const [newNodeName, setNewNodeName] = useState<any>('');
   const [internetConnection, toggleInternetConnection] = useState(false);
+  const [schemaState, setSchemaState] = useState({
+    past: [],
+    present: [Object.assign({}, initialSchema)],
+    future: []
+  });
 
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
+
+  const updateSchemaState = (operation: string) => {
+    const newSchemaState = schemaState;
+    switch (operation) {
+      case 'undo':
+        console.log();
+      case 'redo':
+        console.log();
+      case 'update':
+
+        // @ts-ignore
+        newSchemaState.past.push(schemaState.present[0]);
+        newSchemaState.present[0] = Object.assign({}, schema);
+    }
+
+    setSchemaState(newSchemaState);
+  };
 
   const onKeyDown = (e: any) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -36,8 +61,10 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     } else if (e.which === 90 && e.ctrlKey) {
       if (e.shiftKey) {
         console.log('redo');
+        console.log(schemaState);
       } else {
         console.log('undo');
+        schema.links?.push({input: 'vm-node-2-port4', output: 'vm-node-3-port1', className: 'test'});
       }
     }
   };
@@ -128,7 +155,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         count++;
       }
     }
-
     removeNode(nodeToRemove);
   };
 
@@ -187,8 +213,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
     console.log(schema);
-
-
     const portsInUse: any = [];
     let count = 0;
     if (schema.links) {
@@ -206,9 +230,21 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         count++;
       }
     }
+    updateSchemaState('update');
   }, [schema]);
 
+  // Handles different colors for links
+  useEffect(() => {
+    if (schema.links && schema.links.length !== 0) {
+      const colors = ['red', 'blue', 'yellow', 'green'];
+      const lastLink = schema.links.pop();
+      if (lastLink) {
+        schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[schema.links.length % 4]}-link`});
+      }
 
+    }
+
+  }, [schema.links]);
   // Deals with context menu and it's options
   const handleSubmit = () => {
     const nodeToChange: any = schema.nodes.find(node => node.id === nodeToRename);

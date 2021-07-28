@@ -1,0 +1,35 @@
+.custom-link {
+    background: #0f6674 !important;
+    width: 55px !important;
+    stroke: #2e72ea !important;
+    stroke-width: 30px;
+
+}
+
+.bi.bi-diagram
+.bi-link-canvas-layer
+.bi-diagram-link.red-link
+.bi-link-path {
+    stroke: red;
+}
+
+.bi.bi-diagram
+.bi-link-canvas-layer
+.bi-diagram-link.blue-link
+.bi-link-path {
+    stroke: blue;
+}
+
+.bi.bi-diagram
+.bi-link-canvas-layer
+.bi-diagram-link.yellow-link
+.bi-link-path {
+    stroke: yellow;
+}
+
+.bi.bi-diagram
+.bi-link-canvas-layer
+.bi-diagram-link.green-link
+.bi-link-path {
+    stroke: green;
+}
