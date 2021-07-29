@@ -11,7 +11,6 @@ import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
-import {ChangeUserRoleRequestSchema} from '../components/AdminPanelLayout/UserListItem';
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -101,7 +100,12 @@ export async function register(form: RegisterFormValues): Promise<AxiosResponse<
   return resp;
 }
 
-export async function changeUserRole(form: ChangeUserRoleRequestSchema[]): Promise<AxiosResponse<string>> {
+export interface ChangeUserRoleRequest {
+  newRole: string;
+  userId: number;
+}
+
+export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse<string>> {
   return await api.put<string>('/user/change-role', form);
 }
 
