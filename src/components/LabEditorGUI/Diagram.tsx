@@ -223,6 +223,13 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         if (port.input.includes(port.output.slice(0, 14)) === true) {
           schema.links.splice(count, 1);
         }
+        // Prevents two nodes from connecting more than once
+        for (let i = 0; i < portsInUse.length; i+=2) {
+          if (portsInUse[i].includes(port.input.slice(0, 14)) && portsInUse[i+1].includes(port.output.slice(0, 14)) ||
+            portsInUse[i+1].includes(port.input.slice(0, 14)) && portsInUse[i].includes(port.output.slice(0, 14))) {
+            schema.links.splice(count, 1);
+          }
+        }
         portsInUse.push(port.input);
         portsInUse.push(port.output);
         count++;
