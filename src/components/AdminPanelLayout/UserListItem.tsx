@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Role, User} from '../../types/User';
+import {ERole, Role, User} from '../../types/User';
 import {ChangeUserRoleRequest} from '../../api';
 
 interface Props {
@@ -7,11 +7,7 @@ interface Props {
   onRoleChange: (r: ChangeUserRoleRequest) => void;
 }
 
-const roleOptions = [
-  {value: 'Guest' as Role, label: 'Guest'},
-  {value: 'Creator' as Role, label: 'Creator'},
-  {value: 'Admin' as Role, label: 'Admin'}
-];
+const roleOptions = Object.values(ERole).map(r => ({value: r, label: r}));
 
 const UserListItem = (props: Props) => {
 
