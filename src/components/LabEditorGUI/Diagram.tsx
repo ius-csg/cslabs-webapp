@@ -1,4 +1,6 @@
 import React, { useEffect, useState} from 'react';
+import Button from 'react-bootstrap/Button';
+import {ToggleButton} from 'react-bootstrap';
 import Diagram, {createSchema, useSchema} from 'beautiful-react-diagrams';
 import WanNode from './WanNode';
 import SwitchNode from './SwitchNode';
@@ -395,19 +397,30 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   return (
     <>
       <div>
-        <label>
-          Should this lab have a connection to the internet?
-          <input
-            type='checkbox'
-            id='internet-connection'
-            name='internet-connection'
-            onChange={() => toggleInternetConnection(!internetConnection)}
-          />
-        </label>
+        {/*<label>*/}
+        {/*  Should this lab have a connection to the internet?*/}
+        {/*  <input*/}
+        {/*    type='checkbox'*/}
+        {/*    id='internet-connection'*/}
+        {/*    name='internet-connection'*/}
+        {/*    onChange={() => toggleInternetConnection(!internetConnection)}*/}
+        {/*  />*/}
+        {/*</label>*/}
+        <ToggleButton
+          style={{margin: 10}}
+          id='toggle-check'
+          type='checkbox'
+          variant='outline-secondary'
+          checked={internetConnection}
+          value='1'
+          onChange={() => toggleInternetConnection(!internetConnection)}
+        >
+          {'   Should this lab have a connection to the internet?'}
+        </ToggleButton>
       </div>
-      <div>
-        <button onClick={() => setSelectSwitchVisible(!selectSwitchVisible)}>Add Switch</button>
-        <button onClick={addNewVM}>Add VM</button>
+      <div style={{margin: 10}}>
+        <Button variant='secondary' onClick={() => setSelectSwitchVisible(!selectSwitchVisible)} style={{marginRight: 10}}>Add Switch</Button>
+        <Button variant='secondary' onClick={addNewVM}>Add VM</Button>
       </div>
       <ContextContainer style={{height: '50vh'}} menuItems={menuItems} schema={schema}>
         <div id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelect} onContextMenu={unSelect} onDoubleClick={rename}>
