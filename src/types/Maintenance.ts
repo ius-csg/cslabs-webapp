@@ -1,5 +1,5 @@
 export interface Maintenance {
-  isMaintenanceMode: boolean;
-  isRestorationTimeKnown: boolean;
+  isMaintenanceMode?: boolean;
+  isRestorationTimeKnown?: boolean;
   restorationTime?: number;
 }
