@@ -30,6 +30,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const [renameTextBox, toggleRenameTextBox] = useState(false);
   const [newNodeName, setNewNodeName] = useState<any>('');
   const [internetConnection, toggleInternetConnection] = useState(false);
+  const [deletingNode, setDeletingNode] = useState(false);
+  const [nodeCount, setNodeCount] = useState(0);
   const [schemaState, setSchemaState] = useState({
     past: [],
     present: [Object.assign({}, initialSchema)],
@@ -106,35 +108,40 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const addNewVM = () => {
     const startingCoords = handleFirstNode(schema.nodes.length);
 
+    const newNodeCount = nodeCount + 1;
+    setNodeCount(newNodeCount);
+
     addNode({
-      id: `vm-node-${schema.nodes.length + 1}`,
-      content: `Node ${schema.nodes.length + 1}`,
+      id: `vm-node-${nodeCount}`,
+      content: `Node ${nodeCount}`,
       coordinates: startingCoords,
       render: VmNode,
-      inputs: [{id: `vm-node-${schema.nodes.length + 1}-port1`}, {id: `vm-node-${schema.nodes.length + 1}-port2`}, {id: `vm-node-${schema.nodes.length + 1}-port3`}, {id: `vm-node-${schema.nodes.length + 1}-port4`}] // id must be unique each time for connection to be made
+      inputs: [{id: `vm-node-${nodeCount}-port1`}, {id: `vm-node-${nodeCount}-port2`}, {id: `vm-node-${nodeCount}-port3`}, {id: `vm-node-${nodeCount}-port4`}] // id must be unique each time for connection to be made
     });
   };
 
   const addNewSwitch = (ports: number) => {
+    const newNodeCount = nodeCount + 1;
+    setNodeCount(newNodeCount);
     const totalPortsOut = [];
     const totalPortsIn = [];
     if (ports === 5) {
-      totalPortsIn.push({id: `switch-node-${schema.nodes.length + 1}-port1`}, {id: `switch-node-${schema.nodes.length + 1}-port2`});
+      totalPortsIn.push({id: `switch-node-${nodeCount}-port1`}, {id: `switch-node-${nodeCount}-port2`});
       for (let port = 2; port < (ports); port++) {
-        totalPortsOut.push({id: `switch-node-${schema.nodes.length + 1}-port${port}`});
+        totalPortsOut.push({id: `switch-node-${nodeCount}-port${port}`});
       }
     } else {
       for (let port = 0; port < (ports / 2); port++) {
-        totalPortsOut.push({id: `switch-node-${schema.nodes.length + 1}-port${port}-in`});
-        totalPortsIn.push({id: `switch-node-${schema.nodes.length + 1}-port${port}-out`});
+        totalPortsOut.push({id: `switch-node-${nodeCount}-port${port}-in`});
+        totalPortsIn.push({id: `switch-node-${nodeCount}-port${port}-out`});
       }
     }
 
     const startingCoords = handleFirstNode(schema.nodes.length);
 
     addNode({
-      id: `switch-node-${schema.nodes.length + 1}`,
-      content: `Node ${schema.nodes.length + 1}`,
+      id: `switch-node-${nodeCount}`,
+      content: `Node ${nodeCount}`,
       coordinates: startingCoords,
       render: SwitchNode,
       inputs: totalPortsIn,
@@ -143,19 +150,21 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   };
 
   const deleteNodeFromSchema = (id: string) => {
+    setDeletingNode(true);
     const nodeToRemove: any = schema.nodes.find(node => node.id === id);
     // Manually remove all connections involving the node before deleting
     // This prevents an error when deleting the last node of a connection between the same types of nodes
     let count = 0;
     if (schema.links) {
-      for (const i of schema.links) {
-        if (i.input.includes(id) || i.output.includes(id)) {
+      for (const link of schema.links) {
+        if (link.input.includes(id) || link.output.includes(id)) {
           schema.links.splice(count, 1);
         }
         count++;
       }
     }
     removeNode(nodeToRemove);
+    setDeletingNode(false);
   };
 
   const duplicateNode = (id: string) => {
@@ -243,11 +252,14 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   // Handles different colors for links
   useEffect(() => {
-    if (schema.links && schema.links.length !== 0) {
-      const colors = ['red', 'blue', 'yellow', 'green'];
-      const lastLink = schema.links.pop();
-      if (lastLink) {
-        schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[schema.links.length % 4]}-link`});
+    console.log(deletingNode);
+    if (!deletingNode) {
+      if (schema.links && schema.links.length !== 0) {
+        const colors = ['red', 'blue', 'yellow', 'green'];
+        const lastLink = schema.links.pop();
+        if (lastLink) {
+          schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[nodeCount % 4]}-link`});
+        }
       }
     }
   }, [schema.links]);
