@@ -36,6 +36,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
 
+  // For undo redo state
   const updateSchemaState = (operation: string) => {
     const newSchemaState = schemaState;
     switch (operation) {
@@ -49,7 +50,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         newSchemaState.past.push(schemaState.present[0]);
         newSchemaState.present[0] = Object.assign({}, schema);
     }
-
     setSchemaState(newSchemaState);
   };
 
@@ -61,10 +61,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     } else if (e.which === 90 && e.ctrlKey) {
       if (e.shiftKey) {
         console.log('redo');
-        console.log(schemaState);
       } else {
         console.log('undo');
-        schema.links?.push({input: 'vm-node-2-port4', output: 'vm-node-3-port1', className: 'test'});
       }
     }
   };
@@ -233,6 +231,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     updateSchemaState('update');
   }, [schema]);
 
+
   // Handles different colors for links
   useEffect(() => {
     if (schema.links && schema.links.length !== 0) {
@@ -241,10 +240,10 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       if (lastLink) {
         schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[schema.links.length % 4]}-link`});
       }
-
     }
-
   }, [schema.links]);
+
+
   // Deals with context menu and it's options
   const handleSubmit = () => {
     const nodeToChange: any = schema.nodes.find(node => node.id === nodeToRename);
@@ -281,8 +280,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     }
   };
 
-  const getMenuItems = (menuType: string) => {
-    if (menuType === 'default') {
+  const getMenuItems = (menu: string) => {
+    if (menu === 'default') {
       return ([
       {
         text: 'Add Switch',
@@ -298,7 +297,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       }
     ]);
     }
-    else if (menuType === 'vm') {
+    else if (menu === 'vm') {
       return ([
         {
           text: 'Link OS',
@@ -333,7 +332,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         }
       ]);
     }
-    else if (menuType === 'switch') {
+    else if (menu === 'switch') {
       return ([
         {
           text: 'Remove',
@@ -357,8 +356,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   useEffect(()=> {
     menuItems = getMenuItems(menuType);
   }, [selectedNode]);
-
-
 
 
   useEffect(() => {

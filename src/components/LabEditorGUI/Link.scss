@@ -1,10 +1,5 @@
-.custom-link {
-    background: #0f6674 !important;
-    width: 55px !important;
-    stroke: #2e72ea !important;
-    stroke-width: 30px;
-
-}
+//These classes change the color of the links between nodes whenever they are passed in
+//to the className object of each link in schema.links.
 
 .bi.bi-diagram
 .bi-link-canvas-layer
