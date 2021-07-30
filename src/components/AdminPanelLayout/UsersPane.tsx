@@ -43,15 +43,17 @@ const UsersPane = () => {
 
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
     <div>
-      <div style={{float: 'right'}}>
-        <Button variant={'outline-primary'} onClick={commitUsers}>Save</Button>
+      <div style={{textAlign: 'right', padding: '10px 20px'}}>
         {commitResponseCode === 204 ?
-          (<p style={{color: '#02b875'}}>Save successful!</p>) :
+          (<p style={{position: 'absolute', top: '0', right: '0', color: '#02b875'}}>Save successful!</p>) :
           commitResponseCode === 401 ?
-            (<p style={{color: '#d9534f'}}>You are not authorized to change user roles, please see a CSLabs admin</p>) :
+            (<p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>You are not authorized to change
+              user roles, or you are no longer signed in. If you are signed in, and you believe
+              this to be in error, please see a CSLabs admin</p>) :
             commitResponseCode ?
-              (<p style={{color: '#d9534f'}}>Error saving changes, please try again</p>) :
+              (<p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>Error saving changes, please try again</p>) :
               null}
+        <Button variant={'outline-primary'} onClick={commitUsers}>Save</Button>
       </div>
       <Table striped={true} bordered={true} hover={true}>
         <thead style={{backgroundColor: '#adb5bd'}}>
