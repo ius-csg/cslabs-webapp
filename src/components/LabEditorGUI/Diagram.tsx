@@ -32,6 +32,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const [internetConnection, toggleInternetConnection] = useState(false);
   const [deletingNode, setDeletingNode] = useState(false);
   const [nodeCount, setNodeCount] = useState(0);
+  const [linkCount, setLinkCount] = useState(0);
   const [schemaState, setSchemaState] = useState({
     past: [],
     present: [Object.assign({}, initialSchema)],
@@ -108,8 +109,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const addNewVM = () => {
     const startingCoords = handleFirstNode(schema.nodes.length);
 
-    const newNodeCount = nodeCount + 1;
-    setNodeCount(newNodeCount);
+    setNodeCount( nodeCount + 1);
 
     addNode({
       id: `vm-node-${nodeCount}`,
@@ -121,8 +121,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   };
 
   const addNewSwitch = (ports: number) => {
-    const newNodeCount = nodeCount + 1;
-    setNodeCount(newNodeCount);
+    setNodeCount( nodeCount + 1);
     const totalPortsOut = [];
     const totalPortsIn = [];
     if (ports === 5) {
@@ -250,13 +249,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         if (port.input.includes(port.output.slice(0, 14)) === true) {
           schema.links.splice(count, 1);
         }
-        // Prevents two nodes from connecting more than once
-        // for (let i = 0; i < portsInUse.length; i+=2) {
-        //   if (portsInUse[i].includes(port.input.slice(0, 14)) && portsInUse[i+1].includes(port.output.slice(0, 14)) ||
-        //     portsInUse[i+1].includes(port.input.slice(0, 14)) && portsInUse[i].includes(port.output.slice(0, 14))) {
-        //     schema.links.splice(count, 1);
-        //   }
-        // }
+
         portsInUse.push(port.input);
         portsInUse.push(port.output);
         count++;
@@ -268,12 +261,13 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   // Handles different colors for links
   useEffect(() => {
+    setLinkCount(linkCount + 1);
     if (!deletingNode) {
       if (schema.links && schema.links.length !== 0) {
         const colors = ['red', 'blue', 'yellow', 'violet', 'green', 'orange', 'purple', 'teal'];
         const lastLink = schema.links.pop();
         if (lastLink) {
-          schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[nodeCount % 8]}-link`});
+          schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[linkCount % 8]}-link`});
         }
       }
     }
