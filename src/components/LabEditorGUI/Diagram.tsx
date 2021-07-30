@@ -89,7 +89,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   };
 
   // create diagram schema
-  const [schema, {onChange, addNode, removeNode}] = useSchema(initialSchema);
+  const [schema, {onChange, addNode}] = useSchema(initialSchema);
 
   // Handles starting location if this a node is the first in schema to be created
   const handleFirstNode = (schemaSize: number) => {
@@ -162,8 +162,16 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         }
         count++;
       }
+      let nCount = 0;
+      for (const node of schema.nodes) {
+        if (node.id === id) {
+          schema.nodes.splice(nCount, 1);
+        }
+        nCount ++;
+      }
+      onChange(nodeToRemove);
     }
-    removeNode(nodeToRemove);
+    // removeNode(nodeToRemove);
     setDeletingNode(false);
   };
 
@@ -243,12 +251,12 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           schema.links.splice(count, 1);
         }
         // Prevents two nodes from connecting more than once
-        for (let i = 0; i < portsInUse.length; i+=2) {
-          if (portsInUse[i].includes(port.input.slice(0, 14)) && portsInUse[i+1].includes(port.output.slice(0, 14)) ||
-            portsInUse[i+1].includes(port.input.slice(0, 14)) && portsInUse[i].includes(port.output.slice(0, 14))) {
-            schema.links.splice(count, 1);
-          }
-        }
+        // for (let i = 0; i < portsInUse.length; i+=2) {
+        //   if (portsInUse[i].includes(port.input.slice(0, 14)) && portsInUse[i+1].includes(port.output.slice(0, 14)) ||
+        //     portsInUse[i+1].includes(port.input.slice(0, 14)) && portsInUse[i].includes(port.output.slice(0, 14))) {
+        //     schema.links.splice(count, 1);
+        //   }
+        // }
         portsInUse.push(port.input);
         portsInUse.push(port.output);
         count++;
@@ -419,7 +427,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     }
   };
 
-  // , {id: `vm-node-${nodeCount}-port2`}, {id: `vm-node-${nodeCount}-port3`}, {id: `vm-node-${nodeCount}-port4`}
 
   return (
     <>
