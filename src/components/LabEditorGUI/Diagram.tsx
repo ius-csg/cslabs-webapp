@@ -116,7 +116,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       content: `Node ${nodeCount}`,
       coordinates: startingCoords,
       render: VmNode,
-      inputs: [{id: `vm-node-${nodeCount}-port1`}, {id: `vm-node-${nodeCount}-port2`}, {id: `vm-node-${nodeCount}-port3`}, {id: `vm-node-${nodeCount}-port4`}] // id must be unique each time for connection to be made
+      inputs: [{id: `vm-node-${nodeCount}-port0`}] // id must be unique each time for connection to be made
     });
   };
 
@@ -204,6 +204,14 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     });
   };
 
+  const addVmPort = () => {
+    const nodeToChange: any  = schema.nodes.find(node => node.id === selectedNode);
+
+    if (nodeToChange.inputs.length < 4) {
+      onChange(nodeToChange.inputs.push({id: `${nodeToChange.id}-port${nodeToChange.inputs.length}`}));
+    }
+  };
+
   useEffect(() => {
     if (internetConnection === true) {
       addNode({
@@ -221,7 +229,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
-    console.log(schema);
+    // console.log(schema);
     const portsInUse: any = [];
     let count = 0;
     if (schema.links) {
@@ -252,7 +260,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   // Handles different colors for links
   useEffect(() => {
-    console.log(deletingNode);
     if (!deletingNode) {
       if (schema.links && schema.links.length !== 0) {
         const colors = ['red', 'blue', 'yellow', 'violet', 'green', 'orange', 'purple', 'teal'];
@@ -320,6 +327,12 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     }
     else if (menu === 'vm') {
       return ([
+        {
+          text: 'Add Port',
+          onClick: () => {
+            addVmPort();
+          }
+        },
         {
           text: 'Link OS',
           onClick: () => {
@@ -406,18 +419,11 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     }
   };
 
+  // , {id: `vm-node-${nodeCount}-port2`}, {id: `vm-node-${nodeCount}-port3`}, {id: `vm-node-${nodeCount}-port4`}
+
   return (
     <>
       <div>
-        {/*<label>*/}
-        {/*  Should this lab have a connection to the internet?*/}
-        {/*  <input*/}
-        {/*    type='checkbox'*/}
-        {/*    id='internet-connection'*/}
-        {/*    name='internet-connection'*/}
-        {/*    onChange={() => toggleInternetConnection(!internetConnection)}*/}
-        {/*  />*/}
-        {/*</label>*/}
         <ToggleButton
           style={{margin: 10}}
           id='toggle-check'
