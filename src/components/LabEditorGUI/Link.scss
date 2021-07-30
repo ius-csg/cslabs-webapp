@@ -24,7 +24,35 @@
 
 .bi.bi-diagram
 .bi-link-canvas-layer
+.bi-diagram-link.violet-link
+.bi-link-path {
+    stroke: #810d70;
+}
+
+.bi.bi-diagram
+.bi-link-canvas-layer
 .bi-diagram-link.green-link
 .bi-link-path {
     stroke: #00864b;
+}
+
+.bi.bi-diagram
+.bi-link-canvas-layer
+.bi-diagram-link.orange-link
+.bi-link-path {
+    stroke: #c16919;
+}
+
+.bi.bi-diagram
+.bi-link-canvas-layer
+.bi-diagram-link.purple-link
+.bi-link-path {
+    stroke: #491d76;
+}
+
+.bi.bi-diagram
+.bi-link-canvas-layer
+.bi-diagram-link.teal-link
+.bi-link-path {
+    stroke: #008b8b;
 }

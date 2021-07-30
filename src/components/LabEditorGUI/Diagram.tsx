@@ -255,10 +255,10 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     console.log(deletingNode);
     if (!deletingNode) {
       if (schema.links && schema.links.length !== 0) {
-        const colors = ['red', 'blue', 'yellow', 'green'];
+        const colors = ['red', 'blue', 'yellow', 'violet', 'green', 'orange', 'purple', 'teal'];
         const lastLink = schema.links.pop();
         if (lastLink) {
-          schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[nodeCount % 4]}-link`});
+          schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[nodeCount % 8]}-link`});
         }
       }
     }
