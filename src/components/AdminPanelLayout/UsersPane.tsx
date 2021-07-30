@@ -58,13 +58,13 @@ const UsersPane = () => {
     </Table>
   )}
     <div style={{float: 'right'}}>
-      <Button variant={'outline-primary'} onClick={commitUsers}>Commit</Button>
+      <Button variant={'outline-primary'} onClick={commitUsers}>Save</Button>
       {commitResponseCode === 204 ?
-        (<p style={{color: '#02b875'}}>Commit successful!</p>) :
+        (<p style={{color: '#02b875'}}>Save successful!</p>) :
         commitResponseCode === 401 ?
           (<p style={{color: '#d9534f'}}>You are not authorized to change user roles, please see a CSLabs admin</p>) :
           commitResponseCode ?
-          (<p style={{color: '#d9534f'}}>Error committing changes, please try again</p>) :
+          (<p style={{color: '#d9534f'}}>Error saving changes, please try again</p>) :
             null
           }
     </div>
