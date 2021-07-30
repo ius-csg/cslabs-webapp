@@ -26,10 +26,16 @@ import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPanel';
 import LabEditor from '../pages/LabEditor/LabEditor';
 import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
+import {AlertNotification} from '../components/Alert/AlertNotification';
+
+
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
       <NavigationBar />
+        <AlertNotification
+          type='info'
+        />
       <Switch>
         <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
         <Route exact={true} path={RoutePaths.explore} component={Explore}/>
