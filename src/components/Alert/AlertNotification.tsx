@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Alert} from 'react-bootstrap';
-import styles from './Alerts.module.scss';
+import styles from './AlertNotification.module.scss';
 
 
 type AlertNotificationTypes = 'info' | 'warning' | 'notice';
@@ -9,11 +9,9 @@ interface Props {
   type: AlertNotificationTypes;
 }
 
-export function Alerts ({type}: Props) {
+export function AlertNotification ({type}: Props) {
 
     const [show, setShow] = useState(true);
-
-
 
         return show ? (
           <div className='d-inline text-center'>
