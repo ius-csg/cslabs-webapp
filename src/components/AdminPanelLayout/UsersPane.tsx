@@ -30,44 +30,45 @@ const UsersPane = () => {
     }
   };
 
-  const commitUsers = () => {
-    changeUserRole(updateRequests)
-      .then((response) => {
+  const commitUsers = async () => {
+    try {
+      const response = await (changeUserRole(updateRequests));
       setCommitResponsecode(response.status);
       setUpdateRequests([]);
-    })
-      .catch((response: AxiosResponse<string>) => {
-        setCommitResponsecode(response.status);
-      });
+    } catch (e) {
+      setCommitResponsecode((e as AxiosResponse<string>).status);
+    }
+    window.setTimeout(() => setCommitResponsecode(undefined), 2000);
   };
 
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
-    <Table striped={true} bordered={true} hover={true}>
-      <thead style={{backgroundColor: '#adb5bd'}}>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-      </tr>
-      </thead>
-      <tbody>
-      {users.map((u: User) => (
-        <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate} />
-      ))}
-      </tbody>
-    </Table>
-  )}
-    <div style={{float: 'right'}}>
-      <Button variant={'outline-primary'} onClick={commitUsers}>Save</Button>
-      {commitResponseCode === 204 ?
-        (<p style={{color: '#02b875'}}>Save successful!</p>) :
-        commitResponseCode === 401 ?
-          (<p style={{color: '#d9534f'}}>You are not authorized to change user roles, please see a CSLabs admin</p>) :
-          commitResponseCode ?
-          (<p style={{color: '#d9534f'}}>Error saving changes, please try again</p>) :
-            null
-          }
+    <div>
+      <div style={{float: 'right'}}>
+        <Button variant={'outline-primary'} onClick={commitUsers}>Save</Button>
+        {commitResponseCode === 204 ?
+          (<p style={{color: '#02b875'}}>Save successful!</p>) :
+          commitResponseCode === 401 ?
+            (<p style={{color: '#d9534f'}}>You are not authorized to change user roles, please see a CSLabs admin</p>) :
+            commitResponseCode ?
+              (<p style={{color: '#d9534f'}}>Error saving changes, please try again</p>) :
+              null}
+      </div>
+      <Table striped={true} bordered={true} hover={true}>
+        <thead style={{backgroundColor: '#adb5bd'}}>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+        </tr>
+        </thead>
+        <tbody>
+        {users.map((u: User) => (
+          <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate}/>
+        ))}
+        </tbody>
+      </Table>
     </div>
+  )}
   </Layout>;
 
 };
