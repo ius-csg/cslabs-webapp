@@ -9,6 +9,8 @@ import {NavItem} from './NavItem';
 import {NavLogo} from './NavLogo';
 import {RoutePaths} from '../../router/RoutePaths';
 
+
+
 const NavigationBarComponent =
   ({authenticated, creator, admin}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
   <Container>
@@ -23,5 +25,6 @@ const NavigationBarComponent =
     </Nav>
   </Container>
 </Navbar>;
+
 const mapStateToProps = (state: WebState) => ({authenticated: isAuthenticated(state), creator: isCreator(state), admin: isAdmin(state) });
 export const NavigationBar = connect(mapStateToProps)(NavigationBarComponent);
