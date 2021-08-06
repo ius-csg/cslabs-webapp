@@ -31,7 +31,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const [renameTextBox, toggleRenameTextBox] = useState(false);
   const [newNodeName, setNewNodeName] = useState<any>('');
   const [internetConnection, toggleInternetConnection] = useState(false);
-  const [deletingNode, setDeletingNode] = useState(false);
   const [nodeCount, setNodeCount] = useState(0);
   const [linkCount, setLinkCount] = useState(0);
   const [schemaState, setSchemaState] = useState<any>({
@@ -87,10 +86,10 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         newSchemaState.past.push(_.cloneDeep(schemaState.present));
         newSchemaState.present = _.cloneDeep({nodes: schema.nodes, links: schema.links});
         setSchemaState(newSchemaState);
-        console.log('update');
+        // console.log('update');
         break;
     }
-  console.log(schemaState);
+  // console.log(schemaState);
   };
 
   const onKeyDown = (e: any) => {
@@ -127,7 +126,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   };
 
   // create diagram schema
-  const [schema, {onChange, addNode}] = useSchema(initialSchema);
+  const [schema, {onChange, addNode, removeNode}] = useSchema(initialSchema);
 
   // Handles starting location if this a node is the first in schema to be created
   const handleFirstNode = (schemaSize: number) => {
@@ -188,29 +187,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   };
 
   const deleteNodeFromSchema = (id: string) => {
-    setDeletingNode(true);
     const nodeToRemove: any = schema.nodes.find(node => node.id === id);
-    // Manually remove all connections involving the node before deleting
-    // This prevents an error when deleting the last node of a connection between the same types of nodes
-    let count = 0;
-    if (schema.links) {
-      for (const link of schema.links) {
-        if (link.input.includes(id) || link.output.includes(id)) {
-          schema.links.splice(count, 1);
-        }
-        count++;
-      }
-      let nCount = 0;
-      for (const node of schema.nodes) {
-        if (node.id === id) {
-          schema.nodes.splice(nCount, 1);
-        }
-        nCount ++;
-      }
-      onChange(nodeToRemove);
-    }
-    // removeNode(nodeToRemove);
-    setDeletingNode(false);
+    removeNode(nodeToRemove);
     updateSchemaState('update');
   };
 
@@ -277,17 +255,19 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
-    // console.log(schema);
+    console.log(schema);
     const portsInUse: any = [];
     let count = 0;
     if (schema.links) {
       for (const port of schema.links) {
         // Prevents having more than one connection per port
         if (portsInUse.includes(port.input) || portsInUse.includes(port.output)) {
+          console.log('Prevents having more than one connection per port');
           schema.links.splice(count, 1);
         }
         // Prevents connecting two ports on same node
         if (port.input.includes(port.output.slice(0, 14)) === true) {
+          console.log('Prevents connecting two ports on same node');
           schema.links.splice(count, 1);
         }
 
@@ -302,15 +282,15 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   // Handles different colors for links
   useEffect(() => {
     setLinkCount(linkCount + 1);
-    if (!deletingNode) {
-      if (schema.links && schema.links.length !== 0) {
+    // if (!deletingNode) {
+      if (schema.links && schema.links.length !== 0 && !schema.links[schema.links.length-1].className) {
         const colors = ['red', 'blue', 'yellow', 'violet', 'green', 'orange', 'purple', 'teal'];
         const lastLink = schema.links.pop();
         if (lastLink) {
           schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[linkCount % 8]}-link`});
         }
       }
-    }
+    // }
   }, [schema.links]);
 
 
