@@ -9,6 +9,7 @@ import changeSelected from '../../redux/actions/changeGUI';
 import {useDispatch, useSelector} from 'react-redux';
 import SelectSwitch from './SelectSwitch';
 import ContextContainer from './ContextContainer';
+import _ from 'lodash';
 
 // tslint:disable-next-line:no-import-side-effect
 import './Link.scss';
@@ -33,29 +34,63 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const [deletingNode, setDeletingNode] = useState(false);
   const [nodeCount, setNodeCount] = useState(0);
   const [linkCount, setLinkCount] = useState(0);
-  const [schemaState, setSchemaState] = useState({
-    past: [],
-    present: [Object.assign({}, initialSchema)],
-    future: []
+  const [schemaState, setSchemaState] = useState<any>({
+    past: [{}],
+    present: {},
+    future: [{}]
   });
 
   const selectedNode = useSelector((state: any) => state.gui.selectedID);
 
   // For undo redo state
   const updateSchemaState = (operation: string) => {
-    const newSchemaState = schemaState;
+    let newSchemaState;
+    newSchemaState = schemaState;
     switch (operation) {
       case 'undo':
-        console.log();
-      case 'redo':
-        console.log();
-      case 'update':
+        console.log('undo');
+        if (schemaState.past.length > 1) {
+          newSchemaState.future.push(_.cloneDeep(schemaState.present));
+          newSchemaState.present = _.cloneDeep(newSchemaState.past[newSchemaState.past.length - 1]);
+          newSchemaState.past.splice(newSchemaState.past.length - 1, 1);
 
-        // @ts-ignore
-        newSchemaState.past.push(schemaState.present[0]);
-        newSchemaState.present[0] = Object.assign({}, schema);
+          setSchemaState(newSchemaState);
+
+          if (schemaState.present.nodes) {
+            schema.nodes.splice(0, schema.nodes.length);
+            for (const i of schemaState.present.nodes) {
+              schema.nodes.push(i);
+            }
+          }
+          onChange(schema);
+        }
+        break;
+      case 'redo':
+        console.log('redo');
+        if (schemaState.future.length > 1) {
+          newSchemaState.past.push(_.cloneDeep(schemaState.present));
+          newSchemaState.present = _.cloneDeep(newSchemaState.future[newSchemaState.future.length - 1]);
+          newSchemaState.future.splice(newSchemaState.future.length - 1, 1);
+
+          setSchemaState(newSchemaState);
+
+          if (schemaState.present.nodes) {
+            schema.nodes.splice(0, schema.nodes.length);
+            for (const i of schemaState.present.nodes) {
+              schema.nodes.push(i);
+            }
+          }
+          onChange(schema);
+        }
+        break;
+      case 'update':
+        newSchemaState.past.push(_.cloneDeep(schemaState.present));
+        newSchemaState.present = _.cloneDeep({nodes: schema.nodes, links: schema.links});
+        setSchemaState(newSchemaState);
+        console.log('update');
+        break;
     }
-    setSchemaState(newSchemaState);
+  console.log(schemaState);
   };
 
   const onKeyDown = (e: any) => {
@@ -65,9 +100,11 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       }
     } else if (e.which === 90 && e.ctrlKey) {
       if (e.shiftKey) {
-        console.log('redo');
+        // redo
+        updateSchemaState('redo');
       } else {
-        console.log('undo');
+        // undo
+        updateSchemaState('undo');
       }
     }
   };
@@ -118,6 +155,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       render: VmNode,
       inputs: [{id: `vm-node-${nodeCount}-port0`}] // id must be unique each time for connection to be made
     });
+    updateSchemaState('update');
   };
 
   const addNewSwitch = (ports: number) => {
@@ -146,6 +184,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       inputs: totalPortsIn,
       outputs: totalPortsOut
     });
+    updateSchemaState('update');
   };
 
   const deleteNodeFromSchema = (id: string) => {
@@ -172,6 +211,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     }
     // removeNode(nodeToRemove);
     setDeletingNode(false);
+    updateSchemaState('update');
   };
 
   const duplicateNode = (id: string) => {
@@ -209,6 +249,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       inputs: inputs,
       outputs: outputs
     });
+    updateSchemaState('update');
   };
 
   const addVmPort = () => {
@@ -255,7 +296,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         count++;
       }
     }
-    updateSchemaState('update');
   }, [schema]);
 
 

@@ -1,0 +1,124 @@
+diff --git a/node_modules/beautiful-react-diagrams/Diagram/Link/Link.js b/node_modules/beautiful-react-diagrams/Diagram/Link/Link.js
+index e4a958b..5a34e47 100644
+--- a/node_modules/beautiful-react-diagrams/Diagram/Link/Link.js
++++ b/node_modules/beautiful-react-diagrams/Diagram/Link/Link.js
+@@ -62,9 +62,9 @@ var Link = function Link(props) {
+     return getEntityCoordinates['default'](output, portRefs, nodeRefs, canvas);
+   }, [output, portRefs, nodeRefs, canvas]);
+   var pathOptions = {
+-    type: input.type === 'port' || output.type === 'port' ? 'bezier' : 'curve',
+-    inputAlignment: input.entity.alignment || null,
+-    outputAlignment: output.entity.alignment || null
++    type: (input?.type === 'port' || output?.type === 'port') ? 'bezier' : 'curve',
++    inputAlignment: input?.entity?.alignment || null,
++    outputAlignment: output?.entity?.alignment || null
+   };
+   var path = React.useMemo(function () {
+     return makeSvgPath['default'](inputPoint, outputPoint, pathOptions);
+diff --git a/node_modules/beautiful-react-diagrams/Diagram/Link/getEntityCoordinates.js b/node_modules/beautiful-react-diagrams/Diagram/Link/getEntityCoordinates.js
+index 87da7a7..1e69411 100644
+--- a/node_modules/beautiful-react-diagrams/Diagram/Link/getEntityCoordinates.js
++++ b/node_modules/beautiful-react-diagrams/Diagram/Link/getEntityCoordinates.js
+@@ -6,13 +6,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
+ var getRelativePoint = require('../../shared/functions/getRelativePoint.js');
+ 
+ var getEntityCoordinates = function getEntityCoordinates(entity, portRefs, nodeRefs, canvas) {
+-  if (entity && entity.type === 'node' && nodeRefs[entity.entity.id]) {
++  if (entity && entity?.type === 'node' && entity?.entity?.id && nodeRefs[entity.entity.id]) {
+     var nodeEl = nodeRefs[entity.entity.id];
+     var bbox = nodeEl.getBoundingClientRect();
+     return [entity.entity.coordinates[0] + bbox.width / 2, entity.entity.coordinates[1] + bbox.height / 2];
+   }
+ 
+-  if (portRefs && portRefs[entity.entity.id]) {
++  if (portRefs && entity?.entity?.id && portRefs[entity.entity.id]) {
+     var portEl = portRefs[entity.entity.id];
+ 
+     var _bbox = portEl.getBoundingClientRect();
+diff --git a/node_modules/beautiful-react-diagrams/esm/Diagram/Link/Link.js b/node_modules/beautiful-react-diagrams/esm/Diagram/Link/Link.js
+index 306fffc..8d87c56 100644
+--- a/node_modules/beautiful-react-diagrams/esm/Diagram/Link/Link.js
++++ b/node_modules/beautiful-react-diagrams/esm/Diagram/Link/Link.js
+@@ -52,9 +52,9 @@ var Link = function Link(props) {
+     return getEntityCoordinates(output, portRefs, nodeRefs, canvas);
+   }, [output, portRefs, nodeRefs, canvas]);
+   var pathOptions = {
+-    type: input.type === 'port' || output.type === 'port' ? 'bezier' : 'curve',
+-    inputAlignment: input.entity.alignment || null,
+-    outputAlignment: output.entity.alignment || null
++    type: (input?.type === 'port' || output?.type === 'port') ? 'bezier' : 'curve',
++    inputAlignment: input?.entity?.alignment || null,
++    outputAlignment: output?.entity?.alignment || null
+   };
+   var path = useMemo(function () {
+     return makeSvgPath(inputPoint, outputPoint, pathOptions);
+diff --git a/node_modules/beautiful-react-diagrams/esm/Diagram/Link/getEntityCoordinates.js b/node_modules/beautiful-react-diagrams/esm/Diagram/Link/getEntityCoordinates.js
+index be36a34..7a1e4f3 100644
+--- a/node_modules/beautiful-react-diagrams/esm/Diagram/Link/getEntityCoordinates.js
++++ b/node_modules/beautiful-react-diagrams/esm/Diagram/Link/getEntityCoordinates.js
+@@ -2,13 +2,13 @@
+ import getRelativePoint from '../../shared/functions/getRelativePoint.js';
+ 
+ var getEntityCoordinates = function getEntityCoordinates(entity, portRefs, nodeRefs, canvas) {
+-  if (entity && entity.type === 'node' && nodeRefs[entity.entity.id]) {
++  if (entity && entity?.type === 'node' && entity?.entity?.id && nodeRefs[entity.entity.id]) {
+     var nodeEl = nodeRefs[entity.entity.id];
+     var bbox = nodeEl.getBoundingClientRect();
+     return [entity.entity.coordinates[0] + bbox.width / 2, entity.entity.coordinates[1] + bbox.height / 2];
+   }
+ 
+-  if (portRefs && portRefs[entity.entity.id]) {
++  if (portRefs && entity?.entity?.id && portRefs[entity.entity.id]) {
+     var portEl = portRefs[entity.entity.id];
+ 
+     var _bbox = portEl.getBoundingClientRect();
+diff --git a/node_modules/beautiful-react-diagrams/esm/hooks/useSchema/schemaReducer.js b/node_modules/beautiful-react-diagrams/esm/hooks/useSchema/schemaReducer.js
+index 829d14a..2198760 100644
+--- a/node_modules/beautiful-react-diagrams/esm/hooks/useSchema/schemaReducer.js
++++ b/node_modules/beautiful-react-diagrams/esm/hooks/useSchema/schemaReducer.js
+@@ -27,12 +27,14 @@ var schemaReducer = function schemaReducer(state, action) {
+ 
+         if (state.nodes) {
+           var index = findIndex(state.nodes, ['id', action.payload.nodeId]);
+-          var inputPorts = getNodePortsId(state.nodes[index], 'inputs');
+-          var outputPorts = getNodePortsId(state.nodes[index], 'outputs');
+-          nextLinks = nextLinks.filter(function (link) {
+-            return !inputPorts.includes(link.input) && !outputPorts.includes(link.output);
+-          });
+-          state.nodes.splice(index, 1);
++          if (index >= 0) {
++            var inputPorts = getNodePortsId(state.nodes[index], 'inputs');
++            var outputPorts = getNodePortsId(state.nodes[index], 'outputs');
++            nextLinks = nextLinks.filter(
++              (link) => !inputPorts.includes(link.input) && !outputPorts.includes(link.output),
++            );
++            state.nodes.splice(index, 1);
++          }
+         }
+ 
+         return {
+diff --git a/node_modules/beautiful-react-diagrams/hooks/useSchema/schemaReducer.js b/node_modules/beautiful-react-diagrams/hooks/useSchema/schemaReducer.js
+index fd9b41c..82c69b8 100644
+--- a/node_modules/beautiful-react-diagrams/hooks/useSchema/schemaReducer.js
++++ b/node_modules/beautiful-react-diagrams/hooks/useSchema/schemaReducer.js
+@@ -35,12 +35,14 @@ var schemaReducer = function schemaReducer(state, action) {
+ 
+         if (state.nodes) {
+           var index = findIndex__default['default'](state.nodes, ['id', action.payload.nodeId]);
+-          var inputPorts = getNodePortsId['default'](state.nodes[index], 'inputs');
+-          var outputPorts = getNodePortsId['default'](state.nodes[index], 'outputs');
+-          nextLinks = nextLinks.filter(function (link) {
+-            return !inputPorts.includes(link.input) && !outputPorts.includes(link.output);
+-          });
+-          state.nodes.splice(index, 1);
++          if (index >= 0) {
++            var inputPorts = getNodePortsId(state.nodes[index], 'inputs');
++            var outputPorts = getNodePortsId(state.nodes[index], 'outputs');
++            nextLinks = nextLinks.filter(
++              (link) => !inputPorts.includes(link.input) && !outputPorts.includes(link.output),
++            );
++            state.nodes.splice(index, 1);
++          }
+         }
+ 
+         return {
