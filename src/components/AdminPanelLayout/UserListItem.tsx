@@ -5,6 +5,7 @@ import {ChangeUserRoleRequest} from '../../api';
 interface Props {
   user: User;
   onRoleChange: (r: ChangeUserRoleRequest) => void;
+  isCurrentUser?: boolean;
 }
 
 const roleOptions = Object.values(ERole).map(r => ({value: r, label: r}));
@@ -14,6 +15,10 @@ const UserListItem = (props: Props) => {
   const [currentRole, setCurrentRole] = useState<Role>(props.user.role);
 
   const handleRoleChange = (role: Role, user: User) => {
+    if (props.isCurrentUser && role !== 'Admin') {
+      alert('CAUTION: You are editing your own role. Doing so could lead to unexpected behavior, and you may be denied' +
+        ' access to the admin panel. Proceed with caution.');
+    }
     setCurrentRole(role);
     user.role = role;
     props.onRoleChange({

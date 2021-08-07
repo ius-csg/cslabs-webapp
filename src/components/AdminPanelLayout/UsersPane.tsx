@@ -1,7 +1,7 @@
 import {Button, Table} from 'react-bootstrap';
 import React, {useState} from 'react';
 import {User} from '../../types/User';
-import {changeUserRole, getUserList} from '../../api';
+import {changeUserRole, getCurrentUserFromServer, getUserList} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {HorizontallyCenteredSpinner} from '../util/HorizonallyCenteredSpinner';
 import {Layout} from '../../pages/Layout/Layout';
@@ -14,9 +14,11 @@ const UsersPane = () => {
   const [loading, setLoading] = useState(true);
   const [updateRequests, setUpdateRequests] = useState<ChangeUserRoleRequest[]>([]);
   const [commitResponseCode, setCommitResponsecode] = useState();
+  const [currentUser, setCurrentUser] = useState();
 
   useMount(async () => {
     setUsers(await getUserList());
+    setCurrentUser(await getCurrentUserFromServer());
     setLoading(false);
   });
 
@@ -65,7 +67,9 @@ const UsersPane = () => {
         </thead>
         <tbody>
         {users.map((u: User) => (
-          <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate}/>
+          u.id === currentUser.id ?
+            <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate} isCurrentUser={true}/> :
+            <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate}/>
         ))}
         </tbody>
       </Table>
