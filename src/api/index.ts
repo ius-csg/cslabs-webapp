@@ -99,6 +99,16 @@ export async function register(form: RegisterFormValues): Promise<AxiosResponse<
   setToken(resp.data.token);
   return resp;
 }
+
+export interface ChangeUserRoleRequest {
+  newRole: string;
+  userId: number;
+}
+
+export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse<string>> {
+  return await api.put<string>('/user/change-role', form);
+}
+
 export async function getCurrentUserFromServer() {
   return ( await api.get<User>('/user/current')).data;
 }
