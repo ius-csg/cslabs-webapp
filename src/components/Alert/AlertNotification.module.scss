@@ -2,16 +2,10 @@
 
 .warning{
     border-radius: 0 !important;
-    background: #c60909; /*yellow*/
-        /*repeating-linear-gradient(
-            45deg,
-            #c60909,
-            #c60909 10px,
-            #efe903 10px,
-            #efe903 20px
-    );*/
+    background: #c60909;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     color: white;
+    padding-bottom: 2px;
 
 }
 
@@ -19,24 +13,29 @@
     border-radius: 0 !important;
     background: darkslategrey;
     color: white;
+    padding-bottom: 2px;
 }
 
 .info {
     border-radius: 0 !important;
     background: #3871dc;
     color: white;
+    padding-bottom: 2px;
 
 }
 
-/*Each banner type has a different scheme:
-For Warning:
-banner should be: red4 (cc0000)
-Text should be: white (ffffff)
+.containsBanner {
+    position: relative;
+}
 
-For Info:
-banner should be: blue3 (6fa8dc)
-Text should be: black (000000)
+.banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
-For Notice:
-banner should be: yellow4 (f1c232)
-Text should be: black (000000)*/
+p {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}

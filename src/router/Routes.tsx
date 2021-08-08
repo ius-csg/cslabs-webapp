@@ -33,7 +33,7 @@ const Routes = () => (
     <Router history={History} >
       <NavigationBar />
         <AlertNotification
-          type='info'
+          type='notice'
         />
       <Switch>
         <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>

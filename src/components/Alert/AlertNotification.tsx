@@ -3,7 +3,7 @@ import {Alert} from 'react-bootstrap';
 import styles from './AlertNotification.module.scss';
 
 
-type AlertNotificationTypes = 'info' | 'warning' | 'notice';
+export type AlertNotificationTypes = 'info' | 'warning' | 'notice';
 
 interface Props {
   type: AlertNotificationTypes;
@@ -14,11 +14,13 @@ export function AlertNotification ({type}: Props) {
     const [show, setShow] = useState(true);
 
         return show ? (
-          <div className='d-inline text-center'>
+          <div className='containsBanner'>
+          <div className='banner'>
              <Alert className={styles[type]} dismissible={true}  onClose={() => setShow(false)}>
-            <Alert.Heading>CSLabs will be unavailable until August 24th, 2021 for maintenance.
-            </Alert.Heading>
+            <p>CSLabs will be unavailable until August 24th, 2021 for maintenance.
+            </p>
           </Alert>
+          </div>
           </div>
         ): null;
 
