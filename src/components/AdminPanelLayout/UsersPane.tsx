@@ -1,6 +1,6 @@
-import {Button, Table} from 'react-bootstrap';
+import {Button, Modal, ModalBody, ModalFooter, Table} from 'react-bootstrap';
 import React, {useState} from 'react';
-import {User} from '../../types/User';
+import {Role, User} from '../../types/User';
 import {changeUserRole, getCurrentUserFromServer, getUserList} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {HorizontallyCenteredSpinner} from '../util/HorizonallyCenteredSpinner';
@@ -8,6 +8,7 @@ import {Layout} from '../../pages/Layout/Layout';
 import UserListItem from './UserListItem';
 import {ChangeUserRoleRequest} from '../../api';
 import {AxiosResponse} from 'axios';
+import ModalHeader from 'react-bootstrap/ModalHeader';
 
 const UsersPane = () => {
   const [users, setUsers] = useState();
@@ -15,12 +16,33 @@ const UsersPane = () => {
   const [updateRequests, setUpdateRequests] = useState<ChangeUserRoleRequest[]>([]);
   const [commitResponseCode, setCommitResponsecode] = useState();
   const [currentUser, setCurrentUser] = useState();
+  const [showWarning, setShowWarning] = useState(false);
+  const [warningShown, setWarningShown] = useState(false);
+  const [userToUpdateOnConfirm, setUserToUpdate] = useState<[Role, User]>();
 
   useMount(async () => {
     setUsers(await getUserList());
     setCurrentUser(await getCurrentUserFromServer());
     setLoading(false);
   });
+
+  const handleRolechange = (role: Role, user: User) => {
+    if (user.id === currentUser.id && !warningShown) {
+      setShowWarning(true);
+      setUserToUpdate([role, user]);
+    }
+    else {
+      updateUser(role, user);
+    }
+  };
+
+  const updateUser = (role: Role, user: User) => {
+    user.role = role;
+    addUserToUpdate({
+      userId: user.id,
+      newRole: user.role
+    });
+  };
 
   const addUserToUpdate = (request: ChangeUserRoleRequest) => {
     const requestIndex = updateRequests.findIndex((req) => req.userId === request.userId);
@@ -30,6 +52,8 @@ const UsersPane = () => {
     else {
       setUpdateRequests(updateRequests.splice(requestIndex, 1, request));
     }
+    // tslint:disable-next-line:no-console
+    console.log(updateRequests);
   };
 
   const commitUsers = async () => {
@@ -43,8 +67,47 @@ const UsersPane = () => {
     window.setTimeout(() => setCommitResponsecode(undefined), 2000);
   };
 
+  const ConfirmRoleChange = () => {
+
+    const closeModal = () => {
+      setShowWarning(false);
+    };
+
+    const handleCancel = () => {
+      closeModal();
+      setUserToUpdate(undefined);
+    };
+
+    const handleConfirm = () => {
+      closeModal();
+      setWarningShown(true);
+      if (userToUpdateOnConfirm) {
+        updateUser(userToUpdateOnConfirm[0], userToUpdateOnConfirm[1]);
+      }
+    };
+
+    return (
+      <Layout>
+        <Modal show={showWarning}>
+          <ModalHeader>
+            CAUTION
+          </ModalHeader>
+          <ModalBody>
+            You are editing your own role. Doing so could lead to unexpected behavior, and you may be denied access to the
+            admin panel. Are you certain you wish to proceed?
+          </ModalBody>
+          <ModalFooter>
+            <Button variant={'primary'} onClick={handleCancel}>Cancel</Button>
+            <Button variant={'secondary'} onClick={handleConfirm}>Confirm</Button>
+          </ModalFooter>
+        </Modal>
+      </Layout>
+    );
+  };
+
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
     <div>
+      <ConfirmRoleChange/>
       <div style={{textAlign: 'right', padding: '10px 20px'}}>
         {commitResponseCode === 204 ?
           (<p style={{position: 'absolute', top: '0', right: '0', color: '#02b875'}}>Save successful!</p>) :
@@ -67,9 +130,7 @@ const UsersPane = () => {
         </thead>
         <tbody>
         {users.map((u: User) => (
-          u.id === currentUser.id ?
-            <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate} isCurrentUser={true}/> :
-            <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate}/>
+          <UserListItem key={u.id} user={u} onRoleChange={handleRolechange}/>
         ))}
         </tbody>
       </Table>
