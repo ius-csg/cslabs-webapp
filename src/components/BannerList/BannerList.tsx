@@ -1,6 +1,5 @@
 import React from 'react';
-import {AlertNotificationTypes} from '../Alert/AlertNotification';
-
+import {AlertNotification, AlertNotificationTypes} from '../Alert/AlertNotification';
 
 interface BannerListProp {
   type: AlertNotificationTypes;
@@ -8,11 +7,24 @@ interface BannerListProp {
 
 }
 
-const BL: BannerListProp[] = [
-  { type: 'warning', description: 'Test1'},
-  { type: 'info', description: 'Test2'},
-  { type: 'notice', description: 'Test3'}
-];
+const BannerList  = () => {
+
+  const BL: BannerListProp[] = [
+    { type: 'warning', description: 'Test1'},
+    { type: 'info', description: 'Test2'},
+    { type: 'notice', description: 'Test3'}
+  ];
+
+  return (
+    <div>
+      {BL.map((b, index) =>
+        <AlertNotification key={index} type={b.type} description={b.description}/>
+      )}
+    </div>
+  );
+};
+
+export default BannerList;
 
 
 

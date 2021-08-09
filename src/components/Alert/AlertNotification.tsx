@@ -7,18 +7,18 @@ export type AlertNotificationTypes = 'info' | 'warning' | 'notice';
 
 interface Props {
   type: AlertNotificationTypes;
+  description: string;
 }
 
-export function AlertNotification ({type}: Props) {
+export function AlertNotification (alertInfo: Props) {
 
     const [show, setShow] = useState(true);
 
         return show ? (
           <div className='containsBanner'>
           <div className='banner'>
-             <Alert className={styles[type]} dismissible={true}  onClose={() => setShow(false)}>
-            <p>CSLabs will be unavailable until August 24th, 2021 for maintenance.
-            </p>
+             <Alert className={styles[alertInfo.type]} dismissible={true}  onClose={() => setShow(false)}>
+            <p>{alertInfo.description}</p>
           </Alert>
           </div>
           </div>
