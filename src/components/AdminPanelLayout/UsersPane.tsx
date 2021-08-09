@@ -14,7 +14,7 @@ const UsersPane = () => {
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(true);
   const [updateRequests, setUpdateRequests] = useState<ChangeUserRoleRequest[]>([]);
-  const [commitResponseCode, setCommitResponsecode] = useState();
+  const [commitResponseCode, setCommitResponseCode] = useState();
   const [currentUser, setCurrentUser] = useState();
   const [showWarning, setShowWarning] = useState(false);
   const [warningShown, setWarningShown] = useState(false);
@@ -26,7 +26,7 @@ const UsersPane = () => {
     setLoading(false);
   });
 
-  const handleRolechange = (role: Role, user: User) => {
+  const handleRoleChange = (role: Role, user: User) => {
     if (user.id === currentUser.id && !warningShown) {
       setShowWarning(true);
       setUserToUpdate([role, user]);
@@ -40,7 +40,7 @@ const UsersPane = () => {
     user.role = role;
     addUserToUpdate({
       userId: user.id,
-      newRole: user.role
+      newRole: role
     });
   };
 
@@ -50,22 +50,23 @@ const UsersPane = () => {
       setUpdateRequests([...updateRequests, request]);
     }
     else {
-      setUpdateRequests(updateRequests.splice(requestIndex, 1, request));
+      const newRequests = [...updateRequests];
+      newRequests[requestIndex] = request;
+      setUpdateRequests(newRequests);
     }
-    // tslint:disable-next-line:no-console
-    console.log(updateRequests);
   };
 
   const commitUsers = async () => {
     try {
       const response = await (changeUserRole(updateRequests));
-      setCommitResponsecode(response.status);
+      setCommitResponseCode(response.status);
       setUpdateRequests([]);
     } catch (e) {
-      setCommitResponsecode((e as AxiosResponse<string>).status);
+      setCommitResponseCode((e as AxiosResponse<string>).status);
     }
-    window.setTimeout(() => setCommitResponsecode(undefined), 2000);
+    window.setTimeout(() => setCommitResponseCode(undefined), 2000);
   };
+
 
   const ConfirmRoleChange = () => {
 
@@ -88,8 +89,12 @@ const UsersPane = () => {
 
     return (
       <Layout>
-        <Modal show={showWarning}>
-          <ModalHeader>
+        <Modal
+          show={showWarning}
+          backdrop={'static'}
+          keyboard={false}
+        >
+          <ModalHeader style={{color: '#fff', backgroundColor: '#d9534f'}}>
             CAUTION
           </ModalHeader>
           <ModalBody>
@@ -130,7 +135,7 @@ const UsersPane = () => {
         </thead>
         <tbody>
         {users.map((u: User) => (
-          <UserListItem key={u.id} user={u} onRoleChange={handleRolechange}/>
+          <UserListItem key={u.id} user={u} onRoleChange={handleRoleChange}/>
         ))}
         </tbody>
       </Table>
