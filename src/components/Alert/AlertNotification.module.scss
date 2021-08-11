@@ -7,6 +7,10 @@
     color: white;
     padding-bottom: 1px;
     margin-bottom: 0px;
+   /* position: absolute;
+    right: 0;
+    left:0;*/
+
 }
 
 .notice {
@@ -15,6 +19,10 @@
     color: white;
     padding-bottom: 2px;
     margin-bottom: 0px;
+    /*position: absolute;
+    right: 0;
+    left:0;
+*/
 }
 
 .info {
@@ -23,17 +31,14 @@
     color: white;
     padding-bottom: 2px;
     margin-bottom: 0px;
+   /* position: absolute;
+    right: 0;
+    left:0;*/
+    }
 
-}
 
-.containsBanner {
-    position: relative;
-}
-
-.banner {
-    position: absolute;
-    top: 0;
-    left: 0;
+.alert-container {
+    //osition: relative;
 }
 
 p {
