@@ -262,15 +262,12 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       for (const port of schema.links) {
         // Prevents having more than one connection per port
         if (portsInUse.includes(port.input) || portsInUse.includes(port.output)) {
-          console.log('Prevents having more than one connection per port');
           schema.links.splice(count, 1);
         }
         // Prevents connecting two ports on same node
         if (port.input.includes(port.output.slice(0, 14)) === true) {
-          console.log('Prevents connecting two ports on same node');
           schema.links.splice(count, 1);
         }
-
         portsInUse.push(port.input);
         portsInUse.push(port.output);
         count++;
