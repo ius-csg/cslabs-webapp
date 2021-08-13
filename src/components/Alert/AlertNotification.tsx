@@ -11,14 +11,14 @@ interface Props {
   description: string;
 }
 
-export function AlertNotification (alertInfo: Props) {
+export function AlertNotification (props: Props) {
 
-    const [show, setShow] = useState(true);
+    const [show] = useState(true);
 
         return show ? (
           <div className={styles['alert-container']}>
-             <Alert className={styles[alertInfo.type]} dismissible={true}  onClose={() => setShow(false)}>
-            <p>{alertInfo.description}</p>
+             <Alert className={styles[props.type]} dismissible={true}  onClose={props.onClick}>
+            <p>{props.description}</p>
           </Alert>
           </div>
         ): null;

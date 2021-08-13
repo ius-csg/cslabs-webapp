@@ -16,7 +16,6 @@ const BannerList  = () => {
     { type: 'notice', description: 'Test3'}
   ];
 
-
   const [count, setCount] = useState(0);
 
   return (
@@ -28,9 +27,3 @@ const BannerList  = () => {
 };
 
 export default BannerList;
-
-
-
-
-// export const BannerList: React.FC<BannerListProp> = ({type, description}) =>
-//  return
