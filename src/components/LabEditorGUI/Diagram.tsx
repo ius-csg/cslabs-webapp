@@ -65,7 +65,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         }
         break;
       case 'redo':
-        console.log('redo');
         if (schemaState.future.length > 1) {
           newSchemaState.past.push(_.cloneDeep(schemaState.present));
           newSchemaState.present = _.cloneDeep(newSchemaState.future[newSchemaState.future.length - 1]);
@@ -86,10 +85,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         newSchemaState.past.push(_.cloneDeep(schemaState.present));
         newSchemaState.present = _.cloneDeep({nodes: schema.nodes, links: schema.links});
         setSchemaState(newSchemaState);
-        // console.log('update');
         break;
     }
-  // console.log(schemaState);
   };
 
   const onKeyDown = (e: any) => {
@@ -195,6 +192,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const duplicateNode = (id: string) => {
     const nodeToDuplicate: any = schema.nodes.find(node => node.id === id);
     const inputs: any = [];
+    const outputs: any = [];
     let name = '';
     if (id.includes('vm')) {
       name = 'vm-node';
@@ -205,14 +203,13 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
     if (nodeToDuplicate.inputs) {
       for (let i = 0; i < nodeToDuplicate.inputs.length; i++) {
-        inputs.push({id: `${name}-${schema.nodes.length + 1}-port${i+1}`});
+        inputs.push({id: `${name}-${schema.nodes.length + 1}-port-in-${i+1}`});
       }
     }
 
-    const outputs: any = [];
     if (nodeToDuplicate.outputs) {
       for (let i = 0; i < nodeToDuplicate.outputs.length; i++) {
-        outputs.push({id: `${name}-${schema.nodes.length + 1}-port${i+1}`});
+        outputs.push({id: `${name}-${schema.nodes.length + 1}-port-out-${i+1}`});
       }
     }
 
@@ -230,8 +227,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     updateSchemaState('update');
   };
 
-  const addVmPort = () => {
-    const nodeToChange: any  = schema.nodes.find(node => node.id === selectedNode);
+  const addVmPort = (id: string) => {
+    const nodeToChange: any  = schema.nodes.find(node => node.id === id);
 
     if (nodeToChange.inputs.length < 4) {
       onChange(nodeToChange.inputs.push({id: `${nodeToChange.id}-port${nodeToChange.inputs.length}`}));
@@ -279,7 +276,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   // Handles different colors for links
   useEffect(() => {
     setLinkCount(linkCount + 1);
-    // if (!deletingNode) {
       if (schema.links && schema.links.length !== 0 && !schema.links[schema.links.length-1].className) {
         const colors = ['red', 'blue', 'yellow', 'violet', 'green', 'orange', 'purple', 'teal'];
         const lastLink = schema.links.pop();
@@ -287,7 +283,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[linkCount % 8]}-link`});
         }
       }
-    // }
   }, [schema.links]);
 
 
@@ -349,7 +344,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         {
           text: 'Add Port',
           onClick: () => {
-            addVmPort();
+            addVmPort(selectedNode);
           }
         },
         {
