@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import ContextMenu from './ContextMenu';
 
 
-const Container = ({ children, menuItems, schema}: any) => {
+const ContextContainer = ({ children, menuItems, schema}: any) => {
   const containerRef = useRef(null);
 
   return (
@@ -17,4 +17,4 @@ const Container = ({ children, menuItems, schema}: any) => {
   );
 };
 
-export default Container;
+export default ContextContainer;

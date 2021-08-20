@@ -12,16 +12,11 @@ const ContextMenu = ({parentRef, items}:any) => {
       return;
     }
 
-    // @ts-ignore
-    const rect = document.getElementById('diagram').getBoundingClientRect();
-
     const showMenu = (event: any) => {
       event.preventDefault();
       setX(event.clientX);
       setY(event.clientY);
       setVisibility(true);
-      // const clickPosition = [x - rect.left, y - rect.top];
-      // console.log(clickPosition);
     };
 
     const closeMenu = () => {

@@ -15,6 +15,13 @@ const SwitchNode = ({id, inputs, outputs}: any) => {
     setTimeout(() => dispatch(changeSelected({selectedID: id})), 10);
   };
 
+  function generatePorts(portType: any) {
+    return(
+    portType.map((port: any) => React.cloneElement(port, {
+      style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
+    })));
+  }
+
   return (
     <div
       style={id === selectedNode.selectedID ? {
@@ -27,43 +34,31 @@ const SwitchNode = ({id, inputs, outputs}: any) => {
         {outputs.length >= 8 &&
         <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}}>
           <div style={{display: 'flex', alignSelf: 'start'}}>
-            {inputs.map((port: any) => React.cloneElement(port, {
-              style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-            })).slice(inputs.length / 2, inputs.length)}
+            {generatePorts(inputs).slice(inputs.length / 2, inputs.length)}
           </div>
           <div style={{display: 'flex', alignSelf: 'start'}}>
-            {inputs.map((port: any) => React.cloneElement(port, {
-              style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-            })).slice(0, inputs.length / 2)}
+            {generatePorts(inputs).slice(0, inputs.length / 2)}
           </div>
           {(outputs.length + inputs.length) >= 24
             ?
             <img src={longSwitchSVG} alt='Switch' draggable={false} style={{height: '55px', pointerEvents: 'none'}}/>
             : <img src={switchSVG} alt='Switch' draggable={false} style={{height: '55px', pointerEvents: 'none'}}/>}
           <div style={{display: 'flex', alignSelf: 'start'}}>
-            {outputs.map((port: any) => React.cloneElement(port, {
-              style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-            })).slice(outputs.length / 2, outputs.length)}
+            {generatePorts(outputs).slice(outputs.length / 2, outputs.length)}
           </div>
           <div style={{display: 'flex', alignSelf: 'start'}}>
-            {outputs.map((port: any) => React.cloneElement(port, {
-              style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-            })).slice(0, outputs.length / 2)}
+            {generatePorts(outputs).slice(0, outputs.length / 2)}
           </div>
         </div>
         }
         {outputs.length < 8 &&
           <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', alignSelf: 'start'}}>
-              {inputs.map((port: any) => React.cloneElement(port, {
-                style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-              }))}
+              {generatePorts(inputs)}
             </div>
               <img src={switchSVG} alt='Switch' draggable={false} style={{height: '55px', pointerEvents: 'none'}}/>
             <div style={{display: 'flex', alignSelf: 'start'}}>
-              {outputs.map((port: any) => React.cloneElement(port, {
-                style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}
-              }))}
+              {generatePorts(outputs)}
             </div>
           </div>
           }
