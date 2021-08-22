@@ -1,7 +1,7 @@
 import {Button, Modal, ModalBody, ModalFooter, Table} from 'react-bootstrap';
 import React, {useState} from 'react';
 import {Role, User} from '../../types/User';
-import {changeUserRole, getCurrentUserFromServer, getUserList} from '../../api';
+import {changeUserRole, getUserList} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {HorizontallyCenteredSpinner} from '../util/HorizonallyCenteredSpinner';
 import {Layout} from '../../pages/Layout/Layout';
@@ -9,25 +9,30 @@ import UserListItem from './UserListItem';
 import {ChangeUserRoleRequest} from '../../api';
 import {AxiosResponse} from 'axios';
 import ModalHeader from 'react-bootstrap/ModalHeader';
+import {connect} from 'react-redux';
+import {WebState} from '../../redux/types/WebState';
+import {getCurrentUser} from '../../redux/selectors/entities';
 
-const UsersPane = () => {
+interface Props {
+  currentUser: User;
+}
+
+const UsersPane = (props: Props) => {
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(true);
   const [updateRequests, setUpdateRequests] = useState<ChangeUserRoleRequest[]>([]);
   const [commitResponseCode, setCommitResponseCode] = useState();
-  const [currentUser, setCurrentUser] = useState();
   const [showWarning, setShowWarning] = useState(false);
   const [warningShown, setWarningShown] = useState(false);
   const [userToUpdateOnConfirm, setUserToUpdate] = useState<[Role, User]>();
 
   useMount(async () => {
     setUsers(await getUserList());
-    setCurrentUser(await getCurrentUserFromServer());
     setLoading(false);
   });
 
   const handleRoleChange = (role: Role, user: User) => {
-    if (user.id === currentUser.id && !warningShown) {
+    if (user.id === props.currentUser.id && !warningShown) {
       setShowWarning(true);
       setUserToUpdate([role, user]);
     }
@@ -61,8 +66,11 @@ const UsersPane = () => {
       const response = await (changeUserRole(updateRequests));
       setCommitResponseCode(response.status);
       setUpdateRequests([]);
+      if (response.data) {
+        props.currentUser = response.data;
+      }
     } catch (e) {
-      setCommitResponseCode((e as AxiosResponse<string>).status);
+      setCommitResponseCode((e.status as AxiosResponse<User>));
     }
     window.setTimeout(() => setCommitResponseCode(undefined), 2000);
   };
@@ -114,7 +122,7 @@ const UsersPane = () => {
     <div>
       <ConfirmRoleChange/>
       <div style={{textAlign: 'right', padding: '10px 20px'}}>
-        {commitResponseCode === 204 ?
+        {commitResponseCode <= 299 && commitResponseCode >= 200 ?
           (<p style={{position: 'absolute', top: '0', right: '0', color: '#02b875'}}>Save successful!</p>) :
           commitResponseCode === 401 ?
             (<p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>You are not authorized to change
@@ -145,4 +153,4 @@ const UsersPane = () => {
 
 };
 
-export default UsersPane;
+export default connect((state: WebState) => ({currentUser: getCurrentUser(state) }))(UsersPane);

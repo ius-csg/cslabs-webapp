@@ -23,7 +23,9 @@ type AdminTabKeys = typeof panes[number]['eventKey'];
 export const AdminPanelLayout = (props: AdminPanelLayoutProps) => (
   <Layout>
     <h1>Admin Console</h1>
-    <TabContainer defaultActiveKey={cast<AdminTabKeys>(props.defaultActivePanel ? props.defaultActivePanel : '#statistics')}>
+    <TabContainer
+      defaultActiveKey={cast<AdminTabKeys>(props.defaultActivePanel ? props.defaultActivePanel : '#statistics')}
+    >
       <Row>
         <Col xs={4}>
           <ListGroup style={{marginTop: '20px'}}>
