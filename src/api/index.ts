@@ -105,8 +105,8 @@ export interface ChangeUserRoleRequest {
   userId: number;
 }
 
-export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse<User>> {
-  return await api.put<User>('/user/change-role', form);
+export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse> {
+  return await api.put('/user/change-role', form);
 }
 
 export async function getCurrentUserFromServer() {
