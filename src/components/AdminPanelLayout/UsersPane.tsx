@@ -80,7 +80,7 @@ const UsersPane = (props: Props) => {
         history.push('/');
       }
     } catch (e) {
-      setCommitResponseCode((e.status as AxiosResponse<User>));
+      setCommitResponseCode((e as AxiosResponse).status);
     }
     window.setTimeout(() => setCommitResponseCode(undefined), 2000);
   };
@@ -127,19 +127,30 @@ const UsersPane = (props: Props) => {
     );
   };
 
+  const CommitStatus = () => {
+    if (commitResponseCode) {
+      if (commitResponseCode > 199 && commitResponseCode < 300) {
+        return <p style={{position: 'absolute', top: '0', right: '0', color: '#02b875'}}>Save successful!</p>;
+      }
+      else if (commitResponseCode === 401) {
+        return <p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>You are not authorized to change
+          user roles, or you are no longer signed in. If you are signed in, and you believe
+          this to be in error, please see a CSLabs admin</p>;
+      }
+      else {
+        return <p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>Error saving changes, please try again</p>;
+      }
+    }
+    else {
+      return null;
+    }
+  };
+
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
     <div>
       <ConfirmRoleChange/>
       <div style={{textAlign: 'right', padding: '10px 20px'}}>
-        {commitResponseCode < 300 && commitResponseCode > 199 ?
-          (<p style={{position: 'absolute', top: '0', right: '0', color: '#02b875'}}>Save successful!</p>) :
-          commitResponseCode === 401 ?
-            (<p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>You are not authorized to change
-              user roles, or you are no longer signed in. If you are signed in, and you believe
-              this to be in error, please see a CSLabs admin</p>) :
-            commitResponseCode ?
-              (<p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>Error saving changes, please try again</p>) :
-              null}
+        <CommitStatus/>
         <Button variant={'outline-primary'} onClick={commitUsers}>Save</Button>
       </div>
       <Table striped={true} bordered={true} hover={true}>
