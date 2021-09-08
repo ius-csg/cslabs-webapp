@@ -13,7 +13,6 @@ import {connect, useDispatch} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
 import {getCurrentUser} from '../../redux/selectors/entities';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
-import {useHistory} from 'react-router';
 
 interface Props {
   currentUser: User;
@@ -29,7 +28,6 @@ const UsersPane = (props: Props) => {
   const [userToUpdateOnConfirm, setUserToUpdate] = useState<[Role, User]>();
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   useMount(async () => {
     setUsers(await getUserList());
@@ -77,7 +75,6 @@ const UsersPane = (props: Props) => {
       setUpdateRequests([]);
       if (warningShown) {
         updateCurrentUserInWebstate(await getCurrentUserFromServer());
-        history.push('/');
       }
     } catch (e) {
       setCommitResponseCode((e as AxiosResponse).status);
