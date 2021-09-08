@@ -8,7 +8,7 @@ interface BannerListProp {
 
 }
 
-const BannerList  = () => {
+const AlertList  = () => {
 
   const BL: BannerListProp[] = [
     { type: 'warning', description: 'Test1'},
@@ -26,4 +26,4 @@ const BannerList  = () => {
   );
 };
 
-export default BannerList;
+export default AlertList;
