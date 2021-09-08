@@ -1,24 +1,56 @@
-import {Button, Table} from 'react-bootstrap';
+import {Button, Modal, ModalBody, ModalFooter, Table} from 'react-bootstrap';
 import React, {useState} from 'react';
-import {User} from '../../types/User';
-import {changeUserRole, getUserList} from '../../api';
+import {Role, User} from '../../types/User';
+import {changeUserRole, getCurrentUserFromServer, getUserList} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {HorizontallyCenteredSpinner} from '../util/HorizonallyCenteredSpinner';
 import {Layout} from '../../pages/Layout/Layout';
 import UserListItem from './UserListItem';
 import {ChangeUserRoleRequest} from '../../api';
 import {AxiosResponse} from 'axios';
+import ModalHeader from 'react-bootstrap/ModalHeader';
+import {connect, useDispatch} from 'react-redux';
+import {WebState} from '../../redux/types/WebState';
+import {getCurrentUser} from '../../redux/selectors/entities';
+import {setCurrentUser} from '../../redux/actions/entities/currentUser';
 
-const UsersPane = () => {
+interface Props {
+  currentUser: User;
+}
+
+const UsersPane = (props: Props) => {
   const [users, setUsers] = useState();
   const [loading, setLoading] = useState(true);
   const [updateRequests, setUpdateRequests] = useState<ChangeUserRoleRequest[]>([]);
-  const [commitResponseCode, setCommitResponsecode] = useState();
+  const [commitResponseCode, setCommitResponseCode] = useState();
+  const [showWarning, setShowWarning] = useState(false);
+  const [warningShown, setWarningShown] = useState(false);
+  const [userToUpdateOnConfirm, setUserToUpdate] = useState<[Role, User]>();
+
+  const dispatch = useDispatch();
 
   useMount(async () => {
     setUsers(await getUserList());
     setLoading(false);
   });
+
+  const handleRoleChange = (role: Role, user: User) => {
+    if (user.id === props.currentUser.id && !warningShown) {
+      setShowWarning(true);
+      setUserToUpdate([role, user]);
+    }
+    else {
+      updateUser(role, user);
+    }
+  };
+
+  const updateUser = (role: Role, user: User) => {
+    user.role = role;
+    addUserToUpdate({
+      userId: user.id,
+      newRole: role
+    });
+  };
 
   const addUserToUpdate = (request: ChangeUserRoleRequest) => {
     const requestIndex = updateRequests.findIndex((req) => req.userId === request.userId);
@@ -26,32 +58,97 @@ const UsersPane = () => {
       setUpdateRequests([...updateRequests, request]);
     }
     else {
-      setUpdateRequests(updateRequests.splice(requestIndex, 1, request));
+      const newRequests = [...updateRequests];
+      newRequests[requestIndex] = request;
+      setUpdateRequests(newRequests);
     }
+  };
+
+  const updateCurrentUserInWebstate = (user: User) => {
+    dispatch(setCurrentUser(user));
   };
 
   const commitUsers = async () => {
     try {
       const response = await (changeUserRole(updateRequests));
-      setCommitResponsecode(response.status);
+      setCommitResponseCode(response.status);
       setUpdateRequests([]);
+      if (warningShown) {
+        updateCurrentUserInWebstate(await getCurrentUserFromServer());
+      }
     } catch (e) {
-      setCommitResponsecode((e as AxiosResponse<string>).status);
+      setCommitResponseCode((e as AxiosResponse).status);
     }
-    window.setTimeout(() => setCommitResponsecode(undefined), 2000);
+    window.setTimeout(() => setCommitResponseCode(undefined), 2000);
+  };
+
+  const ConfirmRoleChange = () => {
+
+    const closeModal = () => {
+      setShowWarning(false);
+    };
+
+    const handleCancel = () => {
+      closeModal();
+      setUserToUpdate(undefined);
+    };
+
+    const handleConfirm = () => {
+      closeModal();
+      setWarningShown(true);
+      if (userToUpdateOnConfirm) {
+        updateUser(userToUpdateOnConfirm[0], userToUpdateOnConfirm[1]);
+      }
+    };
+
+    return (
+      <Layout>
+        <Modal
+          show={showWarning}
+          backdrop={'static'}
+          keyboard={false}
+        >
+          <ModalHeader style={{color: '#fff', backgroundColor: '#d9534f'}}>
+            CAUTION
+          </ModalHeader>
+          <ModalBody>
+            You are editing your own role. Doing so could lead to unexpected behavior, and you may be denied access to the
+            admin panel. Are you certain you wish to proceed?
+          </ModalBody>
+          <ModalFooter>
+            <Button variant={'primary'} onClick={handleCancel}>Cancel</Button>
+            <Button variant={'secondary'} onClick={handleConfirm}>Confirm</Button>
+          </ModalFooter>
+        </Modal>
+      </Layout>
+    );
+  };
+
+  const CommitStatus = () => {
+    if (commitResponseCode) {
+      if (commitResponseCode > 199 && commitResponseCode < 300) {
+        return <p style={{position: 'absolute', top: '0', right: '0', color: '#02b875'}}>Save successful!</p>;
+      }
+      else if (commitResponseCode === 401) {
+        return <p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>You are not authorized to change
+          user roles, or you are no longer signed in. If you are signed in, and you believe
+          this to be in error, please see a CSLabs admin</p>;
+      }
+      else {
+        return <p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>Error saving changes, please try again</p>;
+      }
+    }
+    else {
+      return null;
+    }
   };
 
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
     <div>
-      <div style={{float: 'right'}}>
+      <ConfirmRoleChange/>
+      <div style={{textAlign: 'right', padding: '10px 20px'}}>
+        <CommitStatus/>
         <Button variant={'outline-primary'} onClick={commitUsers}>Save</Button>
-        {commitResponseCode === 204 ?
-          (<p style={{color: '#02b875'}}>Save successful!</p>) :
-          commitResponseCode === 401 ?
-            (<p style={{color: '#d9534f'}}>You are not authorized to change user roles, please see a CSLabs admin</p>) :
-            commitResponseCode ?
-              (<p style={{color: '#d9534f'}}>Error saving changes, please try again</p>) :
-              null}
       </div>
       <Table striped={true} bordered={true} hover={true}>
         <thead style={{backgroundColor: '#adb5bd'}}>
@@ -63,7 +160,7 @@ const UsersPane = () => {
         </thead>
         <tbody>
         {users.map((u: User) => (
-          <UserListItem key={u.id} user={u} onRoleChange={addUserToUpdate}/>
+          <UserListItem key={u.id} user={u} onRoleChange={handleRoleChange}/>
         ))}
         </tbody>
       </Table>
@@ -73,4 +170,4 @@ const UsersPane = () => {
 
 };
 
-export default UsersPane;
+export default connect((state: WebState) => ({currentUser: getCurrentUser(state)})) (UsersPane);
