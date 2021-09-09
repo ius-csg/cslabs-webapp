@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
 import {Alert} from 'react-bootstrap';
-import styles from './AlertNotification.module.scss';
+import styles from './SystemMessageNotification.module.scss';
 
 
-export type AlertNotificationTypes = 'info' | 'warning' | 'notice';
+export type SystemMessageNotificationTypes = 'info' | 'warning' | 'notice';
 
 interface Props {
   onClick?: () => void;
-  type: AlertNotificationTypes;
+  type: SystemMessageNotificationTypes;
   description: string;
 }
 
-export function AlertNotification (props: Props) {
+export function SystemMessageNotification (props: Props) {
 
     const [show] = useState(true);
 
