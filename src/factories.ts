@@ -16,6 +16,7 @@ export function makeModuleForm(): ModuleForm {
     description: '',
     name: '',
     published: false,
+    disabled: false,
     specialCode: uuid(),
     type: 'SingleUser',
     userId: 0

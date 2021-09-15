@@ -34,6 +34,7 @@ class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState
          id: 0,
          name: '',
          description: '',
+         disabled: false,
          userId: 0,
          published: false,
          updatedAt: '',

@@ -3,6 +3,7 @@ import {TrackableEntity} from './Entity';
 export interface BaseModule  extends TrackableEntity {
   name: string;
   description: string;
+  disabled: boolean;
   published: boolean;
   specialCode: string;
   type: ModuleType;

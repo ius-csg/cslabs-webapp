@@ -28,6 +28,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       id: 0,
       createdAt: '',
       description: '',
+      disabled: false,
       name: 'Loading',
       published: false,
       userId: 0,

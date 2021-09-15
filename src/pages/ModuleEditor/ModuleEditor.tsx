@@ -126,6 +126,9 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
               <CheckBoxInput name={propertyOf<ModuleForm>('published')} label='Publish (Display on the explore page)' disabled={!editing}/>
             </Form.Group>
             <Form.Group>
+              <CheckBoxInput name={propertyOf<ModuleForm>('disabled')} label='Disable Module' disabled={!editing}/>
+            </Form.Group>
+            <Form.Group>
               <Form.Label column={true}>Type</Form.Label>
               <DropdownInput name={propertyOf<ModuleForm>('type')} dropdownData={moduleTypeOptions} disabled={!editing}/>
             </Form.Group>
