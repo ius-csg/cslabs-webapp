@@ -4,7 +4,7 @@ import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab} from
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
-import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
+import {getPublicModule, getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {LoadingButton} from '../../util/LoadingButton';
 import {combineClasses, getRemainingLabTime} from '../../util';
@@ -12,6 +12,7 @@ import {ConsoleWindowContainer} from '../ConsoleWindow/ConsoleWindowContainer';
 import {VmActionsMenu} from '../VmActionsMenu/VmActionsMenu';
 import {VmStatusIndicator} from '../util/VmStatusIndicator/VmStatusIndicator';
 import styles from './LabEnvironment.module.scss';
+import {Module} from '../../types/Module';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -28,6 +29,7 @@ interface LabEnvironmentState {
   readmeLoaded: boolean;
   show_vm: boolean;
   eventKey: string;
+  module: Module;
 }
 
 
@@ -38,8 +40,24 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     readmeLoaded: false,
     pageNumber: 1,
     show_vm: false,
-    eventKey: '#topology'
+    eventKey: '#topology',
+    module: {
+      id: 0,
+      createdAt: '',
+      description: '',
+      disabled: false,
+      name: 'Loading',
+      published: false,
+      userId: 0,
+      specialCode: '',
+      type: 'SingleUser',
+      updatedAt: ''
+    }
   };
+
+  async componentDidMount() {
+    this.setState({module: await getPublicModule(this.props.userLab.userModuleId)});
+  }
 
   canGoToPrevPage = () => this.state.pageNumber > 1;
   canGoToNextPage = () => this.state.pageNumber < this.state.numPages;
@@ -71,6 +89,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
             {this.isLabAbleToStart() ?
               <LoadingButton
                 loading={this.props.starting}
+                disabled={this.state.module.disabled}
                 label='Start Lab'
                 onClick={this.props.onStartLab}
               /> : <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.props.userLab.endDateTime!)}</h6>}
