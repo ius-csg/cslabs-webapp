@@ -17,6 +17,7 @@ interface ModuleCardProps extends ReturnType<typeof mapStateToProps> {
 
 class ModuleCardComponent extends Component<ModuleCardProps > {
 
+
   render() {
     let module: Module = this.props.module as Module;
     if (this.props.module['module'] !== undefined) {
@@ -41,7 +42,6 @@ class ModuleCardComponent extends Component<ModuleCardProps > {
       </Card>
     );
   }
-
 
   getStartButton() {
     if (this.props.buttonLink) {

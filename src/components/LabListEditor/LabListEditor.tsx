@@ -7,18 +7,20 @@ import {faPlusCircle} from '@fortawesome/free-solid-svg-icons';
 import {RoutePaths} from '../../router/RoutePaths';
 import {LabItem} from '../../types/editorTypes';
 import {deleteLab} from '../../api';
+import ReactTooltip from 'react-tooltip';
 
 
 interface Props {
   labs: LabItem[];
   prefix: string;
   moduleId: number;
+  disabledModule: boolean;
 }
 function getNewLabEditorLink(moduleId: number) {
   return RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', '');
 }
 
-export function LabListEditor({labs, prefix, moduleId}: Props) {
+export function LabListEditor({labs, prefix, moduleId, disabledModule}: Props) {
   return (
     <FieldArray
       name={prefix}
@@ -27,12 +29,24 @@ export function LabListEditor({labs, prefix, moduleId}: Props) {
           <Row style={{marginBottom: '1rem'}}>
             <Col>Labs</Col>
             <Col className='d-flex justify-content-end align-items-center'>
-              <IconButton
-                icon={faPlusCircle}
-                size={'2x'}
-                link={getNewLabEditorLink(moduleId)}
-                color={'black'}
-              />
+              { disabledModule ?
+                <>
+                  <ReactTooltip place='left' type='dark' effect='solid'/>
+                  <a data-tip='"Disable Module" must be unchecked to add a Lab'>
+                    <IconButton
+                      icon={faPlusCircle}
+                      size={'2x'}
+                      color={'grey'}
+                    />
+                  </a>
+                </>
+              :
+                <IconButton
+                  icon={faPlusCircle}
+                  size={'2x'}
+                  link={getNewLabEditorLink(moduleId)}
+                  color={'black'}
+                />}
             </Col>
           </Row>
           {labs.map((lab,index) =>

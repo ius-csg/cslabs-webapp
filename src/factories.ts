@@ -19,7 +19,7 @@ export function makeModuleForm(): ModuleForm {
     disabled: false,
     specialCode: uuid(),
     type: 'SingleUser',
-    userId: 0
+    ownerId: 0
   };
 }
 

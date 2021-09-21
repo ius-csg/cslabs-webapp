@@ -11,7 +11,7 @@ export const ModuleEditorSchema = object<ModuleForm>({
   updatedAt: string().notRequired(),
   createdAt: string().notRequired(),
   id: number(),
-  userId: number(),
+  ownerId: number(),
   type: string().oneOf(moduleTypes) as StringSchema<ModuleType>,
   published: boolean(),
   labs: array()

@@ -7,7 +7,7 @@ export interface BaseModule  extends TrackableEntity {
   published: boolean;
   specialCode: string;
   type: ModuleType;
-  userId: number;
+  ownerId: number;
 }
 
 export interface Module extends BaseModule {

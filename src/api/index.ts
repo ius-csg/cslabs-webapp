@@ -55,8 +55,6 @@ export async function turnOnUserLab(id: number): Promise<string> {
   return (await retry.post<string>(`/user-lab/${id}/turn-on`)).data;
 }
 
-
-
 export async function shutdownVm(id: number): Promise<string> {
   return (await api.post<string>(`/virtual-machine/${id}/shutdown`)).data;
 }
@@ -74,7 +72,7 @@ export async function resetVm(id: number): Promise<string> {
 }
 
 export async function getModule(id: number) {
-  return ( await api.get<Module>(`/modules/${id}`)).data;
+  return ( await api.get<Module>(`/module/${id}`)).data;
 }
 
 export async function getUserList() {

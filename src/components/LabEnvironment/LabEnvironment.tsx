@@ -48,7 +48,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
       disabled: false,
       name: 'Loading',
       published: false,
-      userId: 0,
+      ownerId: 0,
       specialCode: '',
       type: 'SingleUser',
       updatedAt: ''
