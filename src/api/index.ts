@@ -77,6 +77,10 @@ export async function getModule(id: number) {
   return ( await api.get<Module>(`/modules/${id}`)).data;
 }
 
+export async function searchModules(searchTerm : string) {
+    return ( await api.get<Module[]>(`/module/search/${searchTerm}`)).data;
+}
+
 export async function getUserList() {
   return ( await api.get<User[]>(`/user/`) ).data;
 }
