@@ -25,6 +25,7 @@ import Contact   from '../pages/Contact/Contact';
 import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPanel';
 import LabEditor from '../pages/LabEditor/LabEditor';
+import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
 import {AlertNotification} from '../components/Alert/AlertNotification';
 
 
@@ -59,6 +60,7 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.contentCreator} component={ModulesEditor}/>
         <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
         <Route component={NotFound} />
+        <Route component={ServiceUnavailable} />
       </Switch>
     </Router>
   </div>
