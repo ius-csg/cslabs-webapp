@@ -11,6 +11,7 @@ import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
+import {Maintenance} from '../types/Maintenance';
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -79,6 +80,10 @@ export async function getModule(id: number) {
 
 export async function getUserList() {
   return ( await api.get<User[]>(`/user/`) ).data;
+}
+
+export async function getMaintenances() {
+  return ( await api.get<Maintenance[]>('/maintenance/') ).data;
 }
 
 export async function login(email: string, password: string): Promise<AxiosResponse<UserWithToken>> {
