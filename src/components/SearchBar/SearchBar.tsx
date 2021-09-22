@@ -21,7 +21,11 @@ const SearchBar = (props : any) => {
         }
     };
 
-
+    function handleChange(e : any) {
+      let value = e.target.value;
+      setSearchTerm(value);
+      getModuleRequest(value);
+    };
 
     return (
       <Form className='form-inline d-flex justify-content-center'>
@@ -32,7 +36,7 @@ const SearchBar = (props : any) => {
         </ToolTip>
               
         <Form.Control className={`${styles['search-bar']}`}
-          type="search" placeholder="Search..." aria-label="Search"/>               
+          type="search" placeholder="Search..." aria-label="Search" value={searchTerm} onChange={handleChange}/>               
       </Form>
     );
 }
