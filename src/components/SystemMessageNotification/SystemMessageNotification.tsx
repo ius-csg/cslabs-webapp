@@ -3,6 +3,7 @@ import {Alert} from 'react-bootstrap';
 import styles from './SystemMessageNotification.module.scss';
 
 
+
 export type SystemMessageNotificationTypes = 'info' | 'warning' | 'notice';
 
 interface Props {

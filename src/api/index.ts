@@ -12,6 +12,8 @@ import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
 import {Maintenance} from '../types/Maintenance';
+import {SystemMessageListProp} from '../components/SystemMessageList/SystemMessageList';
+
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -85,6 +87,26 @@ export async function getUserList() {
 export async function getMaintenances() {
   return ( await api.get<Maintenance[]>('/maintenance/') ).data;
 }
+
+export async function getSystemMessages() {
+  return handleResponse(await api.get<SystemMessageListProp>(`/systemMessage`)).data;
+}
+// For getting specific message, creating, deleting and updating from the frontend admin panel
+/*export async function getSystemMessage(id: number) {
+  return handleResponse(await api.get<SystemMessageListProp>(`/SystemMessage/${id}`)).data;
+}
+
+export async function deleteSystemMessage(id: number) {
+  return await api.delete<SystemMessageListProp>(`/SystemMessage/${id}`);
+}
+
+export async function SystemMessage(type: string, description: string) {
+  return await api.post<SystemMessageListProp>('/SystemMessage', {type: type, description: description});
+}
+
+export async function updateSystemMessage(id: number, description: string) {
+  return await api.put<SystemMessageListProp>(`/SystemMessage/${id}`, {description: description});
+}*/
 
 export async function login(email: string, password: string): Promise<AxiosResponse<UserWithToken>> {
   const resp = await api.post<UserWithToken>('/user/authenticate', {email: email, password: password });

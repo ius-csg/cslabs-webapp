@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {SystemMessageNotification, SystemMessageNotificationTypes} from '../SystemMessageNotification/SystemMessageNotification';
+import {getSystemMessages} from '../../api';
 
 
-interface SystemMessageListProp {
+export interface SystemMessageListProp {
   type: SystemMessageNotificationTypes;
   description: string;
 
@@ -10,11 +11,8 @@ interface SystemMessageListProp {
 
 const SystemMessageList  = () => {
 
-  const BL: SystemMessageListProp[] = [
-    { type: 'warning', description: 'Test1'},
-    { type: 'info', description: 'Test2'},
-    { type: 'notice', description: 'Test3'}
-  ];
+  const BL: Promise<SystemMessageListProp> = getSystemMessages();
+ // const message: SystemMessageListProp = getSystemMessage();
 
   const [count, setCount] = useState(0);
 
