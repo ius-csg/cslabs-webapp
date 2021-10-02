@@ -1,4 +1,4 @@
-import {Button, Modal, ModalBody, ModalFooter, Table} from 'react-bootstrap';
+import {Button, Form, InputGroup, Modal, ModalBody, ModalFooter, Table} from 'react-bootstrap';
 import React, {useState} from 'react';
 import {Role, User} from '../../types/User';
 import {changeUserRole, getCurrentUserFromServer, getUserList} from '../../api';
@@ -13,6 +13,8 @@ import {connect, useDispatch} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
 import {getCurrentUser} from '../../redux/selectors/entities';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faSearch} from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   currentUser: User;
@@ -20,6 +22,7 @@ interface Props {
 
 const UsersPane = (props: Props) => {
   const [users, setUsers] = useState();
+  const [usersToDisplay, setUsersToDisplay] = useState();
   const [loading, setLoading] = useState(true);
   const [updateRequests, setUpdateRequests] = useState<ChangeUserRoleRequest[]>([]);
   const [commitResponseCode, setCommitResponseCode] = useState();
@@ -30,7 +33,9 @@ const UsersPane = (props: Props) => {
   const dispatch = useDispatch();
 
   useMount(async () => {
-    setUsers(await getUserList());
+    const userList = await getUserList();
+    setUsers(userList);
+    setUsersToDisplay(userList);
     setLoading(false);
   });
 
@@ -143,12 +148,37 @@ const UsersPane = (props: Props) => {
     }
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.currentTarget.value) {
+      const foundUsers: User[] = [];
+      users.map((u: User) => {
+        const regex = new RegExp(`${u.firstName}|${u.lastName}|${u.email}|${u.role}`, 'ig');
+        if (event.currentTarget.value.search(regex) >= 0) {
+          foundUsers.push(u);
+        }
+      });
+      setUsersToDisplay(foundUsers);
+    }
+    else {
+      setUsersToDisplay(users);
+    }
+  };
+
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
     <div>
       <ConfirmRoleChange/>
       <div style={{textAlign: 'right', padding: '10px 20px'}}>
         <CommitStatus/>
-        <Button variant={'outline-primary'} onClick={commitUsers}>Save</Button>
+        <Button style={{marginBottom: '10px'}} variant={'outline-primary'} onClick={commitUsers}>Save</Button>
+      <InputGroup>
+        <Form.Control
+          onChange={handleSearch}
+          placeholder={'Search'}
+          aria-label={'Search Users'}
+          aria-describedby={'search-users'}
+        />
+        <InputGroup.Text id={'search-users'}><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
+      </InputGroup>
       </div>
       <Table striped={true} bordered={true} hover={true}>
         <thead style={{backgroundColor: '#adb5bd'}}>
@@ -159,7 +189,7 @@ const UsersPane = (props: Props) => {
         </tr>
         </thead>
         <tbody>
-        {users.map((u: User) => (
+        {usersToDisplay.map((u: User) => (
           <UserListItem key={u.id} user={u} onRoleChange={handleRoleChange}/>
         ))}
         </tbody>
