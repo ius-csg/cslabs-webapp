@@ -3,6 +3,7 @@ import switchSVG from '../../assets/icons/switch.svg';
 import longSwitchSVG from '../../assets/icons/switch-48port.svg';
 import changeSelected from '../../redux/actions/changeGUI';
 import {useDispatch, useSelector} from 'react-redux';
+import styles from './SwitchNode.module.scss';
 
 const SwitchNode = ({id, inputs, outputs}: any) => {
 
@@ -24,40 +25,37 @@ const SwitchNode = ({id, inputs, outputs}: any) => {
 
   return (
     <div
-      style={id === selectedNode.selectedID ? {
-        border: '3px solid #ABDEF6',
-        borderRadius: '5px',
-        cursor: 'default'
-      } : {cursor: 'default'}}
+      className={id === selectedNode.selectedID ?
+        styles.selected : styles.unselected}
     >
       <div onContextMenu={handleSelect} onClick={handleSelect}>
         {outputs.length >= 8 &&
-        <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}}>
-          <div style={{display: 'flex', alignSelf: 'start'}}>
+        <div className={styles.switchContainer}>
+          <div className={styles.portContainer}>
             {generatePorts(inputs).slice(inputs.length / 2, inputs.length)}
           </div>
-          <div style={{display: 'flex', alignSelf: 'start'}}>
+          <div className={styles.portContainer}>
             {generatePorts(inputs).slice(0, inputs.length / 2)}
           </div>
           {(outputs.length + inputs.length) >= 24
             ?
-            <img src={longSwitchSVG} alt='Switch' draggable={false} style={{height: '55px', pointerEvents: 'none'}}/>
-            : <img src={switchSVG} alt='Switch' draggable={false} style={{height: '55px', pointerEvents: 'none'}}/>}
-          <div style={{display: 'flex', alignSelf: 'start'}}>
+            <img src={longSwitchSVG} alt='Switch' draggable={false} className={styles.switchImage}/>
+            : <img src={switchSVG} alt='Switch' draggable={false} className={styles.switchImage}/>}
+          <div className={styles.portContainer}>
             {generatePorts(outputs).slice(outputs.length / 2, outputs.length)}
           </div>
-          <div style={{display: 'flex', alignSelf: 'start'}}>
+          <div className={styles.portContainer}>
             {generatePorts(outputs).slice(0, outputs.length / 2)}
           </div>
         </div>
         }
         {outputs.length < 8 &&
-          <div style={{marginTop: '0px', display: 'flex', flexDirection: 'column'}}>
-            <div style={{display: 'flex', alignSelf: 'start'}}>
+          <div className={styles.switchContainer}>
+            <div className={styles.portContainer}>
               {generatePorts(inputs)}
             </div>
-              <img src={switchSVG} alt='Switch' draggable={false} style={{height: '55px', pointerEvents: 'none'}}/>
-            <div style={{display: 'flex', alignSelf: 'start'}}>
+              <img src={switchSVG} alt='Switch' draggable={false} className={styles.switchImage}/>
+            <div className={styles.portContainer}>
               {generatePorts(outputs)}
             </div>
           </div>

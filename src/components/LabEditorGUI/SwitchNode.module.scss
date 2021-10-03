@@ -1,0 +1,25 @@
+.selected {
+    border: 3px solid #ABDEF6;
+    border-radius: 5px;
+    cursor: default;
+}
+
+.unselected {
+    cursor: default;
+}
+
+.switchContainer {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.portContainer {
+    display: flex;
+    align-self: start;
+}
+
+.switchImage {
+    height: 55px;
+    pointer-events: none;
+}
