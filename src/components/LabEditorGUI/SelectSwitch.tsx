@@ -1,14 +1,14 @@
 import React from 'react';
 // @ts-ignore
-import FivePort from '../../assets/images/LabEditor/FivePortSwitch.PNG';
+import FivePort from '../../assets/images/LabEditor/FivePortSwitch.png';
 // @ts-ignore
-import EightPort from '../../assets/images/LabEditor/EightPortSwitch.PNG';
+import EightPort from '../../assets/images/LabEditor/EightPortSwitch.png';
 // @ts-ignore
-import SixteenPort from '../../assets/images/LabEditor/SixteenPortSwitch.PNG';
+import SixteenPort from '../../assets/images/LabEditor/SixteenPortSwitch.png';
 // @ts-ignore
-import TwentyFourPort from '../../assets/images/LabEditor/Twenty-FourPortSwitch.PNG';
+import TwentyFourPort from '../../assets/images/LabEditor/Twenty-FourPortSwitch.png';
 // @ts-ignore
-import FortyEightPort from '../../assets/images/LabEditor/Forty-EightPortSwitch.PNG';
+import FortyEightPort from '../../assets/images/LabEditor/Forty-EightPortSwitch.png';
 import closeIcon from '../../assets/icons/close.svg';
 import styles from './SelectSwitch.module.scss';
 
