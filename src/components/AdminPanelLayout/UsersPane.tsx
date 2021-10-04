@@ -169,7 +169,6 @@ const UsersPane = (props: Props) => {
       <ConfirmRoleChange/>
       <div style={{textAlign: 'right', padding: '10px 20px'}}>
         <CommitStatus/>
-        <Button style={{marginBottom: '10px'}} variant={'outline-primary'} onClick={commitUsers}>Save</Button>
       <InputGroup>
         <Form.Control
           onChange={handleSearch}
@@ -178,6 +177,7 @@ const UsersPane = (props: Props) => {
           aria-describedby={'search-users'}
         />
         <InputGroup.Text id={'search-users'}><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
+        <Button style={{marginLeft: '10px'}} variant={'outline-primary'} onClick={commitUsers}>Save</Button>
       </InputGroup>
       </div>
       <Table striped={true} bordered={true} hover={true}>
