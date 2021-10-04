@@ -16,7 +16,7 @@ const SwitchNode = ({id, inputs, outputs}: any) => {
     setTimeout(() => dispatch(changeSelected({selectedID: id})), 10);
   };
 
-  function generatePorts(portType: any) {
+  function generatePorts(portType: object[]) {
     return(
     portType.map((port: any) => React.cloneElement(port, {
       style: {height: '10px', width: '10px', background: '#000000', margin: '5px', cursor: 'pointer'}

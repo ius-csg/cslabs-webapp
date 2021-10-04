@@ -47,7 +47,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     newSchemaState = schemaState;
     switch (operation) {
       case 'undo':
-        console.log('undo');
         if (schemaState.past.length > 1) {
           newSchemaState.future.push(_.cloneDeep(schemaState.present));
           newSchemaState.present = _.cloneDeep(newSchemaState.past[newSchemaState.past.length - 1]);
@@ -112,7 +111,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   const dispatch = useDispatch();
 
-  const unSelect = (e: any) => {
+  const unSelect = (e: React.MouseEvent) => {
     if (selectedNode !== 'none' && e.target.toString() !== '[object HTMLInputElement]') {
       dispatch(changeSelected({selectedID: 'none'}));
       if (renameTextBox === true) {
@@ -415,11 +414,11 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   });
 
 
-  const handleInputChange = (event: any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewNodeName(event.target.value);
   };
 
-  const rename = (event: any) => {
+  const rename = (event: React.MouseEvent) => {
     for (const node of schema.nodes) {
       if (((event.clientX - rect.left) >= node.coordinates[0] && (event.clientX - rect.left) - 20 <= node.coordinates[0] + 50)
         && ((event.clientY - rect.top) >= node.coordinates[1] && (event.clientY - rect.top) - 20 <= node.coordinates[1] + 100)) {

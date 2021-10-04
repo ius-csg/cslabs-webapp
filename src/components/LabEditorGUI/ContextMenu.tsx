@@ -1,7 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import './ContextMenu.css';
 
-const ContextMenu = ({parentRef, items}:any) => {
+
+interface ContextContainer {
+  parentRef: React.MutableRefObject<any>;
+  items: object[];
+  schema: any;
+}
+const ContextMenu = ({parentRef, items}: ContextContainer) => {
   const [isVisible, setVisibility ] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
@@ -12,7 +18,7 @@ const ContextMenu = ({parentRef, items}:any) => {
       return;
     }
 
-    const showMenu = (event: any) => {
+    const showMenu = (event: React.MouseEvent) => {
       event.preventDefault();
       setX(event.clientX);
       setY(event.clientY);
@@ -40,7 +46,7 @@ const ContextMenu = ({parentRef, items}:any) => {
 
   return isVisible ?  (
     <div className='context-menu' style={style}>
-      {items.map((item: any, index: any) => {
+      {items.map((item: any, index: number) => {
         return (
           <div
             key={index}

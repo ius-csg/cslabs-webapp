@@ -4,8 +4,13 @@ import VmSVG from '../../assets/icons/computer-desktop.svg';
 import {useDispatch, useSelector} from 'react-redux';
 import changeSelected from '../../redux/actions/changeGUI';
 
+interface NodeParameters {
+  id: string;
+  inputs?: any;
+  content?: any;
+}
 
-const VmNode = ({id, inputs, content}: any) => {
+const VmNode = ({id, inputs, content}: NodeParameters) => {
 
   const selectedNode = useSelector((state: any) => state.gui);
 
