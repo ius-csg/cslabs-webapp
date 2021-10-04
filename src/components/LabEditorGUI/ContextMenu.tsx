@@ -46,17 +46,11 @@ const ContextMenu = ({parentRef, items}: ContextContainer) => {
 
   return isVisible ?  (
     <div className='context-menu' style={style}>
-      {items.map((item: any, index: number) => {
-        return (
-          <div
-            key={index}
-            onClick={item.onClick}
-            className='context-menu__item'
-          >
+      {items.map((item: any, index: any) => (
+          <div key={index} onClick={item.onClick} className='context-menu__item'>
             {item.text}
           </div>
-        );
-      })}
+      ))}
     </div>
   ) : null;
 };
