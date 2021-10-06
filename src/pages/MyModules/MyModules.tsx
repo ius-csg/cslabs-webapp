@@ -1,10 +1,11 @@
-import {CardColumns} from 'react-bootstrap';
+import {CardColumns, Row} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {getUserModules} from '../../api';
 import {Layout} from '../Layout/Layout';
 import {RoutePaths} from '../../router/RoutePaths';
 import {UserModule} from '../../types/UserModule';
+import SearchBar from 'components/SearchBar/SearchBar';
 
 interface MyModulesState {
   modules: UserModule[];
@@ -35,11 +36,21 @@ class MyModules extends React.Component<{}, MyModulesState> {
     );
   }
 
+  loadSearchModules = (arr : UserModule[]) => {
+    console.log(this.state.modules);
+    if (arr.length != 0) {
+        this.setState({modules: arr});
+    }
+  }
+
   render() {
       const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={RoutePaths.userModule.replace(':id', String(m.id))} module={m} key={i}/>);
       return (
         <Layout>
-          <h1>My Modules</h1>
+          <Row className='d-flex justify-content-between mb-4'>
+            <h1>My Modules</h1>
+            <SearchBar showModules={this.loadSearchModules}/>
+          </Row>
           {cards.length === 0 ? this.renderNoModules() : <CardColumns>{cards}</CardColumns>}
         </Layout>
       );
