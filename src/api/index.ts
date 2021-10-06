@@ -89,7 +89,7 @@ export async function getMaintenances() {
 }
 
 export async function getSystemMessages() {
-  return handleResponse(await api.get<SystemMessageListProp>(`/systemMessage`)).data;
+  return (await api.get<SystemMessageListProp[]>(`/system-message`)).data;
 }
 // For getting specific message, creating, deleting and updating from the frontend admin panel
 /*export async function getSystemMessage(id: number) {
