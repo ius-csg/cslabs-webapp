@@ -2,8 +2,18 @@ import React, {useState} from 'react';
 import {Alert} from 'react-bootstrap';
 import styles from './SystemMessageNotification.module.scss';
 
+/*
+export function GetSystemMessageType(type: Props) {
+  if (type.type === 'info') {
+    return 'info';
+  }
+  else if (type.type === 'warning') {
+  return 'warning';
+  }
+  else
+    return 'notice';
 
-
+}*/
 export type SystemMessageNotificationTypes = 'info' | 'warning' | 'notice';
 
 interface Props {
