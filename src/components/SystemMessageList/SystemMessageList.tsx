@@ -4,35 +4,30 @@ import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
 
 
-export interface SystemMessageListProp {
+export interface SystemMessageList {
   type: SystemMessageNotificationTypes;
   description: string;
 
 }
 
-const SystemMessageList  = () => {
+const SystemMessagesList  = () => {
 
-  const [BL, setBL] = useState<SystemMessageListProp[]>([]);
+  const [systemMessageList, setSystemMessageList] = useState<SystemMessageList[]>([]);
 
   const [count, setCount] = useState(0);
 
   useMount(async () => {
-    try {
       const messages = await getSystemMessages();
-      setBL(messages);
-    }
-    catch (e) {
-     console.log('error');
-    }
+      setSystemMessageList(messages);
 
   });
      return (
       <div>
-        {BL[count] ? <SystemMessageNotification onClick={() => setCount(count + 1)} type={BL[count].type} description={BL[count].description} />
+        {systemMessageList[count] ? <SystemMessageNotification onClick={() => setCount(count + 1)} type={systemMessageList[count].type} description={systemMessageList[count].description} />
           : null}
       </div>
     );
 
 };
 
-export default SystemMessageList;
+export default SystemMessagesList;

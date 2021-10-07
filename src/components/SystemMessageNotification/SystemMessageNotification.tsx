@@ -18,7 +18,7 @@ export function SystemMessageNotification (props: Props) {
 
         return show ? (
           <div className={styles['alert-container']}>
-             <Alert className={styles[props.type]} dismissible={true}  onClose={props.onClick}>
+             <Alert className={styles[props.type.toLowerCase()]} dismissible={true}  onClose={props.onClick}>
             <p>{props.description}</p>
           </Alert>
           </div>

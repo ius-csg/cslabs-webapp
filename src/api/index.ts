@@ -12,7 +12,7 @@ import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
 import {Maintenance} from '../types/Maintenance';
-import {SystemMessageListProp} from '../components/SystemMessageList/SystemMessageList';
+import {SystemMessageList} from '../components/SystemMessageList/SystemMessageList';
 
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
@@ -89,7 +89,7 @@ export async function getMaintenances() {
 }
 
 export async function getSystemMessages() {
-  return (await api.get<SystemMessageListProp[]>(`/system-message`)).data;
+  return (await api.get<SystemMessageList[]>(`/system-message`)).data;
 }
 // For getting specific message, creating, deleting and updating from the frontend admin panel
 /*export async function getSystemMessage(id: number) {
