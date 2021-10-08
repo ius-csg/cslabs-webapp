@@ -3,17 +3,17 @@ import {Alert} from 'react-bootstrap';
 import styles from './SystemMessageNotification.module.scss';
 
 
-/*export function getSystemMessageType(type: Props) {
-  if (type.type === 'info') {
-    return 'info';
+export function getSystemMessageType(type: string) {
+  if (type === 'info') {
+    return styles['info'];
   }
-  else if (type.type === 'warning') {
-  return 'warning';
+  else if (type === 'warning') {
+  return styles['warning'];
   }
   else
-    return 'notice';
+    return styles['notice'];
 
-}*/
+}
 
 export type SystemMessageNotificationTypes = 'info' | 'warning' | 'notice';
 
@@ -29,7 +29,7 @@ export function SystemMessageNotification (props: Props) {
 
         return show ? (
           <div className={styles['alert-container']}>
-             <Alert className={styles[props.type.toLowerCase()]} dismissible={true}  onClose={props.onClick}>
+             <Alert className={getSystemMessageType(props.type.toLowerCase())} dismissible={true}  onClose={props.onClick}>
             <p>{props.description}</p>
           </Alert>
           </div>
