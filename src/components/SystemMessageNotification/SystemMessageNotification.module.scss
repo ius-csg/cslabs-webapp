@@ -1,5 +1,11 @@
 @import "../../theme";
 
+.alert-container {
+    color: white;
+    padding-bottom: 2px;
+    margin-bottom: 0px;
+}
+
 .warning {
     border-radius: 0 !important;
     background: #c60909;
@@ -15,14 +21,6 @@
     border-radius: 0 !important;
     background: #3871dc;
 }
-
-
-.alert-container {
-    color: white;
-    padding-bottom: 2px;
-    margin-bottom: 0px;
-}
-
 
 p {
     text-align: center;
