@@ -13,5 +13,6 @@ export const ModuleEditorSchema = object<ModuleForm>({
   userId: number(),
   type: string().oneOf(moduleTypes) as StringSchema<ModuleType>,
   published: boolean(),
-  labs: array()
+  labs: array(),
+  moduleTags: array()
 });

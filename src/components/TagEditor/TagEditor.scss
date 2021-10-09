@@ -1,0 +1,136 @@
+@import '../../theme';
+
+.react-tags__selected-tag {
+    font-size: 1.063rem;
+    font-weight: 400;
+    color: map-get($colors, text-primary);
+}
+
+.react-tags.is-focused {
+    border-color: #B1B1B1;
+}
+
+.react-tags__selected {
+    display: inline;
+}
+
+.react-tags__selected-tag {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0 6px 6px 0;
+    padding: 6px 8px;
+    border: 1px solid #D1D1D1;
+    border-radius: 4px;
+    background: #F1F1F1;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.react-tags__selected-tag:hover,
+.react-tags__selected-tag:focus {
+    border-color: #B1B1B1;
+}
+
+.react-tags__search {
+    position: relative;
+    display: inline-block;
+    padding: 7px 2px;
+    margin-bottom: 6px;
+    max-width: 100%;
+}
+
+.react-tags__suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
+
+.react-tags__suggestions {
+    width: 240px;
+}
+
+.react-tags__suggestions ul {
+    padding: 0;
+    list-style: none;
+    background: white;
+    border: 1px solid #D1D1D1;
+    border-radius: 4px;
+}
+
+.react-tags__suggestions li {
+    border-bottom: 1px solid #D1D1D1;
+    padding: 6px 8px;
+}
+
+.react-tags__suggestions li mark {
+    background: none;
+}
+
+.react-tags__suggestions li:hover {
+    cursor: pointer;
+    background-color: #F1F1F1;
+}
+
+.success {
+    .react-tags {
+        border: 1px solid map-get($colors, success) !important;
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path fill='%2302B875' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: center right calc(0.375em + 0.25rem);
+        background-size: calc(0.75em + 0.5rem) calc(0.75em + 0.5rem);
+    }
+}
+
+.enabled {
+    .react-tags {
+        position: relative;
+        padding: 6px 0 0 6px;
+        border: 1px solid #D1D1D1;
+        border-radius: 4px;
+        cursor: text;
+    }
+
+    .react-tags__selected-tag:after {
+        content: '\2715';
+        color: #AAA;
+        margin-left: 8px;
+    }
+
+    .react-tags__search-input {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: none;
+        font-size: inherit;
+        line-height: inherit;
+    }
+}
+
+.disabled {
+    .react-tags {
+        position: relative;
+        padding: 6px 0 0 6px;
+        border-radius: 4px;
+        background-color: #e9ecef;
+        pointer-events: none;
+        font-size: 1em;
+        line-height: 1.2;
+    }
+
+    .react-tags__selected-tag:after {
+        color: #AAA;
+        margin-left: 8px;
+    }
+
+    .react-tags__search-input {
+        max-width: 0;
+        padding: 0;
+        border: 0;
+    }
+}
+
+
+
+

@@ -16,7 +16,7 @@ import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
 import {getModuleShareLink, ModuleType} from '../../types/Module';
 import {Redirect, RouteComponentProps} from 'react-router';
-import {getModuleForEditor, saveModule} from '../../api';
+import {deleteModuleTags, getModuleForEditor, getTags, saveModule} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {ModuleEditorSchema} from './ModuleEditorSchema';
 import {RoutePaths} from '../../router/RoutePaths';
@@ -24,6 +24,9 @@ import { LinkContainer } from 'react-router-bootstrap';
 import CheckBoxInput from '../../components/util/CheckBoxInput/CheckBoxInput';
 import {LabListEditor} from '../../components/LabListEditor/LabListEditor';
 import {PageTitle} from '../../components/util/PageTitle';
+import {TagEditor} from '../../components/TagEditor/TagEditor';
+import {Tag} from '../../types/Tag';
+import {ModuleTag} from '../../types/ModuleTag';
 
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
@@ -34,6 +37,9 @@ type Props = RouteComponentProps<{ moduleId?: string }>;
 
 export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   const [initialValues, setInitialValues] = useState<ModuleForm>(makeModuleForm());
+  const [moduleTags, setModuleTags] = useState<ModuleTag[]>([]);
+  const [deletedModuleTags, setDeletedModuleTags] = useState<ModuleTag[]>([]);
+  const [tagSuggestions, setTagSuggestions] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = useState(false);
@@ -47,12 +53,16 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   const onSubmit = async (form: ModuleForm, {setErrors}: FormikHelpers<ModuleForm>) => {
     setMessage(undefined);
     try {
+      await deleteModuleTags(deletedModuleTags);
+      form.moduleTags = moduleTags;
       const response = await saveModule(form);
-      setInitialValues(response);
+      setInitialValues(response[0]);
+      setModuleTags(response[0].moduleTags);
+      setDeletedModuleTags([]);
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
       if(!moduleId) {
-        setRedirect(RoutePaths.EditModule.replace(':moduleId', String(response.id)));
+        setRedirect(RoutePaths.EditModule.replace(':moduleId', String(response[0].id)));
       }
     } catch (e) {
       setMessage({message: handleAxiosError(e, {}, setErrors), variant: 'danger', critical: false});
@@ -61,8 +71,23 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
 
   function onCancel() {
     setInitialValues({...initialValues});
+    setModuleTags([...moduleTags, ...deletedModuleTags]);
+    setDeletedModuleTags([]);
     setEditing(false);
     setMessage(undefined);
+  }
+
+  function onAddTag(tag: Tag) {
+    setModuleTags([...moduleTags,{moduleId: Number(moduleId), tagId: (tag.id === 0) ? tag.id : 0, tag: tag}]);
+  }
+
+  function onDeleteTag(i: number) {
+    setDeletedModuleTags(mt => [...mt, ...moduleTags.filter((tag, index) => index === i && tag.tagId !== 0)]);
+    setModuleTags(moduleTags.filter((tag, index) => index !== i));
+  }
+
+  async function onTagInput(input: string) {
+    setTagSuggestions(await getTags(input));
   }
 
   useEffect(() => {
@@ -77,7 +102,9 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
       try {
         setLoading(true);
         setEditing(false);
-        setInitialValues(await getModuleForEditor(Number(moduleId!)));
+        const response = await getModuleForEditor(Number(moduleId!));
+        setInitialValues(response);
+        setModuleTags(response.moduleTags);
         completeLoading();
       } catch (e) {
         setMessage({message: handleAxiosError(e), variant: 'danger', critical: true});
@@ -133,6 +160,16 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
               <Form.Label column={true}>Module Description</Form.Label>
               <Input name={propertyOf<ModuleForm>('description')} placeholder='Description' type='textarea' disabled={!editing}/>
             </Form.Group>
+            <Form.Label column={true}>Tags</Form.Label>
+            <TagEditor
+              tags={moduleTags.map(mt => mt.tag)}
+              tagSuggestions={tagSuggestions}
+              mes={message?.variant}
+              editing={editing}
+              onAdd={onAddTag}
+              onDelete={onDeleteTag}
+              onInput={onTagInput}
+            />
             <hr/>
             <p>
               Once you save your changes you can add and remove labs from this module. Note: Adding or editing a lab will cancel changes on this page
