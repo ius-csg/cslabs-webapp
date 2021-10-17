@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert} from 'react-bootstrap';
 import styles from './SystemMessageNotification.module.scss';
 
@@ -29,7 +29,7 @@ export function SystemMessageNotification (props: Props) {
 
     const [show] = useState(true);
 
-        return show ? (
+          return show ? (
           <div>
              <Alert className={styles['base-alert'] + ' ' + getAlertTypeClass(props.type)} dismissible={true}  onClose={props.onClick}>
             <p>{props.description}</p>
