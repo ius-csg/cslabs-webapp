@@ -1,7 +1,7 @@
 import {CardColumns, Row} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
-import {getUserModules} from '../../api';
+import {getUserModules, searchUserModules} from '../../api';
 import {Layout} from '../Layout/Layout';
 import {RoutePaths} from '../../router/RoutePaths';
 import {UserModule} from '../../types/UserModule';
@@ -36,10 +36,12 @@ class MyModules extends React.Component<{}, MyModulesState> {
     );
   }
 
-  loadSearchModules = (arr : UserModule[]) => {
-    console.log(this.state.modules);
-    if (arr.length != 0) {
-        this.setState({modules: arr});
+  loadSearchModules = async (searchValue: string) => {
+    try {
+      let response = searchValue.length !== 0 ? await searchUserModules(searchValue) : await getUserModules();
+      this.setState({modules: response});
+    } catch (error_msg) {
+      console.error(error_msg);
     }
   }
 

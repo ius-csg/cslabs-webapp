@@ -124,6 +124,9 @@ export async function getUserModules() {
 export async function getUserModule(id: number) {
   return handleResponse( await api.get<UserModule>(`/user-module/${id}`)).data;
 }
+export async function searchUserModules(searchTerm : string) {
+  return handleResponse( await api.get<UserModule[]>(`/user-module/search/${searchTerm}`)).data;
+}
 export async function getEditorsModules() {
   return handleResponse(await api.get<UserModule[]>(`module/modules-editor`)).data;
 }

@@ -2,7 +2,7 @@ import {CardColumns, Row} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {Module} from '../../types/Module';
-import {getPublicModules} from '../../api';
+import {getPublicModules, searchModules} from '../../api';
 import {Layout} from '../Layout/Layout';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {Message} from '../../util/Message';
@@ -35,10 +35,12 @@ class Explore extends React.Component<{}, ExploreState> {
 
   }
 
-  loadSearchModules = (arr : Module[]) => {
-    console.log(this.state.modules);
-    if (arr.length != 0) {
-        this.setState({modules: arr, state: 'success'});
+  loadSearchModules = async (searchValue: string) => {
+    try {
+      let response = searchValue.length !== 0 ? await searchModules(searchValue) : await getPublicModules();
+      this.setState({modules: response, state: 'success'});
+    } catch (_) {
+      this.setState({state: 'error'});
     }
   }
 
