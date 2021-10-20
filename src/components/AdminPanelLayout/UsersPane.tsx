@@ -149,19 +149,12 @@ const UsersPane = (props: Props) => {
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.currentTarget.value) {
-      const foundUsers: User[] = [];
-      users.map((u: User) => {
-        const regex = new RegExp(`${u.firstName}|${u.lastName}|${u.email}|${u.role}`, 'ig');
-        if (event.currentTarget.value.search(regex) >= 0) {
-          foundUsers.push(u);
-        }
-      });
-      setUsersToDisplay(foundUsers);
-    }
-    else {
-      setUsersToDisplay(users);
-    }
+    const searchValue = event.currentTarget.value.toLowerCase().trim();
+    const foundUsers = searchValue ? users.filter((u: User) => {
+      const searchString = `${u.firstName} ${u.lastName} ${u.email} ${u.role}`.toLowerCase();
+      return searchString.indexOf(searchValue) !== -1;
+    }) : users;
+    setUsersToDisplay(foundUsers);
   };
 
   return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
