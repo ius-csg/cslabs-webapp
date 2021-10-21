@@ -1,4 +1,4 @@
-import {Row, Col} from 'react-bootstrap';
+import {CardColumns} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {getUserModules} from '../../api';
@@ -36,11 +36,11 @@ class MyModules extends React.Component<{}, MyModulesState> {
   }
 
   render() {
-      const cards = this.state.modules.map((m, i) => <Col className="col-md-6 col-lg-4"><ModuleCard buttonLink={RoutePaths.userModule.replace(':id', String(m.id))} module={m} key={i}/></Col>);
+      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={RoutePaths.userModule.replace(':id', String(m.id))} module={m} key={i}/>);
       return (
         <Layout>
           <h1>My Modules</h1>
-          {cards.length === 0 ? this.renderNoModules() : <Row className="g-4">{cards}</Row>}
+          {cards.length === 0 ? this.renderNoModules() : <CardColumns>{cards}</CardColumns>}
         </Layout>
       );
   }
