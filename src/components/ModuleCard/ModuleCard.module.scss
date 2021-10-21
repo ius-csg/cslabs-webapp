@@ -10,3 +10,25 @@
 .card-header {
     background-image: url("../../assets/images/TestImage.jpg");
 }
+
+.tag {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-content: flex-start;
+    padding: 0;
+    width: 80%;
+    margin-right: 15px;
+}
+
+.tag li {
+    width: fit-content;
+    height: fit-content;
+    list-style: none;
+    overflow: hidden;
+    border-radius: 5px;
+    border: solid 1px #adb5bd;
+    padding: 3px;
+    margin: 5px 5px 5px 0px;
+    background-color: #f8f9fa;
+}

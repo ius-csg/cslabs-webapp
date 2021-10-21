@@ -1,4 +1,5 @@
 import {TrackableEntity} from './Entity';
+import {ModuleTag} from './ModuleTag';
 
 export interface BaseModule  extends TrackableEntity {
   name: string;
@@ -7,6 +8,7 @@ export interface BaseModule  extends TrackableEntity {
   specialCode: string;
   type: ModuleType;
   userId: number;
+  moduleTags: ModuleTag[];
 }
 
 export interface Module extends BaseModule {
