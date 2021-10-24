@@ -149,10 +149,10 @@ const UsersPane = (props: Props) => {
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchValue = event.currentTarget.value.toLowerCase().trim();
+    const searchValue = event.currentTarget.value.toLowerCase().trim().split(` +`);
     const foundUsers = searchValue ? users.filter((u: User) => {
       const searchString = `${u.firstName} ${u.lastName} ${u.email} ${u.role}`.toLowerCase();
-      return searchString.indexOf(searchValue) !== -1;
+      return searchValue.some((word) => searchString.indexOf(word) !== -1);
     }) : users;
     setUsersToDisplay(foundUsers);
   };
