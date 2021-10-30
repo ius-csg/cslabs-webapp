@@ -21,7 +21,7 @@ import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
-import Contact   from '../pages/Contact/Contact';
+import Contact   from '../pages/Contact/ContactUs';
 import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
