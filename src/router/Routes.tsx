@@ -23,7 +23,7 @@ import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
 import Contact   from '../pages/Contact/Contact';
 import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
-import AdminPage from '../pages/AdminPanel/AdminPanel';
+import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
 import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
 import {AlertNotification} from '../components/Alert/AlertNotification';
