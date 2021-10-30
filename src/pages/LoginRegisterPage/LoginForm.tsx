@@ -4,7 +4,6 @@ import Input from '../../components/util/Input/Input';
 import {LoadingButton} from '../../util/LoadingButton';
 import {Formik} from 'formik';
 import * as React from 'react';
-import {useState} from 'react';
 import {login} from '../../api';
 import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
@@ -20,11 +19,11 @@ type Props = {
 const getFieldName = (prop: keyof LoginFormValues) => prop;
 
 function LoginForm(props: Props) {
-  const [initialValues] = useState<LoginFormValues>({
+  const [initialValues] = React.useState<LoginFormValues>({
     email: '',
     password: ''
   });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const onSubmit = async (values: LoginFormValues) => {
     try {

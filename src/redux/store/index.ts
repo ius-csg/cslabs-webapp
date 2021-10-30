@@ -14,6 +14,7 @@ const configureStore = (initialState?: DeepPartial<WebState>, onReady?: () => vo
   const storeInstance = createStore(
     root,
     initialState,
+    // Code smell on this
     composeEnhancers(applyMiddleware(thunk as ThunkMiddleware<WebState, AnyAction>, routerMiddleware(history)))
   );
   const persistorInstance = persistGlobalStore(storeInstance, onReady);

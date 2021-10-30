@@ -1,11 +1,10 @@
 import * as React from 'react';
-import {Component} from 'react';
 import zxcvbn, {ZXCVBNResult} from 'zxcvbn';
 
 interface PasswordStrengthProps {
   password: string;
 }
-export default class PasswordStrength extends Component<PasswordStrengthProps> {
+export default class PasswordStrength extends React.Component<PasswordStrengthProps> {
   createPasswordLabel(result: ZXCVBNResult) {
     switch (result.score) {
       case 0:

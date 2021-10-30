@@ -9,5 +9,5 @@ export interface ContactUsForm {
 export const ContactUsSchema = object<ContactUsForm>({
   email: string().email('Must be an email').required('Required'),
   message: string().required('Required').min(4, 'Required'),
-  screenshots: object().nullable() as ObjectSchema<FileList>
+  screenshots: object() as ObjectSchema<FileList>
 });

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
 import {Form, Col, Row, Button} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {Formik, FormikHelpers} from 'formik';
@@ -34,12 +33,12 @@ const moduleTypeOptions: DropdownOption<ModuleType>[] = [
 type Props = RouteComponentProps<{ moduleId?: string }>;
 
 export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
-  const [initialValues, setInitialValues] = useState<ModuleForm>(makeModuleForm());
-  const [loading, setLoading] = useState(true);
+  const [initialValues, setInitialValues] = React.useState<ModuleForm>(makeModuleForm());
+  const [loading, setLoading] = React.useState(true);
   const [message, setMessage] = useMessage();
-  const [editing, setEditing] = useState(false);
-  const [redirect, setRedirect] = useState();
-  const [canDisable, setCanDisable] = useState(false);
+  const [editing, setEditing] = React.useState(false);
+  const [redirect, setRedirect] = React.useState();
+  const [canDisable, setCanDisable] = React.useState(false);
 
   function completeLoading() {
     setLoading(false);
@@ -70,7 +69,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setMessage(undefined);
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function LoadModule() {
       setRedirect(undefined);
       if (!moduleId) {
@@ -82,7 +81,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
       try {
         setLoading(true);
         setEditing(false);
-        setInitialValues(await getModuleForEditor(Number(moduleId!)));
+        setInitialValues(await getModuleForEditor(Number(moduleId)));
         completeLoading();
       } catch (e) {
         setMessage({message: handleAxiosError(e), variant: 'danger', critical: true});
@@ -93,7 +92,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     LoadModule();
   }, [moduleId]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (userRole === 'Admin') {
       setCanDisable(true);
     }

@@ -1,6 +1,5 @@
 import React from 'react';
 import {RouteComponentProps} from 'react-router';
-import {Component} from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {
@@ -24,7 +23,7 @@ interface UserModuleState {
   userLabResult?: UserLab;
 }
 
-export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
+export class UserLabPage extends React.Component<UserModuleProps, UserModuleState> {
 
   state: UserModuleState = {statuses: {}, starting: false, errorMessage: ''};
   private interval: any;
@@ -64,7 +63,7 @@ export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
   async startCheckingIfLabIsInitialized() {
     const initialized = this.checkIfLabInitialized();
     if (initialized) {
-      this.initializationInterval = setInterval(async () => await this.checkIfLabInitialized(), 5000);
+      this.initializationInterval = setInterval(async () => this.checkIfLabInitialized(), 5000);
     }
   }
 

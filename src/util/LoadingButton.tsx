@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {Button, ButtonProps, Spinner} from 'react-bootstrap';
-import {SyntheticEvent} from 'react';
 import ReactTooltip from 'react-tooltip';
 
-type onClick = ((e: SyntheticEvent<HTMLButtonElement>) => void) | (() => void) | (() => any);
+type onClick = ((e: React.SyntheticEvent<HTMLButtonElement>) => void) | (() => void) | (() => any);
 
 interface Props {
   loading: boolean;
