@@ -36,11 +36,14 @@ export function VmTemplateUpload({byUrl, reloadVms}: Props) {
     setMessage({message: 'Successfully imported', variant: 'success'});
     reloadVms();
   };
-  const loadingLabel = uploadPercentage === undefined ? '' :
-    (uploadPercentage === 100 ?
-        'Importing Ova File' :
-        (uploadPercentage > 5 ?`${uploadPercentage.toFixed(2)}%` : '')
-    );
+  let loadingLabel = '';
+  if (uploadPercentage) {
+    if (uploadPercentage === 100) {
+      loadingLabel = 'Importing Ova File';
+    } else if (uploadPercentage > 5) {
+      loadingLabel = `${uploadPercentage.toFixed(2)}%`;
+    }
+  }
   const getFieldName = (name: keyof (UploadForm & UploadByUrlForm)) => name;
   const onSubmit = async (form: NamedUpload) => {
     setMessage(undefined);
