@@ -52,13 +52,9 @@
 
 /* Replace jquery ui title bar close icon. */
 .trackpad-wrapper .ui-dialog-titlebar-close {
-   margin-top: -9px;
+  margin-top: -11px;
    border: 0 !important;
    background: none !important;
-}
-
-.trackpad-wrapper .ui-dialog-titlebar-close {
-   margin-top: -11px;
 }
 
 /* Background-image is defined along with touch-sprite in 1 place. */

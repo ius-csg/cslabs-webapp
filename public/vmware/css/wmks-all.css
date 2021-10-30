@@ -166,31 +166,6 @@
 /*
  * jQuery UI Dialog 1.8.16
  */
-.ui-dialog {
-   padding: 0;
-   box-shadow: 0px 5px 7px         rgba(0,0,0,.5);
-}
-
-.ui-dialog .ui-dialog-titlebar {
-   padding: .8em .8em;
-   border-bottom-left-radius: 0;
-   border-bottom-right-radius: 0;
-}
-
-.ui-dialog .ui-dialog-titlebar-close {
-   right: .4em;
-   margin-top: -11px;
-}
-
-.ui-widget-content {
-   border: 0;
-   background: #ffffff;
-   color: #333333;
-}
-
-.ui-widget-header a {
-   color: #333333;
-}
 
 /*
  * Touch sprite is loaded in a single class (as we have disabled caching images).
@@ -207,13 +182,9 @@
 
 /* Replace jquery ui title bar close icon. */
 .trackpad-wrapper .ui-dialog-titlebar-close {
-   margin-top: -9px;
+   margin-top: -11px;
    border: 0 !important;
    background: none !important;
-}
-
-.trackpad-wrapper .ui-dialog-titlebar-close {
-   margin-top: -11px;
 }
 
 /* Background-image is defined along with touch-sprite in 1 place. */
@@ -475,7 +446,7 @@
    height: 57px;
    margin: 6px;
    -moz-border-radius: 6px; -webkit-border-radius: 6px; -khtml-border-radius: 6px; border-radius: 6px;
-   font-family: "HelveticaNeue", "Helvetica Neue", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHeros', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+   font-family: "HelveticaNeue", "Helvetica Neue", 'TeXGyreHeros', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
    font-size: 18px;
    text-shadow: 0 1px 1px #eeeeee;
    -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, .7);
