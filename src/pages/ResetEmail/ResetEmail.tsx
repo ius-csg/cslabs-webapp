@@ -1,19 +1,18 @@
 import * as React from 'react';
-import {Component, FormEvent} from 'react';
 import {Button, Form, Col} from 'react-bootstrap';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 
-export default class ResetEmail extends Component {
+export default class ResetEmail extends React.Component {
   state = {
     email: '',
     currentPass: ''
   };
 
-  onCurrentPasswordChange = (event: FormEvent<HTMLInputElement>) => {
+  onCurrentPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({currentPass: event.currentTarget.value});
   };
 
-  onEmailChange = (event: FormEvent<HTMLInputElement>) => {
+  onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({email: event.currentTarget.value});
   };
 

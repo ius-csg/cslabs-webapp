@@ -21,14 +21,21 @@ import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
-import Contact   from '../pages/Contact/Contact';
+import Contact   from '../pages/Contact/ContactUs';
 import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
-import AdminPage from '../pages/AdminPanel/AdminPanel';
+import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
+import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
+import {AlertNotification} from '../components/Alert/AlertNotification';
+
+
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
       <NavigationBar />
+        <AlertNotification
+          type='info'
+        />
       <Switch>
         <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
         <Route exact={true} path={RoutePaths.explore} component={Explore}/>
@@ -53,6 +60,7 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.contentCreator} component={ModulesEditor}/>
         <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
         <Route component={NotFound} />
+        <Route component={ServiceUnavailable} />
       </Switch>
     </Router>
   </div>
