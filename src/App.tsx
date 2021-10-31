@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as Sentry from '@sentry/browser';
 import Routes from './router/Routes';
 import {CapsLockContextProvider} from './components/CapsLockContext/CapsLockContext';
-// import LabEditorGUI from './pages/LabEditorGUI/LabEditorGUI';
 
 // Configure Sentry
 // Sentry.init({
@@ -30,7 +29,6 @@ class App extends React.Component {
       <CapsLockContextProvider>
         <Routes/>
       </CapsLockContextProvider>
-       // <LabEditorGUI></LabEditorGUI>
     );
   }
 }

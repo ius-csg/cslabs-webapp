@@ -93,10 +93,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   }, [moduleId]);
 
   React.useEffect(() => {
-    if (userRole === 'Admin') {
-      setCanDisable(true);
-    }
-    else if (userRole === 'Creator' && userId === initialValues.ownerId) {
+    if (userRole === 'Admin' || (userRole === 'Creator' && userId === initialValues.ownerId)) {
       setCanDisable(true);
     }
   }, [initialValues]);
