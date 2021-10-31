@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab} from 'react-bootstrap';
+import {Layout} from '../../pages/Layout/Layout';
+import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab, Modal} from 'react-bootstrap';
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
@@ -12,6 +13,8 @@ import {ConsoleWindowContainer} from '../ConsoleWindow/ConsoleWindowContainer';
 import {VmActionsMenu} from '../VmActionsMenu/VmActionsMenu';
 import {VmStatusIndicator} from '../util/VmStatusIndicator/VmStatusIndicator';
 import styles from './LabEnvironment.module.scss';
+import {RoutePaths} from 'router/RoutePaths';
+import {Link} from 'react-router-dom';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -80,6 +83,43 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     const remainingTime = getLuxonObjectFromString(this.state.labEndDateTime!).toLocal().diffNow().as('second');
     return remainingTime > 0 && remainingTime <= 900;
   }
+
+  showExtendButton = () => {
+    // shows a pop up if the lab times up instead of providing an extend option
+    if (getRemainingLabTime(this.state.labEndDateTime) === 'Times up!') {
+      window.setTimeout(() => {
+        window.location.replace(RoutePaths.myModules);
+      }, 15000);
+      return (
+        <Layout>
+        <Modal
+          size='sm'
+          aria-labelledby='contained-modal-title-vcenter'
+          centered={true}
+          show={this.state.disabled}
+          backdrop={'static'}
+        >
+        <Modal.Header>
+          <Modal.Title id='contained-modal-title-vcenter'>
+            Times up!
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Congratulations! You have finished working on this lab.
+            You will be automatically redirected to your modules page after 15 seconds.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Link to={RoutePaths.myModules} className='btn btn-primary'>My Modules</Link>
+        </Modal.Footer>
+        </Modal>
+        </Layout>
+      );
+    } else {
+      return <Button disabled={!this.canEnableExtend()} className='ml-2' onClick={this.handleExtendEndDateTime}>Extend</Button>;
+    }
+  }
   
   isLabAbleToStart() {
     return this.props.userLab.status !== 'Started';
@@ -105,7 +145,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 label='Start Lab'
                 onClick={this.props.onStartLab} 
               /> : <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime!)}
-              <Button disabled={!this.canEnableExtend()} className='ml-2' onClick={this.handleExtendEndDateTime}>Extend</Button></h6>}
+              {this.showExtendButton()}</h6>}
           </Row>
           <Row className='fill-height'>
             <Col sm={4} md={4} lg={2}>
