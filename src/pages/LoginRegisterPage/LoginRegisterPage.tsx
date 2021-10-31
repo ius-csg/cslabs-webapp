@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
 import {Col, Tab, Tabs} from 'react-bootstrap';
 import RegisterForm from './RegisterForm';
 import {Redirect} from 'react-router';
@@ -19,11 +18,11 @@ type LoginProps = ReturnType<typeof mapDispatchToProps> & ReturnType<typeof mapS
 
 export function LoginRegisterPage({authenticated}: LoginProps) {
   const redirectTo= useQuery<{redirectTo: string | undefined}>().redirectTo;
-  const [redirect, setRedirect] = useState<string>('');
-  const [activeTab, setActiveTab] = useState<TabKeys>('Login');
+  const [redirect, setRedirect] = React.useState<string>('');
+  const [activeTab, setActiveTab] = React.useState<TabKeys>('Login');
   const onRedirect = (r: string) => setRedirect(redirectTo ? redirectTo : r);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if(authenticated) { onRedirect(RoutePaths.profile); }
   }, [authenticated]);
 

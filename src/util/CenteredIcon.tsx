@@ -1,11 +1,10 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import * as React from 'react';
-import {CSSProperties} from 'react';
 
 interface CenteredIconProps {
   icon: any;
   className?: string;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
 }
 
 export function CenteredIcon(props: CenteredIconProps) {
