@@ -30,6 +30,7 @@ interface LabEnvironmentState {
   eventKey: string;
   labEndDateTime?: string;
   interval: number;
+  disabled: boolean;
 }
 
 export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmentState> {
@@ -41,18 +42,19 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     show_vm: false,
     eventKey: '#topology',
     labEndDateTime: this.props.userLab.endDateTime!,
-    interval: 0
+    interval: 0,
+    disabled: true
   };
 
   componentDidMount() {
-    this.setLabEndDateTime(this.props.userLab);
+    this.setLabEndDateTimeInterval(this.props.userLab);
   }
 
   componentWillUnmount() {
     window.clearInterval(this.state.interval);
   }
 
-  setLabEndDateTime = (userLab: UserLab) => {
+  setLabEndDateTimeInterval = (userLab: UserLab) => {
     this.state.interval = window.setInterval(() => {
       this.setState({ labEndDateTime: userLab.endDateTime! });
     }, 1000);
@@ -74,24 +76,21 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     this.setState( {eventKey: eventKey});
   };
 
+  canEnableExtend = () => {
+    const remainingTime = getLuxonObjectFromString(this.state.labEndDateTime!).toLocal().diffNow().as('second');
+    return remainingTime > 0 && remainingTime <= 900;
+  }
+  
   isLabAbleToStart() {
     return this.props.userLab.status !== 'Started';
   }
 
-  handleExtendEndDateTime = async (e: any) => {
-    window.clearInterval(this.state.interval);
+  handleExtendEndDateTime = async () => {
     const updatedUserLab = await updateEndDateTime(this.props.userLab.id);
-    this.setLabEndDateTime(updatedUserLab);
+    window.clearInterval(this.state.interval);
+    this.setState({ labEndDateTime: updatedUserLab.endDateTime! });
+    this.setLabEndDateTimeInterval(updatedUserLab);
   };
-
-  showExtendBtn() {
-    let disabled = false;
-    // disable button if there 15 mins or more
-    if (getLuxonObjectFromString(this.state.labEndDateTime!).toLocal().diffNow().as('second') >= 900) {
-      disabled = true;
-    }
-    return <Button disabled={disabled} className="ml-2" onClick={this.handleExtendEndDateTime}>Extend</Button>;;
-  }
 
   render() {
     const { pageNumber, numPages } = this.state;
@@ -106,7 +105,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 label='Start Lab'
                 onClick={this.props.onStartLab} 
               /> : <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime!)}
-              {this.showExtendBtn()}</h6>}
+              <Button disabled={!this.canEnableExtend()} className='ml-2' onClick={this.handleExtendEndDateTime}>Extend</Button></h6>}
           </Row>
           <Row className='fill-height'>
             <Col sm={4} md={4} lg={2}>
@@ -201,4 +200,3 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     );
   }
 }
-
