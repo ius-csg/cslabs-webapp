@@ -22,4 +22,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm i -g yarn
       - run: yarn install
+      - name: Run TSLint
+        run: yarn run lint
       - run: CI='' yarn run build

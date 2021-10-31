@@ -1,18 +1,10 @@
 @import "../../theme";
 
-.warning{
+.warning {
     border-radius: 0 !important;
-    background: #c60909; /*yellow*/
-        /*repeating-linear-gradient(
-            45deg,
-            #c60909,
-            #c60909 10px,
-            #efe903 10px,
-            #efe903 20px
-    );*/
+    background: #c60909; /* yellow */
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     color: white;
-
 }
 
 .notice {
@@ -25,10 +17,9 @@
     border-radius: 0 !important;
     background: #3871dc;
     color: white;
-
 }
 
-/*Each banner type has a different scheme:
+/* Each banner type has a different scheme:
 For Warning:
 banner should be: red4 (cc0000)
 Text should be: white (ffffff)
@@ -39,4 +30,4 @@ Text should be: black (000000)
 
 For Notice:
 banner should be: yellow4 (f1c232)
-Text should be: black (000000)*/
+Text should be: black (000000) */
