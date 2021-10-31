@@ -33,7 +33,6 @@ interface LabEnvironmentState {
   eventKey: string;
   labEndDateTime?: string;
   interval: number;
-  disabled: boolean;
 }
 
 export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmentState> {
@@ -45,8 +44,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     show_vm: false,
     eventKey: '#topology',
     labEndDateTime: this.props.userLab.endDateTime!,
-    interval: 0,
-    disabled: true
+    interval: 0
   };
 
   componentDidMount() {
@@ -55,12 +53,6 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
 
   componentWillUnmount() {
     window.clearInterval(this.state.interval);
-  }
-
-  setLabEndDateTimeInterval = (userLab: UserLab) => {
-    this.state.interval = window.setInterval(() => {
-      this.setState({ labEndDateTime: userLab.endDateTime! });
-    }, 1000);
   }
 
   canGoToPrevPage = () => this.state.pageNumber > 1;
@@ -79,50 +71,14 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     this.setState( {eventKey: eventKey});
   };
 
-  canEnableExtend = () => {
-    const remainingTime = getLuxonObjectFromString(this.state.labEndDateTime!).toLocal().diffNow().as('second');
-    return remainingTime > 0 && remainingTime <= 900;
-  }
-
-  showExtendButton = () => {
-    // shows a pop up if the lab times up instead of providing an extend option
-    if (getRemainingLabTime(this.state.labEndDateTime) === 'Times up!') {
-      window.setTimeout(() => {
-        window.location.replace(RoutePaths.myModules);
-      }, 15000);
-      return (
-        <Layout>
-        <Modal
-          size='sm'
-          aria-labelledby='contained-modal-title-vcenter'
-          centered={true}
-          show={this.state.disabled}
-          backdrop={'static'}
-        >
-        <Modal.Header>
-          <Modal.Title id='contained-modal-title-vcenter'>
-            Times up!
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>
-            Congratulations! You have finished working on this lab.
-            You will be automatically redirected to your modules page after 15 seconds.
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Link to={RoutePaths.myModules} className='btn btn-primary'>My Modules</Link>
-        </Modal.Footer>
-        </Modal>
-        </Layout>
-      );
-    } else {
-      return <Button disabled={!this.canEnableExtend()} className='ml-2' onClick={this.handleExtendEndDateTime}>Extend</Button>;
-    }
-  }
-  
   isLabAbleToStart() {
     return this.props.userLab.status !== 'Started';
+  }
+
+  setLabEndDateTimeInterval = (userLab: UserLab) => {
+    this.state.interval = window.setInterval(() => {
+      this.setState({ labEndDateTime: userLab.endDateTime! });
+    }, 1000);
   }
 
   handleExtendEndDateTime = async () => {
@@ -131,6 +87,46 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     this.setState({ labEndDateTime: updatedUserLab.endDateTime! });
     this.setLabEndDateTimeInterval(updatedUserLab);
   };
+
+  showExtendButton = () => {
+    const remainingLabTime = getLuxonObjectFromString(this.state.labEndDateTime!).toLocal().diffNow().as('second');
+    // shows a pop up if the lab times up instead of providing an extend option
+    if (getRemainingLabTime(this.state.labEndDateTime) === 'Times up!') {
+      window.setTimeout(() => {
+        window.location.replace(RoutePaths.myModules);
+      }, 15000);
+      return (
+        <Layout>
+          <Modal
+            size='sm'
+            aria-labelledby='contained-modal-title-vcenter'
+            centered={true}
+            show={true}
+            backdrop={'static'}
+          >
+            <Modal.Header>
+              <Modal.Title id='contained-modal-title-vcenter'>
+                Times up!
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                Congratulations! You have finished working on this lab.
+                You will be automatically redirected to your modules page after 15 seconds.
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Link to={RoutePaths.myModules} className='btn btn-primary'>My Modules</Link>
+            </Modal.Footer>
+          </Modal>
+        </Layout>
+      );
+    } else if (remainingLabTime > 0 && remainingLabTime <= 900) {      
+      return <Button className='ml-2' onClick={this.handleExtendEndDateTime}>Extend</Button>;
+    } else {
+      return;
+    }
+  }
 
   render() {
     const { pageNumber, numPages } = this.state;
