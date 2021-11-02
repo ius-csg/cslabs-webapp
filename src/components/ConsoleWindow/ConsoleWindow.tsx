@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {ChangeEvent, Component, CSSProperties, RefObject} from 'react';
 import {getClipboardFromEvent, log} from '../../util';
 import {connect, getNewConsoleWindowId} from '../../api/rfb';
 import {UserLabVm} from '../../types/UserLabVm';
@@ -18,31 +17,31 @@ interface ConsoleContainerState {
   pastedText: string;
 }
 
-const fullHeightStyles: CSSProperties = {
+const fullHeightStyles: React.CSSProperties = {
   display: 'flex',
   flex: '1 1 auto',
   flexFlow: 'column'
 };
 
-const consoleWindowStyles: CSSProperties = {
+const consoleWindowStyles: React.CSSProperties = {
   position: 'relative',
   background: 'black',
   border: 'groove',
   ...fullHeightStyles
 };
 
-const wmksConsoleWindowStyles: CSSProperties = {
+const wmksConsoleWindowStyles: React.CSSProperties = {
   flex: '1 1 auto',
   display: 'flex',
   flexDirection: 'column'
 };
 
-class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerState> {
+class ConsoleWindow extends React.Component<ConsoleContainerProps, ConsoleContainerState> {
 
   consoleWindowId: string = '';
   state: ConsoleContainerState = {width: 0, height: 0, pastedText: ''};
-  ref: RefObject<HTMLDivElement>;
-  consoleWindowRef: RefObject<HTMLDivElement>;
+  ref: React.RefObject<HTMLDivElement>;
+  consoleWindowRef: React.RefObject<HTMLDivElement>;
   private resizeEventHandler?: () => void;
   private pasteEventHandler?: (e: any) => boolean;
   private unmounted: boolean = false;
@@ -122,15 +121,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
   async componentDidMount() {
     const div: HTMLDivElement = this.ref.current as HTMLDivElement;
-    // this.setSize(div.offsetWidth, div.offsetHeight, async () => {
-    //   // if (this.props.vm.powerState === VMPowerState.POWERED_ON) {
-    //   //
-    //   // }
-    //
-    // });
     await this.connectVM();
-    // this.resizeEventHandler = () => this.setSize(div.offsetWidth, div.offsetHeight);
-    // div.addEventListener('resize', this.resizeEventHandler);
 
     this.pasteEventHandler = (e: any) => {
       if (this.rfb !== undefined) {
@@ -145,7 +136,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
 
   setSize(parentWidth: number, parentHeight: number, after?: () => void) {
     if (this.rfb) {
-      this.rfb!.get_display().autoscale(parentWidth, parentHeight, false);
+      this.rfb.get_display().autoscale(parentWidth, parentHeight, false);
     }
 
     this.setState({width: parentWidth, height: parentHeight}, after);
@@ -159,7 +150,7 @@ class ConsoleWindow extends Component<ConsoleContainerProps, ConsoleContainerSta
   };
 
   onPastedTextChange = (event: any) =>
-    this.setState({pastedText: (event as ChangeEvent<HTMLInputElement>).currentTarget.value});
+    this.setState({pastedText: (event as React.ChangeEvent<HTMLInputElement>).currentTarget.value});
 
   onClear = () => this.setState({pastedText: ''});
 

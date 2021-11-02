@@ -1,6 +1,6 @@
 import {array, boolean, number, object, string, StringSchema} from 'yup';
 import {ModuleForm} from '../../types/editorTypes';
-import {ModuleType, moduleTypes} from '../../types/Module';
+import {ModuleType} from '../../types/Module';
 
 
 export const ModuleEditorSchema = object<ModuleForm>({
@@ -11,7 +11,7 @@ export const ModuleEditorSchema = object<ModuleForm>({
   createdAt: string().notRequired(),
   id: number(),
   userId: number(),
-  type: string().oneOf(moduleTypes) as StringSchema<ModuleType>,
+  type: string() as StringSchema<ModuleType>,
   published: boolean(),
   labs: array()
 });
