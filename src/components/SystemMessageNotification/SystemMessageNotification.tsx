@@ -21,6 +21,7 @@ export type SystemMessageNotificationTypes = 'info' | 'warning' | 'notice';
 
 interface Props {
   onClick?: () => void;
+  id: number;
   type: SystemMessageNotificationTypes;
   description: string;
 }

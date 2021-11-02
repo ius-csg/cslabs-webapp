@@ -1,20 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {SystemMessageNotification, SystemMessageNotificationTypes} from '../SystemMessageNotification/SystemMessageNotification';
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
 
 
 export interface SystemMessageList {
+  id: number;
   type: SystemMessageNotificationTypes;
   description: string;
 
 }
 
+// Create function for getting and processing id to local storage
+
 const SystemMessagesList  = () => {
 
   const [systemMessageList, setSystemMessageList] = useState<SystemMessageList[]>([]);
 
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState( 0);
 
   useMount(async () => {
       const messages = await getSystemMessages();
@@ -22,19 +25,9 @@ const SystemMessagesList  = () => {
 
   });
 
-  // reference https://blog.bitsrc.io/5-methods-to-persisting-state-between-page-reloads-in-react-8fc9abd3fa2f
-  useEffect(()=> {
-    setCount(JSON.parse(window.localStorage.getItem('count') as string));
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem('count', String(count));
-  }, ['count']);
-
-
      return (
       <div>
-        {systemMessageList[count] ? <SystemMessageNotification onClick={() => setCount(count + 1)} type={systemMessageList[count].type} description={systemMessageList[count].description} />
+        {systemMessageList[count] ? <SystemMessageNotification onClick={() => setCount(count+1)} id={systemMessageList[count].id} type={systemMessageList[count].type} description={systemMessageList[count].description} />
           : null}
       </div>
     );
