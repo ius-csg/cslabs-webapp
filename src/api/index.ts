@@ -117,7 +117,7 @@ export interface ChangeUserRoleRequest {
 }
 
 export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse> {
-  return await api.put('/user/change-role', form);
+  return api.put('/user/change-role', form);
 }
 
 export async function getCurrentUserFromServer() {
