@@ -48,4 +48,5 @@ const SystemMessagesList = () => {
     </div>
   );
 };
+
 export default SystemMessagesList;
