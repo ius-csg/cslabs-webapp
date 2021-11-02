@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
-import {SystemMessageNotification, SystemMessageNotificationTypes} from '../SystemMessageNotification/SystemMessageNotification';
+import React, {useEffect, useState} from 'react';
+import {
+  SystemMessageNotification,
+  SystemMessageNotificationTypes
+} from '../SystemMessageNotification/SystemMessageNotification';
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
 
@@ -11,27 +14,38 @@ export interface SystemMessageList {
 
 }
 
-// Create function for getting and processing id to local storage
-
-const SystemMessagesList  = () => {
+const SystemMessagesList = () => {
 
   const [systemMessageList, setSystemMessageList] = useState<SystemMessageList[]>([]);
 
-  const [count, setCount] = useState( 0);
+  const [dismissedMessage, setDismissedMessage] = useState<string[]>([]);
+
+  useEffect(() => {
+    window.sessionStorage.setItem('dismissedMessage', dismissedMessage.join());
+  }, ['dismissedMessage']);
 
   useMount(async () => {
-      const messages = await getSystemMessages();
-      setSystemMessageList(messages);
-
+    const messages = await getSystemMessages();
+    setSystemMessageList(messages);
+    const verifySessionID = window.sessionStorage.getItem('dismissedMessage').split(',');
+    if (verifySessionID) {
+      setDismissedMessage(verifySessionID);
+    }
   });
 
-     return (
-      <div>
-        {systemMessageList[count] ? <SystemMessageNotification onClick={() => setCount(count+1)} id={systemMessageList[count].id} type={systemMessageList[count].type} description={systemMessageList[count].description} />
-          : null}
-      </div>
-    );
-
+  return (
+    <div>
+      {systemMessageList.map((message: SystemMessageList) => {
+        if (!dismissedMessage.includes(message.id.toString())) {
+          <SystemMessageNotification
+            onClick={() => setDismissedMessage([...dismissedMessage, message.id.toString()])}
+            id={message.id}
+            type={message.type}
+            description={message.description}
+          />;
+        }
+      })}
+    </div>
+  );
 };
-
 export default SystemMessagesList;
