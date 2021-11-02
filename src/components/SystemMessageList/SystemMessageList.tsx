@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  SystemMessageNotification,
-  SystemMessageNotificationTypes
-} from '../SystemMessageNotification/SystemMessageNotification';
+import {SystemMessageNotification, SystemMessageNotificationTypes} from '../SystemMessageNotification/SystemMessageNotification';
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
 
@@ -37,16 +34,20 @@ const SystemMessagesList = () => {
     <div>
       {systemMessageList.map((message: SystemMessageList) => {
         if (!dismissedMessage.includes(message.id.toString())) {
+          return (
           <SystemMessageNotification
             onClick={() => setDismissedMessage([...dismissedMessage, message.id.toString()])}
             id={message.id}
             type={message.type}
             description={message.description}
-          />;
+          />
+          );
+        }
+        else {
+          return null;
         }
       })}
     </div>
   );
 };
-
 export default SystemMessagesList;
