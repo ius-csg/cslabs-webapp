@@ -91,22 +91,6 @@ export async function getMaintenances() {
 export async function getSystemMessages() {
   return (await api.get<SystemMessageList[]>(`/system-message`)).data;
 }
-// For getting specific message, creating, deleting and updating from the frontend admin panel
-/*export async function getSystemMessage(id: number) {
-  return handleResponse(await api.get<SystemMessageListProp>(`/SystemMessage/${id}`)).data;
-}
-
-export async function deleteSystemMessage(id: number) {
-  return await api.delete<SystemMessageListProp>(`/SystemMessage/${id}`);
-}
-
-export async function SystemMessage(type: string, description: string) {
-  return await api.post<SystemMessageListProp>('/SystemMessage', {type: type, description: description});
-}
-
-export async function updateSystemMessage(id: number, description: string) {
-  return await api.put<SystemMessageListProp>(`/SystemMessage/${id}`, {description: description});
-}*/
 
 export async function login(email: string, password: string): Promise<AxiosResponse<UserWithToken>> {
   const resp = await api.post<UserWithToken>('/user/authenticate', {email: email, password: password });
