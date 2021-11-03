@@ -24,7 +24,7 @@ const SystemMessagesList = () => {
   useMount(async () => {
     const messages = await getSystemMessages();
     setSystemMessageList(messages);
-    const verifySessionID = window.sessionStorage.getItem ? ('dismissedMessage').split(',') : null;
+    const verifySessionID = window.localStorage.getItem ? ('dismissedMessage').split(',') : null;
     if (verifySessionID) {
       setDismissedMessage(verifySessionID);
     }
