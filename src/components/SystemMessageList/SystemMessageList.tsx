@@ -36,6 +36,7 @@ const SystemMessagesList = () => {
         if (!dismissedMessage.includes(message.id.toString())) {
           return (
           <SystemMessageNotification
+            key={message.id}
             onClick={() => setDismissedMessage([...dismissedMessage, message.id.toString()])}
             id={message.id}
             type={message.type}
