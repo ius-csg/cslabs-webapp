@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Layout} from '../../pages/Layout/Layout';
-import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab, Modal} from 'react-bootstrap';
+import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab} from 'react-bootstrap';
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
@@ -14,7 +13,7 @@ import {VmActionsMenu} from '../VmActionsMenu/VmActionsMenu';
 import {VmStatusIndicator} from '../util/VmStatusIndicator/VmStatusIndicator';
 import styles from './LabEnvironment.module.scss';
 import {RoutePaths} from 'router/RoutePaths';
-import {Link} from 'react-router-dom';
+import Popup from '../util/Popup';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -81,7 +80,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     }, 1000);
   }
 
-  handleExtendEndDateTime = async () => {
+  onExtendEndDateTime = async () => {
     const updatedUserLab = await updateEndDateTime(this.props.userLab.id);
     window.clearInterval(this.state.interval);
     this.setState({ labEndDateTime: updatedUserLab.endDateTime! });
@@ -92,37 +91,27 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     const remainingLabTime = getLuxonObjectFromString(this.state.labEndDateTime!).toLocal().diffNow().as('second');
     // shows a pop up if the lab times up instead of providing an extend option
     if (getRemainingLabTime(this.state.labEndDateTime) === 'Times up!') {
-      window.setTimeout(() => {
+      const handler = window.setTimeout(() => {
         window.location.replace(RoutePaths.myModules);
       }, 15000);
+
+      const onModuleRedirect = () => {
+        window.clearTimeout(handler);
+        window.location.replace(RoutePaths.myModules);
+      };
       return (
-        <Layout>
-          <Modal
-            size='sm'
-            aria-labelledby='contained-modal-title-vcenter'
-            centered={true}
-            show={true}
-            backdrop={'static'}
-          >
-            <Modal.Header>
-              <Modal.Title id='contained-modal-title-vcenter'>
-                Times up!
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <p>
-                Congratulations! You have finished working on this lab.
-                You will be automatically redirected to your modules page after 15 seconds.
-              </p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Link to={RoutePaths.myModules} className='btn btn-primary'>My Modules</Link>
-            </Modal.Footer>
-          </Modal>
-        </Layout>
+        <Popup
+          id='times-up' 
+          title='Times up!'
+          description='Congratulations! You have finished working on this lab.
+            You will be automatically redirected to your modules page after 15 seconds.'
+          rightButton={<Button onClick={onModuleRedirect} className='btn btn-primary'>My Modules</Button>}
+          size='sm'
+          display={true}
+        />
       );
     } else if (remainingLabTime > 0 && remainingLabTime <= 900) {      
-      return <Button className='ml-2' onClick={this.handleExtendEndDateTime}>Extend</Button>;
+      return <Button className='ml-2' onClick={this.onExtendEndDateTime}>Extend</Button>;
     } else {
       return;
     }
