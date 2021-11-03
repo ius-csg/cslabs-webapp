@@ -23,9 +23,8 @@ const ServiceUnavailable = () => {
         <h2>Service Unavailable</h2>
         {maintenance ?
           <ServiceMessage
-            isMaintenanceMode={maintenance.isMaintenanceMode}
-            isRestorationTimeKnown={maintenance.isRestorationTimeKnown}
-            restorationTime={maintenance.restorationTime}
+            startTime={maintenance.startTime}
+            endTime={maintenance.endTime}
           />
           : <div>Sorry, our servers are unavailable at the moment. We are actively working to get them back up as soon as possible.</div>}
         <div>For more information, please contact your local CSG administrator</div>

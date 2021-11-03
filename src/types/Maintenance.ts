@@ -1,5 +1,6 @@
+import {DateTime} from 'luxon';
+
 export interface Maintenance {
-  isMaintenanceMode?: boolean;
-  isRestorationTimeKnown?: boolean;
-  restorationTime?: number;
+  startTime?: DateTime;
+  endTime?: DateTime;
 }
