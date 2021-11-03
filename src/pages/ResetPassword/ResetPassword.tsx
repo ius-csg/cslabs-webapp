@@ -3,7 +3,6 @@ import { Form, Col, Alert, Row} from 'react-bootstrap';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
 import {object, string} from 'yup';
-import {useState} from 'react';
 import {handleAxiosError, makeMessageState} from '../../util';
 import {submitChangePasswordRequest} from '../../api';
 import {Formik} from 'formik';
@@ -27,8 +26,8 @@ const ChangePasswordRequestSchema = object<ChangePasswordRequestForm>({
 const getFieldName = (prop: keyof ChangePasswordRequestForm) => prop;
 
 export default function ResetPassword(){
-    const [messageState, setMessageState] = useState(makeMessageState());
-    const [initialState] = useState<ChangePasswordRequestForm>({currentPassword: '', newPassword: '', confirmPassword: ''});
+    const [messageState, setMessageState] = React.useState(makeMessageState());
+    const [initialState] = React.useState<ChangePasswordRequestForm>({currentPassword: '', newPassword: '', confirmPassword: ''});
 
     const onSubmit = async (form: ChangePasswordRequestForm) => {
       setMessageState({...messageState, message: ''});

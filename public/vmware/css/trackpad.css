@@ -52,13 +52,9 @@
 
 /* Replace jquery ui title bar close icon. */
 .trackpad-wrapper .ui-dialog-titlebar-close {
-   margin-top: -9px;
+  margin-top: -11px;
    border: 0 !important;
    background: none !important;
-}
-
-.trackpad-wrapper .ui-dialog-titlebar-close {
-   margin-top: -11px;
 }
 
 /* Background-image is defined along with touch-sprite in 1 place. */
@@ -102,7 +98,7 @@
    background: -webkit-linear-gradient(top, rgba(175,176,187,.93) 0%,rgba(170,171,182,.93) 100%); /* Chrome10+,Safari5.1+ */
    background: -o-linear-gradient(top, rgba(175,176,187,.93) 0%,rgba(170,171,182,.93) 100%); /* Opera 11.10+ */
    background: -ms-linear-gradient(top, rgba(175,176,187,.93) 0%,rgba(170,171,182,.93) 100%); /* IE10+ */
-   background: linear-gradient(top, rgba(175,176,187,.93) 0%,rgba(170,171,182,.93) 100%); /* W3C */
+   background: linear-gradient(to top, rgba(175,176,187,.93) 0%,rgba(170,171,182,.93) 100%); /* W3C */
    border-top-left-radius: 5px;
    border-top-right-radius: 5px;
 }
@@ -116,7 +112,7 @@
    background: -webkit-linear-gradient(top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* Chrome10+,Safari5.1+ */
    background: -o-linear-gradient(top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* Opera 11.10+ */
    background: -ms-linear-gradient(top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* IE10+ */
-   background: linear-gradient(top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* W3C */
+   background: linear-gradient(to top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* W3C */
    margin-top: -1px;
    float: left;
    width: 12px;
@@ -142,7 +138,7 @@
    background: -webkit-linear-gradient(top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* Chrome10+,Safari5.1+ */
    background: -o-linear-gradient(top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* Opera 11.10+ */
    background: -ms-linear-gradient(top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* IE10+ */
-   background: linear-gradient(top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* W3C */
+   background: linear-gradient(to top, rgba(170,171,182,.93) 0%,rgba(123,123,133,.93) 100%); /* W3C */
    margin-top: -1px;
    float: left;
    width: 12px;
@@ -155,7 +151,7 @@
    background: -webkit-linear-gradient(top, rgba(123,123,133,.93) 0%,rgba(110,110,119,.93) 100%); /* Chrome10+,Safari5.1+ */
    background: -o-linear-gradient(top, rgba(123,123,133,.93) 0%,rgba(110,110,119,.93) 100%); /* Opera 11.10+ */
    background: -ms-linear-gradient(top, rgba(123,123,133,.93) 0%,rgba(110,110,119,.93) 100%); /* IE10+ */
-   background: linear-gradient(top, rgba(123,123,133,.93) 0%,rgba(110,110,119,.93) 100%); /* W3C */
+   background: linear-gradient(to top, rgba(123,123,133,.93) 0%,rgba(110,110,119,.93) 100%); /* W3C */
    width: 289px;
    height: 73px;
    margin-top: 208px;
@@ -167,7 +163,7 @@
    background: -webkit-linear-gradient(top, rgba(255,255,255,.7) 0%,rgba(225,225,227,.7) 3%,rgba(204,204,204,.7) 45%,rgba(190,190,195,.7) 96%,rgba(131,131,135,.7) 100%); /* Chrome10+,Safari5.1+ */
    background: -o-linear-gradient(top, rgba(255,255,255,.7) 0%,rgba(225,225,227,.7) 3%,rgba(204,204,204,.7) 45%,rgba(190,190,195,.7) 96%,rgba(131,131,135,.7) 100%); /* Opera 11.10+ */
    background: -ms-linear-gradient(top, rgba(255,255,255,.7) 0%,rgba(225,225,227,.7) 3%,rgba(204,204,204,.7) 45%,rgba(190,190,195,.7) 96%,rgba(131,131,135,.7) 100%); /* IE10+ */
-   background: linear-gradient(top, rgba(255,255,255,.7) 0%,rgba(225,225,227,.7) 3%,rgba(204,204,204,.7) 45%,rgba(190,190,195,.7) 96%,rgba(131,131,135,.7) 100%); /* W3C */
+   background: linear-gradient(to top, rgba(255,255,255,.7) 0%,rgba(225,225,227,.7) 3%,rgba(204,204,204,.7) 45%,rgba(190,190,195,.7) 96%,rgba(131,131,135,.7) 100%); /* W3C */
    border-radius: 6px;
    box-shadow: 0 2px 5px #333;
    float: left;
@@ -188,5 +184,5 @@
    background: -webkit-linear-gradient(top, rgba(170,171,182,.7) 0%,rgba(123,123,133,.7) 100%); /* Chrome10+,Safari5.1+ */
    background: -o-linear-gradient(top, rgba(170,171,182,.7) 0%,rgba(123,123,133,.7) 100%); /* Opera 11.10+ */
    background: -ms-linear-gradient(top, rgba(170,171,182,.7) 0%,rgba(123,123,133,.7) 100%); /* IE10+ */
-   background: linear-gradient(top, rgba(170,171,182,.7) 0%,rgba(123,123,133,.7) 100%); /* W3C */
+   background: linear-gradient(to top, rgba(170,171,182,.7) 0%,rgba(123,123,133,.7) 100%); /* W3C */
 }
