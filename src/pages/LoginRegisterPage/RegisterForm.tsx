@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import React from 'react';
 import {Alert, Form} from 'react-bootstrap';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
@@ -22,7 +21,7 @@ type Props  = {
 const getFieldName = (prop: keyof RegisterFormValues) => prop;
 
 function RegisterForm(props: Props) {
-  const [initialValues] = useState<RegisterFormValues>({
+  const [initialValues] = React.useState<RegisterFormValues>({
     firstName: '',
     lastName: '',
     email: '',
@@ -32,7 +31,7 @@ function RegisterForm(props: Props) {
     password: '',
     acceptedTerms: '' as any
   });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const onSubmit = async (values: RegisterFormValues) => {
     try {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useState} from 'react';
 import {Form, Col, ProgressBar, Row} from 'react-bootstrap';
 import {Formik} from 'formik';
 import Input from '../../components/util/Input/Input';
@@ -20,12 +19,12 @@ import {Message} from '../../util/Message';
 
 type Props = {byUrl: boolean; reloadVms: () => void};
 export function VmTemplateUpload({byUrl, reloadVms}: Props) {
-  const [initialValues, setInitialValues] = useState(getInitialUploadValues(byUrl));
-  const [uploadPercentage, setUploadPercentage] = useState<number|undefined>(undefined);
+  const [initialValues, setInitialValues] = React.useState(getInitialUploadValues(byUrl));
+  const [uploadPercentage, setUploadPercentage] = React.useState<number|undefined>(undefined);
   const uploading = uploadPercentage !== undefined;
   const [message, setMessage] = useMessage();
   const setError = (msg: string) => setMessage({message: msg, variant: 'danger'});
-  const [byUrlRequestId, setByUrlRequestId] = useState<string | undefined>();
+  const [byUrlRequestId, setByUrlRequestId] = React.useState<string | undefined>();
   function clearForm()  {
     setInitialValues({} as any);
     setInitialValues(getInitialUploadValues(byUrl));
@@ -37,11 +36,14 @@ export function VmTemplateUpload({byUrl, reloadVms}: Props) {
     setMessage({message: 'Successfully imported', variant: 'success'});
     reloadVms();
   };
-  const loadingLabel = uploadPercentage === undefined ? '' :
-    (uploadPercentage === 100 ?
-        'Importing Ova File' :
-        (uploadPercentage! > 5 ?`${uploadPercentage.toFixed(2)}%` : '')
-    );
+  let loadingLabel = '';
+  if (uploadPercentage) {
+    if (uploadPercentage === 100) {
+      loadingLabel = 'Importing Ova File';
+    } else if (uploadPercentage > 5) {
+      loadingLabel = `${uploadPercentage.toFixed(2)}%`;
+    }
+  }
   const getFieldName = (name: keyof (UploadForm & UploadByUrlForm)) => name;
   const onSubmit = async (form: NamedUpload) => {
     setMessage(undefined);
@@ -62,7 +64,7 @@ export function VmTemplateUpload({byUrl, reloadVms}: Props) {
 
   useInterval(async () => {
     try {
-      const status = await getUploadProgress(byUrlRequestId!);
+      const status = await getUploadProgress(byUrlRequestId as string);
       setUploadPercentage(status.progress);
       if(status.status === 'Complete') {
         onImportComplete();
