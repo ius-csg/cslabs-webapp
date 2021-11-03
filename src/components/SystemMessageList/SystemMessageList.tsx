@@ -18,7 +18,7 @@ const SystemMessagesList = () => {
   const [dismissedMessage, setDismissedMessage] = useState<string[]>([]);
 
   useEffect(() => {
-    window.sessionStorage.setItem('dismissedMessage', dismissedMessage.join());
+    window.localStorage.setItem('dismissedMessage', dismissedMessage.join(','));
   }, ['dismissedMessage']);
 
   useMount(async () => {
