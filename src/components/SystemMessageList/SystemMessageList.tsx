@@ -17,8 +17,11 @@ const SystemMessagesList = () => {
 
   const [dismissedMessage, setDismissedMessage] = useState<string[]>([]);
 
+ const  [currentMessage, setCurrentMessage] = useState<SystemMessageList>();
+
   useEffect(() => {
-    window.localStorage.setItem('dismissedMessage', dismissedMessage.join(','));
+    setCurrentMessage(systemMessageList.find((message: SystemMessageList) => !dismissedMessage.includes(message.id.toString())));
+    window.sessionStorage.setItem('dismissedMessage', dismissedMessage.join());
   }, ['dismissedMessage']);
 
   useMount(async () => {
@@ -28,26 +31,20 @@ const SystemMessagesList = () => {
     if (verifySessionID) {
       setDismissedMessage(verifySessionID);
     }
+    setCurrentMessage(systemMessageList.find((message2: SystemMessageList) => !verifySessionID ?.includes(message2.id.toString()), null));
   });
 
   return (
     <div>
-      {systemMessageList.map((message: SystemMessageList) => {
-        if (!dismissedMessage.includes(message.id.toString())) {
-          return (
+      {
           <SystemMessageNotification
-            key={message.id}
-            onClick={() => setDismissedMessage([...dismissedMessage, message.id.toString()])}
-            id={message.id}
-            type={message.type}
-            description={message.description}
+            key={currentMessage.id}
+            onClick={() => setDismissedMessage([...dismissedMessage, currentMessage.id.toString()])}
+            id={currentMessage.id}
+            type={currentMessage.type}
+            description={currentMessage.description}
           />
-          );
         }
-        else {
-          return null;
-        }
-      })}
     </div>
   );
 };
