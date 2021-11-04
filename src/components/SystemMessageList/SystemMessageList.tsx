@@ -18,18 +18,29 @@ const SystemMessagesList = () => {
   const [currentMessage, setCurrentMessage] = useState<SystemMessageList>();
 
   useEffect(() => {
-    setCurrentMessage(systemMessageList.find((message: SystemMessageList) => !dismissedMessage.includes(message.id.toString())));
-    window.sessionStorage.setItem('dismissedMessage', dismissedMessage.join());
+    setCurrentMessage(systemMessageList.find(message => !dismissedMessage.includes(message.id.toString())));
+    window.localStorage.setItem('dismissedMessage', dismissedMessage.join());
   }, [dismissedMessage]);
+
+  useEffect(() => {
+    // tslint:disable:no-console
+    // console.log(systemMessageList);
+    // console.log(dismissedMessage);
+    // console.log(currentMessage);
+  });
 
   useMount(async () => {
     const messages = await getSystemMessages();
     setSystemMessageList(messages);
-    const verifySessionID = window.localStorage.getItem ? ('dismissedMessage').split(',') : null;
-    if (verifySessionID) {
-      setDismissedMessage(verifySessionID);
+    const localStorageItem = window.localStorage.getItem('dismissedMessage');
+    if (localStorageItem) {
+      const localStorageArray = localStorageItem.split(',');
+      setDismissedMessage(localStorageArray);
+      setCurrentMessage(messages.find(message => !localStorageArray.includes(message.id.toString())));
     }
-    setCurrentMessage(systemMessageList.find((message2: SystemMessageList) => !verifySessionID ?.includes(message2.id.toString()), null));
+    else {
+      setCurrentMessage(messages[0]);
+    }
   });
 
   return (
