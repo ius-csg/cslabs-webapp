@@ -3,7 +3,6 @@ import {SystemMessageNotification, SystemMessageNotificationTypes} from '../Syst
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
 
-
 export interface SystemMessageList {
   id: number;
   type: SystemMessageNotificationTypes;
