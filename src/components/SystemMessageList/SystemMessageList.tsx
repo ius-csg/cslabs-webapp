@@ -16,11 +16,11 @@ const SystemMessagesList = () => {
   const [dismissedMessage, setDismissedMessage] = useState<string[]>([]);
   const [currentMessage, setCurrentMessage] = useState<SystemMessageList>();
 
-  useEffect(() => {// when component mountes this is called.
+  useEffect(() => {// when component mounts this is called.
     // Finds current messages that are not contained in the local storage
     setCurrentMessage(systemMessageList.find(message => !dismissedMessage.includes(message.id.toString())));
 
-    // Check dismissed message state if contains items before overwrinting the local item storage with the it.
+    // Check dismissed message state if contains items before overwriting the local item storage with the it.
     if (dismissedMessage.length > 0) {
       window.localStorage.setItem('dismissedMessage', dismissedMessage.join());
     }
