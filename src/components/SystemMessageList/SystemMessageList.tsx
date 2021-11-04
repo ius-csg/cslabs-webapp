@@ -14,10 +14,8 @@ export interface SystemMessageList {
 const SystemMessagesList = () => {
 
   const [systemMessageList, setSystemMessageList] = useState<SystemMessageList[]>([]);
-
   const [dismissedMessage, setDismissedMessage] = useState<string[]>([]);
-
- const  [currentMessage, setCurrentMessage] = useState<SystemMessageList>();
+  const [currentMessage, setCurrentMessage] = useState<SystemMessageList>();
 
   useEffect(() => {
     setCurrentMessage(systemMessageList.find((message: SystemMessageList) => !dismissedMessage.includes(message.id.toString())));
@@ -36,15 +34,13 @@ const SystemMessagesList = () => {
 
   return (
     <div>
-      {
-          <SystemMessageNotification
-            key={currentMessage.id}
-            onClick={() => setDismissedMessage([...dismissedMessage, currentMessage.id.toString()])}
-            id={currentMessage.id}
-            type={currentMessage.type}
-            description={currentMessage.description}
-          />
-        }
+      {currentMessage ? <SystemMessageNotification
+        key={currentMessage.id}
+        onClick={() => setDismissedMessage([...dismissedMessage, currentMessage.id.toString()])}
+        id={currentMessage.id}
+        type={currentMessage.type}
+        description={currentMessage.description}
+      /> : null}
     </div>
   );
 };
