@@ -19,15 +19,10 @@ const SystemMessagesList = () => {
 
   useEffect(() => {
     setCurrentMessage(systemMessageList.find(message => !dismissedMessage.includes(message.id.toString())));
-    window.localStorage.setItem('dismissedMessage', dismissedMessage.join());
+    if (dismissedMessage.length > 0) {
+      window.localStorage.setItem('dismissedMessage', dismissedMessage.join());
+    }
   }, [dismissedMessage]);
-
-  useEffect(() => {
-    // tslint:disable:no-console
-    // console.log(systemMessageList);
-    // console.log(dismissedMessage);
-    // console.log(currentMessage);
-  });
 
   useMount(async () => {
     const messages = await getSystemMessages();
