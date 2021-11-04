@@ -20,7 +20,7 @@ const SystemMessagesList = () => {
   useEffect(() => {
     setCurrentMessage(systemMessageList.find((message: SystemMessageList) => !dismissedMessage.includes(message.id.toString())));
     window.sessionStorage.setItem('dismissedMessage', dismissedMessage.join());
-  }, ['dismissedMessage']);
+  }, [dismissedMessage]);
 
   useMount(async () => {
     const messages = await getSystemMessages();
