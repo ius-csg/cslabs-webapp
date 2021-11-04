@@ -32,7 +32,7 @@ export function SystemMessageNotification (props: Props) {
 
           return show ? (
           <div>
-             <Alert className={styles['base-alert'] + ' ' + getAlertTypeClass(props.type)} dismissible={true}  onClose={props.onClick}>
+             <Alert className={`${styles['base-alert']} ${getAlertTypeClass(props.type)}`} dismissible={true} onClose={props.onClick}>
             <p>{props.description}</p>
           </Alert>
           </div>
