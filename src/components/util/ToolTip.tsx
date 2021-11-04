@@ -1,21 +1,31 @@
 import React from 'react';
-import {Tooltip, OverlayTrigger} from 'react-bootstrap';
+import { Tooltip, OverlayTrigger, Container } from 'react-bootstrap';
 
-const ToolTip = (props: any) => {
-    return (
-    <OverlayTrigger
-      key={props.placement}
-      placement={props.placement}
-      delay={{ show: 100, hide: 250 }}
-      overlay={
-        <Tooltip id={`tooltip-${props.placement}`}>
-          {props.text}
-        </Tooltip>
-      }
-    >
-      {props.tool}
-    </OverlayTrigger>
-    );    
+interface ToolTipProps {
+  key: string;
+  placement: 'auto-start' | 'auto' | 'auto-end'
+  | 'top-start' | 'top' | 'top-end' | 'right-start'
+  | 'right' | 'right-end' | 'bottom-end' | 'bottom'
+  | 'bottom-start' | 'left-end' | 'left' | 'left-start';
+  delay?: { show: number; hide: number };
+  text: string;
+  children: any;
 }
 
-export default ToolTip;
+export default function ToolTip(props: ToolTipProps) {
+  return (
+    <OverlayTrigger
+      key={props.key}
+      placement={props.placement}
+      delay={props.delay}
+      overlay={
+        <Tooltip id={`tooltip-${props.key}`}>
+          {props.text}
+        </Tooltip>}
+    >
+      <Container className='p-0'>
+        {props.children}
+      </Container>
+    </OverlayTrigger>
+  );
+}
