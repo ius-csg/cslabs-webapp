@@ -14,37 +14,28 @@ interface Props {
 }
 
 function renderButton(props: Props) {
-  if (props.disabled) {
+  const innerButton = (
+    <Button disabled={props.loading} variant='primary' type={props.type || 'submit'} className={props.className} onClick={props.onClick}>
+      {props.loading ?
+        <Spinner
+          as='span'
+          animation='border'
+          size='sm'
+          role='status'
+          aria-hidden='true'
+        /> : props.label}
+    </Button>
+  );
+
+  if (props.disabled && props.disabledToolTip) {
     return (<>
       <ReactTooltip place='left' type='dark' effect='solid'/>
       <a data-tip='This lab is currently disabled'>
-        <Button disabled={true} variant='primary' type={props.type || 'submit'} className={props.className} onClick={props.onClick}>
-          { props.loading ?
-            <Spinner
-              as='span'
-              animation='border'
-              size='sm'
-              role='status'
-              aria-hidden='true'
-            /> : props.label}
-        </Button>
+        {innerButton}
       </a>
     </>);
   }
-  else {
-    return (
-      <Button disabled={props.loading} variant='primary' type={props.type || 'submit'} className={props.className} onClick={props.onClick}>
-        { props.loading ?
-          <Spinner
-            as='span'
-            animation='border'
-            size='sm'
-            role='status'
-            aria-hidden='true'
-          /> : props.label}
-      </Button>
-    );
-  }
+  return innerButton;
 }
 
 export const LoadingButton = (props: Props) => (
