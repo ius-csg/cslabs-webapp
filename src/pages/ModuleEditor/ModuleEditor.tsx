@@ -92,11 +92,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     LoadModule();
   }, [moduleId]);
 
-  React.useEffect(() => {
-    if (userRole === 'Admin' || (userRole === 'Creator' && userId === initialValues.ownerId)) {
-      setCanDisable(true);
-    }
-  }, [initialValues]);
+  const canDisable = userRole === 'Admin' || (userRole === 'Creator' &&  user?.id === initialValues.ownerId);
 
   const renderForm = () => (
     <Formik
