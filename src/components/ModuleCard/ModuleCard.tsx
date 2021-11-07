@@ -27,10 +27,7 @@ class ModuleCardComponent extends Component<ModuleCardProps > {
       <Card className={Styles.card}>
         {/*<Card.Img variant='top' src={TestImage}/>*/}
         <Card.Body>
-          {module.disabled
-            ? <Card.Title>{module.name} (disabled)</Card.Title>
-            : <Card.Title>{module.name}</Card.Title>
-          }
+          <Card.Title>{module.name} {(module.disabled ? "(disabled)" : "")}</Card.Title>
           <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden'}}>
             {module.description.substring(0, 150)}
           </Card.Text>
