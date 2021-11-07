@@ -27,13 +27,7 @@ class Explore extends React.Component<{}, ExploreState> {
   async loadModules() {
     try {
       const modules = await getPublicModules();
-      const enabledModules = [];
-      for (const i of modules) {
-        if (!i.disabled) {
-          enabledModules.push(i);
-        }
-      }
-      this.setState({modules: enabledModules, state: 'success'});
+      this.setState({modules: modules.filter(m => !m.disabled), state: 'success'});
     } catch (_) {
       this.setState({state: 'error'});
     }
