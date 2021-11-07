@@ -23,7 +23,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import CheckBoxInput from '../../components/util/CheckBoxInput/CheckBoxInput';
 import {LabListEditor} from '../../components/LabListEditor/LabListEditor';
 import {PageTitle} from '../../components/util/PageTitle';
-import {useSelector} from 'react-redux';
+import {useUser} from '../../redux/selectors/hooks';
 
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
@@ -38,15 +38,13 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = React.useState(false);
   const [redirect, setRedirect] = React.useState();
-  const [canDisable, setCanDisable] = React.useState(false);
 
   function completeLoading() {
     setLoading(false);
     setMessage(undefined);
   }
 
-  const userRole = useSelector((state: any) => state.entities.currentUser.role);
-  const userId = useSelector((state: any) => state.entities.currentUser.id);
+  const user = useUser();
 
   const onSubmit = async (form: ModuleForm, {setErrors}: FormikHelpers<ModuleForm>) => {
     setMessage(undefined);
@@ -92,7 +90,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     LoadModule();
   }, [moduleId]);
 
-  const canDisable = userRole === 'Admin' || (userRole === 'Creator' &&  user?.id === initialValues.ownerId);
+  const canDisable = user?.role === 'Admin' || (user?.role === 'Creator' &&  user?.id === initialValues.ownerId);
 
   const renderForm = () => (
     <Formik
