@@ -15,7 +15,7 @@ interface Props {
 
 function renderButton(props: Props) {
   const innerButton = (
-    <Button disabled={props.loading} variant='primary' type={props.type || 'submit'} className={props.className} onClick={props.onClick}>
+    <Button disabled={props.loading || props.disabled} variant='primary' type={props.type || 'submit'} className={props.className} onClick={props.onClick}>
       {props.loading ?
         <Spinner
           as='span'
@@ -27,7 +27,7 @@ function renderButton(props: Props) {
     </Button>
   );
 
-  if (props.disabled && props.disabledToolTip) {
+  if (props.disabled) {
     return (<>
       <ReactTooltip place='left' type='dark' effect='solid'/>
       <a data-tip='This lab is currently disabled'>
