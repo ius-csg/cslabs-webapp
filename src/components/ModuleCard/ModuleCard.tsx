@@ -17,14 +17,15 @@ interface ModuleCardProps extends ReturnType<typeof mapStateToProps> {
   buttonAction?: () => void;
 }
 interface ModuleCardState {
-  viewTagsEnabled: boolean;
+  viewTags: boolean;
+  viewTagsExpanded: boolean;
 }
 
 class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
 
   constructor(props: ModuleCardProps) {
     super(props);
-    this.state = {viewTagsEnabled: false};
+    this.state = {viewTags: false, viewTagsExpanded: false};
   }
 
   render() {
@@ -37,21 +38,19 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
           {/*<Card.Img variant='top' src={TestImage}/>*/}
           <Card.Body style={{height: 300}}>
             <Card.Title>{module.name}</Card.Title>
-            {!this.state.viewTagsEnabled ?
+            {!this.state.viewTags ?
               <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden'}}>
                 {module.description.substring(0, 150)}
               </Card.Text> : null
             }
             {module.moduleTags.length !== 0 ?
-              <div>
-                <ol className={Styles.tag} style={this.state.viewTagsEnabled ? {height: 225, overflowY: 'auto'} : {height: 85, overflowY: 'hidden'}}>
-                  {module.moduleTags.map(mt => <li key={mt.tag.id}>{mt.tag.name}</li>)}
-                </ol>
+              <div className={Styles.tag} style={this.state.viewTags? {height: 225, overflowY: 'auto'} : {height: 85, overflowY: 'hidden'}}>
+                {module.moduleTags.map(mt => <Button onClick={() => this.setState({viewTagsExpanded: !this.state.viewTagsExpanded})} key={mt.tag.id}>{(this.state.viewTags) ? mt.tag.name : ''}</Button>)}
                 <FontAwesomeIcon
-                  icon={this.state.viewTagsEnabled ? faArrowAltCircleDown : faArrowAltCircleUp}
+                  icon={this.state.viewTags ? faArrowAltCircleDown : faArrowAltCircleUp}
                   size={'2x'}
                   style={{display: 'inline', cursor: 'pointer'}}
-                  onClick={() => {this.setState({viewTagsEnabled: !this.state.viewTagsEnabled});}}
+                  onClick={() => {this.setState({viewTags: !this.state.viewTags});}}
                 />
               </div> : null
             }
