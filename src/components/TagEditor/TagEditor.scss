@@ -1,11 +1,5 @@
 @import '../../theme';
 
-.react-tags__selected-tag {
-    font-size: 1.063rem;
-    font-weight: 400;
-    color: map-get($colors, text-primary);
-}
-
 .react-tags.is-focused {
     border-color: #B1B1B1;
 }
@@ -22,7 +16,9 @@
     border: 1px solid #D1D1D1;
     border-radius: 4px;
     background: #F1F1F1;
-    font-size: inherit;
+    font-size: 1.063rem;
+    font-weight: 400;
+    color: map-get($colors, text-primary);
     line-height: inherit;
 }
 
@@ -44,10 +40,6 @@
     top: 100%;
     left: 0;
     width: 100%;
-}
-
-.react-tags__suggestions {
-    width: 240px;
 }
 
 .react-tags__suggestions ul {
