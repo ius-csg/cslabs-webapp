@@ -12,6 +12,7 @@ import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
 import {Maintenance} from '../types/Maintenance';
+import {Tag} from '../types/Tag';
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -144,7 +145,10 @@ export async function getUserLab(id: number) {
 }
 
 export async function updateEndDateTime(id: number) {
-  return handleResponse( await api.post<UserLab>(`/user-lab/${id}/update-end-date-time`)).data;
+  return handleResponse(await api.post<UserLab>(`/user-lab/${id}/update-end-date-time`)).data;
+}
+export async function getTags(name: string) {
+  return handleResponse( await api.get<Tag[]>(`/tag`)).data;
 }
 
 export async function startUserLab(id: number) {
