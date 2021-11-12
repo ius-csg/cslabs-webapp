@@ -3,7 +3,7 @@ import styles from './Email_Verification.scss';
 import {Layout} from '../Layout/Layout';
 
 
-const Email_Verification = () => (// add verification instead of valid, remove page and reminder
+const emailVerification = () => (// add verification instead of valid, remove page and reminder
   <Layout>
     <div className={styles['email_verification_reminder']}>
       <label>200</label>
@@ -11,4 +11,4 @@ const Email_Verification = () => (// add verification instead of valid, remove p
   </Layout>
 );
 
-export default Email_Verification;
+export default emailVerification;
