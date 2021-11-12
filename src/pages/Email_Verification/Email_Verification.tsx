@@ -5,7 +5,7 @@ import {Layout} from '../Layout/Layout';
 
 const emailVerification = () => (// add verification instead of valid, remove page and reminder
   <Layout>
-    <div className={styles['email_verification_reminder']}>
+    <div className={styles['email-verification']}>
       <label>200</label>
     </div>
   </Layout>
