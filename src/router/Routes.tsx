@@ -27,7 +27,7 @@ import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
 import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
 import {AlertNotification} from '../components/Alert/AlertNotification';
-
+import Email_Verification from '../pages/Email_Verification/Email_Verification';
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
@@ -59,6 +59,7 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>
         <Route exact={true} path={RoutePaths.contentCreator} component={ModulesEditor}/>
         <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
+        <Route exact={true} path={RoutePaths.emailVerification} component={Email_Verification} />
         <Route component={NotFound} />
         <Route component={ServiceUnavailable} />
       </Switch>
