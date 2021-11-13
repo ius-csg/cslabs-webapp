@@ -35,7 +35,7 @@ const ServiceUnavailable = () => {
           />
           :
           <div>Sorry, our servers are unavailable at the moment. We are actively working to get them back up as soon as possible.</div>}
-        <div>For more information, please contact your local CSG administrator</div>
+        <div>For more information, please contact your local administrator</div>
       </div>
     </Layout>
   );
