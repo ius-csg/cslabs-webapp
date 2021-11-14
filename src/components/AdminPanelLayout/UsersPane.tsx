@@ -1,12 +1,11 @@
 import {Button, Form, InputGroup, Modal, ModalBody, ModalFooter, Table} from 'react-bootstrap';
 import React, {useState} from 'react';
 import {Role, User} from '../../types/User';
-import {changeUserRole, getCurrentUserFromServer, getUserList} from '../../api';
+import {changeUserRole, ChangeUserRoleRequest, getCurrentUserFromServer, getUserList} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {HorizontallyCenteredSpinner} from '../util/HorizonallyCenteredSpinner';
 import {Layout} from '../../pages/Layout/Layout';
 import UserListItem from './UserListItem';
-import {ChangeUserRoleRequest} from '../../api';
 import {AxiosResponse} from 'axios';
 import ModalHeader from 'react-bootstrap/ModalHeader';
 import {connect, useDispatch} from 'react-redux';
