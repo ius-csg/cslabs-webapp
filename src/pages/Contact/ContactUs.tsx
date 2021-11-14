@@ -23,9 +23,8 @@ export default function ContactUs() {
       formData.append('message', form.message);
       const files = form.screenshots;
       if (files !== null) {
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < files.length; i++) {
-          formData.append('screenshots', files[i]);
+        for (const file of Array.from(files)) {
+          formData.append('screenshots', file);
         }
       }
       await submitContactRequest(formData);
