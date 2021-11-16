@@ -8,7 +8,7 @@ import {isAuthenticated} from '../../redux/selectors/entities';
 import {Link} from 'react-router-dom';
 import {UserModule} from '../../types/UserModule';
 import {getLocalDateTimeString} from '../../util';
-import {faArrowAltCircleDown, faArrowAltCircleUp} from '@fortawesome/free-solid-svg-icons';
+import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 interface ModuleCardProps extends ReturnType<typeof mapStateToProps> {
@@ -38,22 +38,32 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
           {/*<Card.Img variant='top' src={TestImage}/>*/}
           <Card.Body style={{height: 300}}>
             <Card.Title>{module.name}</Card.Title>
-            {!this.state.viewTags ?
-              <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden'}}>
-                {module.description.substring(0, 150)}
-              </Card.Text> : null
-            }
+            <Card.Text style={{height: 105, overflow: 'hidden', marginBottom: 5}}>
+              {module.description.substring(0, 150)}
+            </Card.Text>
             {module.moduleTags.length !== 0 ?
-              <div className={Styles.tag} style={this.state.viewTags? {height: 225, overflowY: 'auto'} : {height: 85, overflowY: 'hidden'}}>
-                {module.moduleTags.map(mt => <Button onClick={() => this.setState({viewTagsExpanded: !this.state.viewTagsExpanded})} key={mt.tag.id}>{(this.state.viewTags) ? mt.tag.name : ''}</Button>)}
-                <FontAwesomeIcon
-                  icon={this.state.viewTags ? faArrowAltCircleDown : faArrowAltCircleUp}
-                  size={'2x'}
-                  style={{display: 'inline', cursor: 'pointer'}}
-                  onClick={() => {this.setState({viewTags: !this.state.viewTags});}}
-                />
+              <div className={Styles.tag}>
+                {module.moduleTags.map(mt =>
+                  <Button
+                    size={this.state.viewTags ? 'sm' : 'lg'}
+                    className='shadow-none mb-1 mr-1 overflow-hidden'
+                    style={this.state.viewTags ? {height: '30px'} : {height: '20px'}}
+                    onClick={() => this.setState({viewTags: !this.state.viewTags})}
+                    key={mt.tag.id}
+                  >
+                    {(this.state.viewTags) ? mt.tag.name : ''}
+                  </Button>)}
+                {this.state.viewTags ?
+                  <FontAwesomeIcon
+                    icon={faEllipsisH}
+                    className='mt-3'
+                    style={{cursor: 'pointer'}}
+                    onClick={() => {this.setState({viewTags: !this.state.viewTags});}}
+                  /> : null
+                }
               </div> : null
             }
+
           </Card.Body>
           <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
