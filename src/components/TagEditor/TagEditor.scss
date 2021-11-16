@@ -4,11 +4,11 @@
     border-color: #b1b1b1;
 }
 
-.react-tags__selected {
+.react-tags-selected {
     display: inline;
 }
 
-.react-tags__selected-tag {
+.react-tags-selected-tag {
     display: inline-block;
     box-sizing: border-box;
     margin: 0 6px 6px 0;
@@ -22,12 +22,12 @@
     line-height: inherit;
 }
 
-.react-tags__selected-tag:hover,
-.react-tags__selected-tag:focus {
+.react-tags-selected-tag:hover,
+.react-tags-selected-tag:focus {
     border-color: #b1b1b1;
 }
 
-.react-tags__search {
+.react-tags-search {
     position: relative;
     display: inline-block;
     padding: 7px 2px;
@@ -35,14 +35,14 @@
     max-width: 100%;
 }
 
-.react-tags__suggestions {
+.react-tags-suggestions {
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
 }
 
-.react-tags__suggestions ul {
+.react-tags-suggestions ul {
     padding: 0;
     list-style: none;
     background: white;
@@ -50,16 +50,16 @@
     border-radius: 4px;
 }
 
-.react-tags__suggestions li {
+.react-tags-suggestions li {
     border-bottom: 1px solid #d1d1d1;
     padding: 6px 8px;
 }
 
-.react-tags__suggestions li mark {
+.react-tags-suggestions li mark {
     background: none;
 }
 
-.react-tags__suggestions li:hover {
+.react-tags-suggestions li:hover {
     cursor: pointer;
     background-color: #f1f1f1;
 }
@@ -83,13 +83,13 @@
         cursor: text;
     }
 
-    .react-tags__selected-tag::after {
+    .react-tags-selected-tag::after {
         content: '\2715';
         color: #aaa;
         margin-left: 8px;
     }
 
-    .react-tags__search-input {
+    .react-tags-search-input {
         max-width: 100%;
         margin: 0;
         padding: 0;
@@ -111,12 +111,12 @@
         line-height: 1.2;
     }
 
-    .react-tags__selected-tag::after {
+    .react-tags-selected-tag::after {
         color: #aaa;
         margin-left: 8px;
     }
 
-    .react-tags__search-input {
+    .react-tags-search-input {
         max-width: 0;
         padding: 0;
         border: 0;

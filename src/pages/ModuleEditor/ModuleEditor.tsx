@@ -86,7 +86,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
       try {
         setLoading(true);
         setEditing(false);
-        const response = await getModuleForEditor(Number(moduleId!));
+        const response = await getModuleForEditor(Number(moduleId));
         setInitialValues(response);
         completeLoading();
       } catch (e) {
