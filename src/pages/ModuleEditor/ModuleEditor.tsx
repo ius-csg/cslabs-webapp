@@ -162,7 +162,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
               Once you save your changes you can add and remove labs from this module. Note: Adding or editing a lab will cancel changes on this page
             </p>
             {values.id !== 0 &&
-              <LabListEditor labs={values.labs} prefix={propertyOf<ModuleForm>('labs')} moduleId={values.id}/>
+            <LabListEditor labs={values.labs} prefix={propertyOf<ModuleForm>('labs')} moduleId={values.id}/>
             }
           </Col>
         </Form>

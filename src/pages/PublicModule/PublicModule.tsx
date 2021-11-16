@@ -127,9 +127,6 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
 
   render() {
     const module = this.getModule();
-    // if (!this.props.authenticated) {
-    //   return <Link to={RoutePaths.login}/>;
-    // }
     return (
       <Layout>
         <Alert style={{textAlign: 'center'}} show={Boolean(this.state.message)} variant='danger'>{this.state.message}</Alert>
