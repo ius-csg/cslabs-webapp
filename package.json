@@ -68,7 +68,6 @@
     "react-router-dom": "^5.1.0",
     "react-select": "^3.1.0",
     "react-tag-autocomplete": "^6.3.0",
-    "react-tags-autocomplete": "^1.0.3",
     "redux": "^4.0.4",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.3.0",
