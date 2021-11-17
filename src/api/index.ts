@@ -58,8 +58,6 @@ export async function turnOnUserLab(id: number): Promise<string> {
   return (await retry.post<string>(`/user-lab/${id}/turn-on`)).data;
 }
 
-
-
 export async function shutdownVm(id: number): Promise<string> {
   return (await api.post<string>(`/virtual-machine/${id}/shutdown`)).data;
 }
@@ -116,7 +114,7 @@ export interface ChangeUserRoleRequest {
   userId: number;
 }
 
-export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse> {
+export function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse> {
   return api.put('/user/change-role', form);
 }
 

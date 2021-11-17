@@ -1,33 +1,36 @@
 import React, {useState} from 'react';
 import {Alert} from 'react-bootstrap';
 import styles from './SystemMessageAlert.module.scss';
-import {SystemMessageAlert} from '../../types/SystemMessageAlert';
-import {SystemMessage} from '../../types/SystemMessage';
+import {SystemMessage, SystemMessageType} from '../../types/SystemMessage';
+import {classes} from '../../util';
 
 
-export function getAlertTypeClass(type: SystemMessageAlert) {
+export function getAlertTypeClass(type: SystemMessageType) {
   if (type === 'Info') {
     return styles['info'];
-  }
-  else if (type === 'Warning') {
-  return styles['warning'];
-  }
-  else
+  } else if (type === 'Warning') {
+    return styles['warning'];
+  } else
     return styles['notice'];
-
 }
 
-export function SystemMessagesAlert (props: SystemMessage) {
+interface Props {
+  onClick?: () => void;
+  message: SystemMessage;
+}
 
-    const [show] = useState(true);
-
-          return show ? (
-          <div>
-             <Alert className={`${styles['base-alert']} ${getAlertTypeClass(props.type)}`} dismissible={true} onClose={props.onClick}>
-            <p>{props.description}</p>
-          </Alert>
-          </div>
-        ): null;
-
+export function SystemMessagesAlert(props: Props) {
+  const [show] = useState(true);
+  return show ? (
+    <div>
+      <Alert
+        className={classes(styles['base-alert'], getAlertTypeClass(props.message.type))}
+        dismissible={true}
+        onClose={props.onClick}
+      >
+        <p>{props.message.description}</p>
+      </Alert>
+    </div>
+  ) : null;
 }
 

@@ -43,10 +43,8 @@ const SystemMessageList = () => {
     <div>
       {currentMessage ? <SystemMessagesAlert
         key={currentMessage.id}
+        message={currentMessage}
         onClick={() => setDismissedMessage([...dismissedMessage, currentMessage.id.toString()])}
-        id={currentMessage.id}
-        type={currentMessage.type}
-        description={currentMessage.description}
       /> : null}
     </div>
   );

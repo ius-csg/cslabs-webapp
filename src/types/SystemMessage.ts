@@ -1,9 +1,7 @@
-import {SystemMessageAlert} from './SystemMessageAlert';
+export type SystemMessageType = 'Info' | 'Warning' | 'Notice';
 
 export interface SystemMessage {
-  onClick?: () => void;
   id: number;
-  type: SystemMessageAlert;
+  type: SystemMessageType;
   description: string;
-
 }
