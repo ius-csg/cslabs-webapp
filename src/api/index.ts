@@ -12,6 +12,8 @@ import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
 import {Maintenance} from '../types/Maintenance';
+import {SystemMessage} from '../types/SystemMessage';
+
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -56,8 +58,6 @@ export async function turnOnUserLab(id: number): Promise<string> {
   return (await retry.post<string>(`/user-lab/${id}/turn-on`)).data;
 }
 
-
-
 export async function shutdownVm(id: number): Promise<string> {
   return (await api.post<string>(`/virtual-machine/${id}/shutdown`)).data;
 }
@@ -86,6 +86,10 @@ export async function getMaintenances() {
   return ( await api.get<Maintenance[]>('/maintenance/') ).data;
 }
 
+export async function getSystemMessages() {
+  return (await api.get<SystemMessage[]>(`/system-message`)).data;
+}
+
 export async function login(email: string, password: string): Promise<AxiosResponse<UserWithToken>> {
   const resp = await api.post<UserWithToken>('/user/authenticate', {email: email, password: password });
   setToken(resp.data.token);
@@ -110,8 +114,8 @@ export interface ChangeUserRoleRequest {
   userId: number;
 }
 
-export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse> {
-  return await api.put('/user/change-role', form);
+export function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse> {
+  return api.put('/user/change-role', form);
 }
 
 export async function getCurrentUserFromServer() {
