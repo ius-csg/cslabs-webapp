@@ -34,13 +34,13 @@ export function LabListEditor({labs, prefix, moduleId, disabledModule}: Props) {
               { disabledModule ?
                 <>
                   <ReactTooltip place='left' type='dark' effect='solid'/>
-                  <a data-tip='"Disable Module" must be unchecked to add a Lab'>
+                  <span data-tip='"Disable Module" must be unchecked to add a Lab'>
                     <IconButton
                       icon={faPlusCircle}
                       size={'2x'}
                       color={'grey'}
                     />
-                  </a>
+                  </span>
                 </>
               :
                 <IconButton

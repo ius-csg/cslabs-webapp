@@ -107,6 +107,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
         loading={this.state.startingModule}
         className='btn btn-primary'
         onClick={this.hasUserModule() ? undefined : this.startModule}
+        toolTipText={'This lab is currently disabled'}
       />
     );
   }

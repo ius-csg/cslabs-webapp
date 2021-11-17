@@ -145,6 +145,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 disabled={this.state.module.disabled}
                 label='Start Lab'
                 onClick={this.props.onStartLab}
+                toolTipText={'This lab is currently disabled'}
               /> : <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime)}
               {this.showExtendButton()}</h6>}
           </Row>
