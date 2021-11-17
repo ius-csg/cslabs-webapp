@@ -1,7 +1,6 @@
 import {Modal, Tab, Tabs} from 'react-bootstrap';
 import * as React from 'react';
 import {VmTemplateTable} from './VmTemplateTable';
-import {useEffect} from 'react';
 import {VmTemplate} from '../../types/editorTypes';
 import {VmTemplateUpload} from './VmTemplateUpload';
 
@@ -14,7 +13,7 @@ interface Props {
 }
 
 export function VmTemplateModal({open, onCancel, onSelect, onReloadVms, vmTemplates}: Props) {
-  useEffect(() => { onReloadVms(); }, []);
+  React.useEffect(() => { onReloadVms(); }, []);
 
 
   return (
