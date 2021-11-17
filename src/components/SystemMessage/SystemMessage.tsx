@@ -1,20 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {SystemMessageNotification, SystemMessageNotificationTypes} from '../SystemMessageNotification/SystemMessageNotification';
+import {SystemMessageNotification} from '../SystemMessageNotification/SystemMessageNotification';
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
+import {SystemMessage} from '../../types/SystemMessage';
 
-export interface SystemMessageList {
-  id: number;
-  type: SystemMessageNotificationTypes;
-  description: string;
+const SystemMessageCall = () => {
 
-}
-
-const SystemMessagesList = () => {
-
-  const [systemMessageList, setSystemMessageList] = useState<SystemMessageList[]>([]);
+  const [systemMessageList, setSystemMessageList] = useState<SystemMessage[]>([]);
   const [dismissedMessage, setDismissedMessage] = useState<string[]>([]);
-  const [currentMessage, setCurrentMessage] = useState<SystemMessageList>();
+  const [currentMessage, setCurrentMessage] = useState<SystemMessage>();
 
   useEffect(() => {// when component mounts this is called.
     // Finds current messages that are not contained in the local storage
@@ -57,4 +51,4 @@ const SystemMessagesList = () => {
     </div>
   );
 };
-export default SystemMessagesList;
+export default SystemMessageCall;

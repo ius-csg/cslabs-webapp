@@ -12,7 +12,7 @@ import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
 import {Maintenance} from '../types/Maintenance';
-import {SystemMessageList} from '../components/SystemMessageList/SystemMessageList';
+import {SystemMessage} from '../types/SystemMessage';
 
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
@@ -89,7 +89,7 @@ export async function getMaintenances() {
 }
 
 export async function getSystemMessages() {
-  return (await api.get<SystemMessageList[]>(`/system-message`)).data;
+  return (await api.get<SystemMessage[]>(`/system-message`)).data;
 }
 
 export async function login(email: string, password: string): Promise<AxiosResponse<UserWithToken>> {

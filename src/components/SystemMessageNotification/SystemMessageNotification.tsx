@@ -4,12 +4,10 @@ import styles from './SystemMessageNotification.module.scss';
 
 
 export function getAlertTypeClass(type: SystemMessageNotificationTypes) {
-  const newtype = type.toLowerCase();
-
-  if (newtype === 'info') {
+  if (type === 'info') {
     return styles['info'];
   }
-  else if (newtype === 'warning') {
+  else if (type === 'warning') {
   return styles['warning'];
   }
   else
