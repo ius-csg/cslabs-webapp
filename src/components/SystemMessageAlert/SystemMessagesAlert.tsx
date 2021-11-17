@@ -14,12 +14,13 @@ export function getAlertTypeClass(type: SystemMessageType) {
     return styles['notice'];
 }
 
+
 interface Props {
   onClick?: () => void;
   message: SystemMessage;
 }
 
-export function SystemMessagesAlert(props: Props) {
+export function SystemMessageAlert(props: Props) {
   const [show] = useState(true);
   return show ? (
     <div>
