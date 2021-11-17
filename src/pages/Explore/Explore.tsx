@@ -1,4 +1,4 @@
-import {CardColumns} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {Module} from '../../types/Module';
@@ -35,7 +35,10 @@ class Explore extends React.Component<{}, ExploreState> {
   }
 
   render() {
-    const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={'/module/' + m.id} module={m} key={i}/>);
+    const cards = this.state.modules.map((m, i) => 
+      <Col key={i} className='col-md-6 col-lg-4'>
+        <ModuleCard buttonLink={'/module/' + m.id} module={m} key={i}/>
+      </Col>);
     return (
       <Layout>
         {this.state.state === 'loading' ? <HorizontallyCenteredSpinner/> :
@@ -45,7 +48,7 @@ class Explore extends React.Component<{}, ExploreState> {
               <PageTitle>Explore</PageTitle>
               {cards.length === 0 ?
                 <p style={{textAlign: 'center', marginTop: '1rem'}}>No modules published at this time, please come back later.</p> :
-                <CardColumns>{cards}</CardColumns>
+                <Row className='g-4'>{cards}</Row>
               }
 
             </>

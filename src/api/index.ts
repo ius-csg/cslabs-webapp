@@ -11,8 +11,8 @@ import {InitializationStatus, UserLab} from '../types/UserLab';
 import {makeAxios} from '../util';
 import {LabForm, ModuleForm, VmTemplate} from '../types/editorTypes';
 import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/VmTemplateModal/VmTemplateUploadSchema';
+import {Maintenance} from '../types/Maintenance';
 import {Tag} from '../types/Tag';
-import {ModuleTag} from "../types/ModuleTag";
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -83,6 +83,10 @@ export async function getUserList() {
   return ( await api.get<User[]>(`/user/`) ).data;
 }
 
+export async function getMaintenances() {
+  return ( await api.get<Maintenance[]>('/maintenance/') ).data;
+}
+
 export async function login(email: string, password: string): Promise<AxiosResponse<UserWithToken>> {
   const resp = await api.post<UserWithToken>('/user/authenticate', {email: email, password: password });
   setToken(resp.data.token);
@@ -107,8 +111,8 @@ export interface ChangeUserRoleRequest {
   userId: number;
 }
 
-export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse<string>> {
-  return await api.put<string>('/user/change-role', form);
+export async function changeUserRole(form: ChangeUserRoleRequest[]): Promise<AxiosResponse> {
+  return await api.put('/user/change-role', form);
 }
 
 export async function getCurrentUserFromServer() {
@@ -144,8 +148,8 @@ export async function getTags(name: string) {
   return handleResponse( await api.get<Tag[]>(`/tag`)).data;
 }
 
-export async function deleteModuleTags(moduleTags: ModuleTag[]) {
-  return handleResponse(await api.delete(`module/tags/`, {data: moduleTags})).data;
+export async function updateEndDateTime(id: number) {
+  return handleResponse( await api.post<UserLab>(`/user-lab/${id}/update-end-date-time`)).data;
 }
 
 export async function startUserLab(id: number) {

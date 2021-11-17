@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
 import {Form, Col, Row, Button} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {FieldArray, Formik, FormikHelpers} from 'formik';
@@ -37,12 +36,12 @@ const moduleTypeOptions: DropdownOption<ModuleType>[] = [
 type Props = RouteComponentProps<{ moduleId?: string }>;
 
 export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
-  const [initialValues, setInitialValues] = useState<ModuleForm>(makeModuleForm());
-  const [tagSuggestions, setTagSuggestions] = useState<Tag[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [tagSuggestions, setTagSuggestions] = React.useState<Tag[]>([]);
+  const [initialValues, setInitialValues] = React.useState<ModuleForm>(makeModuleForm());
+  const [loading, setLoading] = React.useState(true);
   const [message, setMessage] = useMessage();
-  const [editing, setEditing] = useState(false);
-  const [redirect, setRedirect] = useState();
+  const [editing, setEditing] = React.useState(false);
+  const [redirect, setRedirect] = React.useState();
 
   function completeLoading() {
     setLoading(false);
@@ -74,7 +73,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setTagSuggestions(await getTags(input));
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function LoadModule() {
       setRedirect(undefined);
       if (!moduleId) {
@@ -88,6 +87,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
         setEditing(false);
         const response = await getModuleForEditor(Number(moduleId));
         setInitialValues(response);
+        setInitialValues(await getModuleForEditor(Number(moduleId)));
         completeLoading();
       } catch (e) {
         setMessage({message: handleAxiosError(e), variant: 'danger', critical: true});
