@@ -1,8 +1,8 @@
-import {SystemMessageNotificationTypes} from '../components/SystemMessageNotification/SystemMessageNotification';
+import {SystemMessageNotification} from './SystemMessageNotification';
 
 export interface SystemMessage {
   id: number;
-  type: SystemMessageNotificationTypes;
+  type: SystemMessageNotification;
   description: string;
 
 }

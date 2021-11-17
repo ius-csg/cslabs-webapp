@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {Alert} from 'react-bootstrap';
 import styles from './SystemMessageNotification.module.scss';
+import {SystemMessageNotification} from '../../types/SystemMessageNotification';
 
 
-export function getAlertTypeClass(type: SystemMessageNotificationTypes) {
-  if (type === 'info') {
+export function getAlertTypeClass(type: SystemMessageNotification) {
+  if (type === 'Info') {
     return styles['info'];
   }
-  else if (type === 'warning') {
+  else if (type === 'Warning') {
   return styles['warning'];
   }
   else
@@ -15,16 +16,15 @@ export function getAlertTypeClass(type: SystemMessageNotificationTypes) {
 
 }
 
-export type SystemMessageNotificationTypes = 'info' | 'warning' | 'notice';
-
 interface Props {
   onClick?: () => void;
   id: number;
-  type: SystemMessageNotificationTypes;
+  type: SystemMessageNotification;
+
   description: string;
 }
 
-export function SystemMessageNotification (props: Props) {
+export function SystemMessageNotif (props: Props) {
 
     const [show] = useState(true);
 

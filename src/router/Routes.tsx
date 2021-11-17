@@ -26,7 +26,7 @@ import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
 import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
-import SystemMessage from '../components/SystemMessage/SystemMessage';
+import SystemMessage from '../components/SystemMessage/SystemMessageCall';
 
 
 const Routes = () => (

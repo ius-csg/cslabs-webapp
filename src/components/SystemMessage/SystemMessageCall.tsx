@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SystemMessageNotification} from '../SystemMessageNotification/SystemMessageNotification';
+import {SystemMessageNotif} from '../SystemMessageNotification/SystemMessageNotif';
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {SystemMessage} from '../../types/SystemMessage';
@@ -41,7 +41,7 @@ const SystemMessageCall = () => {
 
   return (
     <div>
-      {currentMessage ? <SystemMessageNotification
+      {currentMessage ? <SystemMessageNotif
         key={currentMessage.id}
         onClick={() => setDismissedMessage([...dismissedMessage, currentMessage.id.toString()])}
         id={currentMessage.id}
