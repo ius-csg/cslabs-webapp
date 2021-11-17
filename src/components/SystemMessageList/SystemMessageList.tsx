@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {SystemMessageNotif} from '../SystemMessageNotification/SystemMessageNotif';
+import {SystemMessagesAlert} from '../SystemMessageAlert/SystemMessagesAlert';
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {SystemMessage} from '../../types/SystemMessage';
 
-const SystemMessageCall = () => {
+const SystemMessageList = () => {
 
   const [systemMessageList, setSystemMessageList] = useState<SystemMessage[]>([]);
   const [dismissedMessage, setDismissedMessage] = useState<string[]>([]);
@@ -41,7 +41,7 @@ const SystemMessageCall = () => {
 
   return (
     <div>
-      {currentMessage ? <SystemMessageNotif
+      {currentMessage ? <SystemMessagesAlert
         key={currentMessage.id}
         onClick={() => setDismissedMessage([...dismissedMessage, currentMessage.id.toString()])}
         id={currentMessage.id}
@@ -51,4 +51,4 @@ const SystemMessageCall = () => {
     </div>
   );
 };
-export default SystemMessageCall;
+export default SystemMessageList;
