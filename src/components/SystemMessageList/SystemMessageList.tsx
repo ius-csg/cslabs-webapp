@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SystemMessagesAlert} from '../SystemMessageAlert/SystemMessagesAlert';
+import {SystemMessageAlert} from '../SystemMessageAlert/SystemMessageAlert';
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {SystemMessage} from '../../types/SystemMessage';
@@ -41,7 +41,7 @@ const SystemMessageList = () => {
 
   return (
     <div>
-      {currentMessage ? <SystemMessagesAlert
+      {currentMessage ? <SystemMessageAlert
         key={currentMessage.id}
         message={currentMessage}
         onClick={() => setDismissedMessage([...dismissedMessage, currentMessage.id.toString()])}
