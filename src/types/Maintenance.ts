@@ -1,5 +1,4 @@
 export interface Maintenance {
-  isMaintenanceMode?: boolean;
-  isRestorationTimeKnown?: boolean;
-  restorationTime?: number;
+  startTime: string;
+  endTime: string;
 }
