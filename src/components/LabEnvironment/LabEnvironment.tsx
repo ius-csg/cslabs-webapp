@@ -129,8 +129,9 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
                 loading={this.props.starting}
                 label='Start Lab'
                 onClick={this.props.onStartLab} 
-              /> : <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime)}
-              {this.showExtendButton()}</h6>}
+              /> : this.props.userLab.lab.type === 'Temporary' &&
+              <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime)}{this.showExtendButton()}</h6>
+            }
           </Row>
           <Row className='fill-height'>
             <Col sm={4} md={4} lg={2}>
