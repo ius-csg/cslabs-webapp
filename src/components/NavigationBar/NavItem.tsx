@@ -6,6 +6,8 @@ import React from 'react';
 import {IconProp} from '@fortawesome/fontawesome-svg-core';
 
 
+// convert to props
+
 export function NavItem({icon, link, label}: {icon: IconProp; link: string; label: string}) {
   return (
     <Nav.Item className={styles['nav-item']}>
