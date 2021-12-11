@@ -1,9 +1,18 @@
+.new-layout {
+    background-color: maroon;
+    color: white !important;
+    padding: 0;
+    margin: 0;
+}
+
+
+
 .email-verification {
     min-height: 2px;
     display: flex;
     flex-direction: column;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     align-items: center;
     text-align-all: center;
 }
@@ -11,7 +20,7 @@
 .title {
     font-size: 25pt;
     font-weight: bold;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 .paragraph {
     font-size: 18pt;

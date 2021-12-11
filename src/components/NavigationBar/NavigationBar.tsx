@@ -12,7 +12,7 @@ import {RoutePaths} from '../../router/RoutePaths';
 
 
 const NavigationBarComponent =
-  ({authenticated, creator, admin}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
+({authenticated, creator, admin}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
   <Container>
     <NavLogo/>
     <Nav>
