@@ -28,9 +28,21 @@ export function isCreator(state: WebState) {
 
 export function isAdmin(state: WebState) {
   const user: User| null =  getCurrentUser(state);
-  if(user == null){return false;}
+  if(user == null){
+    return false;}
   else {
     return (user.role === 'Admin');
   }
+}
+
+export function isVerified(state: WebState) {
+  const user: User | null = getCurrentUser(state);
+  if(user == null) {
+    return false;
+  }
+  else {
+    return (user.verified);
+  }
+
 }
 

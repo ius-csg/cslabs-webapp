@@ -10,7 +10,7 @@ interface LayoutProps {
   children: any;
   style?: CSSProperties;
   className?: string;
-  navigation: boolean; // disableNavigation
+  navigation?: boolean; // disableNavigation
 }
 export const Layout = (props: LayoutProps) => (
   <div>

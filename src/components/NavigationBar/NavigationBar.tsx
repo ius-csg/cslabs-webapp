@@ -4,7 +4,7 @@ import styles from './NavigationBar.module.scss';
 import {faBook, faList, faUser, faEnvelopeOpenText, faEdit, faUserCog} from '@fortawesome/free-solid-svg-icons';
 import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
-import {isAuthenticated, isAdmin, isCreator} from '../../redux/selectors/entities';
+import {isAuthenticated, isAdmin, isCreator, isVerified} from '../../redux/selectors/entities';
 import {NavItem} from './NavItem';
 import {NavLogo} from './NavLogo';
 import {RoutePaths} from '../../router/RoutePaths';
@@ -12,19 +12,24 @@ import {RoutePaths} from '../../router/RoutePaths';
 
 
 const NavigationBarComponent =
-({authenticated, creator, admin}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
+({authenticated, creator, admin, verified}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
   <Container>
     <NavLogo/>
     <Nav>
-      <NavItem label='Explore' link='/explore' icon={faBook}/>
+      <NavItem label='Explore' link='/explore' icon={faBook} linkDisabled={verified}/>
       {authenticated ? <NavItem label='My Modules' link='/my-modules' icon={faList}/> : null}
       {admin ? <NavItem label='Admin Panel' icon={faUserCog} link={RoutePaths.adminPanel}/> : null}
       {creator || admin ? <NavItem label='Module Editor' icon={faEdit} link={RoutePaths.contentCreator} /> : null}
-      <NavItem label='Account' link='/login' icon={faUser}/>
-      <NavItem label='Contact Us' link='/contact' icon={faEnvelopeOpenText}/>
+      <NavItem label='Account' link='/login' icon={faUser} linkDisabled={verified} />
+      <NavItem label='Contact Us' link='/contact' icon={faEnvelopeOpenText} linkDisabled={verified}/>
     </Nav>
   </Container>
 </Navbar>;
 
-const mapStateToProps = (state: WebState) => ({authenticated: isAuthenticated(state), creator: isCreator(state), admin: isAdmin(state) });
+const mapStateToProps = (state: WebState) => ({
+  authenticated: isAuthenticated(state),
+  creator: isCreator(state),
+  admin: isAdmin(state),
+  verified: isVerified(state)
+});
 export const NavigationBar = connect(mapStateToProps)(NavigationBarComponent);
