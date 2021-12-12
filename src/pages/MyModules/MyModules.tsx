@@ -1,4 +1,4 @@
-import {CardColumns, Row} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import React from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {getUserModules, searchUserModules} from '../../api';
@@ -46,14 +46,15 @@ class MyModules extends React.Component<{}, MyModulesState> {
   }
 
   render() {
-      const cards = this.state.modules.map((m, i) => <ModuleCard buttonLink={RoutePaths.userModule.replace(':id', String(m.id))} module={m} key={i}/>);
+      const cards = this.state.modules.map((m, i) => 
+        <Col key={i} className='col-md-6 col-lg-4'>
+          <ModuleCard buttonLink={RoutePaths.userModule.replace(':id', String(m.id))} module={m} key={i}/>
+        </Col>);
       return (
         <Layout>
-          <Row className='d-flex justify-content-between mb-4'>
-            <h1>My Modules</h1>
-            <SearchBar showModules={this.loadSearchModules}/>
-          </Row>
-          {cards.length === 0 ? this.renderNoModules() : <CardColumns>{cards}</CardColumns>}
+          <h1>My Modules</h1>
+          <SearchBar showModules={this.loadSearchModules}/>
+          {cards.length === 0 ? this.renderNoModules() : <Row className='g-4'>{cards}</Row>}
         </Layout>
       );
   }

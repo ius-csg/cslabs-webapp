@@ -2,10 +2,12 @@ import {BaseModule} from './Module';
 import {Lab} from './Lab';
 import {LabVm} from './LabVm';
 import {Entity, EntityWithUuid} from './Entity';
+import {ModuleTag} from './ModuleTag';
 
 
 export interface ModuleForm extends BaseModule {
   labs: LabItem[];
+  moduleTags: ModuleTag[];
 }
 
 export interface LabItem extends Lab {
