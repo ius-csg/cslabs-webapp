@@ -26,10 +26,12 @@ const NavigationBarComponent =
   </Container>
 </Navbar>;
 
-const mapStateToProps = (state: WebState) => ({
-  authenticated: isAuthenticated(state),
-  creator: isCreator(state),
-  admin: isAdmin(state),
-  verified: isVerified(state)
-});
+const mapStateToProps = (state: WebState) => {
+  return ({
+    authenticated: isAuthenticated(state),
+    creator: isCreator(state),
+    admin: isAdmin(state),
+    verified: isVerified(state)
+  });
+};
 export const NavigationBar = connect(mapStateToProps)(NavigationBarComponent);
