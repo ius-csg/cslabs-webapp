@@ -35,7 +35,6 @@ const SearchBar = (props: any) => {
   const onDescriptionChange = (e: any) => {
     const desc = e.target.value;
     setDescription(desc);
-    // props.showModules(searchValue);
   };
 
   const onDifficultyChange = (e: any) => {
