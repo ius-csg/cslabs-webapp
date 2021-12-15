@@ -12,11 +12,10 @@
     display: inline-block;
     box-sizing: border-box;
     margin: 0 6px 6px 0;
-    padding: 6px 8px;
     border: 1px solid #d1d1d1;
     border-radius: 4px;
     background: #f1f1f1;
-    font-size: 1.063rem;
+    font-size: 0.763rem;
     font-weight: 400;
     color: map-get($colors, text-primary);
     line-height: inherit;
@@ -30,7 +29,6 @@
 .react-tags-search {
     position: relative;
     display: inline-block;
-    padding: 7px 2px;
     margin-bottom: 6px;
     max-width: 100%;
 }
@@ -53,7 +51,6 @@
 
 .react-tags-suggestions li {
     border-bottom: 1px solid #d1d1d1;
-    padding: 6px 8px;
 }
 
 .react-tags-suggestions li mark {

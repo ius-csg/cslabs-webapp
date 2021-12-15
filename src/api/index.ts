@@ -154,7 +154,7 @@ export async function getUserLab(id: number) {
   return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;
 }
 
-export async function getTags(name: string) {
+export async function getTags() {
   return handleResponse( await api.get<Tag[]>(`/tag`)).data;
 }
 

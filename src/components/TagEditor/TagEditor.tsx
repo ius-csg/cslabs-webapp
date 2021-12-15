@@ -5,14 +5,15 @@ import {} from './TagEditor.scss';
 interface Props {
   tags: Tag[];
   tagSuggestions: Tag[];
-  mes: string | undefined;
+  mes?: string;
   editing: boolean;
+  classNames?: any;
   onAdd(tag: Tag): void;
   onDelete(i: number): void;
   onInput(name: string): void;
 }
 
-export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, editing}: Props) {
+export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, editing, classNames}: Props) {
   const [className, setClassName] = useState('disabled');
 
   useEffect(() => {
@@ -32,17 +33,17 @@ export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, 
     return valid;
   }
 
-  const classNames: ClassNames = {
-    root: 'react-tags',
-    rootFocused: 'is-focused',
-    selected: 'react-tags-selected',
-    selectedTag: 'react-tags-selected-tag',
-    selectedTagName: 'react-tags-selected-tag-name',
-    search: 'react-tags-search',
-    searchInput: 'react-tags-search-input',
-    suggestions: 'react-tags-suggestions',
-    suggestionActive: 'is-active',
-    suggestionDisabled: 'is-disabled'
+  const defaultClassNames: ClassNames = {
+    root: classNames?.root || 'react-tags',
+    rootFocused: classNames?.rootFocused || 'is-focused',
+    selected: classNames?.selected || 'react-tags-selected',
+    selectedTag: classNames?.selectedTag || 'react-tags-selected-tag',
+    selectedTagName: classNames?.selectedTagName || 'react-tags-selected-tag-name',
+    search: classNames?.search || 'react-tags-search',
+    searchInput: classNames?.searchInput || 'react-tags-search-input',
+    suggestions: classNames?.suggestions || 'react-tags-suggestions',
+    suggestionActive: classNames?.suggestionActive || 'is-active',
+    suggestionDisabled: classNames?.suggestionDisabled || 'is-disabled'
   };
 
   return (
@@ -55,7 +56,7 @@ export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, 
         suggestions={tagSuggestions}
         allowNew={true}
         onValidate={onValidate}
-        classNames={classNames}
+        classNames={defaultClassNames}
       />
     </div>
   );

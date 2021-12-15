@@ -69,8 +69,8 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setMessage(undefined);
   }
 
-  async function onTagInput(input: string) {
-    setTagSuggestions(await getTags(input));
+  async function onTagInput() {
+    setTagSuggestions(await getTags());
   }
 
   React.useEffect(() => {

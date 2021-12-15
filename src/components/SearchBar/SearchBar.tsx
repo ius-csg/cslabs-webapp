@@ -1,137 +1,158 @@
-import {faSlidersH, faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faSlidersH, faSearch } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
+import { Tag } from 'react-tag-autocomplete';
 import styles from './SearchBar.module.scss';
-import {Form, Container, Row, Col, Button} from 'react-bootstrap';
+import { Form, Container, Row, Col, Button } from 'react-bootstrap';
 import ToolTip from '../util/ToolTip';
+import { getTags } from '../../api';
+import { TagEditor } from '../../components/TagEditor/TagEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {FieldArray} from 'formik';
-import {TagEditor} from '../../components/TagEditor/TagEditor';
 
 const SearchBar = (props: any) => {
 
-    const [searchTerm, setSearchTerm] = useState('');
-    const [description, setDescription] = useState('');
-    const [advancedSearchOn, setAdvancedSearchOn] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [difficulty, setDifficulty] = useState('');
+  const [tags, setTags] = React.useState<Tag[]>([]);
+  const [tagSuggestions, setTagSuggestions] = React.useState<Tag[]>([]);
 
-    const handleChange = (e: any) => {
-      const searchValue = e.target.value;
-      setSearchTerm(searchValue);
-      // props.showModules(searchValue);
-    };
+  const [searchOptionsOn, setSearchOptionsOn] = useState(false);
 
-    const handleDescription = (e: any) => {
-      const searchValue = e.target.value;
-      setDescription(searchValue);
-      // props.showModules(searchValue);
-    };
+  const onSearchTermChange = (e: any) => {
+    if (!searchOptionsOn) {
+      setSearchTerm(e.target.value);
+    }
+  };
 
-    const getUpdateSearchValue = () => {
-      // searchTerm && `title:${searchTerm}` +  description && `desc:${description}`
-      let searchText = '';
-      if (searchTerm) {searchText += `title:${searchTerm} `}
-      if (description) {searchText += `desc:${description}`}
-      return searchText;
-    };
+  const onTitleChange = (e: any) => {
+    const searchTitle = e.target.value;
+    setTitle(searchTitle);
 
-    const handleSettings = () => {
-      (advancedSearchOn) ? setAdvancedSearchOn(false) : setAdvancedSearchOn(true);
-    };
+    setSearchTerm(searchTitle && 'title:' + searchTitle);
+  };
 
-    return (
-      <React.Fragment>
-      <Form className='form-inline d-flex justify-content-end' style={{position: 'relative'}} onSubmit={(e: any) => e.preventDefault()}>
+  const onDescriptionChange = (e: any) => {
+    const desc = e.target.value;
+    setDescription(desc);
+    // props.showModules(searchValue);
+  };
+
+  const onDifficultyChange = (e: any) => {
+    const diff = e.target.value;
+    setDifficulty(diff);
+  };
+
+  async function handleTagSuggestions() {
+    setTagSuggestions(await getTags());
+  }
+
+  const handleSearchOptionsOn = (e: any) => {
+    (searchOptionsOn) ? setSearchOptionsOn(false) : setSearchOptionsOn(true);
+  };
+
+  function onAddTags(newTag: Tag) {
+    handleTagSuggestions();
+    let newTags = new Array<Tag>();
+    newTags = newTags.concat(tags, newTag);
+    setTags(newTags);
+  }
+
+  function onDeleteTags(i: number) {
+    const newTags = tags.slice(0);
+    newTags.splice(i, 1);
+    setTags(newTags);
+  }
+
+  return (
+    <React.Fragment>
+      <Form className='form-inline d-flex justify-content-end' style={{ position: 'relative' }}>
         <Row className={`${styles['search-bar']} align-items-center`} noGutters={true}>
           <Col>
             <ToolTip key='search-icon' text='Search' placement='bottom'>
-              <FontAwesomeIcon icon={faSearch} size='lg' />
+              <FontAwesomeIcon icon={faSearch} size='lg' className={styles['icon']} />
             </ToolTip>
           </Col>
           <Col xs={10}>
             <Form.Control
               type='search'
               placeholder='Search...'
-              aria-label='Title'
-              value={getUpdateSearchValue()}
-              onChange={handleChange}
-              style={{boxShadow: 'none', border: 'none', height: '28px'}}
+              value={searchTerm}
+              onChange={onSearchTermChange}
+              style={{ boxShadow: 'none', border: 'none', height: '28px' }}
             />
           </Col>
           <Col>
             <ToolTip key='search-options' text='Search options' placement='bottom'>
-              <FontAwesomeIcon icon={faSlidersH} size='lg' onClick={handleSettings}/>
+              <FontAwesomeIcon icon={faSlidersH} size='lg' className={styles['icon']} onClick={handleSearchOptionsOn} />
             </ToolTip>
           </Col>
         </Row>
 
-        {advancedSearchOn &&
-        <Container style={{backgroundColor: 'white', width: '28rem', position: 'absolute', right: '0', top: '58px', zIndex: 1, borderRadius: 6, boxShadow: '0 0 8px rgb(175, 175, 175)', padding: '24px'}}>
-          <Row>
-            <Col><p style={{lineHeight: 3}}>Title</p></Col>
-            <Col>
+        {searchOptionsOn &&
+          <Container className={styles['search-options']}>
+            <Form.Group>
+              <Form.Label column={true} className='justify-content-start'>Title</Form.Label>
               <Form.Control
+                size='sm'
                 type='search'
                 placeholder='Title...'
-                onChange={handleChange}
+                value={title}
+                onChange={onTitleChange}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col><p style={{lineHeight: 3}}>Description</p></Col>
-            <Col>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label column={true} className='justify-content-start'>Description</Form.Label>
               <Form.Control
-                type='description'
+                size='sm'
+                type='search'
                 placeholder='Description...'
-                onChange={handleDescription}
+                value={description}
+                onChange={onDescriptionChange}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col><p style={{lineHeight: 3}}>Difficulty</p></Col>
-            <Col>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label column={true} className='justify-content-start'>Difficulty</Form.Label>
               <Form.Control
+                size='sm'
                 as='select'
                 id='difficultySelection'
                 type='difficulty'
+                value={difficulty}
+                onChange={onDifficultyChange}
               >
                 <option value='0'>Easy</option>
                 <option value='1'>Medium</option>
                 <option value='2'>Hard</option>
                 <option value='3'>Very Hard</option>
               </Form.Control>
-            </Col>
-          </Row>
-          <hr />
-          <Row>
-            <Col><p style={{lineHeight: 3}}>Tags</p></Col>
-            <Col>
-              <Form.Control
-                type='tags'
-                placeholder='Tags...'
+            </Form.Group>
+            <hr />
+            <Form.Group>
+              <Form.Label column={true} className='justify-content-start'>Tags</Form.Label>
+              <TagEditor
+                tags={tags}
+                tagSuggestions={tagSuggestions}
+                onAdd={onAddTags}
+                onDelete={onDeleteTags}
+                onInput={handleTagSuggestions}
+                editing={true}
+                classNames={{
+                  rootFocused: styles['react-tags.is-focused'],
+                  selectedTag: styles['react-tags-selected-tag'],
+                  search: styles['react-tags-search'],
+                  suggestions: styles['react-tags-suggestions']
+                }}
               />
-            </Col>
-            <Form.Label column={true}>Tags</Form.Label>
-            <FieldArray name={propertyOf<ModuleForm>('moduleTags')}>
-              {(helpers) => (
-                <TagEditor
-                  tags={values.moduleTags.map(mt => mt.tag)}
-                  tagSuggestions={tagSuggestions}
-                  mes={message?.variant}
-                  editing={editing}
-                  onAdd={t => helpers.push(cast<ModuleTag>({moduleId: Number(moduleId), tagId: (t.id === 0) ? t.id : 0, tag: t}))}
-                  onDelete={i => helpers.remove(i)}
-                  onInput={onTagInput}
-                />
-              )}
-            </FieldArray>
-          </Row>
-          <Row className='float-right'>
-            <Button className='mr-2' variant='light'>Reset</Button>
-            <Button>Search</Button>
-          </Row>
-        </Container>}
+            </Form.Group>
+            <Row className='float-right mt-4'>
+              <Button type='reset' className='mr-2' variant='light'>Reset</Button>
+              <Button type='submit'>Search</Button>
+            </Row>
+          </Container>}
       </Form>
-      </React.Fragment>
-    );
+    </React.Fragment>
+  );
 };
 
 export default SearchBar;
