@@ -123,3 +123,23 @@
     }
 }
 
+.display-only {
+    width: 90%;
+    display: inline-flex;
+    height: 40px;
+
+    .react-tags {
+        background-color: white;
+        overflow: hidden;
+    }
+
+    .react-tags-selected-tag {
+        font-size: small;
+    }
+}
+
+.expanded {
+    width: 93%;
+    height: 160px;
+}
+

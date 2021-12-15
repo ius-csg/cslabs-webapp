@@ -4,8 +4,8 @@ import {} from './TagEditor.scss';
 
 interface Props {
   tags: Tag[];
-  tagSuggestions: Tag[];
-  mes: string | undefined;
+  tagSuggestions?: Tag[];
+  mes?: string;
   editing: boolean;
   onAdd(tag: Tag): void;
   onDelete(i: number): void;
@@ -20,6 +20,10 @@ export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, 
       setClassName('enabled success');
     else if (mes === 'success' && !editing)
       setClassName('disabled success');
+    else if (mes === 'display-only')
+      setClassName('display-only disabled');
+    else if (mes === 'display-only expanded')
+      setClassName('display-only expanded disabled');
     else if (!editing)
       setClassName('disabled');
     else

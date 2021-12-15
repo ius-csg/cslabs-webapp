@@ -48,7 +48,6 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setLoading(false);
     setMessage(undefined);
   }
-
   const onSubmit = async (form: ModuleForm, {setErrors}: FormikHelpers<ModuleForm>) => {
     setMessage(undefined);
     try {
@@ -103,6 +102,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
       initialValues={initialValues}
       validationSchema={ModuleEditorSchema}
       onSubmit={onSubmit}
+      enableReinitialize={true}
     >
       {({handleSubmit, isSubmitting, values}) => (
         <Form onSubmit={handleSubmit}>

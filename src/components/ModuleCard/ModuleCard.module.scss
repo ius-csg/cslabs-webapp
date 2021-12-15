@@ -11,14 +11,13 @@
     background-image: url("../../assets/images/TestImage.jpg");
 }
 
-.tag {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: left;
-    align-content: flex-start;
-    padding: 0;
-    width: 90%;
-    max-height: 100px;
-    margin-right: 15px;
+.cardText {
+    display: -webkit-box;
     overflow: hidden;
+    margin-bottom: 5px;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
+
+

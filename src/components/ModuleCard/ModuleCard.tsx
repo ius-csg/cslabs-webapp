@@ -8,7 +8,8 @@ import {isAuthenticated} from '../../redux/selectors/entities';
 import {Link} from 'react-router-dom';
 import {UserModule} from '../../types/UserModule';
 import {getLocalDateTimeString} from '../../util';
-import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
+import {TagEditor} from '../TagEditor/TagEditor';
+import {faEllipsisH, faWindowClose} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 interface ModuleCardProps extends ReturnType<typeof mapStateToProps> {
@@ -17,15 +18,18 @@ interface ModuleCardProps extends ReturnType<typeof mapStateToProps> {
   buttonAction?: () => void;
 }
 interface ModuleCardState {
-  viewTags: boolean;
   viewTagsExpanded: boolean;
+}
+
+function doNothing() {
+  // do nothing
 }
 
 class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
 
   constructor(props: ModuleCardProps) {
     super(props);
-    this.state = {viewTags: false, viewTagsExpanded: false};
+    this.state = {viewTagsExpanded: false};
   }
 
   render() {
@@ -36,34 +40,32 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
     return (
         <Card className={Styles.card}>
           {/*<Card.Img variant='top' src={TestImage}/>*/}
-          <Card.Body style={{height: 300}}>
+          <Card.Body style={{height: 240}}>
             <Card.Title>{module.name}</Card.Title>
-            <Card.Text style={{height: 105, overflow: 'hidden', marginBottom: 5}}>
+            {!this.state.viewTagsExpanded ?
+              <Card.Text className={Styles.cardText}>
               {module.description.substring(0, 150)}
-            </Card.Text>
+            </Card.Text> : null}
             {module.moduleTags.length !== 0 ?
-              <div className={Styles.tag}>
-                {module.moduleTags.map(mt =>
-                  <Button
-                    size={this.state.viewTags ? 'sm' : 'lg'}
-                    className='shadow-none mb-1 mr-1 overflow-hidden'
-                    style={this.state.viewTags ? {height: '30px'} : {height: '20px'}}
-                    onClick={() => this.setState({viewTags: !this.state.viewTags})}
-                    key={mt.tag.id}
-                  >
-                    {(this.state.viewTags) ? mt.tag.name : ''}
-                  </Button>)}
-                {this.state.viewTags ?
-                  <FontAwesomeIcon
-                    icon={faEllipsisH}
-                    className='mt-3'
-                    style={{cursor: 'pointer'}}
-                    onClick={() => {this.setState({viewTags: !this.state.viewTags});}}
-                  /> : null
-                }
-              </div> : null
-            }
+              <TagEditor
+                onAdd={doNothing}
+                editing={false}
+                tagSuggestions={[]}
+                onInput={doNothing}
+                onDelete={doNothing}
+                tags={
 
+                  module.moduleTags.map(mt => mt.tag)
+                }
+                mes={this.state.viewTagsExpanded ? 'display-only expanded' : 'display-only'}
+              />
+             : null
+            }
+            <FontAwesomeIcon
+              icon={this.state.viewTagsExpanded ? faWindowClose : faEllipsisH}
+              style={{display: 'inline', cursor: 'pointer', position: 'relative', top: 4}}
+              onClick={() => {this.setState({viewTagsExpanded: !this.state.viewTagsExpanded});}}
+            />
           </Card.Body>
           <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
