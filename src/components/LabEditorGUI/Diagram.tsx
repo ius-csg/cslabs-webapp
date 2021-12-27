@@ -13,6 +13,7 @@ import _ from 'lodash';
 
 // tslint:disable-next-line:no-import-side-effect
 import './Link.scss';
+import {range} from '../util/Util';
 
 
 // initial diagram model
@@ -230,7 +231,21 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     const nodeToChange: any  = schema.nodes.find(node => node.id === id);
 
     if (nodeToChange.inputs.length < 4) {
-      onChange(nodeToChange.inputs.push({id: `${nodeToChange.id}-port${nodeToChange.inputs.length}`}));
+      setNodeCount(nodeCount + 1);
+      const inputs : any = [];
+      for (const i of range(0, nodeToChange.inputs.length)) {
+        inputs.push({id: `vm-node-${nodeCount}-port${i}`});
+      }
+
+      deleteNodeFromSchema(nodeToChange.id);
+      addNode({
+        id: `vm-node-${nodeCount}`,
+        content: nodeToChange.content,
+        coordinates: nodeToChange.coordinates,
+        render: VmNode,
+        inputs: inputs
+      });
+      updateSchemaState('update');
     }
   };
 
