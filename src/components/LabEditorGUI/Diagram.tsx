@@ -61,6 +61,12 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
               schema.nodes.push(i);
             }
           }
+          if (schemaState.present.links && schema.links !== undefined) {
+            schema.links.splice(0, schema.links.length);
+            for (const i of schemaState.present.links) {
+              schema.links.push(i);
+            }
+          }
           onChange(schema);
         }
         break;
@@ -78,13 +84,21 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
               schema.nodes.push(i);
             }
           }
+          if (schemaState.present.links && schema.links !== undefined) {
+            schema.links.splice(0, schema.nodes.length);
+            for (const i of schemaState.present.links) {
+              schema.links.push(i);
+            }
+          }
           onChange(schema);
         }
         break;
       case 'update':
-        newSchemaState.past.push(_.cloneDeep(schemaState.present));
-        newSchemaState.present = _.cloneDeep({nodes: schema.nodes, links: schema.links});
-        setSchemaState(newSchemaState);
+        if (newSchemaState.present.nodes !== schema.nodes && newSchemaState.present.links !== schema.links) {
+          newSchemaState.past.push(_.cloneDeep(schemaState.present));
+          newSchemaState.present = _.cloneDeep({nodes: schema.nodes, links: schema.links});
+          setSchemaState(newSchemaState);
+        }
         break;
     }
   };
@@ -96,10 +110,10 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       }
     } else if (e.which === 90 && e.ctrlKey) {
       if (e.shiftKey) {
-        // redo
+        // redo (ctrl + shift + z)
         updateSchemaState('redo');
       } else {
-        // undo
+        // undo (ctrl + z)
         updateSchemaState('undo');
       }
     }
@@ -186,7 +200,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const deleteNodeFromSchema = (id: string) => {
     const nodeToRemove: any = schema.nodes.find(node => node.id === id);
     removeNode(nodeToRemove);
-    updateSchemaState('update');
   };
 
   const duplicateNode = (id: string) => {
@@ -224,7 +237,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       inputs: inputs,
       outputs: outputs
     });
-    updateSchemaState('update');
+    onChange(schema);
   };
 
   const addVmPort = (id: string) => {
@@ -260,7 +273,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         disableDrag: true
       });
     } else if (internetConnection === false && schema.nodes.find(node => node.id === 'wan-node') !== undefined) {
-        deleteNodeFromSchema('wan-node');
+      deleteNodeFromSchema('wan-node');
+      updateSchemaState('update');
     }
   }, [internetConnection]);
 
@@ -296,6 +310,9 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         if (lastLink) {
           schema.links.push({input: lastLink.input, output: lastLink.output, className: `${colors[linkCount % 8]}-link`});
         }
+      }
+      if (schema.links !== schemaState.present) {
+        updateSchemaState('update');
       }
   }, [schema.links]);
 
@@ -378,18 +395,21 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
               setNodeToRename(node.id);
               setNewNodeName(node.content);
             }
+            updateSchemaState('update');
           }
         },
         {
           text: 'Remove',
           onClick: () => {
             deleteNodeFromSchema(selectedNode);
+            updateSchemaState('update');
           }
         },
         {
           text: 'Duplicate',
           onClick: () => {
             duplicateNode(selectedNode);
+            updateSchemaState('update');
           }
         }
       ]);
@@ -400,12 +420,14 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           text: 'Remove',
           onClick: () => {
             deleteNodeFromSchema(selectedNode);
+            updateSchemaState('update');
           }
         },
         {
           text: 'Duplicate',
           onClick: () => {
             duplicateNode(selectedNode);
+            updateSchemaState('update');
           }
         }
       ]);
