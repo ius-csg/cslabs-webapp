@@ -13,6 +13,7 @@ export function makeModuleForm(): ModuleForm {
   return {
     ...makeTrackableEntity(),
     labs: [],
+    moduleTags: [],
     description: '',
     name: '',
     published: false,

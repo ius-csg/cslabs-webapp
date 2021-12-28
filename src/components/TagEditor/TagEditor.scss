@@ -1,0 +1,125 @@
+@import '../../theme';
+
+.react-tags.is-focused {
+    border-color: #b1b1b1;
+}
+
+.react-tags-selected {
+    display: inline;
+}
+
+.react-tags-selected-tag {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0 6px 6px 0;
+    padding: 6px 8px;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    background: #f1f1f1;
+    font-size: 1.063rem;
+    font-weight: 400;
+    color: map-get($colors, text-primary);
+    line-height: inherit;
+}
+
+.react-tags-selected-tag:hover,
+.react-tags-selected-tag:focus {
+    border-color: #b1b1b1;
+}
+
+.react-tags-search {
+    position: relative;
+    display: inline-block;
+    padding: 7px 2px;
+    margin-bottom: 6px;
+    max-width: 100%;
+}
+
+.react-tags-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    width: 240px;
+}
+
+.react-tags-suggestions ul {
+    padding: 0;
+    list-style: none;
+    background: white;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+}
+
+.react-tags-suggestions li {
+    border-bottom: 1px solid #d1d1d1;
+    padding: 6px 8px;
+}
+
+.react-tags-suggestions li mark {
+    background: none;
+}
+
+.react-tags-suggestions li:hover {
+    cursor: pointer;
+    background-color: #f1f1f1;
+}
+
+.success {
+    .react-tags {
+        border: 1px solid map-get($colors, success) !important;
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path fill='%2302B875' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/></svg>");
+        background-repeat: no-repeat;
+        background-position: center right calc(.375em + .25rem);
+        background-size: calc(.75em + .5rem) calc(.75em + .5rem);
+    }
+}
+
+.enabled {
+    .react-tags {
+        position: relative;
+        padding: 6px 0 0 6px;
+        border: 1px solid #d1d1d1;
+        border-radius: 4px;
+        cursor: text;
+    }
+
+    .react-tags-selected-tag::after {
+        content: '\2715';
+        color: #aaa;
+        margin-left: 8px;
+    }
+
+    .react-tags-search-input {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: none;
+        font-size: inherit;
+        line-height: inherit;
+    }
+}
+
+.disabled {
+    .react-tags {
+        position: relative;
+        padding: 6px 0 0 6px;
+        border-radius: 4px;
+        background-color: #e9ecef;
+        pointer-events: none;
+        font-size: 1em;
+        line-height: 1.2;
+    }
+
+    .react-tags-selected-tag::after {
+        color: #aaa;
+        margin-left: 8px;
+    }
+
+    .react-tags-search-input {
+        max-width: 0;
+        padding: 0;
+        border: 0;
+    }
+}
