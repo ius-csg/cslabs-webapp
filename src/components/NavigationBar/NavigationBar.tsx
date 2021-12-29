@@ -10,7 +10,7 @@ import {NavLogo} from './NavLogo';
 import {RoutePaths} from '../../router/RoutePaths';
 
 
-
+// https://stackoverflow.com/questions/38321601/easier-way-to-to-disable-link-in-react
 const NavigationBarComponent =
 ({authenticated, creator, admin, verified}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
   <Container>

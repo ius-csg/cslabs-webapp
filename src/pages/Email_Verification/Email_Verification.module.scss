@@ -31,14 +31,14 @@ Button {
     width: 1em;
 }
 
-//.error {
-//    color: red;
-//    font-size: 50px;
-//    height: 1em;
-//    width: 1em;
-//}
+.error {
+    color: red;
+    font-size: 50px;
+    height: 1em;
+    width: 1em;
+}
 
-/*For spinner
+// For spinner
 .lds-facebook {
   display: inline-block;
   position: relative;
@@ -63,7 +63,7 @@ Button {
 }
 .lds-facebook div:nth-child(3) {
   left: 56px;
-  animation-delay: 0;
+  animation-delay: 0s;
 }
 @keyframes lds-facebook {
   0% {
@@ -75,5 +75,5 @@ Button {
     height: 32px;
   }
 }
-<div class="lds-facebook"><div></div><div></div><div></div></div>
- */
+
+

@@ -174,9 +174,19 @@ export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
 }
 
+
 export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
+
+export async function verifyUser() {
+  return handleResponse(await api.get<boolean>(`/user/verify-user`));
+}
+
+export async function resendEmail() {
+  return handleResponse(await api.get<boolean>(`/user/resend-email`));
+}
+
 export async function getModuleForEditor(moduleId: number) {
   return handleResponse(await api.get<ModuleForm>(`/module/module-editor/${moduleId}`)).data;
 }

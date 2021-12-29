@@ -25,7 +25,7 @@ import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
 import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
-import EmailVerification from '../pages/Email_Verification/Email_Verification';
+import {EmailVerification} from '../pages/Email_Verification/Email_Verification';
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
