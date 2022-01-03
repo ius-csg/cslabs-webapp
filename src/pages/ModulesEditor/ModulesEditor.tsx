@@ -4,11 +4,13 @@ import {getEditorsModules} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {Message} from '../../util/Message';
 import {PageTitle} from '../../components/util/PageTitle';
-import {CardColumns, Col, Row} from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
 import {UserModule} from '../../types/UserModule';
 import {CreatorsModuleCard} from '../../components/CreatorsModuleCard/CreatorsModuleCard';
 import {RoutePaths} from '../../router/RoutePaths';
 import {ButtonLink} from '../../components/util/ButtonLink';
+import ModulesFilter from 'components/ModulesSearch/ModulesFilter';
+import ModulesSearch from 'components/ModulesSearch/ModulesSearch';
 
 interface ModulesState {
   modules: UserModule[];
@@ -26,17 +28,25 @@ class ModulesEditor extends React.Component<{}, ModulesState> {
     this.loadModules();
   }
 
-  async loadModules() {
+  loadModules = async () => {
     try {
       const modules = await getEditorsModules();
       this.setState({modules: modules, state: 'success'});
     } catch (_) {
       this.setState({state: 'error'});
     }
+  };
+
+  updateUserModules = (modules: UserModule[]) => {
+    this.setState({modules: modules, state: 'success'});
   }
 
   render() {
-    const cards = this.state.modules.map((m, i) => <CreatorsModuleCard module={m} key={i}/>);
+    const cards = this.state.modules.map((m, i) => 
+      <Col key={i} sm={12} md={6} lg={3}>
+        <CreatorsModuleCard module={m} key={i} />
+      </Col>
+    );
     return (
       <Layout>
         {this.state.state === 'loading' ? <HorizontallyCenteredSpinner/> :
@@ -53,9 +63,15 @@ class ModulesEditor extends React.Component<{}, ModulesState> {
                 </Col>
               </Row>
               <hr/>
+              <Row className='d-flex justify-content-between mb-4'>
+                <Col className='d-flex justify-content-end p-0'>
+                  <ModulesFilter modules={this.state.modules} loadModules={this.loadModules} showSortedModules={this.updateUserModules} />
+                  <ModulesSearch loadModules={this.loadModules} showSearchedModules={this.updateUserModules} />
+                </Col>
+              </Row>
               {cards.length === 0 ?
-                <p style={{textAlign: 'center', marginTop: '1rem'}}>You currently have no modules</p> :
-                <CardColumns>{cards}</CardColumns>
+                <p style={{ textAlign: 'center', marginTop: '1rem' }}>No modules published at this time, please come back later.</p> :
+                <Row>{cards}</Row>
               }
             </>
         }
