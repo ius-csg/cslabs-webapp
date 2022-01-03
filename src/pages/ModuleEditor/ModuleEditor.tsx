@@ -14,7 +14,7 @@ import {ModuleForm} from '../../types/editorTypes';
 import {makeModuleForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
-import {getModuleShareLink, ModuleType} from '../../types/Module';
+import {getModuleShareLink, ModuleDifficulty, ModuleType} from '../../types/Module';
 import {Redirect, RouteComponentProps} from 'react-router';
 import {getModuleForEditor, getTags, saveModule} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
@@ -31,6 +31,12 @@ import {ModuleTag} from '../../types/ModuleTag';
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
   {value: 'MultiUser', label: 'Multi User'}
+];
+
+const moduleDifficultyOptions: DropdownOption<ModuleDifficulty>[] = [ 
+  {value: 1, label: 'Easy'},
+  {value: 2, label: 'Medium'},
+  {value: 3, label: 'Hard'}
 ];
 
 type Props = RouteComponentProps<{ moduleId?: string }>;
@@ -69,8 +75,8 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setMessage(undefined);
   }
 
-  async function onTagInput() {
-    setTagSuggestions(await getTags());
+  async function onTagInput(input: string) {
+    setTagSuggestions(await getTags(input));
   }
 
   React.useEffect(() => {
@@ -125,7 +131,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
             { !editing && (
               <Form.Group>
                 <Form.Label column={true}>Share Link</Form.Label>
-                <a target='_blank' rel='noopener' href={getModuleShareLink(values.specialCode)}>{getModuleShareLink(values.specialCode)}</a>
+                <a target='_blank' rel='noopener noreferrer' href={getModuleShareLink(values.specialCode)}>{getModuleShareLink(values.specialCode)}</a>
               </Form.Group>
             )}
             <Form.Group>
@@ -138,6 +144,10 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
             <Form.Group>
               <Form.Label column={true}>Type</Form.Label>
               <DropdownInput name={propertyOf<ModuleForm>('type')} dropdownData={moduleTypeOptions} disabled={!editing}/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label column={true}>Difficulty</Form.Label>
+              <DropdownInput name={propertyOf<ModuleForm>('difficulty')} dropdownData={moduleDifficultyOptions} disabled={!editing}/>
             </Form.Group>
             <Form.Group>
               <Form.Label column={true}>Module Description</Form.Label>

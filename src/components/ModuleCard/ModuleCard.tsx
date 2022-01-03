@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import {isAuthenticated} from '../../redux/selectors/entities';
 import {Link} from 'react-router-dom';
 import {UserModule} from '../../types/UserModule';
-import {getLocalDateTimeString} from '../../util';
+import {getLocalDateTimeString, getModuleDifficultyLabel} from '../../util';
 
 interface ModuleCardProps extends ReturnType<typeof mapStateToProps> {
   module: Module|UserModule;
@@ -33,6 +33,7 @@ class ModuleCardComponent extends Component<ModuleCardProps > {
         </Card.Body>
         <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
+          <small className='text-muted'>{getModuleDifficultyLabel(module.difficulty)}</small>
           {this.getStartButton()}
         </Card.Footer>
       </Card>
@@ -44,11 +45,11 @@ class ModuleCardComponent extends Component<ModuleCardProps > {
     if (this.props.buttonLink) {
       return (
         <Link to={this.props.buttonLink}>
-          <Button className='btn btn-primary' style={{width: 200}}>View</Button>
+          <Button className='btn btn-primary' style={{width: 100}}>View</Button>
         </Link>
       );
     } else if (this.props.buttonAction) {
-      return (<Button onClick={this.props.buttonAction} className='btn btn-primary' style={{width: 200}}>View</Button>);
+      return (<Button onClick={this.props.buttonAction} className='btn btn-primary' style={{width: 100}}>View</Button>);
     } else {
       return null;
     }

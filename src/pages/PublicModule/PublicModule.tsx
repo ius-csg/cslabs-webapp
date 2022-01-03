@@ -33,7 +33,8 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       userId: 0,
       specialCode: '',
       type: 'SingleUser',
-      updatedAt: ''
+      updatedAt: '',
+      difficulty: 0
     },
     startingModule: false
   };
