@@ -3,8 +3,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {IconProp, SizeProp} from '@fortawesome/fontawesome-svg-core';
 import styles from './IconButton.module.scss';
 import {Link} from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 
 interface IconButtonProps {
+  tooltip?: string;
   icon: IconProp;
   hideIcon?: boolean;
   size?: SizeProp;
@@ -49,16 +51,18 @@ export function IconButton(props: IconButtonProps) {
 function IconButtonIcon(props: IconButtonProps) {
   return (
     <React.Fragment>
-      <FontAwesomeIcon
-        icon={props.icon}
-        size={props.size}
-        className={styles['icon']}
-        style={{
-          cursor: 'pointer',
-          ...(props.customSize ? {fontSize: props.customSize} : {}),
-          ...(props.color ? {color: props.color} : {})
-        }}
-      />
+      <ReactTooltip place='left' type='dark' effect='solid'/>
+        <FontAwesomeIcon
+          data-tip={props.tooltip}
+          icon={props.icon}
+          size={props.size}
+          className={styles['icon']}
+          style={{
+            cursor: 'pointer',
+            ...(props.customSize ? {fontSize: props.customSize} : {}),
+            ...(props.color ? {color: props.color} : {})
+          }}
+        />
       {props.children ? <span style={{marginLeft: '1rem'}}>{props.children}</span> : null}
     </React.Fragment>
   );
