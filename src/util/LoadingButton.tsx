@@ -11,7 +11,7 @@ interface Props {
   type?: ButtonProps['type'];
   disabled?: boolean;
   onClick?: onClick;
-  toolTipText?: string;
+  disabledToolTipText?: string;
 }
 
 function renderButton(props: Props) {
@@ -31,7 +31,7 @@ function renderButton(props: Props) {
   if (props.disabled) {
     return (<>
       <ReactTooltip place='left' type='dark' effect='solid'/>
-      <span data-tip={props.toolTipText}>
+      <span data-tip={props.disabledToolTipText}>
         {innerButton}
       </span>
     </>);

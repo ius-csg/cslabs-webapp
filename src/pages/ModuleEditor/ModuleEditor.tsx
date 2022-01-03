@@ -122,7 +122,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
             <Col className='d-flex justify-content-end align-items-center'>
               {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
               {!editing && <Button type='button' onClick={() => setEditing(true)}>Edit</Button>}
-              {editing && <LoadingButton loading={isSubmitting} type='submit' label={values.id ? 'Save' : 'Create'} toolTipText={'This lab is currently disabled'}/>}
+              {editing && <LoadingButton loading={isSubmitting} type='submit' label={values.id ? 'Save' : 'Create'} disabledToolTipText={'This lab is currently disabled'}/>}
             </Col>
           </Row>
           <Col sm='12' className='m-auto'>
