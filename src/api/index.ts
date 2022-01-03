@@ -14,6 +14,7 @@ import {UploadByUrlForm, UploadForm, uploadFormToFormData} from '../components/V
 import {Maintenance} from '../types/Maintenance';
 import {Tag} from '../types/Tag';
 import {SystemMessage} from '../types/SystemMessage';
+import {SearchOptions} from 'types/SearchOptions';
 
 let api = makeAxios(process.env.REACT_APP_API_URL);
 
@@ -79,7 +80,15 @@ export async function getModule(id: number) {
 }
 
 export async function searchModules(searchTerm : string) {
-    return ( await api.get<Module[]>(`/module/search/${searchTerm}`)).data;
+    return (await api.get<Module[]>(`/module/search/${searchTerm}`)).data;
+}
+
+export async function searchOptionsModules(searchInputs : SearchOptions) {
+  const searchParams = { 
+    title: searchInputs.title, description: searchInputs.description,
+    difficulty: searchInputs.difficulty, tags: searchInputs.tags.map(t => t.name).toString() 
+  };
+  return ( await api.get<Module[]>(`/module/search`, {params: searchParams}) ).data;
 }
 
 export async function getUserList() {
@@ -146,16 +155,37 @@ export async function getUserModule(id: number) {
 export async function searchUserModules(searchTerm : string) {
   return handleResponse( await api.get<UserModule[]>(`/user-module/search/${searchTerm}`)).data;
 }
+
+export async function searchOptionsUserModules(searchInputs : SearchOptions) {
+  const searchParams = { 
+    title: searchInputs.title, description: searchInputs.description,
+    difficulty: searchInputs.difficulty, tags: searchInputs.tags.map(t => t.name).toString() 
+  };
+  return handleResponse( await api.get<UserModule[]>(`/user-module/search`, {params: searchParams})).data;
+}
+
 export async function getEditorsModules() {
   return handleResponse(await api.get<UserModule[]>(`module/modules-editor`)).data;
+}
+
+export async function searchEditorsModules(searchTerm : string) {
+  return handleResponse( await api.get<UserModule[]>(`module/modules-editor/search/${searchTerm}`)).data;
+}
+
+export async function searchOptionsEditorsModules(searchInputs: SearchOptions) {
+  const searchParams = { 
+    title: searchInputs.title, description: searchInputs.description,
+    difficulty: searchInputs.difficulty, tags: searchInputs.tags.map(t => t.name).toString() 
+  };
+  return handleResponse(await api.get<UserModule[]>(`module/modules-editor/search`, {params: searchParams})).data;
 }
 
 export async function getUserLab(id: number) {
   return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;
 }
 
-export async function getTags() {
-  return handleResponse( await api.get<Tag[]>(`/tag`)).data;
+export async function getTags(name: string) {
+  return handleResponse( await api.get<Tag[]>(`/tag/search/${name}`)).data;
 }
 
 export async function updateEndDateTime(id: number) {
