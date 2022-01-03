@@ -1,6 +1,8 @@
 import {BridgeTemplate, LabForm, LabVmForm, ModuleForm, VmInterfaceTemplate} from './types/editorTypes';
 import uuid from 'uuid';
 import {TrackableEntity} from './types/Entity';
+import {Tag} from 'react-tag-autocomplete';
+import {ModuleDifficulty} from 'types/Module';
 
 
 export function makeTrackableEntity(): TrackableEntity {
@@ -19,7 +21,8 @@ export function makeModuleForm(): ModuleForm {
     published: false,
     specialCode: uuid(),
     type: 'SingleUser',
-    userId: 0
+    userId: 0,
+    difficulty: 0
   };
 }
 
@@ -65,5 +68,15 @@ export function makeVmInterfaceTemplate(interfaceNumber: number = 0, bridgeTempl
     interfaceNumber: interfaceNumber,
     id: 0,
     bridgeTemplateUuid: bridgeTemplateUuid
+  };
+}
+
+export function makeSearchInputs(title: string = '', description: string = '', difficulty: ModuleDifficulty = 0, tags: Tag[] = [] as Tag[]) {
+  return {
+    id: 0,
+    title: title,
+    description: description,
+    difficulty: difficulty,
+    tags: tags
   };
 }

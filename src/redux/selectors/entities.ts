@@ -34,3 +34,7 @@ export function isAdmin(state: WebState) {
   }
 }
 
+export function isGuest(state: WebState) {
+  const user: User | null =  getCurrentUser(state);
+  return user?.role === 'Guest';
+}

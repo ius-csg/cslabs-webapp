@@ -1,8 +1,8 @@
 import React from 'react';
-import { Tooltip, OverlayTrigger, Container } from 'react-bootstrap';
+import {Tooltip, OverlayTrigger} from 'react-bootstrap';
 
 interface ToolTipProps {
-  key: string;
+  id: string;
   placement: 'auto-start' | 'auto' | 'auto-end'
   | 'top-start' | 'top' | 'top-end' | 'right-start'
   | 'right' | 'right-end' | 'bottom-end' | 'bottom'
@@ -15,17 +15,17 @@ interface ToolTipProps {
 export default function ToolTip(props: ToolTipProps) {
   return (
     <OverlayTrigger
-      key={props.key}
+      key={props.id}
       placement={props.placement}
       delay={props.delay}
       overlay={
-        <Tooltip id={`tooltip-${props.key}`} >
+        <Tooltip id={`tooltip-${props.id}`} >
           {props.text}
         </Tooltip>}
     >
-      <Container className='p-0'>
+      <div>
         {props.children}
-      </Container>
+      </div>
     </OverlayTrigger>
   );
 }

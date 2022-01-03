@@ -5,6 +5,7 @@ import {DateTime} from 'luxon';
 import axios, {AxiosError} from 'axios';
 import humanizeDuration from 'humanize-duration';
 import {useState} from 'react';
+import {ModuleDifficulty} from 'types/Module';
 
 export function combineClasses(...arr: any[]|string[]|undefined[]|null[]): string {
   return arr.filter((val) => !!val).join(' ');
@@ -287,6 +288,17 @@ export function convertArrayToDictionary<T>(arr: T[], key: keyof T): {[key: stri
     obj[(item as any)[key]] = item;
   }
   return obj;
+}
+
+export const moduleDifficultyOptions = [
+  {value: 0, label: 'Any'},
+  {value: 1, label: 'Easy'},
+  {value: 2, label: 'Medium'},
+  {value: 3, label: 'Hard'}
+];
+
+export function getModuleDifficultyLabel(val: ModuleDifficulty) {
+  return moduleDifficultyOptions[val].label;
 }
 
 
