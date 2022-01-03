@@ -11,6 +11,7 @@ import SelectSwitch from './SelectSwitch';
 import ContextContainer from './ContextContainer';
 import _ from 'lodash';
 
+
 // tslint:disable-next-line:no-import-side-effect
 import './Link.scss';
 import {range} from '../util/Util';
@@ -19,7 +20,7 @@ import {range} from '../util/Util';
 // initial diagram model
 const initialSchema = createSchema({});
 
-const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBoxPosition, nodeToRename, setNodeToRename}:any) => {
+const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBoxPosition, nodeToRename, setNodeToRename}: any) => {
 
   let rect: any = null;
   useEffect(() => {
@@ -28,12 +29,12 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   });
 
 
-  const [selectSwitchVisible, setSelectSwitchVisible] = useState(false);
-  const [renameTextBox, toggleRenameTextBox] = useState(false);
-  const [newNodeName, setNewNodeName] = useState<any>('');
-  const [internetConnection, toggleInternetConnection] = useState(false);
-  const [nodeCount, setNodeCount] = useState(0);
-  const [linkCount, setLinkCount] = useState(0);
+  const [selectSwitchVisible, setSelectSwitchVisible] = useState<boolean>(false);
+  const [renameTextBox, toggleRenameTextBox] = useState<boolean>(false);
+  const [newNodeName, setNewNodeName] = useState('');
+  const [internetConnection, toggleInternetConnection] = useState<boolean>(false);
+  const [nodeCount, setNodeCount] = useState<number>(0);
+  const [linkCount, setLinkCount] = useState<number>(0);
   const [schemaState, setSchemaState] = useState<any>({
     past: [{}],
     present: {},
@@ -141,7 +142,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   // Handles starting location if this a node is the first in schema to be created
   const handleFirstNode = (schemaSize: number) => {
-    let startingCoords: any;
+    let startingCoords: [number, number];
     if (schemaSize === 0) {
       startingCoords = [250, 60];
     } else {
@@ -462,7 +463,9 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         if (node.id.includes('vm')) {
           setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
           setNodeToRename(node.id);
-          setNewNodeName(node.content);
+          if (node.content !== undefined && typeof node.content === 'string') {
+            setNewNodeName(node.content);
+          }
           toggleRenameTextBox(true);
         }
       }
