@@ -2,29 +2,29 @@ import React, {useEffect, useState} from 'react';
 import ReactTags, {Tag, ClassNames} from 'react-tag-autocomplete';
 import {} from './TagEditor.scss';
 
-interface Props {
+export interface Props {
   tags: Tag[];
-  tagSuggestions: Tag[];
+  tagSuggestions?: Tag[];
   mes?: string;
   editing: boolean;
   classNames?: any;
   onAdd(tag: Tag): void;
   onDelete(i: number): void;
-  onInput(name: string): void;
+  onInput?(name: string): void;
 }
 
 export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, editing, classNames}: Props) {
-  const [className, setClassName] = useState('disabled');
+  const [status, setStatus] = useState('disabled');
 
   useEffect(() => {
     if (mes === 'success' && editing)
-      setClassName('enabled success');
+      setStatus('enabled success');
     else if (mes === 'success' && !editing)
-      setClassName('disabled success');
+      setStatus('disabled success');
     else if (!editing)
-      setClassName('disabled');
+      setStatus('disabled');
     else
-      setClassName('enabled');
+      setStatus('enabled');
   }, [mes, editing]);
 
   function onValidate(tag: Tag) {
@@ -34,20 +34,20 @@ export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, 
   }
 
   const defaultClassNames: ClassNames = {
-    root: classNames?.root || 'react-tags',
-    rootFocused: classNames?.rootFocused || 'is-focused',
-    selected: classNames?.selected || 'react-tags-selected',
-    selectedTag: classNames?.selectedTag || 'react-tags-selected-tag',
-    selectedTagName: classNames?.selectedTagName || 'react-tags-selected-tag-name',
-    search: classNames?.search || 'react-tags-search',
-    searchInput: classNames?.searchInput || 'react-tags-search-input',
-    suggestions: classNames?.suggestions || 'react-tags-suggestions',
-    suggestionActive: classNames?.suggestionActive || 'is-active',
-    suggestionDisabled: classNames?.suggestionDisabled || 'is-disabled'
+    // add any additional CSS class names defined in props to existing classes
+    root: `react-tags ${classNames?.root? classNames.root : ''}`,
+    rootFocused: `is-focused ${classNames?.rootFocused? classNames.rootFocused : ''}`,
+    selected: `react-tags-selected ${classNames?.selected? classNames.selected : ''}`,
+    selectedTag: `react-tags-selected-tag ${classNames?.selectedTag? classNames.selectedTag : ''}`,
+    selectedTagName: `react-tags-selected-tag-name ${classNames?.selectedTagName? classNames.selectedTagName : ''}`,
+    search: `react-tags-search ${classNames?.search? classNames.search : ''}`,
+    searchInput: `react-tags-search-input ${classNames?.searchInput? classNames.searchInput : ''}`,
+    suggestions: `react-tags-suggestions ${classNames?.suggestions? classNames.suggestions : ''}`,
+    suggestionActive: `is-active ${classNames?.suggestionActive? classNames.suggestionActive : ''}`,
+    suggestionDisabled: `is-disabled ${classNames?.suggestionDisabled? classNames.suggestionDisbled : ''}`
   };
-
   return (
-    <div className={className}>
+    <div className={status}>
       <ReactTags
         tags={tags}
         onAddition={onAdd}

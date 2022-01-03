@@ -2,6 +2,8 @@
 
 .react-tags.is-focused {
     border-color: #b1b1b1;
+    box-shadow: 0 0 0 0.2rem rgba(69, 130, 236, 0.25);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
 }
 
 .react-tags-selected {
@@ -12,10 +14,11 @@
     display: inline-block;
     box-sizing: border-box;
     margin: 0 6px 6px 0;
+    padding: 6px 8px;
     border: 1px solid #d1d1d1;
     border-radius: 4px;
     background: #f1f1f1;
-    font-size: 0.763rem;
+    font-size: 1.063rem;
     font-weight: 400;
     color: map-get($colors, text-primary);
     line-height: inherit;
@@ -29,6 +32,7 @@
 .react-tags-search {
     position: relative;
     display: inline-block;
+    padding: 7px 2px;
     margin-bottom: 6px;
     max-width: 100%;
 }
@@ -51,6 +55,7 @@
 
 .react-tags-suggestions li {
     border-bottom: 1px solid #d1d1d1;
+    padding: 6px 8px;
 }
 
 .react-tags-suggestions li mark {
