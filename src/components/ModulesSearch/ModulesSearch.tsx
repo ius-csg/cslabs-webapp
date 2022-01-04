@@ -42,41 +42,34 @@ const ModulesSearch = (props: ModulesSearchProps) => {
   const focusRef = useRef<any>();
 
   const showSearchedModules = async (searchValue: string) => {
-    if (searchValue.length !== 0) {
-      let modules: Modules = [];
-      if ( (props.admin || props.creator) && window.location.pathname === RoutePaths.contentCreator ) {
-        modules = await searchEditorsModules(searchValue);
-      }
-      else if (props.authenticated && window.location.pathname === RoutePaths.myModules) {
-        modules = await searchUserModules(searchValue);
-      }
-      else {
-        modules = await searchModules(searchValue);
-      }
-      props.showSearchedModules(modules);
+    if (searchValue.length === 0)
+      props.loadModules();
+
+    let modules: Modules = [];
+    if ( (props.admin || props.creator) && window.location.pathname === RoutePaths.contentCreator ) {
+      modules = await searchEditorsModules(searchValue);
+    }
+    else if (props.authenticated && window.location.pathname === RoutePaths.myModules) {
+      modules = await searchUserModules(searchValue);
     }
     else {
-      props.loadModules();
+      modules = await searchModules(searchValue);
     }
+    props.showSearchedModules(modules);
   };
 
   const showSearchedOptionsModules = async (searchParams: SearchOptions) => {
-    if (searchParams) {
-      let modules: Modules = [];
-      if ( (props.admin || props.creator) && window.location.pathname === RoutePaths.contentCreator ) {
-        modules = await searchOptionsEditorsModules(searchParams);
-      }
-      else if (props.authenticated && window.location.pathname === RoutePaths.myModules) {
-        modules = await searchOptionsUserModules(searchParams);
-      }
-      else {
-        modules = await searchOptionsModules(searchParams);
-      }
-      props.showSearchedModules(modules);
+    let modules: Modules = [];
+    if ( (props.admin || props.creator) && window.location.pathname === RoutePaths.contentCreator ) {
+      modules = await searchOptionsEditorsModules(searchParams);
+    }
+    else if (props.authenticated && window.location.pathname === RoutePaths.myModules) {
+      modules = await searchOptionsUserModules(searchParams);
     }
     else {
-      props.loadModules();
+      modules = await searchOptionsModules(searchParams);
     }
+    props.showSearchedModules(modules);
   };
 
   const onSearchTermChange = (e: any) => {
@@ -155,10 +148,12 @@ const ModulesSearch = (props: ModulesSearchProps) => {
     function updateSearchTermTags() {
       let tags: Tag[] = [];
       if (searchInputs.title.length !== 0) {
-        tags.push({ id: 'title', name: `Title: ${searchInputs.title.substring(0, 10)}` });
+        tags.push({ id: 'title', name: `Title: ${searchInputs.title.length > 10 ?
+          searchInputs.title.substring(0, 10) + '...' : searchInputs.title}` });
       }
       if (searchInputs.description.length !== 0) {
-        tags.push({ id: 'desc', name: `Description: ${searchInputs.description.substring(0, 15)}` });
+        tags.push({ id: 'desc', name: `Description: ${searchInputs.description.length > 15 ? 
+          searchInputs.description.substring(0, 15) + '...' : searchInputs.description}` });
       }
       if (searchInputs.difficulty !== 0) {
         tags.push({ id: 'diff', name: `Difficulty: ${getModuleDifficultyLabel(searchInputs.difficulty)}` });
@@ -257,11 +252,11 @@ const ModulesSearch = (props: ModulesSearchProps) => {
                   onChange={onDifficultyChange}
                   styles={{
                     container : (provided) => ({
-                       ...provided, fontSize: '0.930125rem' 
+                       ...provided, fontSize: '0.930125rem'
                     }),
                     control: (provided) => ({
-                      ...provided, minWidth: 110, height: 'calc(1.5em + 1rem + 2px)'
-                    }), 
+                      ...provided, minWidth: 110
+                    }),
                     dropdownIndicator: (provided) => ({ 
                       ...provided, width: 30 
                     }),

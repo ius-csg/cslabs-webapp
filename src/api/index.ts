@@ -168,6 +168,10 @@ export async function getEditorsModules() {
   return handleResponse(await api.get<UserModule[]>(`module/modules-editor`)).data;
 }
 
+export async function getAdminModules() {
+  return handleResponse(await api.get<Module[]>(`module/modules-editor/admin`)).data;
+}
+
 export async function searchEditorsModules(searchTerm : string) {
   return handleResponse( await api.get<UserModule[]>(`module/modules-editor/search/${searchTerm}`)).data;
 }

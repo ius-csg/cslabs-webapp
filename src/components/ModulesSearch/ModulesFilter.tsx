@@ -9,6 +9,7 @@ import styles from './ModulesFilter.module.scss';
 import {RoutePaths} from 'router/RoutePaths';
 import {Module} from 'types/Module';
 import {UserModule} from 'types/UserModule';
+import {getAdminModules} from 'api';
 
 export type Modules = Module[] | UserModule[];
 
@@ -20,23 +21,34 @@ interface ModulesFilterProps extends ReturnType<typeof mapUserStateToProps> {
 
 const ModulesFilter = (props: ModulesFilterProps) => {
 
+  const creatorSortOptions = [
+    props.admin ? { name: 'All Modules', value: 1 } : {},
+    { name: 'Type', value: 2},
+    { name: 'Published', value: 3}
+  ];
+  
+  const sortOptions = [
+    ...(props.creator || props.admin) && window.location.pathname === RoutePaths.contentCreator ? 
+    [...creatorSortOptions] : [],
+    { name: 'Name', value: 4 },
+    { name: 'Difficulty', value: 5 },
+    { name: 'Date', value: 6 }
+  ];
+
   const [sortOption, setSortOption] = useState(0);
   const [filterOn, setFilterOn] = useState(false);
 
   const focusRef = useRef<any>();
 
-  const creatorSortOptions = [
-    { name: 'My Modules', value: 1 },
-    { name: 'Type', value: 5}
-  ];
-  
-  const sortOptions = [
-    ...(props.admin || props.creator) && window.location.pathname === RoutePaths.contentCreator ? 
-    [...creatorSortOptions] : [],
-    { name: 'Name', value: 2 },
-    { name: 'Difficulty', value: 3 },
-    { name: 'Date', value: 4 }
-  ];
+  const onFilterClick = () => {
+    setFilterOn(!filterOn);
+  };
+
+  const onBlur = (e: any) => {
+    if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+      setFilterOn(false);
+    }
+  };
 
   const onSortChange = (e: any) => {
     let selectedOption = parseInt(e.target.value, 10);
@@ -48,41 +60,36 @@ const ModulesFilter = (props: ModulesFilterProps) => {
     showSortedModules(selectedOption);
   };
 
-  const onFilterClick = () => {
-    setFilterOn(!filterOn);    
-  };
-
-  const onBlur = (e: any) => {
-    if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-      setFilterOn(false);
-    }
-  };
-
   const showSortedModules = (option: number) => {
     const modules: Module[] = props.modules[0]['module'] !== undefined ? 
-      (props.modules as UserModule[]).map(um => um.module) : props.modules as Module[];
+    (props.modules as UserModule[]).map(um => um.module) : props.modules as Module[];
 
-    if (option === 0) { // all options unchecked, load original
+    if (option === 0) // all options unchecked, load original
       props.loadModules();
+
+    getSortedModules(option, modules).then(response => {
+      props.showSortedModules(response);
+    });
+  };
+
+  const getSortedModules = async (option: number, modules: Modules) => {
+    switch (option) {
+      case 1:
+        const allAdminModules = await getAdminModules();
+        return allAdminModules;
+      case 2:
+        return modules.sort( (a: any, b: any) => b.type.localeCompare(a.type) );
+      case 3:
+        return modules.sort( (a: any, b: any) => a.published - b.published );
+      case 4:
+        return modules.sort( (a: any, b: any) => a.name.localeCompare(b.name) );
+      case 5:
+        return modules.sort( (a: any, b: any) => a.difficulty - b.difficulty );
+      case 6:
+        return modules.sort( (a: any, b: any) => new Date(b?.updatedAt).getTime() - new Date(a?.updatedAt).getTime() );
+      default: 
+        return modules;
     }
-    else if (option === 1) { // sort by created modules
-      modules.sort( (a: any, b: any) => a.published - b.published );
-    }
-    else if (option === 2) { // sort by name
-      modules.sort( (a: any, b: any) => a.name.localeCompare(b.name) );
-    }
-    else if (option === 3) { // sort by difficulty
-      modules.sort( (a: any, b: any) => a.difficulty - b.difficulty );
-    }
-    else if (option === 4) { // sort by date
-      modules.sort( (a: any, b: any) => 
-        new Date(b?.updatedAt).getTime() - new Date(a?.updatedAt).getTime()
-      );
-    }
-    else if (option === 5) { // sort by type
-      modules.sort( (a: any, b: any) => b.type.localeCompare(a.type) );
-    }
-    props.showSortedModules(modules);
   };
 
   return (

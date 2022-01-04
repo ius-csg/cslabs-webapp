@@ -38,7 +38,7 @@
 }
 
 .search-input {
-    height: calc(1.5em + 1rem + 2px);
+    height: calc(1.5em + 1rem + 6px);
     min-width: 14rem;
 }
 
@@ -52,7 +52,6 @@ div .tags-no-border.tags-no-border {
 }
 
 div .tags.tags {
-    height: calc(1.5em + 1rem + 2px);
     padding: 4px;
     min-width: 110px;
 }
@@ -74,5 +73,5 @@ div .tags.tags {
 }
 
 .tags-suggestions.tags-suggestions {
-    min-width: 8rem;
+    width: 10rem;
 }
