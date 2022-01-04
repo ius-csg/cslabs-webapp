@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import {ToggleButton} from 'react-bootstrap';
 import Diagram, {createSchema, useSchema} from 'beautiful-react-diagrams';
@@ -15,7 +15,6 @@ import _ from 'lodash';
 // tslint:disable-next-line:no-import-side-effect
 import './Link.scss';
 import {range} from '../util/Util';
-import {toJpeg} from 'html-to-image';
 
 
 // initial diagram model
@@ -473,27 +472,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     }
   };
 
-  const ref = useRef<HTMLDivElement>(null);
-
-  const onButtonClick = useCallback(() => {
-    if (ref.current === null) {
-      return;
-    }
-
-    toJpeg(ref.current, { cacheBust: true })
-      .then((dataUrl) => {
-        const img = new Image();
-        img.src = dataUrl;
-
-        // TODO replace this statement with a call update the lab image
-        document.body.appendChild(img);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [ref]);
-
-
   return (
     <>
       <div>
@@ -514,7 +492,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         <Button variant='secondary' onClick={addNewVM}>Add VM</Button>
       </div>
       <ContextContainer style={{height: '50vh'}} menuItems={menuItems} schema={schema}>
-        <div ref={ref} id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelect} onContextMenu={unSelect} onDoubleClick={rename}>
+        <div id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelect} onContextMenu={unSelect} onDoubleClick={rename}>
           {selectSwitchVisible &&
           <SelectSwitch addSwitch={addNewSwitch} close={() => setSelectSwitchVisible(false)}/>}
             <Diagram schema={schema} onChange={onChange} />
@@ -528,7 +506,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
             <input type='submit' style={{display: 'none'}}/>
           </form>}
         </div>
-        <button onClick={onButtonClick}>Click me</button>
       </ContextContainer>
     </>
   );
