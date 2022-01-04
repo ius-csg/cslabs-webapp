@@ -17,6 +17,7 @@ export interface Module extends BaseModule {
 
 export type ModuleDifficulty = 0 | 1 | 2 | 3; // Any, Easy, Medium, Hard
 export type ModuleType = 'MultiUser' | 'SingleUser';
+export const moduleDifficultyTypes = [0, 1, 2, 3];
 export const moduleTypes: ModuleType[] = ['MultiUser', 'SingleUser'];
 
 

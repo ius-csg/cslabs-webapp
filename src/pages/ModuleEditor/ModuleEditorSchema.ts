@@ -1,6 +1,6 @@
-import {array, boolean, number, NumberSchema, object, string, StringSchema} from 'yup';
+import {array, boolean, number, object, NumberSchema, string, StringSchema} from 'yup';
 import {ModuleForm} from '../../types/editorTypes';
-import {ModuleDifficulty, ModuleType} from '../../types/Module';
+import {ModuleDifficulty, moduleDifficultyTypes, ModuleType} from '../../types/Module';
 
 
 export const ModuleEditorSchema = object<ModuleForm>({
@@ -15,5 +15,5 @@ export const ModuleEditorSchema = object<ModuleForm>({
   published: boolean(),
   labs: array(),
   moduleTags: array(),
-  difficulty: number() as NumberSchema<ModuleDifficulty>
+  difficulty: number().oneOf(moduleDifficultyTypes) as NumberSchema<ModuleDifficulty>
 });

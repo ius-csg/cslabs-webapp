@@ -33,7 +33,7 @@ const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'MultiUser', label: 'Multi User'}
 ];
 
-const moduleDifficultyOptions: DropdownOption<ModuleDifficulty>[] = [ 
+const difficultyOptions: DropdownOption<ModuleDifficulty>[] = [ 
   {value: 1, label: 'Easy'},
   {value: 2, label: 'Medium'},
   {value: 3, label: 'Hard'}
@@ -147,7 +147,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
             </Form.Group>
             <Form.Group>
               <Form.Label column={true}>Difficulty</Form.Label>
-              <DropdownInput name={propertyOf<ModuleForm>('difficulty')} dropdownData={moduleDifficultyOptions} disabled={!editing}/>
+              <DropdownInput name={propertyOf<ModuleForm>('difficulty')} defaultToFirstOption={true} dropdownData={difficultyOptions} disabled={!editing}/>
             </Form.Group>
             <Form.Group>
               <Form.Label column={true}>Module Description</Form.Label>

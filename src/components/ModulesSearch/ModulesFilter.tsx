@@ -10,6 +10,7 @@ import {RoutePaths} from 'router/RoutePaths';
 import {Module} from 'types/Module';
 import {UserModule} from 'types/UserModule';
 import {getAdminModules} from 'api';
+import ToolTip from 'components/util/ToolTip';
 
 export type Modules = Module[] | UserModule[];
 
@@ -75,8 +76,7 @@ const ModulesFilter = (props: ModulesFilterProps) => {
   const getSortedModules = async (option: number, modules: Modules) => {
     switch (option) {
       case 1:
-        const allAdminModules = await getAdminModules();
-        return allAdminModules;
+        return getAdminModules();
       case 2:
         return modules.sort( (a: any, b: any) => b.type.localeCompare(a.type) );
       case 3:
@@ -100,7 +100,9 @@ const ModulesFilter = (props: ModulesFilterProps) => {
       onBlur={onBlur}
       tabIndex={-1}
     >
-      <FontAwesomeIcon icon={faFilter} size='lg' onClick={onFilterClick} className={styles['icon']} />
+      <ToolTip id='filter-icon' text='Filter' placement='bottom'>
+        <FontAwesomeIcon icon={faFilter} size='lg' onClick={onFilterClick} className={styles['icon']} />
+      </ToolTip>
       {filterOn &&
         <Form.Group className={styles['filter-options']} >
           <Form.Label column={true} className='p-0'>Sort by</Form.Label>

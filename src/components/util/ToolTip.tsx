@@ -19,7 +19,7 @@ export default function ToolTip(props: ToolTipProps) {
       placement={props.placement}
       delay={props.delay}
       overlay={
-        <Tooltip id={`tooltip-${props.id}`} >
+        <Tooltip id={`tooltip-${props.id}`} style={{margin: '0.4rem'}}>
           {props.text}
         </Tooltip>}
     >
