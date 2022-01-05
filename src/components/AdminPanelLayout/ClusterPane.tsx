@@ -12,6 +12,6 @@ export const ClusterPane = () => (
       <Button>Add Node</Button>
       <p>------------------- CLUSTER NAME -------------------</p>
     </div>
-    <Node/>
+    <Node nodeNum={1} statusNum={0}/>
   </Layout>
 );

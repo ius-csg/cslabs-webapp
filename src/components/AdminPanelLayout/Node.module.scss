@@ -3,8 +3,46 @@
 .node {
     div {
         border: 1px solid black;
+        padding: 5px;
+    }
+    #wrapper {
+        border: 0px;
+        padding: 0px;
     }
     p {
         text-align: left;
+    }
+    Button {
+        float: right;
+        margin: 5px;
+    }
+    h1 {
+        float: left;
+        padding-left: 20px;
+    }
+    h2 {
+        margin-top: 10px;
+        text-align: center;
+    }
+    span {
+        margin-left: 10px;
+        margin-top: 10px;
+        height: 30px;
+        width: 30px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    #good {
+        background-color: #009E0F;
+    }
+    #issues {
+        background-color: #FF9900;
+    }
+    #maintenance {
+        background-color: black;
+    }
+    #offline {
+        background-color: #CF2A27;
     }
 }
