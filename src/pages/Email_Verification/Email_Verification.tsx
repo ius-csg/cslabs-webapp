@@ -8,7 +8,7 @@ import {RiCheckboxCircleFill, RiCloseCircleFill} from 'react-icons/all';
 
 
 interface EmailState {
-  loading: boolean;
+  sending: boolean;
   verified?: boolean;
   error: boolean;
 }
@@ -16,28 +16,38 @@ interface EmailState {
 export class EmailVerification extends Component <EmailState> {
 
   state: EmailState = {
-    loading: true,
+    sending: false,
     error: false
   };
 
   async handleClick() {
     await resendEmail();
-  }
-
-  async componentDidMount() {
-    const verifyUserReturn = await verifyUser();
-
     try {
       this.setState({
-        loading: false,
-        verified: verifyUserReturn,
+        sending: true,
         error: false
       });
     } catch {
       this.setState({
-        loading: false,
-        verified: false,
+        sending: false,
         error: true
+      });
+    }
+
+  }
+
+  async componentDidMount() {
+    const verifyUserReturn = await verifyUser();
+    // tslint:disable-next-line:no-console
+    console.log(verifyUserReturn);
+
+    try {
+      this.setState({
+        verified: verifyUserReturn
+      });
+    } catch {
+      this.setState({
+        verified: false
       });
     }
 
@@ -56,7 +66,8 @@ export class EmailVerification extends Component <EmailState> {
         </div>
       );
     }
-    if (this.state.loading) {
+
+    if (this.state.sending) {
       return (
         <div className={styles['lds-facebook']}>
           <div/>
@@ -65,6 +76,7 @@ export class EmailVerification extends Component <EmailState> {
         </div>
       );
     }
+
     if (this.state.verified) {
       // Need to be redirected back to explore page because it has been verified
       return (
@@ -75,7 +87,8 @@ export class EmailVerification extends Component <EmailState> {
         </div>
       );
     }
-    if (!this.state.error) {
+
+    if (!this.state.error && this.state.sending) {
       return (
         <div className={styles['email-verification']}>
           <p className={styles['title']}>
@@ -88,7 +101,7 @@ export class EmailVerification extends Component <EmailState> {
         </div>
       );
     }
-      return(
+    return (
       <div className={styles['email-verification']}>
         <p className={styles['title']}>
           Your account has not been verified.
@@ -98,8 +111,9 @@ export class EmailVerification extends Component <EmailState> {
           verification email to your account. </p>
         <Button onClick={this.handleClick}>Send another verification email</Button>
       </div>
-      );
+    );
   }
+
   render() {
     return <Layout>
       {this.renderNewEmailVerification()}
