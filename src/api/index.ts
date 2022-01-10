@@ -147,6 +147,10 @@ export async function getUserLab(id: number) {
   return handleResponse( await api.get<UserLab>(`/user-lab/${id}`)).data;
 }
 
+export async function getTags(name: string) {
+  return handleResponse( await api.get<Tag[]>(`/tag/search/${name}`)).data;
+}
+
 export async function updateEndDateTime(id: number) {
   return handleResponse(await api.post<UserLab>(`/user-lab/${id}/update-end-date-time`)).data;
 }

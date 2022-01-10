@@ -6,6 +6,8 @@ interface Props {
   tags: Tag[];
   tagSuggestions?: Tag[];
   mes?: string;
+  tagSuggestions: Tag[];
+  mes: string | undef
   editing: boolean;
   onAdd(tag: Tag): void;
   onDelete(i: number): void;
