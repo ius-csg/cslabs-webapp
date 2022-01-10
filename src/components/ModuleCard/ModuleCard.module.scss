@@ -11,7 +11,7 @@
     background-image: url("../../assets/images/TestImage.jpg");
 }
 
-.cardText {
+.card-text {
     display: -webkit-box;
     overflow: hidden;
     margin-bottom: 5px;
@@ -19,5 +19,3 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
-
-
