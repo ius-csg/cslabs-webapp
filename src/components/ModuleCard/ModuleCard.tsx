@@ -40,10 +40,10 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
     return (
         <Card className={Styles.card}>
           {/*<Card.Img variant='top' src={TestImage}/>*/}
-          <Card.Body style={{height: 240}}>
+          <Card.Body style={{height: 340}}>
             <Card.Title>{module.name}</Card.Title>
             {!this.state.viewTagsExpanded ?
-              <Card.Text className={'card-text'}>
+              <Card.Text style={{textAlign: 'left'}}>
               {module.description.substring(0, 150)}
             </Card.Text> : null}
             {module.moduleTags.length !== 0 ?
@@ -54,8 +54,9 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
                 onInput={doNothing}
                 onDelete={doNothing}
                 tags={
-
-                  module.moduleTags.map(mt => mt.tag)
+                  module.moduleTags.length > 4 && !this.state.viewTagsExpanded
+                    ? module.moduleTags.slice(0,4).map(mt => mt.tag)
+                    : module.moduleTags.map(mt => mt.tag)
                 }
                 mes={this.state.viewTagsExpanded ? 'display-only expanded' : 'display-only'}
               />
@@ -63,7 +64,7 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
             }
             <FontAwesomeIcon
               icon={this.state.viewTagsExpanded ? faWindowClose : faEllipsisH}
-              style={{display: 'inline', cursor: 'pointer', position: 'relative', top: 4}}
+              style={{display: 'inline', cursor: 'pointer', position: 'relative', top: 4, color: '#868e96'}}
               onClick={() => {this.setState({viewTagsExpanded: !this.state.viewTagsExpanded});}}
             />
           </Card.Body>

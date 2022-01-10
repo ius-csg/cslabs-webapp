@@ -10,12 +10,3 @@
 .card-header {
     background-image: url("../../assets/images/TestImage.jpg");
 }
-
-.card-text {
-    display: -webkit-box;
-    overflow: hidden;
-    margin-bottom: 5px;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-}
