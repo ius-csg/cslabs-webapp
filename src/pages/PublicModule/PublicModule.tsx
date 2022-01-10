@@ -12,7 +12,7 @@ import {Alert, Button, Card} from 'react-bootstrap';
 import Styles from './PublicModule.module.scss';
 import {getLocalDateTimeString} from '../../util';
 import {LoadingButton} from '../../util/LoadingButton';
-import {TagEditor} from "../../components/TagEditor/TagEditor";
+import {TagEditor} from '../../components/TagEditor/TagEditor';
 
 interface MyModuleState {
   module: Module;
