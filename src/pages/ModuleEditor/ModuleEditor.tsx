@@ -70,7 +70,12 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   }
 
   async function onTagInput(input: string) {
-    setTagSuggestions(await getTags(input));
+    try {
+      setTagSuggestions(await getTags(input));
+    }
+    catch (e) {
+      setTagSuggestions(tagSuggestions);
+    }
   }
 
   React.useEffect(() => {
@@ -103,6 +108,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
       initialValues={initialValues}
       validationSchema={ModuleEditorSchema}
       onSubmit={onSubmit}
+      enableReinitialize={true}
     >
       {({handleSubmit, isSubmitting, values}) => (
         <Form onSubmit={handleSubmit}>

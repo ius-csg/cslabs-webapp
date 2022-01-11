@@ -14,6 +14,11 @@ interface Props {
 
 export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, editing}: Props) {
   const [className, setClassName] = useState('disabled');
+  const Filter = require('bad-words');
+  const BadWordList = require('badwords-list');
+  const badWordList = BadWordList.array;
+  const filter = new Filter();
+  filter.addWords(...badWordList);
 
   useEffect(() => {
     if (mes === 'success' && editing)
@@ -28,7 +33,15 @@ export function TagEditor({tags, tagSuggestions, onInput, onAdd, onDelete, mes, 
 
   function onValidate(tag: Tag) {
     let valid = true;
-    tags.forEach(t => {if (t.name === tag.name) valid = false;});
+    if (filter.isProfane(tag.name) ||
+        tag.name.charAt(0) === tag.name.charAt(0).toLowerCase() ||
+        tag.name.length > 32 ||
+        !(/^[a-zA-Z0-9-]*$/.test(tag.name))
+    )
+      return false;
+    tags.forEach(t => {
+      if (t.name === tag.name) valid = false;
+    });
     return valid;
   }
 
