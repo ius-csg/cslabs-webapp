@@ -52,7 +52,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = useState(false);
-  const [guiEnabled, setGuiEnabled] = useState(false);
+  const [guiEnabled, setGuiEnabled] = useState(true);
   const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
   const [redirect, setRedirect] = useState();
   const vmTemplateDictionary = convertArrayToDictionary(vmTemplates, 'id') as Dictionary<VmTemplate>;
@@ -62,13 +62,11 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   }
 
   const onSubmit = async (form: LabForm, {setErrors}: FormikHelpers<LabForm>) => {
-    console.log("submitting!!");
     form = {...form, moduleId: Number(moduleId)};
     setMessage(undefined);
     try {
       if (guiEnabled) {
         saveGuiTopology();
-        console.log('testuing');
       }
       const response = await saveLab(form);
       setInitialValues(response);
@@ -89,15 +87,15 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
       return;
     }
 
-    toJpeg(ref.current, { cacheBust: true })
-      .then((dataUrl) => {
+    toJpeg(document.getElementById('diagram') as HTMLElement)
+      .then((dataUrl: string) => {
         const img = new Image();
         img.src = dataUrl;
 
         // TODO replace this statement with a call update the lab image
         document.body.appendChild(img);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.log(err);
       });
   }, [ref]);
