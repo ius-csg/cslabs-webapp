@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import {ToggleButton} from 'react-bootstrap';
 import Diagram, {createSchema, useSchema} from 'beautiful-react-diagrams';
+import {Node} from 'beautiful-react-diagrams/@types/DiagramSchema';
 import WanNode from './WanNode';
 import SwitchNode from './SwitchNode';
 import VmNode from './VmNode';
@@ -31,7 +32,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   const [selectSwitchVisible, setSelectSwitchVisible] = useState<boolean>(false);
   const [renameTextBox, toggleRenameTextBox] = useState<boolean>(false);
-  const [newNodeName, setNewNodeName] = useState('');
+  const [newNodeName, setNewNodeName] = useState<string>('');
   const [internetConnection, toggleInternetConnection] = useState<boolean>(false);
   const [nodeCount, setNodeCount] = useState<number>(0);
   const [linkCount, setLinkCount] = useState<number>(0);
@@ -199,12 +200,12 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   };
 
   const deleteNodeFromSchema = (id: string) => {
-    const nodeToRemove: any = schema.nodes.find(node => node.id === id);
+    const nodeToRemove: Node<any> = schema.nodes.find(node => node.id === id) as Node<any>;
     removeNode(nodeToRemove);
   };
 
   const duplicateNode = (id: string) => {
-    const nodeToDuplicate: any = schema.nodes.find(node => node.id === id);
+    const nodeToDuplicate: Node<any> = schema.nodes.find(node => node.id === id) as Node<any>;
     const inputs: any = [];
     const outputs: any = [];
     let name = '';
@@ -242,24 +243,26 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   };
 
   const addVmPort = (id: string) => {
-    const nodeToChange: any  = schema.nodes.find(node => node.id === id);
+    const nodeToChange: Node<any> = schema.nodes.find(node => node.id === id) as Node<any>;
 
-    if (nodeToChange.inputs.length < 4) {
-      setNodeCount(nodeCount + 1);
-      const inputs : any = [];
-      for (const i of range(0, nodeToChange.inputs.length)) {
-        inputs.push({id: `vm-node-${nodeCount}-port${i}`});
+    if (nodeToChange.inputs !== undefined) {
+      if (nodeToChange.inputs.length < 4) {
+        setNodeCount(nodeCount + 1);
+        const inputs : any = [];
+        for (const i of range(0, nodeToChange.inputs.length)) {
+          inputs.push({id: `vm-node-${nodeCount}-port${i}`});
+        }
+
+        deleteNodeFromSchema(nodeToChange.id);
+        addNode({
+          id: `vm-node-${nodeCount}`,
+          content: nodeToChange.content,
+          coordinates: nodeToChange.coordinates,
+          render: VmNode,
+          inputs: inputs
+        });
+        updateSchemaState('update');
       }
-
-      deleteNodeFromSchema(nodeToChange.id);
-      addNode({
-        id: `vm-node-${nodeCount}`,
-        content: nodeToChange.content,
-        coordinates: nodeToChange.coordinates,
-        render: VmNode,
-        inputs: inputs
-      });
-      updateSchemaState('update');
     }
   };
 
@@ -320,7 +323,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   // Deals with context menu and it's options
   const handleSubmit = () => {
-    const nodeToChange: any = schema.nodes.find(node => node.id === nodeToRename);
+    const nodeToChange: Node<any> = schema.nodes.find(node => node.id === nodeToRename) as Node<any>;
     if (newNodeName !== '' && newNodeName.length < 25) {
       if (nodeToChange) {
         deleteNodeFromSchema(nodeToChange.id);
@@ -390,11 +393,11 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           text: 'Rename',
           onClick: () => {
             if (schema.nodes.find(nodes => nodes.id === selectedNode)) {
-              const node: any = schema.nodes.find(nodes => nodes.id === selectedNode);
+              const node: Node<any> = schema.nodes.find(nodes => nodes.id === selectedNode) as Node<any>;
               setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
               toggleRenameTextBox(true);
               setNodeToRename(node.id);
-              setNewNodeName(node.content);
+              setNewNodeName(node.content as string);
             }
             updateSchemaState('update');
           }
@@ -463,9 +466,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         if (node.id.includes('vm')) {
           setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
           setNodeToRename(node.id);
-          if (node.content !== undefined && typeof node.content === 'string') {
-            setNewNodeName(node.content);
-          }
+          setNewNodeName(node.content as string);
           toggleRenameTextBox(true);
         }
       }
