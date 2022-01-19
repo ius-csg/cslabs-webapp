@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import styles from './Email_Verification.module.scss';
-import {Button} from 'react-bootstrap';
+import {Button, Spinner} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {resendEmail, verifyUser} from '../../api';
 import {RiCheckboxCircleFill, RiCloseCircleFill} from 'react-icons/all';
@@ -9,22 +9,29 @@ import {RiCheckboxCircleFill, RiCloseCircleFill} from 'react-icons/all';
 
 interface EmailState {
   sending: boolean;
+  sent: boolean;
   verified?: boolean;
   error: boolean;
 }
 
+// change class to function
+
 export class EmailVerification extends Component <EmailState> {
 
   state: EmailState = {
+    sent: false,
     sending: false,
     error: false
   };
 
   async handleClick() {
-    await resendEmail();
     try {
+      const result = await resendEmail();
+      // tslint:disable-next-line:no-console
+      console.log(result);
       this.setState({
         sending: true,
+        sent: result,
         error: false
       });
     } catch {
@@ -40,7 +47,6 @@ export class EmailVerification extends Component <EmailState> {
     const verifyUserReturn = await verifyUser();
     // tslint:disable-next-line:no-console
     console.log(verifyUserReturn);
-
     try {
       this.setState({
         verified: verifyUserReturn
@@ -50,7 +56,6 @@ export class EmailVerification extends Component <EmailState> {
         verified: false
       });
     }
-
   }
 
   renderNewEmailVerification() {
@@ -66,29 +71,34 @@ export class EmailVerification extends Component <EmailState> {
         </div>
       );
     }
-
-    if (this.state.sending) {
+    if(this.state.sending) {
       return (
-        <div className={styles['lds-facebook']}>
-          <div/>
-          <div/>
-          <div/>
+        <div>
+            <Spinner
+              animation='border'
+              role='status'
+            />
         </div>
-      );
+        );
     }
-
     if (this.state.verified) {
       // Need to be redirected back to explore page because it has been verified
+      // Reference for script https://stackoverflow.com/questions/3292038/redirect-website-after-specified-amount-of-time
       return (
         <div className={styles['email-verification']}>
           <p className={styles['title']}>
             You're account has been verified and will be directed shortly.
           </p>
+          <script>
+            setTimeout(function() {
+            window.location.href = '/explore'
+          }, 90000);
+          </script>
         </div>
       );
     }
 
-    if (!this.state.error && this.state.sending) {
+    if (this.state.sent) {
       return (
         <div className={styles['email-verification']}>
           <p className={styles['title']}>
@@ -109,7 +119,7 @@ export class EmailVerification extends Component <EmailState> {
         <p className={styles['paragraph']}>
           To verify your account please, click the button below to send a
           verification email to your account. </p>
-        <Button onClick={this.handleClick}>Send another verification email</Button>
+        <Button onClick={() => this.handleClick()}>Send another verification email</Button>
       </div>
     );
   }
