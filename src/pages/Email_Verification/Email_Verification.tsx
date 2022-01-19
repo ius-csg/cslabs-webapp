@@ -73,11 +73,13 @@ export class EmailVerification extends Component <EmailState> {
     }
     if(this.state.sending) {
       return (
-        <div>
+        <div className={styles['spinner']}>
             <Spinner
               animation='border'
               role='status'
+              variant={'dark'}
             />
+          <span> Loading...</span>
         </div>
         );
     }
