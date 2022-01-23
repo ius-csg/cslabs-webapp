@@ -181,6 +181,11 @@ export async function startUserModule(id: string) {
 export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
+
+export async function changeSubscription(subscribe: boolean) {
+  return handleResponse(await api.put(`/user/change-subscription`, {subscribe: subscribe}));
+}
+
 export async function getModuleForEditor(moduleId: number) {
   return handleResponse(await api.get<ModuleForm>(`/module/module-editor/${moduleId}`)).data;
 }

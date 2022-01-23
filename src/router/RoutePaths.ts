@@ -22,5 +22,7 @@ export enum RoutePaths {
   verifyEmail = '/verify-email/:code',
   sitePolicy = '/policy',
   contentCreator = '/content-creator',
-  adminPanel = '/admin-panel'
+  adminPanel = '/admin-panel',
+  unsubscribeEmail = '/unsubscribe-email',
+  subscriptionStatus = '/subscription-status'
 }
