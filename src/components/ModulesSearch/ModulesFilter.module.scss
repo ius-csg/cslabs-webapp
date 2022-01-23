@@ -1,32 +1,32 @@
 .filter-options {
-  position: absolute;
-  z-index: 1;
-  top: calc(75% + 6px);
-  right: 0;
-  width: 14rem;
-  padding: 1.5rem;
-  background-color: #FFF;
-  border-radius: 0.25rem;
-  box-shadow: 0 0 8px rgb(175, 175, 175);
+    position: absolute;
+    z-index: 1;
+    top: calc(75% + 6px);
+    right: 0;
+    width: 14rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: .25rem;
+    box-shadow: 0 0 8px rgb(175, 175, 175);
 }
 
 .icon:hover {
-  cursor: pointer;
-  color: maroon;
+    cursor: pointer;
+    color: maroon;
 }
 
 .sort-option {
-  margin-top: 0.5rem;
+    margin-top: .5rem;
 }
 
 .sort-option label {
-  padding-left: 0.5rem;
+    padding-left: .5rem;
 }
 
 .hide {
-  display: none
+    display: none;
 }
 
 .show {
-  display: block !important;
+    display: block !important;
 }

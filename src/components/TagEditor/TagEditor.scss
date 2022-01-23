@@ -2,8 +2,8 @@
 
 .react-tags.is-focused {
     border-color: #b1b1b1;
-    box-shadow: 0 0 0 0.2rem rgba(69, 130, 236, 0.25);
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    box-shadow: 0 0 0 .2rem rgba(69, 130, 236, .25);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
 }
 
 .react-tags-selected {
