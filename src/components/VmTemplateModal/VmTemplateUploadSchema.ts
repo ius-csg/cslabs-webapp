@@ -1,4 +1,4 @@
-import {object, ObjectSchema, ObjectSchemaDefinition, string} from 'yup';
+import {object, ObjectSchemaDefinition, string} from 'yup';
 import {cast} from '../../util';
 
 export interface NamedUpload {
@@ -16,7 +16,7 @@ export interface UploadByUrlForm extends NamedUpload {
 const NameSchema: ObjectSchemaDefinition<NamedUpload> = {name: string().required('Required').min(3, 'Must have at least 3 characters')};
 const UploadFormSchema = object<UploadForm>({
   ...NameSchema,
-  file: object() as ObjectSchema<File>
+  file: object<File>().nullable().required('File is required')
 });
 
 export const isUploadForm = (val: NamedUpload): val is UploadForm => val['file'] !== undefined;
