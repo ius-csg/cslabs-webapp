@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Col, Alert, Row} from 'react-bootstrap';
+import {Form, Col, Alert, Row} from 'react-bootstrap';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
 import {object, string} from 'yup';
@@ -52,7 +52,7 @@ export default function ResetPassword(){
         >
           {({handleSubmit, isSubmitting, values}) => (
             <Form onSubmit={handleSubmit}>
-              <Col sm='6'>
+              <Col md='6'>
                 <Form.Group controlId='formBasicCurrentPassword'>
                   <Form.Label column={true}>Current Password</Form.Label>
                   <Input type='password' name={getFieldName('currentPassword')} placeholder='Enter Current Password'/>
@@ -79,5 +79,4 @@ export default function ResetPassword(){
         </Formik>
       </AccountManagementLayout>
     );
-  // }
 }
