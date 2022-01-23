@@ -20,4 +20,5 @@ const configureStore = (initialState?: DeepPartial<WebState>, onReady?: () => vo
   return { store: storeInstance, persistor: persistorInstance, appDispatch: storeInstance.dispatch};
 };
 
+// @ts-ignore
 export const {store, persistor, appDispatch } = configureStore();
