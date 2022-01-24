@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import { useEffect, useState} from 'react';
 import {Form, Col, Row, Button} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {Formik, FormikHelpers} from 'formik';
@@ -64,15 +64,30 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const onSubmit = async (form: LabForm, {setErrors}: FormikHelpers<LabForm>) => {
     form = {...form, moduleId: Number(moduleId)};
     setMessage(undefined);
+    let response;
     try {
       if (guiEnabled) {
-        saveGuiTopology();
+        toJpeg(document.getElementById('diagram') as HTMLElement)
+          .then(async (dataUrl: string) => {
+            const file = new File([dataURLtoBlob(dataUrl)], 'name');
+            form = {...form, topology: (file)};
+            form.hasTopology = true;
+            response = await saveLab(form);
+            setInitialValues(response);
+
+          })
+          .catch((err: any) => {
+            console.log(err);
+          });
+      } else {
+        response = await saveLab(form);
+        setInitialValues(response);
       }
-      const response = await saveLab(form);
-      setInitialValues(response);
+
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
       if(!labId) {
+        // @ts-ignore
         setRedirect(RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', String(response.id)));
       }
     } catch (e) {
@@ -80,25 +95,20 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     }
   };
 
-  const ref = useRef<HTMLDivElement>(null);
-
-  const saveGuiTopology = useCallback(() => {
-    if (ref.current === null) {
-      return;
+  const dataURLtoBlob = (dataURL: string) => {
+    // Decode the dataURL
+    const binary = atob(dataURL.split(',')[1]);
+    // Create 8-bit unsigned array
+    const array: any = [];
+    let i = 0;
+    while (i < binary.length) {
+      array.push(binary.charCodeAt(i));
+      i++;
     }
 
-    toJpeg(document.getElementById('diagram') as HTMLElement)
-      .then((dataUrl: string) => {
-        const img = new Image();
-        img.src = dataUrl;
+    return new Blob([ new Uint8Array(array) ], {type: 'image/jpeg'});
+  };
 
-        // TODO replace this statement with a call update the lab image
-        document.body.appendChild(img);
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
-  }, [ref]);
 
   function onCancel() {
     setInitialValues({...initialValues});
@@ -188,9 +198,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                    <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
                  </Form.Group>
                  {guiEnabled ?
-                   <div ref={ref}>
                      <LabEditorGUI />
-                   </div>
                   :
                    <>
                      <BridgeListEditor

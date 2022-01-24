@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Switch, Route, Router} from 'react-router-dom';
-import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
 import History from './history';
 import Login from '../pages/LoginRegisterPage/LoginRegisterPage';
@@ -9,7 +8,6 @@ import ResetEmail from '../pages/ResetEmail/ResetEmail';
 import ResetPassword from '../pages/ResetPassword/ResetPassword';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import {NavigationBar} from '../components/NavigationBar/NavigationBar';
-import Explore from '../pages/Explore/Explore';
 import PublicModule from '../pages/PublicModule/PublicModule';
 import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
@@ -19,6 +17,7 @@ import ModuleEditor from '../pages/ModuleEditor/ModuleEditor';
 import UserModulePage from '../pages/UserModulePage/UserModulePage';
 import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
+import LabEditorGUI from '../pages/LabEditorGUI/LabEditorGUI';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
 import Contact   from '../pages/Contact/Contact';
@@ -30,8 +29,8 @@ const Routes = () => (
     <Router history={History} >
       <NavigationBar />
       <Switch>
-        <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
-        <Route exact={true} path={RoutePaths.explore} component={Explore}/>
+        <Route exact={true} path={RoutePaths.home} component={LabEditor} redirectTo={RoutePaths.explore}/>
+        <Route exact={true} path={RoutePaths.explore} component={LabEditorGUI}/>
         <Route exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
         <PrivateRoute exact={true} path={RoutePaths.profile} component={Profile}/>
         <PrivateRoute exact={true} path={RoutePaths.resetEmail} component={ResetEmail}/>
