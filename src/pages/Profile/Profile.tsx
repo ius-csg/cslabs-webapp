@@ -37,7 +37,7 @@ const Profile = (props: ProfileProps) => {
         </ListGroup.Item>
         <ListGroup.Item>
           <Row>
-            <Col sm={4}>Termination date</Col><Col>{getLocalDateTimeString(props.user?.terminationDate)}</Col>
+            <Col sm={4}>Account active until</Col><Col>{getLocalDateTimeString(props.user?.terminationDate)}</Col>
           </Row>
         </ListGroup.Item>
         <ListGroup.Item>

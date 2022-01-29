@@ -1,6 +1,6 @@
-import {changeSubscription} from 'api';
-import {AccountManagementLayout} from 'components/AccountManagementLayout/AccountManagementLayout';
 import React from 'react';
+import {changeNewsletterSubscription} from 'api';
+import {AccountManagementLayout} from 'components/AccountManagementLayout/AccountManagementLayout';
 import {Button} from 'react-bootstrap';
 import {connect, ConnectedProps} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
@@ -9,25 +9,26 @@ import {getCurrentUser} from 'redux/selectors/entities';
 import {WebState} from 'redux/types/WebState';
 import {User} from 'types/User';
 
-interface SubscriptionStatusProps extends ConnectedProps<typeof connector> {
+interface NewsletterStatusOptions extends ConnectedProps<typeof connector> {
   user: User;
 }
 
-const SubscriptionStatus = (props: SubscriptionStatusProps) => {
+const NewsletterStatus = (props: NewsletterStatusOptions) => {
 
   async function onChangeSubscription() {
-    await changeSubscription(!props.user.subscribed);
+    await changeNewsletterSubscription(!props.user.subscribed);
     const updatedUser = { ...props.user, subscribed: !props.user.subscribed };
     props.actions.setCurrentUser(updatedUser);
   }
 
   return (
     <AccountManagementLayout>
-      <h2>Subscription Info</h2>
+      <h2>Newsletter Info</h2>
       <Button onClick={onChangeSubscription} className='mt-2'>
-        {props.user.subscribed ? 'Unsubscribe from CSLabs' : 'Subscribe to CSLabs'}
+        {props.user.subscribed ? 'Unsubscribe' : 'Subscribe'}
       </Button>
-      {!props.user.subscribed && <p className='mt-2'>Get latest updates from CSLabs to your email.</p>}
+      {!props.user.subscribed && <p className='mt-2'><strong>Subscribe</strong> to our newsletter to get latest updates
+        from CSLabs to your email. This may include infrastructure updates, new changes, or any related information.</p>}
     </AccountManagementLayout>
   );
 };
@@ -36,4 +37,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({ actions: bindActionCreator
 const mapStateToProps = (state: WebState) => ({ user: getCurrentUser(state) });
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
-export default connector(SubscriptionStatus);
+export default connector(NewsletterStatus);

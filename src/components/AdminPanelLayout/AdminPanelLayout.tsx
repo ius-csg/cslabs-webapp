@@ -11,6 +11,8 @@ import {WebState} from '../../redux/types/WebState';
 import {getCurrentUser} from '../../redux/selectors/entities';
 import {User} from '../../types/User';
 import {Redirect} from 'react-router';
+import {faChartBar, faNetworkWired, faUsers, faCalendarAlt} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 interface AdminPanelLayoutProps {
   defaultActivePanel?: AdminTabKeys;
@@ -18,10 +20,10 @@ interface AdminPanelLayoutProps {
 }
 
 const panes = [
-  {label: 'Application Statistics', eventKey: '#statistics', component: <StatisticsPane/>},
-  {label: 'Cluster Management', eventKey: '#cluster-management', component: <ClusterPane/>},
-  {label: 'User Management', eventKey: '#user-management', component: <UsersPane/>},
-  {label: 'Downtime Scheduler', eventKey: '#downtime-scheduler', component: <DowntimeScheduler/>}
+  {label: 'Application Statistics', eventKey: '#statistics', icon: faChartBar, component: <StatisticsPane/>},
+  {label: 'Cluster Management', eventKey: '#cluster-management', icon: faNetworkWired, component: <ClusterPane/>},
+  {label: 'User Management', eventKey: '#user-management', icon: faUsers, component: <UsersPane/>},
+  {label: 'Downtime Scheduler', eventKey: '#downtime-scheduler', icon: faCalendarAlt, component: <DowntimeScheduler/>}
 ] as const;
 
 type AdminTabKeys = typeof panes[number]['eventKey'];
@@ -41,6 +43,7 @@ const AdminPanelLayout = (props: AdminPanelLayoutProps) => {
             <ListGroup style={{marginTop: '20px'}}>
               {panes.map(pane => (
                 <ListGroup.Item key={pane.eventKey} action={true} href={pane.eventKey}>
+                  <FontAwesomeIcon icon={pane.icon} className='mr-3' />
                   {pane.label}
                 </ListGroup.Item>
               ))}

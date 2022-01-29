@@ -182,8 +182,8 @@ export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
 
-export async function changeSubscription(subscribe: boolean) {
-  return handleResponse(await api.put(`/user/change-subscription`, {subscribe: subscribe}));
+export async function changeNewsletterSubscription(subscribe: boolean) {
+  return handleResponse(await api.put(`/user/change-newsletter-subscription`, {subscribe: subscribe}));
 }
 
 export async function getModuleForEditor(moduleId: number) {

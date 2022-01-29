@@ -23,6 +23,6 @@ export enum RoutePaths {
   sitePolicy = '/policy',
   contentCreator = '/content-creator',
   adminPanel = '/admin-panel',
-  unsubscribeEmail = '/unsubscribe-email',
-  subscriptionStatus = '/subscription-status'
+  unsubscribeNewsletter = '/unsubscribe-newsletter',
+  newsletterStatus = '/newsletter-status'
 }

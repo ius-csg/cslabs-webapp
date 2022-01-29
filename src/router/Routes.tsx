@@ -27,8 +27,8 @@ import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
 import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
 import SystemMessageList from '../components/SystemMessageList/SystemMessageList';
-import UnsubscribeEmail from 'pages/UnsubscribeEmail/UnsubscribeEmail';
-import SubscriptionStatus from 'pages/SubscriptionStatus/SubscriptionStatus';
+import UnsubscribeNewsletter from 'pages/UnsubscribeNewsletter/UnsubscribeNewsletter';
+import SubscriptionStatus from 'pages/NewsletterStatus/NewsletterStatus';
 
 
 const Routes = () => (
@@ -59,8 +59,8 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>
         <Route exact={true} path={RoutePaths.contentCreator} component={ModulesEditor}/>
         <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
-        <Route exact={true} path={RoutePaths.unsubscribeEmail} component={UnsubscribeEmail}/>
-        <Route exact={true} path={RoutePaths.subscriptionStatus} component={SubscriptionStatus}/>
+        <Route exact={true} path={RoutePaths.unsubscribeNewsletter} component={UnsubscribeNewsletter}/>
+        <Route exact={true} path={RoutePaths.newsletterStatus} component={SubscriptionStatus}/>
         <Route component={NotFound} />
         <Route component={ServiceUnavailable} />
       </Switch>
