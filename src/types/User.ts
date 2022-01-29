@@ -9,7 +9,7 @@ export interface User extends TrackableEntity {
   role: Role;
   cardCodeHash?: string;
   terminationDate?: string;
-  subscribed: boolean;
+  subscribedNewsletter: boolean;
 }
 
 export const ERole = {

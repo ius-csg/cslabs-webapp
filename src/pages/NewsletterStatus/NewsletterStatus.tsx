@@ -16,8 +16,8 @@ interface NewsletterStatusOptions extends ConnectedProps<typeof connector> {
 const NewsletterStatus = (props: NewsletterStatusOptions) => {
 
   async function onChangeSubscription() {
-    await changeNewsletterSubscription(!props.user.subscribed);
-    const updatedUser = { ...props.user, subscribed: !props.user.subscribed };
+    await changeNewsletterSubscription(!props.user.subscribedNewsletter);
+    const updatedUser = { ...props.user, subscribedNewsletter: !props.user.subscribedNewsletter };
     props.actions.setCurrentUser(updatedUser);
   }
 
@@ -25,9 +25,9 @@ const NewsletterStatus = (props: NewsletterStatusOptions) => {
     <AccountManagementLayout>
       <h2>Newsletter Info</h2>
       <Button onClick={onChangeSubscription} className='mt-2'>
-        {props.user.subscribed ? 'Unsubscribe' : 'Subscribe'}
+        {props.user.subscribedNewsletter ? 'Unsubscribe' : 'Subscribe'}
       </Button>
-      {!props.user.subscribed && <p className='mt-2'><strong>Subscribe</strong> to our newsletter to get latest updates
+      {!props.user.subscribedNewsletter && <p className='mt-2'><strong>Subscribe</strong> to our newsletter to get latest updates
         from CSLabs to your email. This may include infrastructure updates, new changes, or any related information.</p>}
     </AccountManagementLayout>
   );

@@ -19,7 +19,7 @@ const UnsubscribeNewsletter = (props: ProfileProps) => {
     
   async function unsubscribe() {
     await changeNewsletterSubscription(false);
-    const updatedUser = { ...props.user, subscribed: false };
+    const updatedUser = { ...props.user, subscribedNewsletter: false };
     props.actions.setCurrentUser(updatedUser);
   }
 
