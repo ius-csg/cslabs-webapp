@@ -42,7 +42,7 @@ const Node = (props: NodeProps) => {
           <p>Current CPU Usage: ##</p>
           <p>Average RAM Usage: ##</p>
           <p>Current RAM Usage: ##</p>
-          <p>Scheduled Maintenance:</p>
+          <p>Storage:</p>
           <p>   Drive 1: ##, Drive 2: ##</p>
           <p>Scheduled Maintenance: </p>
           <Button>edit</Button>
@@ -57,7 +57,7 @@ const Node = (props: NodeProps) => {
         <div>
           <h1>Node {props.nodeNum}</h1>
           <h1>Status:</h1>
-          <span id={styles['maintenance']}/>
+          <span id={styles['offline']}/>
           <h2>Server Offline!</h2>
           <h2>Last known ip is </h2>
         </div>
