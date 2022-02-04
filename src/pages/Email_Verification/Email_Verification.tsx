@@ -6,7 +6,6 @@ import {Layout} from '../Layout/Layout';
 import {resendEmail, verifyUser} from '../../api';
 import {RiCheckboxCircleFill, RiCloseCircleFill} from 'react-icons/all';
 
-
 interface EmailState {
   sending: boolean;
   sent: boolean;
@@ -26,11 +25,12 @@ export class EmailVerification extends Component <EmailState> {
 
   async handleClick() {
     try {
-      const result = await resendEmail();
-      // tslint:disable-next-line:no-console
-      console.log(result);
       this.setState({
-        sending: true,
+        sending: true
+      });
+      const result = await resendEmail();
+      this.setState({
+        sending: false,
         sent: result,
         error: false
       });
@@ -92,9 +92,10 @@ export class EmailVerification extends Component <EmailState> {
             You're account has been verified and will be directed shortly.
           </p>
           <script>
-            setTimeout(function() {
-            window.location.href = '/explore'
-          }, 90000);
+            delay = (2000) => {
+            // tslint:disable-next-line:jsx-curly-spacing
+            window.location.href = `/explore`
+          }
           </script>
         </div>
       );

@@ -6,6 +6,7 @@ import React from 'react';
 import {IconProp} from '@fortawesome/fontawesome-svg-core';
 
 
+
 // convert to props
 interface NavItemProp  {
   icon: IconProp;
@@ -33,4 +34,3 @@ export function NavItem(props: NavItemProp) {
 NavItem.defaultProps = {
   linkDisabled: false
 };
-
