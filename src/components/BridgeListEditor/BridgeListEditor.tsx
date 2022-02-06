@@ -27,7 +27,7 @@ export function BridgeListEditor({bridgeTemplates, prefix, editing, containsCore
         return (
           <div style={{marginBottom: '1rem'}}>
             <Row style={{marginBottom: '1rem'}}>
-              <Col><h5>Cables</h5></Col>
+              <Col><h5>Bridges</h5></Col>
               <Col className='d-flex justify-content-end align-items-center'>
                 { editing &&
                 <IconButton
@@ -42,7 +42,7 @@ export function BridgeListEditor({bridgeTemplates, prefix, editing, containsCore
             </Row>
             {bridgeTemplates.length === 0 && (
               <Row>
-                <Col><p>No Cables Added</p></Col>
+                <Col><p>No Bridges Added</p></Col>
               </Row>
             )}
             {bridgeTemplates.map((bridgeTemplate,index) =>

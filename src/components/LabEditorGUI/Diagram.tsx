@@ -266,6 +266,31 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     }
   };
 
+  // TODO maybe reuse logic for addVmPort
+  const removeVmPort = (id: string) => {
+    const nodeToChange: Node<any> = schema.nodes.find(node => node.id === id) as Node<any>;
+
+    if (nodeToChange.inputs !== undefined) {
+      if (nodeToChange.inputs.length > 0) {
+        setNodeCount(nodeCount + 1);
+        const inputs : any = [];
+        for (const i of range(0, nodeToChange.inputs.length - 2)) {
+          inputs.push({id: `vm-node-${nodeCount}-port${i}`});
+        }
+
+        deleteNodeFromSchema(nodeToChange.id);
+        addNode({
+          id: `vm-node-${nodeCount}`,
+          content: nodeToChange.content,
+          coordinates: nodeToChange.coordinates,
+          render: VmNode,
+          inputs: inputs
+        });
+        updateSchemaState('update');
+      }
+    }
+  };
+
   useEffect(() => {
     if (internetConnection === true) {
       addNode({
@@ -383,6 +408,12 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           }
         },
         {
+          text: 'Remove Port',
+          onClick: () => {
+            removeVmPort(selectedNode);
+          }
+        },
+        {
           text: 'Link OS',
           onClick: () => {
             // TODO put link OS function here
@@ -443,6 +474,21 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   useEffect(()=> {
     menuItems = getMenuItems(menuType);
+
+    // TODO this logic is supposed to be to limit add and delete port options when necessary. Currently doesnt work
+    if (schema.nodes.find(nodes => nodes.id === selectedNode)) {
+      const selectedNodeDetails: Node<any> = schema.nodes.find(node => node.id === selectedNode) as Node<any>;
+      console.log(selectedNodeDetails);
+      if (selectedNodeDetails) {
+        if (selectedNodeDetails.id.includes('vm') && selectedNode.inputs && menuItems) {
+          if (selectedNodeDetails.inputs?.length === 3) { // Only remove ports
+            menuItems = menuItems.splice(0, 1);
+          } else if (selectedNodeDetails.inputs?.length === 1) { // Only add ports
+            menuItems = menuItems.splice(1, 1);
+          }
+        }
+      }
+    }
   }, [selectedNode]);
 
 
