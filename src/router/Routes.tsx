@@ -17,20 +17,21 @@ import ModuleEditor from '../pages/ModuleEditor/ModuleEditor';
 import UserModulePage from '../pages/UserModulePage/UserModulePage';
 import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
-import LabEditorGUI from '../pages/LabEditorGUI/LabEditorGUI';
+import Explore from '../pages/Explore/Explore';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
 import Contact   from '../pages/Contact/Contact';
 import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPanel';
 import LabEditor from '../pages/LabEditor/LabEditor';
+
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
       <NavigationBar />
       <Switch>
         <Route exact={true} path={RoutePaths.home} component={LabEditor} redirectTo={RoutePaths.explore}/>
-        <Route exact={true} path={RoutePaths.explore} component={LabEditorGUI}/>
+        <Route exact={true} path={RoutePaths.explore} component={Explore}/>
         <Route exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
         <PrivateRoute exact={true} path={RoutePaths.profile} component={Profile}/>
         <PrivateRoute exact={true} path={RoutePaths.resetEmail} component={ResetEmail}/>
