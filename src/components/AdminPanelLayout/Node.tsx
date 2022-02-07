@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './Node.module.scss';
-import {Layout} from '../../pages/Layout/Layout';
-import {Button} from 'react-bootstrap';
+import {Button, Card} from 'react-bootstrap';
 
 // 0 is green, 1 is yellow, 2 is black, 4 is red
 enum NodeStatus {
@@ -20,12 +19,11 @@ interface NodeProps {
 const Node = (props: NodeProps) => {
   if (props.statusNum !== NodeStatus.Offline) {
     return (
-      <Layout className={styles['node']}>
-        <div>
-          <h1>Node {props.nodeNum}</h1>
-          <h1>Status:</h1>
+      <Card style={{width: '20rem'}}>
+        <Card.Header className={styles['node']}>
+          Status:
           {props.statusNum === NodeStatus.Good &&
-              <span id={styles['good']}/>
+            <span id={styles['good']}/>
           }
           {props.statusNum === NodeStatus.Issues &&
             <div id={styles['wrapper']}>
@@ -34,34 +32,43 @@ const Node = (props: NodeProps) => {
             </div>
           }
           {props.statusNum === NodeStatus.Maintenance &&
-              <span id={styles['maintenance']}/>
+            <span id={styles['maintenance']}/>
           }
-          <p>__________________________________</p>
-          <p>Current Deployed Labs: ##</p>
-          <p>Average CPU Usage: ##</p>
-          <p>Current CPU Usage: ##</p>
-          <p>Average RAM Usage: ##</p>
-          <p>Current RAM Usage: ##</p>
-          <p>Storage:</p>
-          <p>   Drive 1: ##, Drive 2: ##</p>
-          <p>Scheduled Maintenance: </p>
-          <Button>edit</Button>
-          <p>Uptime: ##</p>
-        </div>
-      </Layout>
+        </Card.Header>
+        <Card.Body>
+            <Card.Title>Node {props.nodeNum}
+            </Card.Title>
+          <Card.Text style={{textAlign: 'left'}}>
+            Current Deployed Labs: ##
+            <br/>Average CPU Usage: ##
+            <br/>Current CPU Usage: ##
+            <br/>Average RAM Usage: ##
+            <br/>Current RAM Usage: ##
+            <br/>Storage:
+            <br/>Drive 1: ##, Drive 2: ##
+            <br/>Scheduled Maintenance:
+            <br/>Uptime: ##
+          </Card.Text>
+        </Card.Body>
+      </Card>
     );
   }
   else {
     return (
-      <Layout className={styles['node']}>
-        <div>
-          <h1>Node {props.nodeNum}</h1>
-          <h1>Status:</h1>
+      <Card style={{ width: '20rem' }}>
+        <Card.Header className={styles['node']}>Status:
           <span id={styles['offline']}/>
-          <h2>Server Offline!</h2>
-          <h2>Last known ip is </h2>
-        </div>
-      </Layout>
+        </Card.Header>
+          <Card.Body>
+            <Card.Title>Node {props.nodeNum} Status:
+              <span id={styles['offline']}/>
+            </Card.Title>
+            <Card.Text>
+              Server Offline!<br/>Last known ip is
+            </Card.Text>
+            <Button>edit</Button>
+          </Card.Body>
+      </Card>
     );
   }
 };

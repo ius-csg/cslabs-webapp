@@ -21,6 +21,7 @@ export const ClusterPane = () => {
           content={
             <>
               <h2>Maintenance Scheduler</h2>
+              <p>cluster name</p>
               <form>
                 <label>Node #
                   <textarea>N/A</textarea>
