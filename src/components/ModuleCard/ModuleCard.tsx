@@ -43,7 +43,7 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
           <Card.Body style={{height: 270}}>
             <Card.Title>{module.name}</Card.Title>
             {!this.state.viewTagsExpanded ?
-              <Card.Text style={{textAlign: 'left', fontSize: '1rem', fontWeight: 400, color: '#343a40'}}>
+              <Card.Text style={{textAlign: 'left', fontSize: '1rem', fontWeight: 400, color: '#868e96'}}>
               {module.description.substring(0, 150)}
             </Card.Text> : null}
             {module.moduleTags.length !== 0 ?
