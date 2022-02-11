@@ -52,7 +52,7 @@
     "humanize-duration": "^3.21.0",
     "jwt-decode": "^2.2.0",
     "luxon": "^1.21.3",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "novnc-core": "^0.2.1",
     "object-to-formdata": "^3.0.6",
     "react": "^16.9.0",
