@@ -11,7 +11,7 @@ import {
   propertyOf, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
-import {LabForm, LabVmForm, VmTemplate} from '../../types/editorTypes';
+import {BridgeTemplate, LabForm, LabVmForm, VmTemplate} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
@@ -116,24 +116,40 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   };
 
   const getLabVmsFromGui = () => {
-    const labVms : LabVmForm[] = [];
+    const labVms: LabVmForm[] = [];
     let i = 1;
     for (const node of guiSchema.nodes) {
       if (node.id.includes('vm')) {
-        const obj = {templateInterfaces: [],
-        vmTemplateId: 1,
-        isCoreRouter: false,
-        name: node.content,
-        id: i};
+        const obj = {
+          templateInterfaces: [],
+          vmTemplateId: 1,
+          isCoreRouter: false,
+          name: node.content,
+          id: i
+        };
         labVms.push(obj);
-        i++;
       }
+      i++;
     }
     return labVms;
   };
 
   const getBridgeTemplatesFromGui = () => {
-    return [];
+    const bridgeTemplates: BridgeTemplate[] = [];
+    let i = 1;
+    for (const node of guiSchema.nodes) {
+      if (node.id.includes('switch')) {
+        const obj = {
+          uuid: 'testuuid',
+          isCoreBridge: false,
+          name: node.content,
+          id: i
+        };
+        bridgeTemplates.push(obj);
+      }
+      i++;
+    }
+    return bridgeTemplates;
   };
 
 

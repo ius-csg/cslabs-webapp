@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import SelectSwitch from './SelectSwitch';
 import ContextContainer from './ContextContainer';
 import _ from 'lodash';
+import {v4 as uuidv4} from 'uuid';
 
 
 // tslint:disable-next-line:no-import-side-effect
@@ -162,6 +163,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
     addNode({
       id: `vm-node-${nodeCount}`,
+      uuid: uuidv4(),
       content: `Node ${nodeCount}`,
       coordinates: startingCoords,
       render: VmNode,
@@ -190,6 +192,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
     addNode({
       id: `switch-node-${nodeCount}`,
+      uuid: uuidv4(),
       content: `Node ${nodeCount}`,
       coordinates: startingCoords,
       render: SwitchNode,
@@ -230,6 +233,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
     addNode({
       id: `${name}-${schema.nodes.length + 1}`,
+      uuid: uuidv4(),
       content: nodeToDuplicate.content,
       coordinates: [
         Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
@@ -256,6 +260,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         deleteNodeFromSchema(nodeToChange.id);
         addNode({
           id: `vm-node-${nodeCount}`,
+          uuid: uuidv4(),
           content: nodeToChange.content,
           coordinates: nodeToChange.coordinates,
           render: VmNode,
@@ -281,6 +286,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         deleteNodeFromSchema(nodeToChange.id);
         addNode({
           id: `vm-node-${nodeCount}`,
+          uuid: uuidv4(),
           content: nodeToChange.content,
           coordinates: nodeToChange.coordinates,
           render: VmNode,
@@ -295,6 +301,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     if (internetConnection === true) {
       addNode({
         id: 'wan-node',
+        uuid: uuidv4(),
         content: `Node ${schema.nodes.length + 1}`,
         coordinates: [250, 30],
         render: WanNode,
@@ -355,6 +362,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         deleteNodeFromSchema(nodeToChange.id);
         addNode({
           id: nodeToChange.id,
+          uuid: uuidv4(),
           content: newNodeName,
           coordinates: nodeToChange.coordinates,
           render: VmNode,
@@ -537,7 +545,14 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
         </ToggleButton>
       </div>
       <div style={{margin: 10}}>
-        <Button variant='secondary' onClick={() => setSelectSwitchVisible(!selectSwitchVisible)} style={{marginRight: 10}} disabled={disabled}>Add Switch</Button>
+        <Button
+          variant='secondary'
+          onClick={() => setSelectSwitchVisible(!selectSwitchVisible)}
+          style={{marginRight: 10}}
+          disabled={disabled}
+        >
+          Add Switch
+        </Button>
         <Button variant='secondary' onClick={addNewVM} disabled={disabled}>Add VM</Button>
       </div>
       <div style={disabled ? {pointerEvents: 'none', opacity: '0.4', zIndex:999999} : {}}>
