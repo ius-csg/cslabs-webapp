@@ -119,7 +119,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     const labVms: LabVmForm[] = [];
     let i = 1;
     for (const node of guiSchema.nodes) {
-      if (node.id.includes('vm')) {
+      if (node.nodeType === 'vm') {
         const obj = {
           templateInterfaces: [],
           vmTemplateId: 1,
@@ -138,9 +138,9 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     const bridgeTemplates: BridgeTemplate[] = [];
     let i = 1;
     for (const node of guiSchema.nodes) {
-      if (node.id.includes('switch')) {
+      if (node.nodeType === 'switch') {
         const obj = {
-          uuid: 'testuuid',
+          uuid: node.uuid,
           isCoreBridge: false,
           name: node.content,
           id: i

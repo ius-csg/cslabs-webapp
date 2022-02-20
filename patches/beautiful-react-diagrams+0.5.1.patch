@@ -1,12 +1,12 @@
 diff --git a/node_modules/beautiful-react-diagrams/@types/DiagramSchema.ts b/node_modules/beautiful-react-diagrams/@types/DiagramSchema.ts
-index 2639876..012a777 100644
+index 2639876..0033790 100644
 --- a/node_modules/beautiful-react-diagrams/@types/DiagramSchema.ts
 +++ b/node_modules/beautiful-react-diagrams/@types/DiagramSchema.ts
 @@ -12,6 +12,7 @@ export type NodeCoordinates = [number, number];
  
  export type Node<P> = {
    id: string;
-+  uuid: string;
++  nodeType: string;
    coordinates: NodeCoordinates;
    disableDrag?: boolean;
    content?: ReactNode;

@@ -35,7 +35,6 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   const [renameTextBox, toggleRenameTextBox] = useState<boolean>(false);
   const [newNodeName, setNewNodeName] = useState<string>('');
   const [internetConnection, toggleInternetConnection] = useState<boolean>(false);
-  const [nodeCount, setNodeCount] = useState<number>(0);
   const [linkCount, setLinkCount] = useState<number>(0);
   const [schemaState, setSchemaState] = useState<any>({
     past: [{}],
@@ -158,42 +157,40 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   const addNewVM = () => {
     const startingCoords = handleFirstNode(schema.nodes.length);
-
-    setNodeCount( nodeCount + 1);
-
+    const uuid = uuidv4().toString();
     addNode({
-      id: `vm-node-${nodeCount}`,
-      uuid: uuidv4(),
-      content: `Node ${nodeCount}`,
+      id: uuid,
+      nodeType: 'vm',
+      content: 'VM',
       coordinates: startingCoords,
       render: VmNode,
-      inputs: [{id: `vm-node-${nodeCount}-port0`}] // id must be unique each time for connection to be made
+      inputs: [{id: `${uuid}-port0`}] // id must be unique each time for connection to be made
     });
     updateSchemaState('update');
   };
 
   const addNewSwitch = (ports: number) => {
-    setNodeCount( nodeCount + 1);
     const totalPortsOut = [];
     const totalPortsIn = [];
+    const uuid = uuidv4().toString();
     if (ports === 5) {
-      totalPortsIn.push({id: `switch-node-${nodeCount}-port1`}, {id: `switch-node-${nodeCount}-port2`});
+      totalPortsIn.push({id: `${uuid}-port1`}, {id: `${uuid}-port2`});
       for (let port = 2; port < (ports); port++) {
-        totalPortsOut.push({id: `switch-node-${nodeCount}-port${port}`});
+        totalPortsOut.push({id: `${uuid}-port${port}`});
       }
     } else {
       for (let port = 0; port < (ports / 2); port++) {
-        totalPortsOut.push({id: `switch-node-${nodeCount}-port${port}-in`});
-        totalPortsIn.push({id: `switch-node-${nodeCount}-port${port}-out`});
+        totalPortsOut.push({id: `${uuid}-port${port}-in`});
+        totalPortsIn.push({id: `${uuid}-port${port}-out`});
       }
     }
 
     const startingCoords = handleFirstNode(schema.nodes.length);
 
     addNode({
-      id: `switch-node-${nodeCount}`,
-      uuid: uuidv4(),
-      content: `Node ${nodeCount}`,
+      id: uuidv4().toString(),
+      nodeType: 'switch',
+      content: 'Switch',
       coordinates: startingCoords,
       render: SwitchNode,
       inputs: totalPortsIn,
@@ -211,29 +208,23 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     const nodeToDuplicate: Node<any> = schema.nodes.find(node => node.id === id) as Node<any>;
     const inputs: any = [];
     const outputs: any = [];
-    let name = '';
-    if (id.includes('vm')) {
-      name = 'vm-node';
-    }
-    else if (id.includes('switch')) {
-      name = 'switch-node';
-    }
+    const uuid = uuidv4().toString();
 
     if (nodeToDuplicate.inputs) {
       for (let i = 0; i < nodeToDuplicate.inputs.length; i++) {
-        inputs.push({id: `${name}-${schema.nodes.length + 1}-port-in-${i+1}`});
+        inputs.push({id: `${uuid}-port${i+1}-in`});
       }
     }
 
     if (nodeToDuplicate.outputs) {
       for (let i = 0; i < nodeToDuplicate.outputs.length; i++) {
-        outputs.push({id: `${name}-${schema.nodes.length + 1}-port-out-${i+1}`});
+        outputs.push({id: `${uuid}-port${i+1}-out`});
       }
     }
 
     addNode({
-      id: `${name}-${schema.nodes.length + 1}`,
-      uuid: uuidv4(),
+      id: uuid,
+      nodeType: nodeToDuplicate.nodeType,
       content: nodeToDuplicate.content,
       coordinates: [
         Number(schema.nodes[schema.nodes.length - 1].coordinates[0] + 100),
@@ -248,19 +239,19 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   const addVmPort = (id: string) => {
     const nodeToChange: Node<any> = schema.nodes.find(node => node.id === id) as Node<any>;
+    const uuid = uuidv4().toString();
 
     if (nodeToChange.inputs !== undefined) {
       if (nodeToChange.inputs.length < 4) {
-        setNodeCount(nodeCount + 1);
         const inputs : any = [];
         for (const i of range(0, nodeToChange.inputs.length)) {
-          inputs.push({id: `vm-node-${nodeCount}-port${i}`});
+          inputs.push({id: `${uuid}-port${i}`});
         }
 
         deleteNodeFromSchema(nodeToChange.id);
         addNode({
-          id: `vm-node-${nodeCount}`,
-          uuid: uuidv4(),
+          id: uuid,
+          nodeType: nodeToChange.nodeType,
           content: nodeToChange.content,
           coordinates: nodeToChange.coordinates,
           render: VmNode,
@@ -271,22 +262,19 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     }
   };
 
-  // TODO maybe reuse logic for addVmPort
   const removeVmPort = (id: string) => {
     const nodeToChange: Node<any> = schema.nodes.find(node => node.id === id) as Node<any>;
-
     if (nodeToChange.inputs !== undefined) {
       if (nodeToChange.inputs.length > 0) {
-        setNodeCount(nodeCount + 1);
         const inputs : any = [];
         for (const i of range(0, nodeToChange.inputs.length - 2)) {
-          inputs.push({id: `vm-node-${nodeCount}-port${i}`});
+          inputs.push({id: `${nodeToChange.id}-port${i}`});
         }
 
         deleteNodeFromSchema(nodeToChange.id);
         addNode({
-          id: `vm-node-${nodeCount}`,
-          uuid: uuidv4(),
+          id: uuidv4().toString(),
+          nodeType: nodeToChange.nodeType,
           content: nodeToChange.content,
           coordinates: nodeToChange.coordinates,
           render: VmNode,
@@ -299,13 +287,14 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
 
   useEffect(() => {
     if (internetConnection === true) {
+      const uuid = uuidv4().toString();
       addNode({
-        id: 'wan-node',
-        uuid: uuidv4(),
+        id: uuid,
+        nodeType: 'wan',
         content: `Node ${schema.nodes.length + 1}`,
         coordinates: [250, 30],
         render: WanNode,
-        outputs: [{id: 'wan-output'}],
+        outputs: [{id: `${uuid}-port0`}],
         disableDrag: true
       });
     } else if (internetConnection === false && schema.nodes.find(node => node.id === 'wan-node') !== undefined) {
@@ -317,6 +306,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
     console.log(schema);
+    console.log(selectedNode);
     setGuiSchema(schema);
     const portsInUse: any = [];
     let count = 0;
@@ -327,7 +317,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           schema.links.splice(count, 1);
         }
         // Prevents connecting two ports on same node
-        if (port.input.includes(port.output.slice(0, 14)) === true) {
+        if (port.input.slice(0, 36) === port.output.slice(0, 36)) {
           schema.links.splice(count, 1);
         }
         portsInUse.push(port.input);
@@ -361,8 +351,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       if (nodeToChange) {
         deleteNodeFromSchema(nodeToChange.id);
         addNode({
-          id: nodeToChange.id,
-          uuid: uuidv4(),
+          id: uuidv4().toString(),
+          nodeType: nodeToChange.nodeType,
           content: newNodeName,
           coordinates: nodeToChange.coordinates,
           render: VmNode,
@@ -381,10 +371,10 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     for (const node of schema.nodes) {
       if ((xClickPos >= node.coordinates[0] && xClickPos - 20 <= node.coordinates[0] + 50)
         && (yClickPos >= node.coordinates[1] && yClickPos - 20 <= node.coordinates[1] + 100)) {
-        if (node.id.includes('vm')) {
+        if (node.nodeType === 'vm') {
           setMenuType('vm');
         }
-        else if (node.id.includes('switch')) {
+        else if (node.nodeType === 'switch') {
           setMenuType('switch');
         }
       }
@@ -489,7 +479,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       const selectedNodeDetails: Node<any> = schema.nodes.find(node => node.id === selectedNode) as Node<any>;
       console.log(selectedNodeDetails);
       if (selectedNodeDetails) {
-        if (selectedNodeDetails.id.includes('vm') && selectedNode.inputs && menuItems) {
+        if (selectedNodeDetails.nodeType === 'vm' && selectedNode.inputs && menuItems) {
           if (selectedNodeDetails.inputs?.length === 3) { // Only remove ports
             menuItems = menuItems.splice(0, 1);
           } else if (selectedNodeDetails.inputs?.length === 1) { // Only add ports
@@ -518,7 +508,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
     for (const node of schema.nodes) {
       if (((event.clientX - rect.left) >= node.coordinates[0] && (event.clientX - rect.left) - 20 <= node.coordinates[0] + 50)
         && ((event.clientY - rect.top) >= node.coordinates[1] && (event.clientY - rect.top) - 20 <= node.coordinates[1] + 100)) {
-        if (node.id.includes('vm')) {
+        if (node.nodeType === 'vm') {
           setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
           setNodeToRename(node.id);
           setNewNodeName(node.content as string);

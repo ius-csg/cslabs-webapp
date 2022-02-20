@@ -12,6 +12,7 @@ const SwitchNode = ({id, inputs, outputs}: Omit<Node<any>, 'coordinates'>) => {
   const dispatch = useDispatch();
 
   const handleSelect = () => {
+    console.log(id);
     // Timeout will override the deselect click event in the diagram div
     // There might be a better way to handle this
     setTimeout(() => dispatch(changeSelected({selectedID: id})), 10);
