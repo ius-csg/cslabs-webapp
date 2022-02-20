@@ -21,7 +21,7 @@ import {range} from '../util/Util';
 // initial diagram model
 const initialSchema = createSchema({});
 
-const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBoxPosition, nodeToRename, setNodeToRename}: any) => {
+const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBoxPosition, nodeToRename, disabled, setNodeToRename, setGuiSchema }: any) => {
 
   let rect: any = null;
   useEffect(() => {
@@ -310,6 +310,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   // This use effect hook can be used to get information from the GUI
   useEffect(() => {
     console.log(schema);
+    setGuiSchema(schema);
     const portsInUse: any = [];
     let count = 0;
     if (schema.links) {
@@ -475,7 +476,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   useEffect(()=> {
     menuItems = getMenuItems(menuType);
 
-    // TODO this logic is supposed to be to limit add and delete port options when necessary. Currently doesnt work
+    // TODO this logic is supposed to be to limit add and delete port options when necessary. Currently doesn't work
     if (schema.nodes.find(nodes => nodes.id === selectedNode)) {
       const selectedNodeDetails: Node<any> = schema.nodes.find(node => node.id === selectedNode) as Node<any>;
       console.log(selectedNodeDetails);
@@ -530,14 +531,16 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           checked={internetConnection}
           value='1'
           onChange={() => toggleInternetConnection(!internetConnection)}
+          disabled={disabled}
         >
           {'   Should this lab have a connection to the internet?'}
         </ToggleButton>
       </div>
       <div style={{margin: 10}}>
-        <Button variant='secondary' onClick={() => setSelectSwitchVisible(!selectSwitchVisible)} style={{marginRight: 10}}>Add Switch</Button>
-        <Button variant='secondary' onClick={addNewVM}>Add VM</Button>
+        <Button variant='secondary' onClick={() => setSelectSwitchVisible(!selectSwitchVisible)} style={{marginRight: 10}} disabled={disabled}>Add Switch</Button>
+        <Button variant='secondary' onClick={addNewVM} disabled={disabled}>Add VM</Button>
       </div>
+      <div style={disabled ? {pointerEvents: 'none', opacity: '0.4', zIndex:999999} : {}}>
       <ContextContainer style={{height: '50vh'}} menuItems={menuItems} schema={schema}>
         <div id='diagram' style={{height: '50vh', zIndex: -1}} onClick={unSelect} onContextMenu={unSelect} onDoubleClick={rename}>
           {selectSwitchVisible &&
@@ -554,6 +557,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           </form>}
         </div>
       </ContextContainer>
+      </div>
     </>
   );
 };

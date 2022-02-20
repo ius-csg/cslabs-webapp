@@ -53,6 +53,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = useState(false);
   const [guiEnabled, setGuiEnabled] = useState(true);
+  const [guiSchema, setGuiSchema] = useState();
   const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
   const [redirect, setRedirect] = useState();
   const vmTemplateDictionary = convertArrayToDictionary(vmTemplates, 'id') as Dictionary<VmTemplate>;
@@ -66,12 +67,17 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     setMessage(undefined);
     let response;
     try {
+      console.log(guiSchema);
+      console.log(form);
       if (guiEnabled) {
         toJpeg(document.getElementById('diagram') as HTMLElement)
           .then(async (dataUrl: string) => {
             const file = new File([dataURLtoBlob(dataUrl)], 'name');
             form = {...form, topology: (file)};
             form.hasTopology = true;
+            form.labVms = getLabVmsFromGui();
+            form.bridgeTemplates = getBridgeTemplatesFromGui();
+            console.log(form);
             response = await saveLab(form);
             setInitialValues(response);
 
@@ -107,6 +113,27 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     }
 
     return new Blob([ new Uint8Array(array) ], {type: 'image/jpeg'});
+  };
+
+  const getLabVmsFromGui = () => {
+    const labVms : LabVmForm[] = [];
+    let i = 1;
+    for (const node of guiSchema.nodes) {
+      if (node.id.includes('vm')) {
+        const obj = {templateInterfaces: [],
+        vmTemplateId: 1,
+        isCoreRouter: false,
+        name: node.content,
+        id: i};
+        labVms.push(obj);
+        i++;
+      }
+    }
+    return labVms;
+  };
+
+  const getBridgeTemplatesFromGui = () => {
+    return [];
   };
 
 
@@ -198,7 +225,10 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                    <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
                  </Form.Group>
                  {guiEnabled ?
-                     <LabEditorGUI />
+                     <LabEditorGUI
+                       setGuiSchema={setGuiSchema}
+                       disabled={!editing}
+                     />
                   :
                    <>
                      <BridgeListEditor
