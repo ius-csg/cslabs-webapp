@@ -424,6 +424,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           onClick: () => {
             if (schema.nodes.find(nodes => nodes.id === selectedNode)) {
               const node: Node<any> = schema.nodes.find(nodes => nodes.id === selectedNode) as Node<any>;
+              // TODO this position does not always align the text box under the node
               setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
               toggleRenameTextBox(true);
               setNodeToRename(node.id);
@@ -474,7 +475,7 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
   useEffect(()=> {
     menuItems = getMenuItems(menuType);
 
-    // TODO this logic is supposed to be to limit add and delete port options when necessary. Currently doesn't work
+    // TODO this logic is supposed to limit add and delete port options when necessary. Currently doesn't work
     if (schema.nodes.find(nodes => nodes.id === selectedNode)) {
       const selectedNodeDetails: Node<any> = schema.nodes.find(node => node.id === selectedNode) as Node<any>;
       console.log(selectedNodeDetails);

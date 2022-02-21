@@ -11,7 +11,7 @@ import {
   propertyOf, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
-import {BridgeTemplate, LabForm, LabVmForm, VmTemplate} from '../../types/editorTypes';
+import {BridgeTemplate, LabForm, LabVmForm, VmInterfaceTemplate, VmTemplate} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
@@ -120,8 +120,28 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     let i = 1;
     for (const node of guiSchema.nodes) {
       if (node.nodeType === 'vm') {
+        const interfaces : VmInterfaceTemplate[] = [];
+        for (const link of guiSchema.links) {
+          if (link.input.slice(0, 36) === node.id) {
+            const connectedNode = link.output;
+            const interfaceObj = {
+              bridgeTemplateUuid: connectedNode,
+              id: 0,
+              interfaceNumber: 0
+            };
+            interfaces.push(interfaceObj);
+          } else if (link.output.slice(0, 36) === node.id) {
+            const connectedNode = link.input;
+            const interfaceObj = {
+              bridgeTemplateUuid: connectedNode,
+              id: 0,
+              interfaceNumber: 0
+            };
+            interfaces.push(interfaceObj);
+          }
+        }
         const obj = {
-          templateInterfaces: [],
+          templateInterfaces: interfaces,
           vmTemplateId: 1,
           isCoreRouter: false,
           name: node.content,
@@ -140,7 +160,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     for (const node of guiSchema.nodes) {
       if (node.nodeType === 'switch') {
         const obj = {
-          uuid: node.uuid,
+          uuid: node.id,
           isCoreBridge: false,
           name: node.content,
           id: i
