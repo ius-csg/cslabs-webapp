@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import styles from './Email_Verification.module.scss';
+import styles from './EmailVerification.module.scss';
 import {Button, Spinner} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {resendEmail, verifyUser} from '../../api';

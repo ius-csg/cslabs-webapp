@@ -3,7 +3,7 @@ import * as React from 'react';
 import {MemoryRouter} from 'react-router';
 import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
-import {EmailVerification} from '../pages/Email_Verification/Email_Verification';
+import {EmailVerification} from '../pages/EmailVerification/EmailVerification';
 
 it('renders 404 page', () => {
   const result = mount(
@@ -16,7 +16,7 @@ it('renders 404 page', () => {
   expect(result.find(NotFound).find('label').text()).toEqual('404');
 });
 
-it('render Email_Verification page', () => {
+it('render EmailVerification page', () => {
   const result = mount(
     <MemoryRouter initialEntries={['/Email_Validation_Page_Reminder_test']}>
       <EmailVerification />
