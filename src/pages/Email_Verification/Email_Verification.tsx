@@ -13,9 +13,7 @@ interface EmailState {
   error: boolean;
 }
 
-// change class to function
-
-export class EmailVerification extends Component <EmailState> {
+export class EmailVerification extends Component <{}, EmailState> {
 
   state: EmailState = {
     sent: false,
@@ -133,4 +131,3 @@ export class EmailVerification extends Component <EmailState> {
     </ Layout>;
   }
 }
-

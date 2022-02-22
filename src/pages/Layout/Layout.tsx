@@ -7,26 +7,29 @@ import SystemMessageList from '../../components/SystemMessageList/SystemMessageL
 import {WebState} from '../../redux/types/WebState';
 import {isVerified} from '../../redux/selectors/entities';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router';
+
 
 interface LayoutProps {
   fluid?: boolean;
   children: any;
   style?: CSSProperties;
   className?: string;
-  // navigation?: boolean; // disableNavigation
+  isEmailVerificationPage?: boolean;
 }
 
-// lambda function to full function
-const LayoutComponent = (props: LayoutProps, {verified}: ReturnType<typeof mapStateToProps>) =>
-  <div>
-    {verified ? // https://raquo.net/2018/11/left-side-of-comma-operator-is-unused-and-has-no-side-effects/
-      <>
-        <NavigationBar/>
-        <SystemMessageList/>
-      </> : null
-    }
 
-    <Container style={{marginTop: 20, marginBottom: 20, ...props.style || {}}} {...{fluid: props.fluid}} className={props.className}>
+// lambda function to full function
+const LayoutComponent = (props: LayoutProps & ReturnType<typeof mapStateToProps>) =>
+  <div>
+    <NavigationBar/>
+    <SystemMessageList/>
+    {props.shouldRedirectToEmailVerification && !props.isEmailVerificationPage && <Redirect to={'/email_verification'} />}
+    <Container
+      style={{marginTop: 20, marginBottom: 20, ...props.style || {}}}
+      {...{fluid: props.fluid}}
+      className={props.className}
+    >
       {props.children}
       <CookieAlert/>
       <BrowserSupportAlert/>
@@ -38,11 +41,5 @@ const mapStateToProps = (state: WebState) => {
     verified: isVerified(state)
   });
 };
-
-
-/*Layout.defaultProps = {
-  navigation: true
-};*/
-
 
 export const Layout = connect(mapStateToProps)(LayoutComponent);

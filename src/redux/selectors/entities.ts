@@ -38,7 +38,7 @@ export function isAdmin(state: WebState) {
 export function isVerified(state: WebState) {
   const user: User | null = getCurrentUser(state);
   if(user == null) {
-    return false;
+    return true;
   }
   else {
     return (user.verified);

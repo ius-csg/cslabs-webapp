@@ -19,7 +19,7 @@ it('renders 404 page', () => {
 it('render Email_Verification page', () => {
   const result = mount(
     <MemoryRouter initialEntries={['/Email_Validation_Page_Reminder_test']}>
-      <Email_Verification/>
+      <EmailVerification />
     </MemoryRouter>
   );
   expect(result.find(Home)).toHaveLength(0);

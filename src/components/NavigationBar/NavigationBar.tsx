@@ -4,7 +4,12 @@ import styles from './NavigationBar.module.scss';
 import {faBook, faList, faUser, faEnvelopeOpenText, faEdit, faUserCog} from '@fortawesome/free-solid-svg-icons';
 import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
-import {isAuthenticated, isAdmin, isCreator, isVerified} from '../../redux/selectors/entities';
+import {
+  isAuthenticated,
+  isAdmin,
+  isCreator,
+  getShouldRedirectToEmailVerification
+} from '../../redux/selectors/entities';
 import {NavItem} from './NavItem';
 import {NavLogo} from './NavLogo';
 import {RoutePaths} from '../../router/RoutePaths';
@@ -12,7 +17,7 @@ import {RoutePaths} from '../../router/RoutePaths';
 
 // https://stackoverflow.com/questions/38321601/easier-way-to-to-disable-link-in-react
 const NavigationBarComponent =
-({authenticated, creator, admin, verified}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
+({authenticated, creator, admin, shouldRedirectToEmailVerification}: ReturnType<typeof mapStateToProps>) => <Navbar className={styles['navbar']}>
   <Container>
     <NavLogo/>
     <Nav>
@@ -31,7 +36,7 @@ const mapStateToProps = (state: WebState) => {
     authenticated: isAuthenticated(state),
     creator: isCreator(state),
     admin: isAdmin(state),
-    verified: isVerified(state)
+    shouldRedirectToEmailVerification: getShouldRedirectToEmailVerification(state)
   });
 };
 export const NavigationBar = connect(mapStateToProps)(NavigationBarComponent);
