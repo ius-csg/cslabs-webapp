@@ -1,63 +1,45 @@
 import * as React from 'react';
-import {Component} from 'react';
+import {useState} from 'react';
 import styles from './EmailVerification.module.scss';
 import {Button, Spinner} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {resendEmail, verifyUser} from '../../api';
 import {RiCheckboxCircleFill, RiCloseCircleFill} from 'react-icons/all';
+import {useMount} from '../../hooks/useMount';
 
-interface EmailState {
-  sending: boolean;
-  sent: boolean;
-  verified?: boolean;
-  error: boolean;
-}
+function EmailVerification() {
 
-export class EmailVerification extends Component <{}, EmailState> {
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
+  const [verified, setVerified] = useState();
 
-  state: EmailState = {
-    sent: false,
-    sending: false,
-    error: false
+  const handleClick = async () => {
+    try {
+      setSending(true);
+
+      const result = await resendEmail();
+      setSending(false);
+      setSent(result);
+      setError(false);
+
+    } catch {
+      setSending(false);
+      setError(true);
+    }
   };
 
-  async handleClick() {
-    try {
-      this.setState({
-        sending: true
-      });
-      const result = await resendEmail();
-      this.setState({
-        sending: false,
-        sent: result,
-        error: false
-      });
-    } catch {
-      this.setState({
-        sending: false,
-        error: true
-      });
-    }
-
-  }
-
-  async componentDidMount() {
+  useMount(async () => {
     const verifyUserReturn = await verifyUser();
-    // tslint:disable-next-line:no-console
-    console.log(verifyUserReturn);
-    try {
-      this.setState({
-        verified: verifyUserReturn
-      });
-    } catch {
-      this.setState({
-        verified: false
-      });
+    if (verifyUserReturn) {
+      setVerified(verifyUserReturn);
+    } else {
+      setVerified(false);
     }
-  }
+  });
 
-  renderNewEmailVerification() {
-    if (this.state.error) {
+  const renderNewEmailVerification = () => {
+    if (error) {
       return (
         <div className={styles['email-verification']}>
           <p className={styles['title']}>
@@ -69,19 +51,19 @@ export class EmailVerification extends Component <{}, EmailState> {
         </div>
       );
     }
-    if(this.state.sending) {
+    if (sending) {
       return (
         <div className={styles['spinner']}>
-            <Spinner
-              animation='border'
-              role='status'
-              variant={'dark'}
-            />
+          <Spinner
+            animation='border'
+            role='status'
+            variant={'dark'}
+          />
           <span> Loading...</span>
         </div>
-        );
+      );
     }
-    if (this.state.verified) {
+    if (verified) {
       // Need to be redirected back to explore page because it has been verified
       // Reference for script https://stackoverflow.com/questions/3292038/redirect-website-after-specified-amount-of-time
       return (
@@ -99,7 +81,7 @@ export class EmailVerification extends Component <{}, EmailState> {
       );
     }
 
-    if (this.state.sent) {
+    if (sent) {
       return (
         <div className={styles['email-verification']}>
           <p className={styles['title']}>
@@ -120,14 +102,15 @@ export class EmailVerification extends Component <{}, EmailState> {
         <p className={styles['paragraph']}>
           To verify your account please, click the button below to send a
           verification email to your account. </p>
-        <Button onClick={() => this.handleClick()}>Send another verification email</Button>
+        <Button onClick={() => handleClick}>Send another verification email</Button>
       </div>
     );
-  }
+  };
 
-  render() {
-    return <Layout isEmailVerificationPage={true}>
-      {this.renderNewEmailVerification()}
-    </ Layout>;
-  }
+  return (
+    <Layout isEmailVerificationPage={true}>
+    {renderNewEmailVerification()}
+  </ Layout>);
 }
+
+export default EmailVerification;

@@ -24,7 +24,7 @@ const LayoutComponent = (props: LayoutProps & ReturnType<typeof mapStateToProps>
   <div>
     <NavigationBar/>
     <SystemMessageList/>
-    {props.shouldRedirectToEmailVerification && !props.isEmailVerificationPage && <Redirect to={'/email_verification'} />}
+    {props.shouldRedirectToEmailVerification && !props.isEmailVerificationPage && <Redirect to={'/emailverification'} />}
     <Container
       style={{marginTop: 20, marginBottom: 20, ...props.style || {}}}
       {...{fluid: props.fluid}}

@@ -23,5 +23,5 @@ export enum RoutePaths {
   sitePolicy = '/policy',
   contentCreator = '/content-creator',
   adminPanel = '/admin-panel',
-  emailVerification = '/email_verification'
+  emailVerification = '/emailverification'
 }
