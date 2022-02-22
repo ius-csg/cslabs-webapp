@@ -43,6 +43,11 @@ export function isVerified(state: WebState) {
   else {
     return (user.verified);
   }
+}
 
+export function getShouldRedirectToEmailVerification(state: WebState) {
+  const verified = isVerified(state);
+  const authenticated = isAuthenticated(state);
+  return authenticated && !verified;
 }
 

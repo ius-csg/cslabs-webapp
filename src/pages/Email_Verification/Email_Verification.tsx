@@ -126,7 +126,7 @@ export class EmailVerification extends Component <{}, EmailState> {
   }
 
   render() {
-    return <Layout>
+    return <Layout isEmailVerificationPage={true}>
       {this.renderNewEmailVerification()}
     </ Layout>;
   }

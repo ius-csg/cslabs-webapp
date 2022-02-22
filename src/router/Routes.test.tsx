@@ -3,7 +3,7 @@ import * as React from 'react';
 import {MemoryRouter} from 'react-router';
 import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
-import Email_Verification from '../pages/Email_Verification/Email_Verification';
+import {EmailVerification} from '../pages/Email_Verification/Email_Verification';
 
 it('renders 404 page', () => {
   const result = mount(
@@ -23,7 +23,7 @@ it('render Email_Verification page', () => {
     </MemoryRouter>
   );
   expect(result.find(Home)).toHaveLength(0);
-  expect(result.find(Email_Verification)).toHaveLength(1);
-  expect(result.find(Email_Verification).find('label').text()).toEqual('200');
+  expect(result.find(EmailVerification)).toHaveLength(1);
+  expect(result.find(EmailVerification).find('label').text()).toEqual('200');
 });
 

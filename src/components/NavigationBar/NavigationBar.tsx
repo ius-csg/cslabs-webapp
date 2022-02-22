@@ -21,12 +21,15 @@ const NavigationBarComponent =
   <Container>
     <NavLogo/>
     <Nav>
-      <NavItem label='Explore' link='/explore' icon={faBook} linkDisabled={verified}/>
-      {authenticated ? <NavItem label='My Modules' link='/my-modules' icon={faList}/> : null}
-      {admin ? <NavItem label='Admin Panel' icon={faUserCog} link={RoutePaths.adminPanel}/> : null}
-      {creator || admin ? <NavItem label='Module Editor' icon={faEdit} link={RoutePaths.contentCreator} /> : null}
-      <NavItem label='Account' link='/login' icon={faUser} linkDisabled={verified} />
-      <NavItem label='Contact Us' link='/contact' icon={faEnvelopeOpenText} linkDisabled={verified}/>
+      {!shouldRedirectToEmailVerification ? (
+        <>
+          <NavItem label='Explore' link='/explore' icon={faBook}/>
+          {authenticated ? <NavItem label='My Modules' link='/my-modules' icon={faList}/> : null}
+          {admin ? <NavItem label='Admin Panel' icon={faUserCog} link={RoutePaths.adminPanel}/> : null}
+          {creator || admin ? <NavItem label='Module Editor' icon={faEdit} link={RoutePaths.contentCreator} /> : null}
+          <NavItem label='Account' link='/login' icon={faUser} />
+          <NavItem label='Contact Us' link='/contact' icon={faEnvelopeOpenText}/>
+        </>) : null}
     </Nav>
   </Container>
 </Navbar>;

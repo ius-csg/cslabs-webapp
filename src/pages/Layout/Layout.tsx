@@ -5,7 +5,7 @@ import {BrowserSupportAlert} from '../../components/BrowserSupportAlert/BrowserS
 import {NavigationBar} from '../../components/NavigationBar/NavigationBar';
 import SystemMessageList from '../../components/SystemMessageList/SystemMessageList';
 import {WebState} from '../../redux/types/WebState';
-import {isVerified} from '../../redux/selectors/entities';
+import {getShouldRedirectToEmailVerification} from '../../redux/selectors/entities';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router';
 
@@ -38,7 +38,7 @@ const LayoutComponent = (props: LayoutProps & ReturnType<typeof mapStateToProps>
 
 const mapStateToProps = (state: WebState) => {
   return ({
-    verified: isVerified(state)
+    shouldRedirectToEmailVerification: getShouldRedirectToEmailVerification(state)
   });
 };
 
