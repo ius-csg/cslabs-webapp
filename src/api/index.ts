@@ -187,8 +187,8 @@ export async function verifyUser() {
   return handleResponse(await api.get<boolean>(`/user/verify-user`)).data;
 }
 
-export async function resendEmail() {
-  return handleResponse(await api.post<boolean>(`/user/resend-email`)).data;
+export async function resendEmailVerification() {
+  return handleResponse(await api.post<boolean>(`/user/resend-emailverification`)).data;
 }
 
 export async function getModuleForEditor(moduleId: number) {
