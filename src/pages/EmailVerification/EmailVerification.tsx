@@ -16,6 +16,8 @@ function EmailVerification() {
 
   const handleClick = async () => {
     try {
+      // tslint:disable-next-line:no-console
+      console.log('handle');
       setSending(true);
 
       const result = await resendEmail();
@@ -80,7 +82,6 @@ function EmailVerification() {
         </div>
       );
     }
-
     if (sent) {
       return (
         <div className={styles['email-verification']}>
@@ -102,7 +103,7 @@ function EmailVerification() {
         <p className={styles['paragraph']}>
           To verify your account please, click the button below to send a
           verification email to your account. </p>
-        <Button onClick={() => handleClick}>Send another verification email</Button>
+        <Button onClick={() => handleClick()}>Send another verification email</Button>
       </div>
     );
   };
