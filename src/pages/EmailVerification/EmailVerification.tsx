@@ -16,8 +16,6 @@ function EmailVerification() {
 
   const handleClick = async () => {
     try {
-      // tslint:disable-next-line:no-console
-      console.log('handle');
       setSending(true);
 
       const result = await resendEmail();
