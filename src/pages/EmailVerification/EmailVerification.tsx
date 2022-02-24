@@ -10,7 +10,7 @@ import {RoutePaths} from '../../router/RoutePaths';
 import {DelayedRedirect} from '../../util/DelayedRedirect';
 import {usePerformRequest} from '../../util/usePerformRequest';
 
-function EmailVerification() {
+const EmailVerification = () => {
 
   const [sent, setSent] = useState(false);
   const [verified, setVerified] = useState();
@@ -61,7 +61,7 @@ function EmailVerification() {
         </div>
       }
     </ Layout>);
-}
+};
 
 
 export default EmailVerification;
