@@ -158,10 +158,10 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     const bridgeTemplates: BridgeTemplate[] = [];
     let i = 1;
     for (const node of guiSchema.nodes) {
-      if (node.nodeType === 'switch') {
+      if (node.nodeType === 'switch' || node.nodeType === 'wan') {
         const obj = {
           uuid: node.id,
-          isCoreBridge: false,
+          isCoreBridge: (node.nodeType === 'wan'),
           name: node.content,
           id: i
         };
