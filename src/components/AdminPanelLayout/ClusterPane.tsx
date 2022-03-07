@@ -4,6 +4,7 @@ import {Layout} from '../../pages/Layout/Layout';
 import styles from './ClusterPane.module.scss';
 import Node from './Node';
 import MaintenancePopup from './MaintenancePopup';
+import Datetime from 'react-datetime';
 
 
 export const ClusterPane = () => {
@@ -24,15 +25,15 @@ export const ClusterPane = () => {
               <p>cluster name</p>
               <form>
                 <label>Node #
-                  <textarea>N/A</textarea>
+                  <Datetime />
                 </label>
                 <label>Node #
-                  <textarea>N/A</textarea>
+                  <Datetime />
                 </label>
                 <label>Node #
-                  <textarea>N/A</textarea>
+                  <Datetime />
                 </label>
-                <Button>Confirm</Button>
+                <Button onClick={togglePopup}>Confirm</Button>
               </form>
             </>
           }
