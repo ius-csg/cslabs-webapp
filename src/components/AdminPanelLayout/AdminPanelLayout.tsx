@@ -19,7 +19,7 @@ interface AdminPanelLayoutProps {
 
 const panes = [
   {label: 'Application Statistics', eventKey: '#statistics', component: <StatisticsPane/>},
-  {label: 'Cluster Management', eventKey: '#cluster-management', component: <ClusterPane/>},
+  {label: 'Cluster Management', eventKey: '#cluster-management', component: <ClusterPane clusterName={'Cluster 1'}/>},
   {label: 'User Management', eventKey: '#user-management', component: <UsersPane/>},
   {label: 'Downtime Scheduler', eventKey: '#downtime-scheduler', component: <DowntimeScheduler/>}
 ] as const;

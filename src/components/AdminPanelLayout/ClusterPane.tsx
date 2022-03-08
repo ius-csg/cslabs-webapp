@@ -5,9 +5,10 @@ import styles from './ClusterPane.module.scss';
 import Node from './Node';
 import MaintenancePopup from './MaintenancePopup';
 import Datetime from 'react-datetime';
+// tslint:disable-next-line:no-import-side-effect
+import 'react-datetime/css/react-datetime.css';
 
-
-export const ClusterPane = () => {
+export const ClusterPane = (props: {clusterName: string}) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,7 +23,7 @@ export const ClusterPane = () => {
           content={
             <>
               <h2>Maintenance Scheduler</h2>
-              <p>cluster name</p>
+              <p>{props.clusterName}</p>
               <form>
                 <label>Node #
                   <Datetime />
@@ -42,7 +43,7 @@ export const ClusterPane = () => {
         }
         <Button>Remove Node</Button>
         <Button>Add Node</Button>
-        <p>------------------- CLUSTER NAME -------------------</p>
+        <p>{props.clusterName}</p>
       </div>
       <Node nodeNum={1} statusNum={0}/>
       <Node nodeNum={2} statusNum={1}/>
