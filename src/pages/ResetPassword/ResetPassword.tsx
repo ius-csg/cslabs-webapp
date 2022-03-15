@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Form, Col, Alert, Row} from 'react-bootstrap';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 import {PasswordRequirements} from '../../components/util/PasswordRequirements';
@@ -26,8 +26,8 @@ const ChangePasswordRequestSchema = object<ChangePasswordRequestForm>({
 const getFieldName = (prop: keyof ChangePasswordRequestForm) => prop;
 
 export default function ResetPassword(){
-    const [messageState, setMessageState] = React.useState(makeMessageState());
-    const [initialState] = React.useState<ChangePasswordRequestForm>({currentPassword: '', newPassword: '', confirmPassword: ''});
+    const [messageState, setMessageState] = useState(makeMessageState());
+    const [initialState] = useState<ChangePasswordRequestForm>({currentPassword: '', newPassword: '', confirmPassword: ''});
 
     const onSubmit = async (form: ChangePasswordRequestForm) => {
       setMessageState({...messageState, message: ''});
@@ -37,7 +37,7 @@ export default function ResetPassword(){
           newPassword: form.newPassword
         });
         setMessageState({message: 'Password successfully changed', variant: 'success'});
-      } catch (e) {
+      } catch (e: any) {
         setMessageState({message: handleAxiosError(e), variant: 'danger'});
       }
     };

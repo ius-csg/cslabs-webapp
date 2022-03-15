@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {useState} from 'react';
 import {Form, Col, Row} from 'react-bootstrap';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
@@ -46,7 +45,7 @@ export default function ConfirmForgotPassword(props: Props) {
       setMessageState({message: 'Password changed!', variant: 'success'});
       await delay(1500);
       setRedirect(RoutePaths.login);
-    } catch (e) {
+    } catch (e: any) {
       setMessageState({message: handleAxiosError(e), variant: 'danger'});
     }
   };

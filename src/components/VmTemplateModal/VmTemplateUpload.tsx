@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import {Form, Col, ProgressBar, Row} from 'react-bootstrap';
 import {Formik} from 'formik';
 import Input from '../../components/util/Input/Input';
@@ -19,12 +19,12 @@ import {Message} from '../../util/Message';
 
 type Props = {byUrl: boolean; reloadVms: () => void};
 export function VmTemplateUpload({byUrl, reloadVms}: Props) {
-  const [initialValues, setInitialValues] = React.useState(getInitialUploadValues(byUrl));
-  const [uploadPercentage, setUploadPercentage] = React.useState<number|undefined>(undefined);
+  const [initialValues, setInitialValues] = useState(getInitialUploadValues(byUrl));
+  const [uploadPercentage, setUploadPercentage] = useState<number|undefined>(undefined);
   const uploading = uploadPercentage !== undefined;
   const [message, setMessage] = useMessage();
   const setError = (msg: string) => setMessage({message: msg, variant: 'danger'});
-  const [byUrlRequestId, setByUrlRequestId] = React.useState<string | undefined>();
+  const [byUrlRequestId, setByUrlRequestId] = useState<string | undefined>();
   function clearForm()  {
     setInitialValues({} as any);
     setInitialValues(getInitialUploadValues(byUrl));
@@ -55,7 +55,7 @@ export function VmTemplateUpload({byUrl, reloadVms}: Props) {
         setByUrlRequestId(await uploadVmTemplateByUrl(form));
         setUploadPercentage(0);
       }
-    } catch(e) {
+    } catch(e: any) {
       setByUrlRequestId(undefined);
       setError(handleAxiosError(e));
     }
@@ -75,7 +75,7 @@ export function VmTemplateUpload({byUrl, reloadVms}: Props) {
         setUploadPercentage(undefined);
         setError(`Upload failed with status: ${status.status}`);
       }
-    } catch (e) {
+    } catch (e: any) {
       setByUrlRequestId(undefined);
       setError(handleAxiosError(e));
     }

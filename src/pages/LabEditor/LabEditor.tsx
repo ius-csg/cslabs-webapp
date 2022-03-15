@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import {Form, Col, Row, Button} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {Formik, FormikHelpers} from 'formik';
@@ -45,12 +45,12 @@ const getEditModuleLink = (lab: LabForm) => RoutePaths.EditModule.replace(':modu
 type Props = RouteComponentProps<{ moduleId: string; labId?: string }>;
 
 export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
-  const [initialValues, setInitialValues] = React.useState<LabForm>(makeLabForm(Number(moduleId)));
-  const [loading, setLoading] = React.useState(true);
+  const [initialValues, setInitialValues] = useState<LabForm>(makeLabForm(Number(moduleId)));
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
-  const [editing, setEditing] = React.useState(false);
-  const [vmTemplates, setVmTemplates] = React.useState<VmTemplate[]>([]);
-  const [redirect, setRedirect] = React.useState();
+  const [editing, setEditing] = useState(false);
+  const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
+  const [redirect, setRedirect] = useState('');
   const vmTemplateDictionary = convertArrayToDictionary(vmTemplates, 'id') as Dictionary<VmTemplate>;
   function completeLoading() {
     setLoading(false);
@@ -68,7 +68,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
       if(!labId) {
         setRedirect(RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', String(response.id)));
       }
-    } catch (e) {
+    } catch (e: any) {
       setMessage({message: handleAxiosError(e, {}, setErrors, 'json'), variant: 'danger', critical: false});
     }
   };
@@ -79,7 +79,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     setMessage(undefined);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function LoadLab() {
       const loadedVmTemplates = await getVmTemplates();
       const containsCoreRouter = loadedVmTemplates.filter(vm => vm.isCoreRouter).length !== 0;
@@ -95,7 +95,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
         setEditing(false);
         setInitialValues(await getLabForEditor(Number(labId)));
         completeLoading();
-      } catch (e) {
+      } catch (e: any) {
         setMessage({message: handleAxiosError(e), variant: 'danger', critical: true});
         setLoading(false);
       }
@@ -105,7 +105,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   }, [labId]);
 
   const getFieldName = (name: keyof LabForm) => name;
-  const [selectedVm, setSelectedVm] = React.useState<number|undefined>();
+  const [selectedVm, setSelectedVm] = useState<number|undefined>();
   const renderForm = () => (
     <Formik
       initialValues={initialValues}

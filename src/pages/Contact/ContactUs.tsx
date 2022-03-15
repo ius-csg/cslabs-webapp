@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import {Form, Col} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {Formik, FormikHelpers} from 'formik';
@@ -13,7 +13,7 @@ import {FileInput} from '../../components/util/FileInput';
 const initialValues: ContactUsForm = {email: '', message: '', screenshots: null};
 
 export default function ContactUs() {
-  const [messageState, setMessageState] = React.useState(makeMessageState());
+  const [messageState, setMessageState] = useState(makeMessageState());
 
   const onSubmit = async (form: ContactUsForm, formikHelpers: FormikHelpers<ContactUsForm>) => {
     setMessageState({...messageState, message: ''});
@@ -30,7 +30,7 @@ export default function ContactUs() {
       }
       await submitContactRequest(formData);
       setMessageState({message: 'Message sent!', variant: 'success'});
-    } catch(e) {
+    } catch(e: any) {
       if(isBadRequest(e)) {
         formikHelpers.setErrors(e.response.data);
       } else {

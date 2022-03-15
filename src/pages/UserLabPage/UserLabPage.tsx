@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import {RouteComponentProps} from 'react-router';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
@@ -23,7 +23,7 @@ interface UserModuleState {
   userLabResult?: UserLab;
 }
 
-export class UserLabPage extends React.Component<UserModuleProps, UserModuleState> {
+export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
 
   state: UserModuleState = {statuses: {}, starting: false, errorMessage: ''};
   private interval: any;
@@ -53,7 +53,7 @@ export class UserLabPage extends React.Component<UserModuleProps, UserModuleStat
     try {
       this.setState({userLabResult: await startUserLab(this.getId())});
       await this.startCheckingIfLabIsInitialized();
-    } catch (e) {
+    } catch (e: any) {
       this.setState({errorMessage: handleAxiosError(e)});
     } finally {
       this.setState({starting: false});
@@ -61,7 +61,7 @@ export class UserLabPage extends React.Component<UserModuleProps, UserModuleStat
   };
 
   async startCheckingIfLabIsInitialized() {
-    const initialized = this.checkIfLabInitialized();
+    const initialized = await this.checkIfLabInitialized();
     if (initialized) {
       this.initializationInterval = setInterval(async () => this.checkIfLabInitialized(), 5000);
     }
@@ -79,7 +79,7 @@ export class UserLabPage extends React.Component<UserModuleProps, UserModuleStat
         this.startVmsAndInitiateStatuses(this.state.userLabResult!);
       }
       return status === 'Initialized';
-    } catch (e) {
+    } catch (e: any) {
       this.setState({errorMessage: handleAxiosError(e)});
       this.setState({starting: false});
       return true;
