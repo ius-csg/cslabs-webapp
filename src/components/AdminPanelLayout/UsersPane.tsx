@@ -1,5 +1,6 @@
 import {Button, Form, InputGroup, Modal, ModalBody, ModalFooter, Table} from 'react-bootstrap';
-import React, {useState} from 'react';
+import { useState } from 'react';
+import * as React from 'react';
 import {Role, User} from '../../types/User';
 import {changeUserRole, getCurrentUserFromServer, getUserList} from '../../api';
 import {useMount} from '../../hooks/useMount';
@@ -21,11 +22,11 @@ interface Props {
 }
 
 const UsersPane = (props: Props) => {
-  const [users, setUsers] = useState();
-  const [usersToDisplay, setUsersToDisplay] = useState();
+  const [users, setUsers] = useState<User[]>([]);
+  const [usersToDisplay, setUsersToDisplay] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [updateRequests, setUpdateRequests] = useState<ChangeUserRoleRequest[]>([]);
-  const [commitResponseCode, setCommitResponseCode] = useState();
+  const [commitResponseCode, setCommitResponseCode] = useState<number>();
   const [showWarning, setShowWarning] = useState(false);
   const [warningShown, setWarningShown] = useState(false);
   const [userToUpdateOnConfirm, setUserToUpdate] = useState<[Role, User]>();

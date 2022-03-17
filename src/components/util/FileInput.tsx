@@ -1,5 +1,5 @@
 import {Form} from 'react-bootstrap';
-import * as React from 'react';
+import {ChangeEvent} from 'react';
 import {ErrorMessage, Field, FieldProps} from 'formik';
 import styles from './Input/Input.module.scss';
 
@@ -15,7 +15,7 @@ export function FileInput({name, accept, multiple, disabled}: Props) {
     <Field name={name}>
       {(fieldProps: FieldProps) => {
         const {form} = fieldProps;
-        const onFileChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
           if(multiple) {
             form.setFieldValue(name, event.currentTarget!.files);
           } else {

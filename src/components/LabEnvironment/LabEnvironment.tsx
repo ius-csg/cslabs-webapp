@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {Component} from 'react';
 import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab} from 'react-bootstrap';
 import {Status} from '../../pages/Status/Status';
@@ -66,8 +65,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     this.setState({ numPages: pdf.numPages, readmeLoaded: true});
   };
 
-  onEventKeyChange = (eventKey: string) => {
-    this.setState( {eventKey: eventKey});
+  onEventKeyChange = (eventKey: string | null) => {
+    this.setState( {eventKey: eventKey!});
   };
 
   isLabAbleToStart() {

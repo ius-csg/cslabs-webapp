@@ -1,5 +1,5 @@
 import {UserLabVm} from '../../types/UserLabVm';
-import * as React from 'react';
+import { useState } from 'react';
 import ConsolePopout from './ConsolePopout';
 import ConsoleWindow from './ConsoleWindow';
 import {Button, Col, Row} from 'react-bootstrap';
@@ -10,15 +10,17 @@ interface Props {
 }
 
 export function ConsoleWindowContainer(props: Props) {
-  const [showWindowPortal, setShowWindowPortal] = React.useState(false);
+  const [showWindowPortal, setShowWindowPortal] = useState(false);
   return (
     <>
       <div className='full-height-container'>
         <ConsoleWindow vm={props.vm} status={props.status} inPopout={false}/>
         <Row style={{marginTop: 20}}>
-          <Button onClick={() => setShowWindowPortal(!showWindowPortal)} as={Col} style={{marginLeft: 'auto', marginRight: 'auto'}} xs={3} sm={2}>
-            {showWindowPortal ? 'Close the' : 'Open a'} Popout Window
-          </Button>
+          <Col xs={3} sm={2}>
+            <Button onClick={() => setShowWindowPortal(!showWindowPortal)} style={{marginLeft: 'auto', marginRight: 'auto'}}>
+              {showWindowPortal ? 'Close the' : 'Open a'} Popout Window
+            </Button>
+          </Col>
         </Row>
       </div>
       {showWindowPortal && (

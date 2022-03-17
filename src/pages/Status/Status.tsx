@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import {ListGroup, Col, Dropdown, Container, Row} from 'react-bootstrap';
 import {Statuses, UserLabVm} from '../../types/UserLabVm';
 import * as styles from '../../components/LabEnvironment/LabEnvironment.module.scss';
@@ -14,7 +14,7 @@ interface StatusState {
   loadingText: string;
 }
 
-export class Status extends React.Component<StatusProps, StatusState> {
+export class Status extends Component<StatusProps, StatusState> {
   state: StatusState = {loadingText: ''};
 
   render() {
@@ -38,7 +38,7 @@ export class Status extends React.Component<StatusProps, StatusState> {
                 <Col>
                   {this.state.loadingText ?
                     <span>{this.state.loadingText}</span> :
-                    <Dropdown drop='right'>
+                    <Dropdown drop='end'>
                       <Dropdown.Toggle id='dropdown-basic'/>
                       <VmActionsMenu vm={vm}/>
                     </Dropdown>

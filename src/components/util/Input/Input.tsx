@@ -1,4 +1,4 @@
-import React, {FormEvent, useContext} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useContext} from 'react';
 import {ErrorMessage, Field, FieldProps} from 'formik';
 import styles from './Input.module.scss';
 import {Form} from 'react-bootstrap';
@@ -29,17 +29,17 @@ export default function Input(props: InputProps) {
               as={props.type === 'textarea' ? 'textarea' : 'input'}
               isValid={meta.touched && !meta.error}
               isInvalid={meta.touched && Boolean(meta.error)}
-              rows={props.rows}
+              style={{height: 32 * (props.rows ? props.rows : 1)}}
               placeholder={props.placeholder}
               {...field}
               value={getFieldValue(field)}
-              onKeyUp={(e: KeyboardEvent) => {
+              onKeyUp={(e: KeyboardEvent<HTMLInputElement>) => {
                 const capsLock = e.getModifierState('CapsLock');
                 if (capsLockState.capsLock !== capsLock) {
                   capsLockState.setCapsLock(capsLock);
                 }
               }}
-              onChange={(e: FormEvent<HTMLInputElement>) => field.onChange(e)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => field.onChange(e)}
               disabled={props.disabled}
               type={props.type || 'text'}
             />
