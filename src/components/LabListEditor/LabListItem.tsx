@@ -1,4 +1,3 @@
-import React from 'react';
 import {Col} from 'react-bootstrap';
 import {Lab} from '../../types/Lab';
 import {Link} from 'react-router-dom';

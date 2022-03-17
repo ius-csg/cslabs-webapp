@@ -1,4 +1,3 @@
-import React from 'react';
 import {FieldArray} from 'formik';
 import {Col, Row} from 'react-bootstrap';
 import {BridgeListItem} from './BridgeListItem';

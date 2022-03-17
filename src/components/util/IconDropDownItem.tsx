@@ -1,6 +1,5 @@
 import {Dropdown, Spinner} from 'react-bootstrap';
 import {CenteredIcon} from '../../util/CenteredIcon';
-import * as React from 'react';
 
 interface Props {
   icon: any;

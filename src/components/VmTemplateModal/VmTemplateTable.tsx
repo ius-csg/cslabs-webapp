@@ -1,5 +1,4 @@
 import {Table} from 'react-bootstrap';
-import * as React from 'react';
 import {VmTemplate} from '../../types/editorTypes';
 
 interface Props {

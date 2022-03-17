@@ -1,4 +1,3 @@
-import * as React from 'react';
 import styles from './NotFound.module.scss';
 import {Layout} from '../Layout/Layout';
 

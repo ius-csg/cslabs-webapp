@@ -1,6 +1,4 @@
 /* tslint:disable:max-line-length */
-import * as React from 'react';
-
 export function Lorem() {
   return (
     <span>

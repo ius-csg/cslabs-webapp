@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export const CookiePolicy = () => (
   <div>
     This Cookie Policy explains how we uses cookies and similar technologies to recognize you when you visit

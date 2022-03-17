@@ -1,4 +1,3 @@
-import React from 'react';
 import {Navbar, Container, Nav} from 'react-bootstrap';
 import styles from './NavigationBar.module.scss';
 import {faBook, faList, faUser, faEnvelopeOpenText, faEdit, faUserCog} from '@fortawesome/free-solid-svg-icons';

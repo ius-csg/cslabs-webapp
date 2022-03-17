@@ -1,6 +1,5 @@
 import {MessageState} from './index';
 import {Alert, Row} from 'react-bootstrap';
-import * as React from 'react';
 
 export function Message({state}: {state?: MessageState}) {
   if(!state) {

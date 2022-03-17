@@ -1,4 +1,3 @@
-import React from 'react';
 import {ERole, Role, User} from '../../types/User';
 
 interface Props {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { createContext, useState } from 'react';
 
 type SetCapsLockFunction = (value: boolean) => void;
 
@@ -11,14 +11,14 @@ const defaultSetCapsLock: SetCapsLockFunction = _ => {
   // This function is intentionally left blank
 };
 
-export const CapsLockContext = React.createContext<CapsLockContextValue>({
+export const CapsLockContext = createContext<CapsLockContextValue>({
   capsLock: false,
   // tslint:disable-next-line:no-empty
   setCapsLock: defaultSetCapsLock
 });
 
 export function CapsLockContextProvider(props: {children: any}) {
-  const [capsLockState, setCapsLockState] = React.useState<CapsLockContextValue>({
+  const [capsLockState, setCapsLockState] = useState<CapsLockContextValue>({
     capsLock: false,
     setCapsLock: defaultSetCapsLock
   });

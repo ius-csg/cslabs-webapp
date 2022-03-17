@@ -1,4 +1,3 @@
-import React from 'react';
 import {Layout} from '../../pages/Layout/Layout';
 import {Col, ListGroup, Row, TabContainer, TabContent, TabPane} from 'react-bootstrap';
 import {StatisticsPane} from './StatisticsPane';

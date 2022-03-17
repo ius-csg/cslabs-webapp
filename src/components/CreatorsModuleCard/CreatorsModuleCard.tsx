@@ -1,5 +1,5 @@
 import {Card} from 'react-bootstrap';
-import React, {Component} from 'react';
+import { Component } from 'react';
 import styles from './CreatorsModuleCard.module.scss';
 import {getModuleShareLink, Module} from '../../types/Module';
 import {WebState} from '../../redux/types/WebState';

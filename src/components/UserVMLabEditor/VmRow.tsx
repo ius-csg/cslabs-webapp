@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {Button, Col, Row, Form} from 'react-bootstrap';
 import {ListRow} from '../util/ListRow/ListRow';
 import {IconButton} from '../util/IconButton/IconButton';

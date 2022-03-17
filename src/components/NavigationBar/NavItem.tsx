@@ -2,7 +2,6 @@ import styles from './NavigationBar.module.scss';
 import {Nav} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import React from 'react';
 import {IconProp} from '@fortawesome/fontawesome-svg-core';
 
 

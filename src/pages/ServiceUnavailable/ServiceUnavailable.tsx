@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {Layout} from '../Layout/Layout';
 import styles from './ServiceUnavailable.module.scss';
 import image from '../../assets/images/broken_server.png';

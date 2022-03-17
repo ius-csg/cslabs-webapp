@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import ReactTags, {Tag, ClassNames} from 'react-tag-autocomplete';
 import {} from './TagEditor.scss';
 

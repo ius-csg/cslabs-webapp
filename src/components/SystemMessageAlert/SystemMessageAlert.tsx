@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { useState } from 'react';
 import {Alert} from 'react-bootstrap';
 import styles from './SystemMessageAlert.module.scss';
 import {SystemMessage, SystemMessageType} from '../../types/SystemMessage';

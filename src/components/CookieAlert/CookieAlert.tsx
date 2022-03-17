@@ -1,4 +1,3 @@
-import React from 'react';
 import {Alert, Button} from 'react-bootstrap';
 import {RoutePaths} from '../../router/RoutePaths';
 import styles from './CookieAlert.module.scss';

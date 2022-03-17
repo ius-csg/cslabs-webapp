@@ -1,5 +1,4 @@
 import {Row} from 'react-bootstrap';
-import React from 'react';
 
 export function ListRow(props: { children: any}) {
   return (

@@ -1,4 +1,3 @@
-import React from 'react';
 import {Maintenance} from '../../types/Maintenance';
 
 const ServiceMessage = (props: Maintenance) => {

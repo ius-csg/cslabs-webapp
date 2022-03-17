@@ -1,5 +1,5 @@
 import {Button, Card} from 'react-bootstrap';
-import React, {Component} from 'react';
+import { Component } from 'react';
 import Styles from './ModuleCard.module.scss';
 import {Module} from '../../types/Module';
 import {WebState} from '../../redux/types/WebState';

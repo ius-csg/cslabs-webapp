@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import * as Sentry from '@sentry/browser';
 import Routes from './router/Routes';
 import {CapsLockContextProvider} from './components/CapsLockContext/CapsLockContext';
@@ -8,7 +8,7 @@ import {CapsLockContextProvider} from './components/CapsLockContext/CapsLockCont
 //   dsn: ''
 // });
 
-class App extends React.Component {
+class App extends Component {
 
   throwError = () => {
     throw new Error('This is an error to test Sentry');

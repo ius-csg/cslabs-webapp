@@ -2,7 +2,6 @@ import styles from './VmStatusIndicator.module.scss';
 import {isRunning} from '../../../types/UserLabVm';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons';
 import {CenteredIcon} from '../../../util/CenteredIcon';
-import * as React from 'react';
 
 
 export function getIndicatorClassName(running: boolean) {
