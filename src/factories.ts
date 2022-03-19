@@ -1,5 +1,5 @@
 import {BridgeTemplate, LabForm, LabVmForm, ModuleForm, VmInterfaceTemplate} from './types/editorTypes';
-import uuid from 'uuid';
+import {v4 as uuid} from 'uuid';
 import {TrackableEntity} from './types/Entity';
 
 

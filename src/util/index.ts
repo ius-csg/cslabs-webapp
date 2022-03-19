@@ -97,7 +97,7 @@ export function useMessage(message?: MessageState) {
 }
 
 export function delay(timeout: number) {
-  return new Promise(resolve => setTimeout(() => resolve(), timeout));
+  return new Promise<void>(resolve => setTimeout(() => resolve(), timeout));
 }
 
 export function getLuxonObjectFromString(dateTime: string) {

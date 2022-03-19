@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ErrorMessage, Field, FieldProps} from 'formik';
 import styles from './CheckBoxInput.module.scss';
 import {Form} from 'react-bootstrap';
-import uuid from 'uuid';
+import {v4 as uuid} from 'uuid';
 import {FormikSetFieldValue} from '../Util';
 
 interface InputProps {
