@@ -67,8 +67,6 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
     setMessage(undefined);
     let response;
     try {
-      console.log(guiSchema);
-      console.log(form);
       if (guiEnabled) {
         toJpeg(document.getElementById('diagram') as HTMLElement)
           .then(async (dataUrl: string) => {
@@ -77,7 +75,6 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
             form.hasTopology = true;
             form.labVms = getLabVmsFromGui();
             form.bridgeTemplates = getBridgeTemplatesFromGui();
-            console.log(form);
             response = await saveLab(form);
             setInitialValues(response);
 
@@ -86,6 +83,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
             console.log(err);
           });
       } else {
+        console.log("No gui");
         response = await saveLab(form);
         setInitialValues(response);
       }
@@ -123,7 +121,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
         const interfaces : VmInterfaceTemplate[] = [];
         for (const link of guiSchema.links) {
           if (link.input.slice(0, 36) === node.id) {
-            const connectedNode = link.output;
+            const connectedNode = link.output.slice(0, 36);
             const interfaceObj = {
               bridgeTemplateUuid: connectedNode,
               id: 0,
@@ -131,7 +129,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
             };
             interfaces.push(interfaceObj);
           } else if (link.output.slice(0, 36) === node.id) {
-            const connectedNode = link.input;
+            const connectedNode = link.input.slice(0, 36);
             const interfaceObj = {
               bridgeTemplateUuid: connectedNode,
               id: 0,
