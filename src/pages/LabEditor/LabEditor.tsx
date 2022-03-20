@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Form, Col, Row, Button} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {Formik, FormikHelpers} from 'formik';
@@ -91,7 +91,6 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
       if(!labId) {
-        // @ts-ignore
         setRedirect(RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', String(response.id)));
       }
     } catch (e) {

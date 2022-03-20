@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Switch, Route, Router} from 'react-router-dom';
+import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
 import History from './history';
 import Login from '../pages/LoginRegisterPage/LoginRegisterPage';
@@ -8,6 +9,7 @@ import ResetEmail from '../pages/ResetEmail/ResetEmail';
 import ResetPassword from '../pages/ResetPassword/ResetPassword';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import {NavigationBar} from '../components/NavigationBar/NavigationBar';
+import Explore from '../pages/Explore/Explore';
 import PublicModule from '../pages/PublicModule/PublicModule';
 import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
 import {LogOut} from '../pages/Logout/Logout';
@@ -17,20 +19,23 @@ import ModuleEditor from '../pages/ModuleEditor/ModuleEditor';
 import UserModulePage from '../pages/UserModulePage/UserModulePage';
 import {VerifyEmail} from '../pages/VerifyEmail/VerifyEmail';
 import SitePolicy from '../pages/SitePolicy/SitePolicy';
-import Explore from '../pages/Explore/Explore';
 import {UserLabPage} from '../pages/UserLabPage/UserLabPage';
 import ConfirmForgotPassword from '../pages/ConfirmForgotPassword/ConfirmForgotPassword';
-import Contact   from '../pages/Contact/Contact';
+import Contact   from '../pages/Contact/ContactUs';
 import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
-import AdminPage from '../pages/AdminPanel/AdminPanel';
+import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
+import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
+import SystemMessageList from '../components/SystemMessageList/SystemMessageList';
+
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
       <NavigationBar />
+        <SystemMessageList/>
       <Switch>
-        <Route exact={true} path={RoutePaths.home} component={LabEditor} redirectTo={RoutePaths.explore}/>
+        <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
         <Route exact={true} path={RoutePaths.explore} component={Explore}/>
         <Route exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
         <PrivateRoute exact={true} path={RoutePaths.profile} component={Profile}/>
@@ -53,6 +58,7 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.contentCreator} component={ModulesEditor}/>
         <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
         <Route component={NotFound} />
+        <Route component={ServiceUnavailable} />
       </Switch>
     </Router>
   </div>

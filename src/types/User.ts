@@ -11,7 +11,12 @@ export interface User extends TrackableEntity {
   terminationDate?: string;
 }
 
-export type Role = 'Guest' | 'Creator' | 'Admin';
+export const ERole = {
+  'Guest': 'Guest',
+  'Creator': 'Creator',
+  'Admin': 'Admin'
+} as const;
+export type Role = keyof typeof ERole;
 
 export interface UserWithToken extends User {
   token: string;
