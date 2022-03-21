@@ -45,9 +45,9 @@ export const ClusterPane = (props: {clusterName: string}) => {
         <Button>Add Node</Button>
         <p>{props.clusterName}</p>
       </div>
-      <Node nodeNum={1} statusNum={0}/>
-      <Node nodeNum={2} statusNum={1}/>
-      <Node nodeNum={3} statusNum={2}/>
-      <Node nodeNum={4} statusNum={3}/>
+      <Node nodeNum={1} statusNum={0} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
+      <Node nodeNum={2} statusNum={1} deployedNum={0} avgCPU={75} currentCPU={90} avgRAM={80} currentRAM={85} drive1={25} drive2={50} uptime={9500}/>
+      <Node nodeNum={3} statusNum={2} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
+      <Node nodeNum={4} statusNum={3} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
     </Layout>);
 };
