@@ -1,21 +1,20 @@
-import {Redirect, RouteComponentProps} from 'react-router';
-import React from 'react';
+import {Navigate, useLocation} from 'react-router';
 import {logout} from '../../api';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 
-type LogoutProps = ReturnType<typeof mapDispatchToProps> & RouteComponentProps & {
-  label: string;
+type LogoutProps = ReturnType<typeof mapDispatchToProps> & {
+  label?: string;
 };
 
 export function LogOutComponent(props: LogoutProps) {
+  const location = useLocation();
   props.logout();
   return (
-    <Redirect
-      to={{
-        pathname: '/',
-        state: { from: props.location }
-      }}
+    <Navigate
+      to={{pathname: '/'}}
+      replace={true}
+      state={{ from: location }}
     />
   );
 }

@@ -1,8 +1,6 @@
-import * as React from 'react';
-import {Switch, Route, Router} from 'react-router-dom';
+import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import Home from '../pages/Home/Home';
 import NotFound from '../pages/NotFound/NotFound';
-import History from './history';
 import Login from '../pages/LoginRegisterPage/LoginRegisterPage';
 import Profile from '../pages/Profile/Profile';
 import ResetEmail from '../pages/ResetEmail/ResetEmail';
@@ -29,39 +27,39 @@ import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
 import SystemMessageList from '../components/SystemMessageList/SystemMessageList';
 
 
-const Routes = () => (
+const AppRoutes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
-    <Router history={History} >
+    <BrowserRouter basename={process.env.PUBLIC_URL} >
       <NavigationBar />
         <SystemMessageList/>
-      <Switch>
-        <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
-        <Route exact={true} path={RoutePaths.explore} component={Explore}/>
-        <Route exact={true} path={RoutePaths.login} component={Login} redirectTo={RoutePaths.profile}/>
-        <PrivateRoute exact={true} path={RoutePaths.profile} component={Profile}/>
-        <PrivateRoute exact={true} path={RoutePaths.resetEmail} component={ResetEmail}/>
-        <PrivateRoute exact={true} path={RoutePaths.resetPassword} component={ResetPassword}/>
-        <PrivateRoute exact={true} path={RoutePaths.myModules} component={MyModules}/>
-        <Route exact={true} path={RoutePaths.module} component={PublicModule}/>
-        <Route exact={true} path={RoutePaths.NewModule} component={ModuleEditor}/>
-        <Route exact={true} path={RoutePaths.EditModule} component={ModuleEditor}/>
-        <Route exact={true} path={RoutePaths.EditLab} component={LabEditor}/>
-        <Route exact={true} path={RoutePaths.NewLab} component={LabEditor}/>
-        <Route exact={true} path={RoutePaths.forgotPassword} component={ForgotPassword}/>
-        <Route exact={true} path={RoutePaths.contactUs} component={Contact}/>
-        <Route exact={true} path={RoutePaths.confirmForgotPassword} component={ConfirmForgotPassword}/>
-        <Route exact={true} path={RoutePaths.userModule} component={UserModulePage}/>
-        <Route exact={true} path={RoutePaths.userLab} component={UserLabPage}/>
-        <Route exact={true} path={RoutePaths.logout} component={LogOut}/>
-        <Route exact={true} path={RoutePaths.verifyEmail} component={VerifyEmail}/>
-        <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>
-        <Route exact={true} path={RoutePaths.contentCreator} component={ModulesEditor}/>
-        <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
-        <Route component={NotFound} />
-        <Route component={ServiceUnavailable} />
-      </Switch>
-    </Router>
+      <Routes>
+        <Route path={RoutePaths.home} element={<Home/>} />
+        <Route path={RoutePaths.explore} element={<Explore/>} />
+        <Route path={RoutePaths.login} element={<Login/>} />
+        <Route path={RoutePaths.profile} element={<PrivateRoute component={Profile}/>} />
+        <Route path={RoutePaths.resetEmail} element={<PrivateRoute component={ResetEmail}/>} />
+        <Route path={RoutePaths.resetPassword} element={<PrivateRoute component={ResetPassword}/>} />
+        <Route path={RoutePaths.myModules} element={<PrivateRoute component={MyModules}/>} />
+        <Route path={RoutePaths.module} element={<PublicModule/>} />
+        <Route path={RoutePaths.NewModule} element={<ModuleEditor/>} />
+        <Route path={RoutePaths.EditModule} element={<ModuleEditor/>} />
+        <Route path={RoutePaths.EditLab} element={<LabEditor/>} />
+        <Route path={RoutePaths.NewLab} element={<LabEditor/>} />
+        <Route path={RoutePaths.forgotPassword} element={<ForgotPassword/>} />
+        <Route path={RoutePaths.contactUs} element={<Contact/>} />
+        <Route path={RoutePaths.confirmForgotPassword} element={<ConfirmForgotPassword/>} />
+        <Route path={RoutePaths.userModule} element={<UserModulePage/>} />
+        <Route path={RoutePaths.userLab} element={<UserLabPage/>} />
+        <Route path={RoutePaths.logout} element={<LogOut/>} />
+        <Route path={RoutePaths.verifyEmail} element={<VerifyEmail/>} />
+        <Route path={RoutePaths.sitePolicy} element={<SitePolicy/>} />
+        <Route path={RoutePaths.contentCreator} element={<ModulesEditor/>} />
+        <Route path={RoutePaths.adminPanel} element={<AdminPage/>} />
+        <Route element={<NotFound/>} />
+        <Route element={<ServiceUnavailable/>} />
+      </Routes>
+    </BrowserRouter>
   </div>
 );
 
-export default Routes;
+export default AppRoutes;

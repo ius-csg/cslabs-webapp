@@ -15,7 +15,7 @@ import {makeModuleForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
 import {getModuleShareLink, ModuleType} from '../../types/Module';
-import {Redirect, RouteComponentProps} from 'react-router';
+import {Navigate, useParams} from 'react-router';
 import {getModuleForEditor, getTags, saveModule} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {ModuleEditorSchema} from './ModuleEditorSchema';
@@ -33,9 +33,9 @@ const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'MultiUser', label: 'Multi User'}
 ];
 
-type Props = RouteComponentProps<{ moduleId?: string }>;
-
-export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
+export default function ModuleEditor() {
+  const params = useParams();
+  const moduleId = params.moduleId;
   const [tagSuggestions, setTagSuggestions] = useState<Tag[]>([]);
   const [initialValues, setInitialValues] = useState<ModuleForm>(makeModuleForm());
   const [loading, setLoading] = useState(true);
@@ -106,7 +106,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     >
       {({handleSubmit, isSubmitting, values}) => (
         <Form onSubmit={handleSubmit}>
-          {redirect && <Redirect to={redirect} />}
+          {redirect && <Navigate to={redirect} replace={true} />}
           <Row>
             <Col className='d-flex justify-content-start align-items-center'>
               <PageTitle>Module Editor</PageTitle>

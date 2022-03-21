@@ -14,7 +14,7 @@ import {LabForm, LabVmForm, VmTemplate} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
-import {Redirect, RouteComponentProps} from 'react-router';
+import {Navigate} from 'react-router';
 import {getLabForEditor, getUserLabReadmeUrl, getUserLabTopologyUrl, getVmTemplates, saveLab} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {LabEditorSchema} from './LabEditorSchema';
@@ -27,6 +27,7 @@ import {FileInput} from '../../components/util/FileInput';
 import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
 import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
 import {LabTypes} from '../../components/LabTypesPopover/LabTypesPopover';
+import { useParams } from 'react-router';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -42,9 +43,11 @@ const labTypeOptions: DropdownOption<LabType>[] = [
 
 const getEditModuleLink = (lab: LabForm) => RoutePaths.EditModule.replace(':moduleId', String(lab.moduleId));
 
-type Props = RouteComponentProps<{ moduleId: string; labId?: string }>;
+export default function LabEditor() {
+  const params = useParams();
+  const moduleId = params.moduleId;
+  const labId = params.labId;
 
-export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const [initialValues, setInitialValues] = useState<LabForm>(makeLabForm(Number(moduleId)));
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
@@ -52,6 +55,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
   const [redirect, setRedirect] = useState('');
   const vmTemplateDictionary = convertArrayToDictionary(vmTemplates, 'id') as Dictionary<VmTemplate>;
+
   function completeLoading() {
     setLoading(false);
     setMessage(undefined);
@@ -118,7 +122,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
           {loading ? <HorizontallyCenteredSpinner/> : (
            <>
              <Form onSubmit={handleSubmit}>
-               {redirect && <Redirect to={redirect} />}
+               {redirect && <Navigate to={redirect} replace={true} />}
                <Row>
                  <Col className='d-flex justify-content-start align-items-center'>
                    <PageTitle>Lab Editor</PageTitle>

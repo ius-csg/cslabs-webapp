@@ -1,29 +1,30 @@
-import {Route, RouteProps, Redirect} from 'react-router';
-import React from 'react';
+import {Route, Navigate} from 'react-router';
+import {Location} from 'history';
 import {
   mapIsAuthenticatedToProps,
   mapIsAuthenticatedToPropsType
 } from '../../redux/selectors/entities';
 import {connect} from 'react-redux';
 
-type PublicOnlyRouteProps =  RouteProps & mapIsAuthenticatedToPropsType & {
+type PublicOnlyRouteProps =  mapIsAuthenticatedToPropsType & {
   component: any;
   redirectTo: string;
+  location: Location;
 };
 
 function PublicOnlyRouteComponent({component: Component, authenticated, redirectTo, ...rest}: PublicOnlyRouteProps) {
   return (
     <Route
       {...rest}
-      render={props =>
+      element={ ({ props } : {props: PublicOnlyRouteProps})  =>
         !authenticated ? (
           <Component {...props} />
         ) : (
-          <Redirect
+          <Navigate
             to={{
-              pathname: redirectTo,
-              state: { from: props.location }
+              pathname: redirectTo
             }}
+            state={{ from: props.location }}
           />
         )
       }

@@ -1,5 +1,4 @@
-import { Component } from 'react';
-import {RouteComponentProps} from 'react-router';
+import {useEffect, useState } from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {
@@ -12,99 +11,97 @@ import {
 import {UserLab} from '../../types/UserLab';
 import {handleAxiosError} from '../../util';
 import {Alert} from 'react-bootstrap';
+import {useParams} from 'react-router';
+import {makeUserLab} from 'factories';
 
-type UserModuleProps = RouteComponentProps<{ id: string }>;
 
-interface UserModuleState {
-  userLab?: UserLab;
-  statuses: { [key: number]: string };
-  starting: boolean;
-  errorMessage: string;
-  userLabResult?: UserLab;
-}
+export function UserLabPage () {
+  const params = useParams();
+  const [userLab, setUserLab] = useState<UserLab>(makeUserLab());
+  const [statuses, setStatuses] = useState<{ [key: number]: string }>();
+  const [starting, setStarting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [userLabResult, setUserLabResult] = useState<UserLab>(makeUserLab());
 
-export class UserLabPage extends Component<UserModuleProps, UserModuleState> {
+  let interval: any;
+  let initializationInterval: any;
 
-  state: UserModuleState = {statuses: {}, starting: false, errorMessage: ''};
-  private interval: any;
-  private initializationInterval: any;
-  getId = () => Number(this.props.match.params.id);
+  const getId = () => Number(params.id);
 
-  async componentDidMount() {
-    const userLab = await getUserLab(this.getId());
-    this.setState({userLab: userLab});
-    if (userLab.status === 'Started') {
-      this.startVmsAndInitiateStatuses(userLab);
+  useEffect(() => {
+    async function start() {
+      const newUserLab = await getUserLab(getId());
+      setUserLab(newUserLab);
+      if (newUserLab.status === 'Started') {
+        startVmsAndInitiateStatuses(newUserLab);
+      }
     }
+    start();
+
+    return () => {
+      if (interval)
+        clearInterval(interval);
+    };
+  }, []);
+
+  async function startVmsAndInitiateStatuses(uL: UserLab) {
+    const newStatuses = await getUserLabVmStatuses(uL.id);
+    setStatuses(newStatuses);
+    await turnOnUserLab(uL.id);
+    interval = setInterval(async () => {
+      setStatuses(await getUserLabVmStatuses(userLab.id));
+      setUserLab(await getUserLab(userLab.id));
+      }, 5000);
   }
 
-  async startVmsAndInitiateStatuses(userLab: UserLab) {
-    const statuses = await getUserLabVmStatuses(userLab.id);
-    this.setState({statuses: statuses});
-    await turnOnUserLab(userLab.id);
-    this.interval = setInterval(async () => this.setState({
-      statuses: await getUserLabVmStatuses(this.state.userLab!.id),
-      userLab: await getUserLab(this.state.userLab!.id)
-    }), 5000);
-  }
-
-  startUserLab = async () => {
-    this.setState({starting: true});
+  const initializeUserLab = async () => {
+    setStarting(true);
     try {
-      this.setState({userLabResult: await startUserLab(this.getId())});
-      await this.startCheckingIfLabIsInitialized();
+      setUserLabResult(await startUserLab(getId()));
+      await startCheckingIfLabIsInitialized();
     } catch (e: any) {
-      this.setState({errorMessage: handleAxiosError(e)});
+      setErrorMessage(handleAxiosError(e));
     } finally {
-      this.setState({starting: false});
+      setStarting(false);
     }
   };
 
-  async startCheckingIfLabIsInitialized() {
-    const initialized = await this.checkIfLabInitialized();
+  async function startCheckingIfLabIsInitialized() {
+    const initialized = await checkIfLabInitialized();
     if (initialized) {
-      this.initializationInterval = setInterval(async () => this.checkIfLabInitialized(), 5000);
+      initializationInterval = setInterval(async () => checkIfLabInitialized(), 5000);
     }
   }
 
-  async checkIfLabInitialized() {
+  async function checkIfLabInitialized() {
     try {
-      const status = await getUserLabInitializationStatus(this.getId());
-      this.setState({starting: status === 'Initializing'});
+      const status = await getUserLabInitializationStatus(getId());
+      setStarting(status === 'Initializing');
       if (status === 'Initialized') {
-        if (this.initializationInterval) {
-          clearInterval(this.initializationInterval);
+        if (initializationInterval) {
+          clearInterval(initializationInterval);
         }
-        this.setState({userLab: this.state.userLabResult});
-        this.startVmsAndInitiateStatuses(this.state.userLabResult!);
+        setUserLab(userLabResult);
+        startVmsAndInitiateStatuses(userLabResult);
       }
       return status === 'Initialized';
     } catch (e: any) {
-      this.setState({errorMessage: handleAxiosError(e)});
-      this.setState({starting: false});
+      setErrorMessage(handleAxiosError(e));
+      setStarting(false);
       return true;
     }
   }
 
-  componentWillUnmount(): void {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-  }
-
-  render() {
-    return (
-      <Layout fluid={true} className='full-height-container'>
-        <Alert show={Boolean(this.state.errorMessage)} variant='danger'>{this.state.errorMessage}</Alert>
-        {this.state.userLab ?
-          <LabEnvironment
-            userLab={this.state.userLab}
-            statuses={this.state.statuses}
-            starting={this.state.starting}
-            onStartLab={this.startUserLab}
-          /> : null}
-      </Layout>
-    );
-  }
-
+  return (
+    <Layout fluid={true} className='full-height-container'>
+      <Alert show={Boolean(errorMessage)} variant='danger'>{errorMessage}</Alert>
+      {userLab ?
+        <LabEnvironment
+          userLab={userLab}
+          statuses={statuses!}
+          starting={starting}
+          onStartLab={initializeUserLab}
+        /> : null}
+    </Layout>
+  );
 }

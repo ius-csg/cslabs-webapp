@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {Col, Tab, Tabs} from 'react-bootstrap';
 import RegisterForm from './RegisterForm';
-import {Redirect} from 'react-router';
+import {Navigate} from 'react-router';
 import {connect} from 'react-redux';
 import {bindActionCreators, Dispatch} from 'redux';
 import {setCurrentUser} from '../../redux/actions/entities/currentUser';
@@ -27,7 +27,7 @@ export function LoginRegisterPage({authenticated}: LoginProps) {
   }, [authenticated]);
 
   const onTabSelect = (eventKey: string | null) => setActiveTab(eventKey as TabKeys);
-  const RenderRedirect = () => redirect.length !== 0 ? <Redirect to={redirect} />: null;
+  const RenderRedirect = () => redirect.length !== 0 ? <Navigate to={redirect} replace={true} />: null;
 
   return (
     <Layout style={{marginBottom: '5rem'}}>

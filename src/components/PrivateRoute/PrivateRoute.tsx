@@ -1,5 +1,4 @@
-import {Route, RouteProps, Redirect} from 'react-router';
-import React from 'react';
+import {Navigate, useLocation} from 'react-router';
 import {RoutePaths} from '../../router/RoutePaths';
 import {
   mapIsAuthenticatedToProps,
@@ -7,27 +6,18 @@ import {
 } from '../../redux/selectors/entities';
 import {connect} from 'react-redux';
 
-type PrivateRouteProps = mapIsAuthenticatedToPropsType & RouteProps & {
+type PrivateRouteProps = mapIsAuthenticatedToPropsType & {
   component: any;
 };
 
-function PrivateRouteComponent({component: Component, authenticated, ...rest}: PrivateRouteProps) {
+function PrivateRouteComponent({component: Component, authenticated}: PrivateRouteProps) {
+  const location = useLocation();
   return (
-    <Route
-      {...rest}
-      render={props =>
         authenticated ? (
-          <Component {...props} />
+          <Component />
         ) : (
-          <Redirect
-            to={{
-              pathname: RoutePaths.login,
-              state: { from: props.location }
-            }}
-          />
+          <Navigate to={{pathname: RoutePaths.login}} replace={true} state={{ from: location }} />
         )
-      }
-    />
   );
 }
 

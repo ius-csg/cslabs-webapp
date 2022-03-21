@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import {useEffect, useState} from 'react';
 import {Module} from '../../types/Module';
 import {getModuleByPrivateCode, getPublicModule, startUserModule} from '../../api';
-import {RouteComponentProps} from 'react-router';
+import {useParams} from 'react-router';
 import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
 import {isAuthenticated} from '../../redux/selectors/entities';
@@ -12,139 +12,125 @@ import {Alert, Button, Card} from 'react-bootstrap';
 import Styles from './PublicModule.module.scss';
 import {getLocalDateTimeString} from '../../util';
 import {LoadingButton} from '../../util/LoadingButton';
+import { makeModule } from 'factories';
 
-interface MyModuleState {
-  module: Module;
-  message?: string;
-  startingModule: boolean;
-}
 
-type PublicModuleProps = RouteComponentProps<{ id: string }> & ReturnType<typeof mapStateToProps>;
+type PublicModuleProps = ReturnType<typeof mapStateToProps>;
 
-class PublicModule extends Component<PublicModuleProps, MyModuleState> {
+function PublicModule (props: PublicModuleProps) {
+  const params = useParams();
+  const [module, setModule] = useState(makeModule());
+  const [message, setMessage] = useState<any>(null);
+  const [startingModule, setStartingModule] = useState(false);
 
-  state: MyModuleState = {
-    module: {
-      id: 0,
-      createdAt: '',
-      description: '',
-      name: 'Loading',
-      published: false,
-      userId: 0,
-      specialCode: '',
-      type: 'SingleUser',
-      updatedAt: ''
-    },
-    startingModule: false
-  };
+  const getId = () => Number(params.id);
 
-  getId = () => Number(this.props.match.params.id);
-
-  async componentDidMount() {
+  useEffect(() => {
+  async function showModule() {  
     try {
-      if (isNaN(Number(this.props.match.params.id))) {
-        this.setState({module: await getModuleByPrivateCode(this.props.match.params.id)});
+      if (isNaN(Number(params.id))) {
+        setModule(await getModuleByPrivateCode(params.id!));
       } else {
-        this.setState({module: await getPublicModule(this.getId())});
+        setModule(await getPublicModule(getId()));
       }
     } catch (e) {
-      this.setState({message: 'Could not load module'});
+      setMessage('Could not load module');
     }
-
   }
+  showModule();
+  }, []);
 
-  startModule = async () => {
-    if (this.state.module !== undefined) {
+  const startModule = async () => {
+    if (module) {
       try {
-        this.setState({startingModule: true});
-        const userModule = await startUserModule(String(this.state.module.specialCode));
-        this.setState({module: {...this.state.module, userModuleId: (userModule).id}, startingModule: false});
-      } catch (e) {
-        this.setState({message: 'Failed to start module!', startingModule: false});
+        setStartingModule(true);
+        const userModule = await startUserModule(String(module.specialCode));
+        setModule({...module, userModuleId: (userModule).id});
+        setStartingModule(false);
+      } catch (e: any) {
+        setMessage('Failed to start module!');
+        setStartingModule(false);
       }
     }
   };
 
-  isUserModuleReady() {
-    return Boolean(this.getModule().userModuleId) && !this.state.startingModule;
+  function isUserModuleReady() {
+    return Boolean(getModule().userModuleId) && !startingModule;
   }
 
-  hasUserModule() {
-    return Boolean(this.getModule().userModuleId);
+  function hasUserModule() {
+    return Boolean(getModule().userModuleId);
   }
 
-  renderStartButton() {
-    if (this.state.message) {
+  function renderStartButton() {
+    if (message) {
       return null;
     }
-    if (this.state.module.id === 0) {
+    if (module.id === 0) {
       return null;
     }
-    if (this.props.authenticated) {
-      if (this.isUserModuleReady()) {
+    if (props.authenticated) {
+      if (isUserModuleReady()) {
         return (
-          <Link to={'/user-module/' + this.getModule().userModuleId}>
-            {this.renderButton()}
+          <Link to={'/user-module/' + getModule().userModuleId}>
+            {renderButton()}
           </Link>
         );
       } else {
-        return this.renderButton();
+        return renderButton();
       }
     } else {
       return (
-        <Link to={RoutePaths.loginWithRedirect.replace(':redirect', RoutePaths.module.replace(':id', this.state.module.specialCode))}>
+        <Link to={RoutePaths.loginWithRedirect.replace(':redirect', RoutePaths.module.replace(':id', module.specialCode))}>
           <Button className='btn btn-primary' style={{width: 200}}>Login</Button>
         </Link>
       );
     }
   }
 
-  renderButton() {
+  function renderButton() {
     return (
       <LoadingButton
-        label={this.getButtonText()}
-        loading={this.state.startingModule}
+        label={getButtonText()}
+        loading={startingModule}
         className='btn btn-primary'
-        onClick={this.hasUserModule() ? undefined : this.startModule}
+        onClick={hasUserModule() ? undefined : startModule}
       />
     );
   }
 
-  getButtonText() {
-    if (this.isUserModuleReady()) {
+  function getButtonText() {
+    if (isUserModuleReady()) {
       return 'Go to Module';
     }
-    return this.state.module.type === 'SingleUser' ? 'Start' : 'Join';
+    return module.type === 'SingleUser' ? 'Start' : 'Join';
   }
 
-  getModule(): Module {
-    if (!this.state.module) {
+  function getModule(): Module {
+    if (!module) {
       return {} as Module;
     }
-    return this.state.module;
+    return module;
   }
 
-  render() {
-    const module = this.getModule();
-    return (
-      <Layout>
-        <Alert style={{textAlign: 'center'}} show={Boolean(this.state.message)} variant='danger'>{this.state.message}</Alert>
-        <Card className={Styles.card}>
-          <Card.Body>
-            <Card.Title>{module.name}</Card.Title>
-            <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden'}}>
-              {module.description}
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>
-            {this.renderStartButton()}
-          </Card.Footer>
-        </Card>
-
-      </Layout>
-    );
-  }
+  const currentModule = getModule();
+  return (
+    <Layout>
+      <Alert style={{textAlign: 'center'}} show={Boolean(message)} variant='danger'>{message}</Alert>
+      <Card className={Styles.card}>
+        <Card.Body>
+          <Card.Title>{currentModule.name}</Card.Title>
+          <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden'}}>
+            {currentModule.description}
+          </Card.Text>
+        </Card.Body>
+        <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <small className='text-muted'>{getLocalDateTimeString(currentModule.updatedAt)}</small>
+          {renderStartButton()}
+        </Card.Footer>
+      </Card>
+    </Layout>
+  );
 }
 
 const mapStateToProps = (state: WebState) => ({authenticated: isAuthenticated(state)});
