@@ -57,6 +57,7 @@ h2 {
 hr {
     padding: 0 6.25% 0 6.25%;
     width: 80%;
+    margin: 1rem auto;
 }
 
 
@@ -122,4 +123,8 @@ hr {
 
 .fill-height {
     flex: 1 1 auto;
+}
+
+.form-control {
+    margin-bottom: 1rem;
 }

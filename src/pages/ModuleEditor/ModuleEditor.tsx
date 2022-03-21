@@ -124,7 +124,7 @@ export default function ModuleEditor() {
             <Message state={message}/>
             { !editing && (
               <Form.Group>
-                <Form.Label column={true}>Share Link</Form.Label>
+                <Form.Label column={true} className='me-2'>Share Link</Form.Label>
                 <a target='_blank' rel='noopener' href={getModuleShareLink(values.specialCode)}>{getModuleShareLink(values.specialCode)}</a>
               </Form.Group>
             )}

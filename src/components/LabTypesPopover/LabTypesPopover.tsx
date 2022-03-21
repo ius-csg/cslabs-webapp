@@ -15,7 +15,7 @@ const popover = (
     </Popover>
 );  
 const LabTypesComponent = () => (
-    <OverlayTrigger trigger='hover' placement='right' overlay={popover}>
+    <OverlayTrigger trigger={['hover', 'focus']} placement='right' overlay={popover}>
         <a> <FontAwesomeIcon icon={faInfoCircle}/></a>
     </OverlayTrigger>
 );

@@ -36,7 +36,11 @@ class ModulesEditor extends Component<{}, ModulesState> {
   }
 
   render() {
-    const cards = this.state.modules.map((m, i) => <CreatorsModuleCard module={m} key={i}/>);
+    const cards = this.state.modules.map((m, i) => 
+      <Col key={i} sm={12} md={6} lg={3}>
+        <CreatorsModuleCard module={m} key={i} />
+      </Col>
+    );
     return (
       <Layout>
         {this.state.state === 'loading' ? <HorizontallyCenteredSpinner/> :

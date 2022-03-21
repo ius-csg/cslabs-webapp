@@ -29,7 +29,7 @@ export default function Input(props: InputProps) {
               as={props.type === 'textarea' ? 'textarea' : 'input'}
               isValid={meta.touched && !meta.error}
               isInvalid={meta.touched && Boolean(meta.error)}
-              style={{height: props.rows ? props.rows : 32}}
+              style={{height: props.rows}}
               placeholder={props.placeholder}
               {...field}
               value={getFieldValue(field)}

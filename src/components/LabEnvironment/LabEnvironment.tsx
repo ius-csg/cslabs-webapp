@@ -100,7 +100,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
       };
       return (
         <Popup
-          id='times-up' 
+          id='times-up'
           title='Times up!'
           description='Congratulations! You have finished working on this lab.
             You will be automatically redirected to your modules page after 15 seconds.'
@@ -110,7 +110,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
         />
       );
     } else if (remainingLabTime > 0 && remainingLabTime <= 900) {      
-      return <Button className='ml-2' onClick={this.onExtendEndDateTime}>Extend</Button>;
+      return <Button className='ms-2' onClick={this.onExtendEndDateTime}>Extend</Button>;
     } else {
       return;
     }
@@ -121,16 +121,18 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     return (
       <Tab.Container activeKey={this.state.eventKey} onSelect={this.onEventKeyChange} mountOnEnter={true} unmountOnExit={false}>
         <Container fluid={true} className='full-height-container'>
-          <Row noGutters={true} className='justify-content-between'>
+          <Row>
             <h2>Lab : {this.props.userLab.lab.name}</h2>
-            {this.isLabAbleToStart() ?
-              <LoadingButton
-                loading={this.props.starting}
-                label='Start Lab'
-                onClick={this.props.onStartLab} 
-              /> : this.props.userLab.lab.type === 'Temporary' &&
-              <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime)}{this.showExtendButton()}</h6>
-            }
+            <Col className='text-end'>
+              {this.isLabAbleToStart() ?
+                <LoadingButton
+                  loading={this.props.starting}
+                  label='Start Lab'
+                  onClick={this.props.onStartLab} 
+                /> : this.props.userLab.lab.type === 'Temporary' &&
+                <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime)}{this.showExtendButton()}</h6>
+              }
+            </Col>
           </Row>
           <Row className='fill-height'>
             <Col sm={4} md={4} lg={2}>

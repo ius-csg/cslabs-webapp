@@ -14,21 +14,32 @@ export async function connect(element: HTMLDivElement, ticket: TicketResponse, o
     const rfb = new RFB(element as any,
       // @ts-ignore
       url);
+    // @ts-ignore
     rfb.scaleViewport = true;
+    // @ts-ignore
     rfb.resizeSession = true;
-    rfb.addEventListener('connect', () => log('connect'));
+    // @ts-ignore
+    rfb.addEventListener('connect', () => log('connect')); 
+    // @ts-ignore
     rfb.addEventListener('disconnect', () => onDisconnect());
+    // @ts-ignore
     rfb.addEventListener('credentialsrequired', () => {
+      // @ts-ignore
       rfb.sendCredentials({
         username: ticket.user,
         password: ticket.ticket
       });
       log('credentialsrequired');
     });
+    // @ts-ignore
     rfb.addEventListener('securityfailure', (e: any) => log({messsage: 'securityfailure', ...e}));
+    // @ts-ignore
     rfb.addEventListener('clipboard', () => log('clipboard'));
+    // @ts-ignore
     rfb.addEventListener('bell', () => log('bell'));
+    // @ts-ignore
     rfb.addEventListener('desktopname', () => log('desktopname'));
+    // @ts-ignore
     rfb.addEventListener('capabilities', () => log('capabilities'));
     return rfb;
   } catch (exc) {
