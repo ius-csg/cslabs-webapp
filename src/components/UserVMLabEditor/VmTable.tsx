@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {FieldArray} from 'formik';
 import {VmRow} from './VmRow';
 import {BridgeTemplate, LabVmForm, VmTemplate} from '../../types/editorTypes';

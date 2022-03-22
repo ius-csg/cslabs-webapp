@@ -1,4 +1,3 @@
-import React from 'react';
 import {Layout} from '../../pages/Layout/Layout';
 import {Col, ListGroup, Row, TabContainer, TabContent, TabPane} from 'react-bootstrap';
 import {StatisticsPane} from './StatisticsPane';
@@ -10,7 +9,7 @@ import {connect} from 'react-redux';
 import {WebState} from '../../redux/types/WebState';
 import {getCurrentUser} from '../../redux/selectors/entities';
 import {User} from '../../types/User';
-import {Redirect} from 'react-router';
+import {Navigate} from 'react-router';
 
 interface AdminPanelLayoutProps {
   defaultActivePanel?: AdminTabKeys;
@@ -29,7 +28,7 @@ type AdminTabKeys = typeof panes[number]['eventKey'];
 const AdminPanelLayout = (props: AdminPanelLayoutProps) => {
 
   if (props.currentUser.role !== 'Admin') {
-    return <Redirect to={'/'} />;
+    return <Navigate to={'/'} replace={true} />;
   } else {
     return <Layout>
       <h1>Admin Console</h1>

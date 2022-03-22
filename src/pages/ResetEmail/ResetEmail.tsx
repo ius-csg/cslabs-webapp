@@ -8,11 +8,11 @@ export default class ResetEmail extends React.Component {
     currentPass: ''
   };
 
-  onCurrentPasswordChange = (event: React.FormEvent<HTMLInputElement>) => {
+  onCurrentPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({currentPass: event.currentTarget.value});
   };
 
-  onEmailChange = (event: React.FormEvent<HTMLInputElement>) => {
+  onEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({email: event.currentTarget.value});
   };
 

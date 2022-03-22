@@ -1,5 +1,5 @@
 import {Row, Col} from 'react-bootstrap';
-import React from 'react';
+import { Component } from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {getUserModules} from '../../api';
 import {Layout} from '../Layout/Layout';
@@ -10,7 +10,7 @@ interface MyModulesState {
   modules: UserModule[];
 }
 
-class MyModules extends React.Component<{}, MyModulesState> {
+class MyModules extends Component<{}, MyModulesState> {
 
   state: MyModulesState = {
     modules: []

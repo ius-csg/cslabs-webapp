@@ -1,5 +1,5 @@
 import {Row, Col} from 'react-bootstrap';
-import React from 'react';
+import { Component } from 'react';
 import {ModuleCard} from '../../components/ModuleCard/ModuleCard';
 import {Module} from '../../types/Module';
 import {getPublicModules} from '../../api';
@@ -13,7 +13,7 @@ interface ExploreState {
   state: 'loading' | 'error' | 'success';
 }
 
-class Explore extends React.Component<{}, ExploreState> {
+class Explore extends Component<{}, ExploreState> {
 
   state: ExploreState = {
     modules: [],

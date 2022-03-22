@@ -1,5 +1,4 @@
 import {Col, Row} from 'react-bootstrap';
-import * as React from 'react';
 import {Layout} from '../../pages/Layout/Layout';
 
 interface AccountManagementLayoutProps {

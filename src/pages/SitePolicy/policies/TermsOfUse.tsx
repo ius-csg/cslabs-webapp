@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export const TermsOfUse = () => (
   <div>
     <h5> AGREEMENT TO TERMS </h5>

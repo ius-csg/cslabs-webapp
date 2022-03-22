@@ -1,4 +1,4 @@
-import React, {CSSProperties} from 'react';
+import { Fragment, CSSProperties } from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {IconProp, SizeProp} from '@fortawesome/fontawesome-svg-core';
 import styles from './IconButton.module.scss';
@@ -48,7 +48,7 @@ export function IconButton(props: IconButtonProps) {
 
 function IconButtonIcon(props: IconButtonProps) {
   return (
-    <React.Fragment>
+    <Fragment>
       <FontAwesomeIcon
         icon={props.icon}
         size={props.size}
@@ -60,6 +60,6 @@ function IconButtonIcon(props: IconButtonProps) {
         }}
       />
       {props.children ? <span style={{marginLeft: '1rem'}}>{props.children}</span> : null}
-    </React.Fragment>
+    </Fragment>
   );
 }

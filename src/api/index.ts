@@ -99,7 +99,7 @@ export async function forgotPassword(email: string) {
   return api.post<string>(`/user/forgot-password/${encodeURIComponent(email)}`);
 }
 
-export function confirmForgotPassword(code: string, password: string) {
+export function confirmForgotPassword(password: string, code?: string) {
   return api.post<string>(`/user/confirm-forgot-password`, {passwordRecoveryCode: code, newPassword: password});
 }
 
@@ -178,7 +178,7 @@ export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
 }
 
-export async function verifyEmail(code: string) {
+export async function verifyEmail(code?: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
 export async function getModuleForEditor(moduleId: number) {

@@ -1,4 +1,3 @@
-import React from 'react';
 import {Col} from 'react-bootstrap';
 import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import {IconButton} from '../util/IconButton/IconButton';

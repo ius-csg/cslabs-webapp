@@ -20,6 +20,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-decoration: none;
 
     span {
         display: block;
@@ -44,6 +45,4 @@
         color: yellow !important;
     }
 }
-
-svg { width: 200px; }
 

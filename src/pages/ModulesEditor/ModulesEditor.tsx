@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 import {Layout} from '../Layout/Layout';
 import {getEditorsModules} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {Message} from '../../util/Message';
 import {PageTitle} from '../../components/util/PageTitle';
-import {CardColumns, Col, Row} from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
 import {UserModule} from '../../types/UserModule';
 import {CreatorsModuleCard} from '../../components/CreatorsModuleCard/CreatorsModuleCard';
 import {RoutePaths} from '../../router/RoutePaths';
@@ -15,7 +15,7 @@ interface ModulesState {
   state: 'loading' | 'error' | 'success';
 }
 
-class ModulesEditor extends React.Component<{}, ModulesState> {
+class ModulesEditor extends Component<{}, ModulesState> {
 
   state: ModulesState = {
     modules: [],
@@ -36,7 +36,11 @@ class ModulesEditor extends React.Component<{}, ModulesState> {
   }
 
   render() {
-    const cards = this.state.modules.map((m, i) => <CreatorsModuleCard module={m} key={i}/>);
+    const cards = this.state.modules.map((m, i) => 
+      <Col key={i} sm={12} md={6} lg={3}>
+        <CreatorsModuleCard module={m} key={i} />
+      </Col>
+    );
     return (
       <Layout>
         {this.state.state === 'loading' ? <HorizontallyCenteredSpinner/> :
@@ -55,7 +59,7 @@ class ModulesEditor extends React.Component<{}, ModulesState> {
               <hr/>
               {cards.length === 0 ?
                 <p style={{textAlign: 'center', marginTop: '1rem'}}>You currently have no modules</p> :
-                <CardColumns>{cards}</CardColumns>
+                <Row className='g-4'>{cards}</Row>
               }
             </>
         }

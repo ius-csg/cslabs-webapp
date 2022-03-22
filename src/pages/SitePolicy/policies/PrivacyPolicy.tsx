@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 export const PrivacyPolicy = () => (
   <div>
     Thank you for choosing to be part of our community at IUS and IUSCSG.

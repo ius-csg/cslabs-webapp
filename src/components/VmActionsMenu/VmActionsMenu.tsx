@@ -2,12 +2,12 @@ import {IconDropDownItem} from '../util/IconDropDownItem';
 import {resetVm, scrubVm, shutdownVm, startUpVm, stopVm} from '../../api';
 import {faPlay, faPowerOff, faUndo} from '@fortawesome/free-solid-svg-icons';
 import {Dropdown} from 'react-bootstrap';
-import * as React from 'react';
+import { useState } from 'react';
 import {UserLabVm} from '../../types/UserLabVm';
 
 export function VmActionsMenu({vm}: {vm: UserLabVm}) {
-  const [scrubbing, setScrubbing] = React.useState(false);
-  const [shuttingDown, setShuttingDown] = React.useState(false);
+  const [scrubbing, setScrubbing] = useState(false);
+  const [shuttingDown, setShuttingDown] = useState(false);
   const performScrub = async (vmId: number) => {
     if(window.confirm('Are you sure you wish to scrub this VM?')) {
       setScrubbing(true);

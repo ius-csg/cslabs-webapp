@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import {ErrorMessage, Field, FieldProps} from 'formik';
 import styles from '../Input/Input.module.scss';
 import {
@@ -33,7 +33,7 @@ const valueInOptions = (value: any, options: DropdownOption[]) => {
 };
 
 export const DropdownInput = <Value extends DropDownOptionValue>(props: DropdownInputProps<Value>) => (
-  <React.Fragment>
+  <Fragment>
     <Field name={props.name}>
       {({field, meta, form}: FieldProps) => {
         const {dropdownData, defaultToFirstOption, defaultToFirstOptionIfOnlyOneOption} = props;
@@ -76,5 +76,5 @@ export const DropdownInput = <Value extends DropDownOptionValue>(props: Dropdown
       render={msg => <div className={styles['form-errors']}>{msg}</div>}
       name={props.name}
     />
-  </React.Fragment>
+  </Fragment>
 );

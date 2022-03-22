@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import {Form, Col, Alert, Row} from 'react-bootstrap';
 import {forgotPassword} from '../../api';
 import {Layout} from '../Layout/Layout';
@@ -20,8 +20,8 @@ const ForgotPasswordSchema = object<ForgotPasswordForm>({
 const getFieldName = (prop: keyof ForgotPasswordForm) => prop;
 
 export default function ForgotPassword() {
-  const [messageState, setMessageState] = React.useState(makeMessageState());
-  const [initialState] = React.useState<ForgotPasswordForm>({email: ''});
+  const [messageState, setMessageState] = useState(makeMessageState());
+  const [initialState] = useState<ForgotPasswordForm>({email: ''});
 
   const onSubmit = async (form: ForgotPasswordForm) => {
     setMessageState({...messageState, message: ''});

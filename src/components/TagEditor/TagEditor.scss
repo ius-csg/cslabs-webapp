@@ -1,4 +1,4 @@
-@import '../../theme';
+@import "../../theme";
 
 .react-tags.is-focused {
     border-color: #b1b1b1;
@@ -85,7 +85,7 @@
     }
 
     .react-tags-selected-tag::after {
-        content: '\2715';
+        content: "\2715";
         color: #aaa;
         margin-left: 8px;
     }

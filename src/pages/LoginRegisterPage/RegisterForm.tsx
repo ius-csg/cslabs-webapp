@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import {Alert, Form} from 'react-bootstrap';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
 import {LoadingButton} from '../../util/LoadingButton';
@@ -21,7 +21,7 @@ type Props  = {
 const getFieldName = (prop: keyof RegisterFormValues) => prop;
 
 function RegisterForm(props: Props) {
-  const [initialValues] = React.useState<RegisterFormValues>({
+  const [initialValues] = useState<RegisterFormValues>({
     firstName: '',
     lastName: '',
     email: '',
@@ -31,7 +31,7 @@ function RegisterForm(props: Props) {
     password: '',
     acceptedTerms: '' as any
   });
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = async (values: RegisterFormValues) => {
     try {

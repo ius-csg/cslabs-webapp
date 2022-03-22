@@ -1,5 +1,4 @@
 import {Form} from 'react-bootstrap';
-import React from 'react';
 
 export function PasswordRequirements() {
   return (

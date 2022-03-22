@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {AccountManagementLayout} from '../../components/AccountManagementLayout/AccountManagementLayout';
 import {Link} from 'react-router-dom';
 import {RoutePaths} from '../../router/RoutePaths';

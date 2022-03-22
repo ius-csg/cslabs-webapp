@@ -1,8 +1,7 @@
-import * as React from 'react';
 import {useState} from 'react';
 import {Form, Col, Row} from 'react-bootstrap';
 import PasswordStrength from '../../components/AccountManagementLayout/PasswordStrength';
-import {Redirect, RouteComponentProps} from 'react-router';
+import {Navigate, useParams} from 'react-router';
 import {Layout} from '../Layout/Layout';
 import {Formik} from 'formik';
 import {object} from 'yup';
@@ -16,8 +15,6 @@ import {delay, handleAxiosError, makeMessageState} from '../../util';
 import {RoutePaths} from '../../router/RoutePaths';
 import {Message} from '../../util/Message';
 
-type Props = RouteComponentProps<{ passwordRecoveryCode: string }>;
-
 interface ConfirmForgotPasswordForm {
   password: string;
   confirmPass: string;
@@ -30,7 +27,8 @@ const ConfirmForgotPasswordSchema = object<ConfirmForgotPasswordForm>({
 
 const getFieldName = (prop: keyof ConfirmForgotPasswordForm) => prop;
 
-export default function ConfirmForgotPassword(props: Props) {
+export default function ConfirmForgotPassword() {
+  const params = useParams();
   const [initialState] = useState<ConfirmForgotPasswordForm>({
     password: '',
     confirmPass: ''
@@ -39,14 +37,14 @@ export default function ConfirmForgotPassword(props: Props) {
   const [redirect, setRedirect] = useState('');
 
   const onSubmit = async (form: ConfirmForgotPasswordForm) => {
-    const code = props.match.params.passwordRecoveryCode;
+    const code = params.passwordRecoveryCode;
     setMessageState({...messageState, message: ''});
     try {
-      await confirmForgotPassword(code, form.password);
+      await confirmForgotPassword(form.password, code);
       setMessageState({message: 'Password changed!', variant: 'success'});
       await delay(1500);
       setRedirect(RoutePaths.login);
-    } catch (e) {
+    } catch (e: any) {
       setMessageState({message: handleAxiosError(e), variant: 'danger'});
     }
   };
@@ -60,7 +58,7 @@ export default function ConfirmForgotPassword(props: Props) {
       >
         {({handleSubmit, values, isSubmitting}) => (
           <Form onSubmit={handleSubmit}>
-            {redirect ? <Redirect to={redirect} /> : null}
+            {redirect ? <Navigate to={redirect} replace={true} /> : null}
             <Col sm='6' style={{margin: 'auto'}}>
               <h2>Reset Password</h2>
               <Form.Group as={Row} controlId='password'>

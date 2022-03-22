@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {SystemMessageAlert} from '../SystemMessageAlert/SystemMessageAlert';
 import {getSystemMessages} from '../../api';
 import {useMount} from '../../hooks/useMount';

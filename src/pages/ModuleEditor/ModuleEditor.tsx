@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import {Form, Col, Row, Button} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {FieldArray, Formik, FormikHelpers} from 'formik';
@@ -15,7 +15,7 @@ import {makeModuleForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
 import {getModuleShareLink, ModuleType} from '../../types/Module';
-import {Redirect, RouteComponentProps} from 'react-router';
+import {Navigate, useParams} from 'react-router';
 import {getModuleForEditor, getTags, saveModule} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {ModuleEditorSchema} from './ModuleEditorSchema';
@@ -33,15 +33,15 @@ const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'MultiUser', label: 'Multi User'}
 ];
 
-type Props = RouteComponentProps<{ moduleId?: string }>;
-
-export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
-  const [tagSuggestions, setTagSuggestions] = React.useState<Tag[]>([]);
-  const [initialValues, setInitialValues] = React.useState<ModuleForm>(makeModuleForm());
-  const [loading, setLoading] = React.useState(true);
+export default function ModuleEditor() {
+  const params = useParams();
+  const moduleId = params.moduleId;
+  const [tagSuggestions, setTagSuggestions] = useState<Tag[]>([]);
+  const [initialValues, setInitialValues] = useState<ModuleForm>(makeModuleForm());
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
-  const [editing, setEditing] = React.useState(false);
-  const [redirect, setRedirect] = React.useState();
+  const [editing, setEditing] = useState(false);
+  const [redirect, setRedirect] = useState<string | undefined>();
 
   function completeLoading() {
     setLoading(false);
@@ -58,7 +58,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
       if(!moduleId) {
         setRedirect(RoutePaths.EditModule.replace(':moduleId', String(response.id)));
       }
-    } catch (e) {
+    } catch (e: any) {
       setMessage({message: handleAxiosError(e, {}, setErrors), variant: 'danger', critical: false});
     }
   };
@@ -73,7 +73,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setTagSuggestions(await getTags(input));
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function LoadModule() {
       setRedirect(undefined);
       if (!moduleId) {
@@ -89,7 +89,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
         setInitialValues(response);
         setInitialValues(await getModuleForEditor(Number(moduleId)));
         completeLoading();
-      } catch (e) {
+      } catch (e: any) {
         setMessage({message: handleAxiosError(e), variant: 'danger', critical: true});
         setLoading(false);
       }
@@ -106,7 +106,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     >
       {({handleSubmit, isSubmitting, values}) => (
         <Form onSubmit={handleSubmit}>
-          {redirect && <Redirect to={redirect} />}
+          {redirect && <Navigate to={redirect} replace={true} />}
           <Row>
             <Col className='d-flex justify-content-start align-items-center'>
               <PageTitle>Module Editor</PageTitle>
@@ -124,7 +124,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
             <Message state={message}/>
             { !editing && (
               <Form.Group>
-                <Form.Label column={true}>Share Link</Form.Label>
+                <Form.Label column={true} className='me-2'>Share Link</Form.Label>
                 <a target='_blank' rel='noopener' href={getModuleShareLink(values.specialCode)}>{getModuleShareLink(values.specialCode)}</a>
               </Form.Group>
             )}

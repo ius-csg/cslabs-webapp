@@ -1,7 +1,6 @@
-import React from 'react';
-import Select, {components} from 'react-select';
+import {Component} from 'react';
+import Select, {components, SingleValue} from 'react-select';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {ValueType} from 'react-select/src/types';
 import {combineClasses} from '../../../util';
 
 // @TODO placeholder until this component styles are fixed.
@@ -36,7 +35,7 @@ const DropdownIndicator = (props: any) => {
   );
 };
 
-export class SearchableDropdown<Value extends NullableDropDownOptionValue> extends React.Component<Props<Value>> {
+export class SearchableDropdown<Value extends NullableDropDownOptionValue> extends Component<Props<Value>> {
   handleValidationClass = () => {
     if (this.props.isValid) {
      return combineClasses(this.props.className as string, '-invalid');
@@ -45,7 +44,7 @@ export class SearchableDropdown<Value extends NullableDropDownOptionValue> exten
     }
   };
 
-  handleChange = (selectedOption: ValueType<DropdownOption<Value>>) => {
+  handleChange = (selectedOption: SingleValue<DropdownOption<Value>>) => {
     if (this.props.onSelect) {
       const option = (selectedOption as DropdownOption<Value>);
       const value = option ? option.value : null as Value;
@@ -57,7 +56,6 @@ export class SearchableDropdown<Value extends NullableDropDownOptionValue> exten
     return (
       <Select
         className={styles[this.handleValidationClass()]}
-        errorText={this.props.isInvalid}
         components={{DropdownIndicator}}
         value={this.props.value}
         onChange={this.handleChange}

@@ -1,5 +1,4 @@
 import {Spinner} from 'react-bootstrap';
-import React from 'react';
 
 export function HorizontallyCenteredSpinner() {
   return (
