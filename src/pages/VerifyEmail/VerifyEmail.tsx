@@ -17,7 +17,7 @@ export function VerifyEmail (props: VerifyEmailProps) {
     async function initialize() {
       const {code} = params;
       try {
-        await verifyEmail(code!);
+        await verifyEmail(code);
         setLoading(false);
         setVerified(true);
       } catch {

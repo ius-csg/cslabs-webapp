@@ -74,7 +74,7 @@ bootstrap theme otherwise bootstrap components will use one color scheme and the
 #### Navigation
 
 The project uses [react-router](https://reacttraining.com/react-router/) to handle page navigation.
-Pages are just normal components that are routed in the [src/router/Routes.tsx](src/router/Routes.tsx) file.
+Pages are just normal components that are routed in the [src/router/AppRoutes.tsx](src/router/AppRoutes.tsx) file.
 
 #### Typescript
 

@@ -40,7 +40,7 @@ export default function ConfirmForgotPassword() {
     const code = params.passwordRecoveryCode;
     setMessageState({...messageState, message: ''});
     try {
-      await confirmForgotPassword(code!, form.password);
+      await confirmForgotPassword(form.password, code);
       setMessageState({message: 'Password changed!', variant: 'success'});
       await delay(1500);
       setRedirect(RoutePaths.login);

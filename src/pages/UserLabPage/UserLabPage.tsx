@@ -1,4 +1,4 @@
-import {useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {Layout} from '../Layout/Layout';
 import {LabEnvironment} from '../../components/LabEnvironment/LabEnvironment';
 import {
@@ -18,7 +18,7 @@ import {makeUserLab} from 'factories';
 export function UserLabPage () {
   const params = useParams();
   const [userLab, setUserLab] = useState<UserLab>(makeUserLab());
-  const [statuses, setStatuses] = useState<{ [key: number]: string }>();
+  const [statuses, setStatuses] = useState<{ [key: number]: string }>({0: ''});
   const [starting, setStarting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [userLabResult, setUserLabResult] = useState<UserLab>(makeUserLab());
@@ -98,7 +98,7 @@ export function UserLabPage () {
       {userLab ?
         <LabEnvironment
           userLab={userLab}
-          statuses={statuses!}
+          statuses={statuses}
           starting={starting}
           onStartLab={initializeUserLab}
         /> : null}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import {Form, Col, Row, Button} from 'react-bootstrap';
 import {Layout} from '../Layout/Layout';
 import {Formik, FormikHelpers} from 'formik';
@@ -14,7 +14,7 @@ import {LabForm, LabVmForm, VmTemplate} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
-import {Navigate} from 'react-router';
+import {Navigate, useParams} from 'react-router';
 import {getLabForEditor, getUserLabReadmeUrl, getUserLabTopologyUrl, getVmTemplates, saveLab} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {LabEditorSchema} from './LabEditorSchema';
@@ -27,7 +27,6 @@ import {FileInput} from '../../components/util/FileInput';
 import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
 import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
 import {LabTypes} from '../../components/LabTypesPopover/LabTypesPopover';
-import { useParams } from 'react-router';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
