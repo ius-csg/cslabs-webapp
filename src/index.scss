@@ -55,11 +55,18 @@ h2 {
 }
 
 hr {
-    padding: 0 6.25% 0 6.25%;
+    padding: 0 6.25%;
     width: 80%;
     margin: 1rem auto;
 }
 
+a {
+    text-decoration: none;
+    
+    &:hover {
+        text-decoration: underline;
+    }
+}
 
 .ui.modals.visible {
     background: transparent !important;
@@ -95,7 +102,7 @@ hr {
         &:hover {
             p {
                 opacity: 1;
-                background: rgba(210, 210, 210, .5);
+                background: rgb(105 105 105);
                 padding: 20px 30px;
                 transition: opacity 250ms ease-in-out;
             }
@@ -104,12 +111,12 @@ hr {
 }
 
 
-// fix a bug in react-bootstrap where fading items stay hidden
+/* fix a bug in react-bootstrap where fading items stay hidden */
 .fade.show:not(.modal-backdrop) {
     opacity: 1;
 }
 
-// Style the console globally to have rounded corners.
+/* Style the console globally to have rounded corners. */
 .wmks > canvas {
     border-radius: 4px;
 }
