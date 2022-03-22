@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import * as Sentry from '@sentry/browser';
-import Routes from './router/Routes';
+import Routes from './router/AppRoutes';
 import {CapsLockContextProvider} from './components/CapsLockContext/CapsLockContext';
 
 // Configure Sentry
