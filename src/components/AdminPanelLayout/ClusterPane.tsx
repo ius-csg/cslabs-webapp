@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button} from 'react-bootstrap';
+import {Button, Col, Row} from 'react-bootstrap';
 import {Layout} from '../../pages/Layout/Layout';
 import styles from './ClusterPane.module.scss';
 import Node from './Node';
@@ -45,9 +45,19 @@ export const ClusterPane = (props: {clusterName: string}) => {
         <Button>Add Node</Button>
         <p>{props.clusterName}</p>
       </div>
-      <Node nodeNum={1} statusNum={0} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
-      <Node nodeNum={2} statusNum={1} deployedNum={0} avgCPU={75} currentCPU={90} avgRAM={80} currentRAM={85} drive1={25} drive2={50} uptime={9500}/>
-      <Node nodeNum={3} statusNum={2} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
-      <Node nodeNum={4} statusNum={3} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
+      <Row className='d-flex justify-content-between'>
+        <Col key={1} md={5}>
+          <Node nodeNum={1} statusNum={0} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
+        </Col>
+        <Col key={2} md={5}>
+          <Node nodeNum={2} statusNum={1} deployedNum={0} avgCPU={75} currentCPU={90} avgRAM={80} currentRAM={85} drive1={25} drive2={50} uptime={9500}/>
+        </Col>
+        <Col key={3} md={5}>
+          <Node nodeNum={4} statusNum={2} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
+        </Col>
+        <Col key={4} md={5}>
+          <Node nodeNum={4} statusNum={3} deployedNum={2} avgCPU={53} currentCPU={30} avgRAM={50} currentRAM={45} drive1={250} drive2={500} uptime={2500}/>
+        </Col>
+      </Row>
     </Layout>);
 };
