@@ -55,7 +55,7 @@ export class VerifyEmail extends Component<VerifyEmailProps, State> {
   }
 
   render() {
-    return <Layout>
+    return <Layout isEmailVerificationPage={true}>
       {this.renderInner()}
     </Layout>;
   }

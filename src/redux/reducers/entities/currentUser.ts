@@ -8,6 +8,8 @@ export default function currentUser(state: User|null = null, action: Action): Us
     return action.data;
   }
   if (action.type === CurrentUserTypes.SET_VERIFIED) {
+      if(!state)
+        return state;
       return {
         ...state as User,
         verified: action.data as boolean

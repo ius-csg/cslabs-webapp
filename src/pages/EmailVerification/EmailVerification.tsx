@@ -9,20 +9,27 @@ import {useMount} from '../../hooks/useMount';
 import {RoutePaths} from '../../router/RoutePaths';
 import {DelayedRedirect} from '../../util/DelayedRedirect';
 import {usePerformRequest} from '../../util/usePerformRequest';
+import {bindActionCreators, Dispatch} from 'redux';
+import {setUserVerified} from '../../redux/actions/entities/currentUser';
+import {connect} from 'react-redux';
 
-const EmailVerification = () => {
+type EmailVerificationProps = ReturnType<typeof mapDispatchToProps>;
+
+const EmailVerification = ({actions}: EmailVerificationProps) => {
 
   const [sent, setSent] = useState(false);
   const [verified, setVerified] = useState();
   const {loading, error, performRequest} = usePerformRequest();
 
-  const handleClick = async () => {
-    await performRequest(async () => setSent(await resendEmailVerification()));
+  const handleClick = async () => await performRequest(async () => setSent(await resendEmailVerification()));
+  const checkVerified = async () => {
+    await performRequest(async () => {
+      const verifiedResponse = await verifyUser() ?? false;
+      actions.setUserVerified(verifiedResponse);
+      setVerified(verifiedResponse);
+    });
   };
-
-  useMount(async () => {
-    await performRequest(async () => setVerified(await verifyUser() ?? false));
-  });
+  useMount(checkVerified);
 
   return (
     <Layout isEmailVerificationPage={true}>
@@ -35,7 +42,7 @@ const EmailVerification = () => {
             {error
               ? 'There was an error sending a verification email to your account.' :
               verified
-                ? 'You\'re account has been verified and will be directed shortly.'
+                ? 'You\'re account has been verified and will be redirected shortly.'
                 : !sent ? 'Your account has not been verified.' : 'A verification link has been sent to your email.'}
           </p>
           {!(verified && !error) ? <>
@@ -49,7 +56,8 @@ const EmailVerification = () => {
                     verification email to your account. `}
             </p>
             {!verified && !sent && <Button onClick={handleClick}>Send another verification email</Button>}
-          </> : <DelayedRedirect path={RoutePaths.explore} delay={2}/>
+            {!verified && sent && <Button onClick={checkVerified}>Check again</Button>}
+          </> : <DelayedRedirect path={RoutePaths.explore} delay={2000}/>
           }
         </div> : <div className={styles['spinner']}>
           <Spinner
@@ -64,4 +72,8 @@ const EmailVerification = () => {
 };
 
 
-export default EmailVerification;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  actions: bindActionCreators({setUserVerified: setUserVerified}, dispatch)
+});
+
+export default connect(undefined, mapDispatchToProps)(EmailVerification);
