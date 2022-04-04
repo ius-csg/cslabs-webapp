@@ -6,3 +6,8 @@ export const setCurrentUser = (user: User|null): Action => ({
   type: CurrentUserTypes.SET_USER,
   data: user
 });
+
+export const setUserVerified = (verified: boolean): Action => ({
+  type: CurrentUserTypes.SET_VERIFIED,
+  data: verified
+});
