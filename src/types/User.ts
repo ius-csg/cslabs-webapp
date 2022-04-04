@@ -1,6 +1,7 @@
 import {TrackableEntity} from './Entity';
 
 export interface User extends TrackableEntity {
+  verified: boolean;
   firstName: string;
   middleName?: string;
   lastName: string;

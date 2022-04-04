@@ -182,6 +182,15 @@ export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
 
+export async function verifyUser() {
+  return handleResponse(await api.get<boolean>(`/user/verify-user`)).data;
+}
+
+export async function resendEmailVerification() {
+  return handleResponse(await api.post<boolean>(`/user/resend-emailverification`)).data;
+}
+
+
 export async function changeNewsletterSubscription(subscribe: boolean) {
   return handleResponse(await api.put(`/user/change-newsletter-subscription`, {subscribe: subscribe}));
 }

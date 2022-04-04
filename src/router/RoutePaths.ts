@@ -23,6 +23,7 @@ export enum RoutePaths {
   sitePolicy = '/policy',
   contentCreator = '/content-creator',
   adminPanel = '/admin-panel',
+  emailVerification = '/emailverification',
   unsubscribeNewsletter = '/unsubscribe-newsletter',
   newsletterStatus = '/newsletter-status'
 }
