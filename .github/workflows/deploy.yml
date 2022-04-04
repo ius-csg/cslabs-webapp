@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Move to frontend repo, verify dev branch, and run deploy script
         run:
-          cd /var/www/cslabs-webapp && git checkout dev && .deploy.sh
+          cd /var/www/cslabs-webapp && git checkout dev && ./deploy.sh
 
   deploy-prod:
     name: Deployment to prod
