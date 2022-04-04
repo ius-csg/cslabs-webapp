@@ -1,3 +1,3 @@
 git pull
 yarn install
-yarn run build
+yarn CI='' run build
