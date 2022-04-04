@@ -178,7 +178,6 @@ export async function startUserModule(id: string) {
   return handleResponse(await api.post<UserModule>(`/user-module/${id}`)).data;
 }
 
-
 export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
@@ -189,6 +188,11 @@ export async function verifyUser() {
 
 export async function resendEmailVerification() {
   return handleResponse(await api.post<boolean>(`/user/resend-emailverification`)).data;
+}
+
+
+export async function changeNewsletterSubscription(subscribe: boolean) {
+  return handleResponse(await api.put(`/user/change-newsletter-subscription`, {subscribe: subscribe}));
 }
 
 export async function getModuleForEditor(moduleId: number) {

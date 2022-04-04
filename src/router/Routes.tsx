@@ -26,6 +26,9 @@ import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
 import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
 import EmailVerification from '../pages/EmailVerification/EmailVerification';
+import UnsubscribeNewsletter from 'pages/UnsubscribeNewsletter/UnsubscribeNewsletter';
+import SubscriptionStatus from 'pages/NewsletterStatus/NewsletterStatus';
+
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
@@ -54,6 +57,8 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.contentCreator} component={ModulesEditor}/>
         <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
         <Route exact={true} path={RoutePaths.emailVerification} component={EmailVerification}/>
+        <Route exact={true} path={RoutePaths.unsubscribeNewsletter} component={UnsubscribeNewsletter}/>
+        <Route exact={true} path={RoutePaths.newsletterStatus} component={SubscriptionStatus}/>
         <Route component={NotFound} />
         <Route component={ServiceUnavailable} />
       </Switch>
