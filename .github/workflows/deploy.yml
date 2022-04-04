@@ -5,6 +5,10 @@ on:
       - dev
   release:
     types: [ published ]
+
+env:
+  CI: false
+
 jobs:
   deploy-dev:
     name: Deployment to dev
