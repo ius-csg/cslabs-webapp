@@ -6,7 +6,7 @@ import {WebState} from '../../redux/types/WebState';
 import {connect} from 'react-redux';
 import {isAuthenticated} from '../../redux/selectors/entities';
 import {UserModule} from '../../types/UserModule';
-import {getLocalDateTimeString} from '../../util';
+import {getLocalDateTimeString, getModuleDifficultyLabel} from '../../util';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import {Link} from 'react-router-dom';
 import {IconButton} from '../util/IconButton/IconButton';
@@ -35,6 +35,7 @@ class CreatorsModuleCardComponent extends Component<CreatorsModuleCardProps > {
           <div style={{marginBottom: '1rem'}}>
             <b>Published: </b> {`${module.published}`} <br/>
             <b>Module type: </b> {`${module.type}`} <br/>
+            <b>Difficulty: </b> {`${getModuleDifficultyLabel(module.difficulty)}`} <br/>
           </div>
           <Link style={{marginRight: '0.5rem'}} to={`/module/${module.specialCode}`}>Share Link</Link>
           {<CopyToClipboard text={getModuleShareLink(module.specialCode)}>
