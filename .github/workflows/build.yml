@@ -6,6 +6,10 @@ on:
       - dev
   pull_request:
     types: [opened, synchronize, reopened]
+
+env:
+  CI: false
+
 jobs:
   build:
     name: Yarn Build
@@ -13,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [12.x]
+        node-version: [16.x]
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v1
@@ -25,4 +29,4 @@ jobs:
       - run: yarn install
       - name: Run TSLint
         run: yarn run lint
-      - run: CI='' yarn run build
+      - run: yarn run build
