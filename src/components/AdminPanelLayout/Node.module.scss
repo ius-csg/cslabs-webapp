@@ -1,0 +1,29 @@
+@import "../../theme";
+
+.node {
+    Button {
+        float: right;
+        margin: 5px;
+    }
+    span {
+        margin-left: 10px;
+        height: 30px;
+        width: 30px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+    }
+    #good {
+        background-color: #009E0F;
+    }
+    #issues {
+        background-color: #FF9900;
+    }
+    #maintenance {
+        background-color: black;
+    }
+    #offline {
+        background-color: #CF2A27;
+    }
+    z-index: 1;
+}
