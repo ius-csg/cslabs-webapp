@@ -4,7 +4,6 @@ import {Role, User} from '../../types/User';
 import {changeUserRole, getCurrentUserFromServer, getUserList} from '../../api';
 import {useMount} from '../../hooks/useMount';
 import {HorizontallyCenteredSpinner} from '../util/HorizonallyCenteredSpinner';
-import {Layout} from '../../pages/Layout/Layout';
 import UserListItem from './UserListItem';
 import {ChangeUserRoleRequest} from '../../api';
 import {AxiosResponse} from 'axios';
@@ -43,8 +42,7 @@ const UsersPane = (props: Props) => {
     if (user.id === props.currentUser.id && !warningShown) {
       setShowWarning(true);
       setUserToUpdate([role, user]);
-    }
-    else {
+    } else {
       updateUser(role, user);
     }
   };
@@ -61,8 +59,7 @@ const UsersPane = (props: Props) => {
     const requestIndex = updateRequests.findIndex((req) => req.userId === request.userId);
     if (requestIndex < 0) {
       setUpdateRequests([...updateRequests, request]);
-    }
-    else {
+    } else {
       const newRequests = [...updateRequests];
       newRequests[requestIndex] = request;
       setUpdateRequests(newRequests);
@@ -107,7 +104,6 @@ const UsersPane = (props: Props) => {
     };
 
     return (
-      <Layout>
         <Modal
           show={showWarning}
           backdrop={'static'}
@@ -117,15 +113,14 @@ const UsersPane = (props: Props) => {
             CAUTION
           </ModalHeader>
           <ModalBody>
-            You are editing your own role. Doing so could lead to unexpected behavior, and you may be denied access to the
-            admin panel. Are you certain you wish to proceed?
+            You are editing your own role. Doing so could lead to unexpected behavior, and you may be denied access to
+            the admin panel. Are you certain you wish to proceed?
           </ModalBody>
           <ModalFooter>
             <Button variant={'primary'} onClick={handleCancel}>Cancel</Button>
             <Button variant={'secondary'} onClick={handleConfirm}>Confirm</Button>
           </ModalFooter>
         </Modal>
-      </Layout>
     );
   };
 
@@ -133,17 +128,18 @@ const UsersPane = (props: Props) => {
     if (commitResponseCode) {
       if (commitResponseCode > 199 && commitResponseCode < 300) {
         return <p style={{position: 'absolute', top: '0', right: '0', color: '#02b875'}}>Save successful!</p>;
-      }
-      else if (commitResponseCode === 401) {
-        return <p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>You are not authorized to change
+      } else if (commitResponseCode === 401) {
+        return <p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>
+          You are not authorized to change
           user roles, or you are no longer signed in. If you are signed in, and you believe
-          this to be in error, please see a CSLabs admin</p>;
+          this to be in error, please see a CSLabs admin
+        </p>;
+      } else {
+        return <p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>
+          Error saving changes, please try again
+        </p>;
       }
-      else {
-        return <p style={{position: 'absolute', top: '0', right: '0', color: '#d9534f'}}>Error saving changes, please try again</p>;
-      }
-    }
-    else {
+    } else {
       return null;
     }
   };
@@ -157,21 +153,21 @@ const UsersPane = (props: Props) => {
     setUsersToDisplay(foundUsers);
   };
 
-  return <Layout>{loading ? <HorizontallyCenteredSpinner/> : (
+  return <>{loading ? <HorizontallyCenteredSpinner/> : (
     <div>
       <ConfirmRoleChange/>
-      <div style={{textAlign: 'right', padding: '10px 20px'}}>
+      <div style={{textAlign: 'right', padding: '10px 0'}}>
         <CommitStatus/>
-      <InputGroup>
-        <Form.Control
-          onChange={handleSearch}
-          placeholder={'Search'}
-          aria-label={'Search Users'}
-          aria-describedby={'search-users'}
-        />
-        <InputGroup.Text id={'search-users'}><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
-        <Button style={{marginLeft: '10px'}} variant={'outline-primary'} onClick={commitUsers}>Save</Button>
-      </InputGroup>
+        <InputGroup>
+          <Form.Control
+            onChange={handleSearch}
+            placeholder={'Search'}
+            aria-label={'Search Users'}
+            aria-describedby={'search-users'}
+          />
+          <InputGroup.Text id={'search-users'}><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
+          <Button style={{marginLeft: '10px'}} variant={'outline-primary'} onClick={commitUsers}>Save</Button>
+        </InputGroup>
       </div>
       <Table striped={true} bordered={true} hover={true}>
         <thead style={{backgroundColor: '#adb5bd'}}>
@@ -189,8 +185,8 @@ const UsersPane = (props: Props) => {
       </Table>
     </div>
   )}
-  </Layout>;
+  </>;
 
 };
 
-export default connect((state: WebState) => ({currentUser: getCurrentUser(state)})) (UsersPane);
+export default connect((state: WebState) => ({currentUser: getCurrentUser(state)}))(UsersPane);
