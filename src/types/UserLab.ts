@@ -9,6 +9,7 @@ export interface UserLab extends Entity {
   hasReadme: boolean;
   endDateTime?: string;
   status: UserLabStatus;
+  userModuleId: number;
 }
 
 export type UserLabStatus = 'Started' | 'NotStarted' | 'Completed';

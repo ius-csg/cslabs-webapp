@@ -35,9 +35,9 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
     return (
         <Card className={Styles.card}>
           <Card.Body style={{height: 270}}>
-            <Card.Title>{module.name}</Card.Title>
+            <Card.Title>{module.name} {(module.disabled ? '(disabled)' : '')}</Card.Title>
             {!this.state.tagsExpanded ?
-              <Card.Text style={{textAlign: 'left', fontSize: '1rem', fontWeight: 400, color: '#868e96'}}>
+              <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden', textAlign: 'left', fontSize: '1rem', fontWeight: 400, color: '#868e96'}}>
               {module.description.substring(0, 150)}
             </Card.Text> : null}
             {module.moduleTags.length !== 0 &&
@@ -59,7 +59,6 @@ class ModuleCardComponent extends Component<ModuleCardProps, ModuleCardState> {
         </Card>
     );
   }
-
 
   getStartButton() {
     if (this.props.buttonLink) {

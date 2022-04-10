@@ -27,6 +27,7 @@ import {PageTitle} from '../../components/util/PageTitle';
 import {TagEditor} from '../../components/TagEditor/TagEditor';
 import {ModuleTag} from '../../types/ModuleTag';
 import {useEffect} from 'react';
+import {useUser} from '../../redux/selectors/hooks';
 
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
@@ -46,6 +47,8 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setLoading(false);
     setMessage(undefined);
   }
+
+  const user = useUser();
 
   const onSubmit = async (form: ModuleForm, {setErrors}: FormikHelpers<ModuleForm>) => {
     setMessage(undefined);
@@ -93,6 +96,8 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     LoadModule();
   }, [moduleId]);
 
+  const canDisable = user?.role === 'Admin' || (user?.role === 'Creator' &&  user?.id === initialValues.ownerId);
+
   const renderForm = () => (
     <Formik
       initialValues={initialValues}
@@ -113,7 +118,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
             <Col className='d-flex justify-content-end align-items-center'>
               {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
               {!editing && <Button type='button' onClick={() => setEditing(true)}>Edit</Button>}
-              {editing && <LoadingButton loading={isSubmitting} type='submit' label={values.id ? 'Save' : 'Create'}/>}
+              {editing && <LoadingButton loading={isSubmitting} type='submit' label={values.id ? 'Save' : 'Create'} disabledToolTipText={'This lab is currently disabled'}/>}
             </Col>
           </Row>
           <Col sm='12' className='m-auto'>
@@ -131,6 +136,11 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
             <Form.Group>
               <CheckBoxInput name={propertyOf<ModuleForm>('published')} label='Publish (Display on the explore page)' disabled={!editing}/>
             </Form.Group>
+            {canDisable &&
+              <Form.Group>
+                <CheckBoxInput name={propertyOf<ModuleForm>('disabled')} label='Disable Module' disabled={!editing}/>
+              </Form.Group>
+            }
             <Form.Group>
               <Form.Label column={true}>Type</Form.Label>
               <DropdownInput name={propertyOf<ModuleForm>('type')} dropdownData={moduleTypeOptions} disabled={!editing}/>
@@ -155,7 +165,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
               Once you save your changes you can add and remove labs from this module. Note: Adding or editing a lab will cancel changes on this page
             </p>
             {values.id !== 0 &&
-            <LabListEditor labs={values.labs} prefix={propertyOf<ModuleForm>('labs')} moduleId={values.id}/>
+              <LabListEditor labs={values.labs} prefix={propertyOf<ModuleForm>('labs')} moduleId={values.id} disabledModule={values.disabled}/>
             }
           </Col>
         </Form>

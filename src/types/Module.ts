@@ -4,10 +4,11 @@ import {ModuleTag} from './ModuleTag';
 export interface BaseModule  extends TrackableEntity {
   name: string;
   description: string;
+  disabled: boolean;
   published: boolean;
   specialCode: string;
   type: ModuleType;
-  userId: number;
+  ownerId: number;
   moduleTags: ModuleTag[];
 }
 

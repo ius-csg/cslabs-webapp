@@ -75,7 +75,7 @@ export async function resetVm(id: number): Promise<string> {
 }
 
 export async function getModule(id: number) {
-  return ( await api.get<Module>(`/modules/${id}`)).data;
+  return ( await api.get<Module>(`/module/${id}`)).data;
 }
 
 export async function getUserList() {

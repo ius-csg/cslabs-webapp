@@ -7,11 +7,12 @@ export const ModuleEditorSchema = object<ModuleForm>({
   name: string().min(3, 'Must at least be 3 characters').required('Required'),
   specialCode : string().required('Required'),
   description: string().required('Required').min(4, 'Required'),
+  disabled: boolean(),
   updatedAt: string().notRequired(),
   createdAt: string().notRequired(),
   id: number(),
-  userId: number(),
   type: string() as StringSchema<ModuleType>,
+  ownerId: number(),
   published: boolean(),
   labs: array(),
   moduleTags: array()

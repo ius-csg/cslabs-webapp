@@ -4,7 +4,7 @@ import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab} from
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
-import {getUserLabReadmeUrl, getUserLabTopologyUrl, updateEndDateTime} from '../../api';
+import {getUserLabReadmeUrl, getUserLabTopologyUrl, updateEndDateTime,getPublicModule} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {LoadingButton} from '../../util/LoadingButton';
 import {combineClasses, getRemainingLabTime, getLuxonObjectFromString} from '../../util';
@@ -14,6 +14,7 @@ import {VmStatusIndicator} from '../util/VmStatusIndicator/VmStatusIndicator';
 import styles from './LabEnvironment.module.scss';
 import {RoutePaths} from 'router/RoutePaths';
 import Popup from '../util/Popup';
+import {Module} from '../../types/Module';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -30,6 +31,7 @@ interface LabEnvironmentState {
   readmeLoaded: boolean;
   show_vm: boolean;
   eventKey: string;
+  module?: Module;
   labEndDateTime?: string;
   interval: number;
 }
@@ -46,12 +48,13 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     interval: 0
   };
 
-  componentDidMount() {
-    this.setLabEndDateTimeInterval(this.props.userLab);
-  }
-
   componentWillUnmount() {
     window.clearInterval(this.state.interval);
+  }
+
+  async componentDidMount() {
+    this.setLabEndDateTimeInterval(this.props.userLab);
+    this.setState({module: await getPublicModule(this.props.userLab.userModuleId)});
   }
 
   canGoToPrevPage = () => this.state.pageNumber > 1;
@@ -101,7 +104,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
       };
       return (
         <Popup
-          id='times-up' 
+          id='times-up'
           title='Times up!'
           description='Congratulations! You have finished working on this lab.
             You will be automatically redirected to your modules page after 15 seconds.'
@@ -110,7 +113,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
           display={true}
         />
       );
-    } else if (remainingLabTime > 0 && remainingLabTime <= 900) {      
+    } else if (remainingLabTime > 0 && remainingLabTime <= 900) {
       return <Button className='ml-2' onClick={this.onExtendEndDateTime}>Extend</Button>;
     } else {
       return;
@@ -126,9 +129,11 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
             <h2>Lab : {this.props.userLab.lab.name}</h2>
             {this.isLabAbleToStart() ?
               <LoadingButton
-                loading={this.props.starting}
+                loading={this.props.starting || !this.state.module}
+                disabled={this.state.module?.disabled ?? true}
                 label='Start Lab'
-                onClick={this.props.onStartLab} 
+                onClick={this.props.onStartLab}
+                disabledToolTipText={'This lab is currently disabled'}
               /> : this.props.userLab.lab.type === 'Temporary' &&
               <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime)}{this.showExtendButton()}</h6>
             }

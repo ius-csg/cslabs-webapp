@@ -26,9 +26,9 @@ class App extends React.Component {
 
   public render() {
     return (
-     <CapsLockContextProvider>
+      <CapsLockContextProvider>
         <Routes/>
-     </CapsLockContextProvider>
+      </CapsLockContextProvider>
     );
   }
 }

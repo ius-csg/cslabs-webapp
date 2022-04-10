@@ -13,12 +13,15 @@ interface Props {
   labs: LabItem[];
   prefix: string;
   moduleId: number;
+  disabledModule: boolean;
 }
 function getNewLabEditorLink(moduleId: number) {
   return RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', '');
 }
 
-export function LabListEditor({labs, prefix, moduleId}: Props) {
+
+
+export function LabListEditor({labs, prefix, moduleId, disabledModule}: Props) {
   return (
     <FieldArray
       name={prefix}
@@ -30,8 +33,9 @@ export function LabListEditor({labs, prefix, moduleId}: Props) {
               <IconButton
                 icon={faPlusCircle}
                 size={'2x'}
-                link={getNewLabEditorLink(moduleId)}
-                color={'black'}
+                tooltip={disabledModule  ? '"Disable Module" must be unchecked to add a Lab' : undefined}
+                color={disabledModule   ? 'grey' : 'black'}
+                link={!disabledModule   ? getNewLabEditorLink(moduleId) : undefined}
               />
             </Col>
           </Row>

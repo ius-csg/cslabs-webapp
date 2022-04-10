@@ -70,6 +70,7 @@
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.0",
     "react-select": "^3.1.0",
+    "react-tooltip": "^4.2.21",
     "react-tag-autocomplete": "^6.3.0",
     "redux": "^4.0.4",
     "redux-persist": "^6.0.0",

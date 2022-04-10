@@ -29,9 +29,10 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       id: 0,
       createdAt: '',
       description: '',
+      disabled: false,
       name: 'Loading',
       published: false,
-      userId: 0,
+      ownerId: 0,
       specialCode: '',
       type: 'SingleUser',
       updatedAt: '',
@@ -108,6 +109,7 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
         loading={this.state.startingModule}
         className='btn btn-primary'
         onClick={this.hasUserModule() ? undefined : this.startModule}
+        disabledToolTipText={'This lab is currently disabled'}
       />
     );
   }
