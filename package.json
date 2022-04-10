@@ -45,6 +45,8 @@
     "@types/zxcvbn": "^4.4.0",
     "axios": "^0.21.1",
     "axios-retry": "^3.1.9",
+    "bad-words": "^3.0.4",
+    "badwords-list": "^1.0.0",
     "browser-detect": "^0.2.28",
     "connected-react-router": "^6.6.1",
     "formik": "2.0.3",
