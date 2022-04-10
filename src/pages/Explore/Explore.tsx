@@ -31,7 +31,6 @@ class Explore extends React.Component<{}, ExploreState> {
     } catch (_) {
       this.setState({state: 'error'});
     }
-
   }
 
   render() {

@@ -40,7 +40,8 @@ class UserModulePage extends Component <UserModuleLabsProps, UserModuleLabsState
          createdAt: '',
          specialCode: '',
          type: 'SingleUser',
-         userModuleId: 0
+         userModuleId: 0,
+         moduleTags: []
        },
        userLabs: []
      },

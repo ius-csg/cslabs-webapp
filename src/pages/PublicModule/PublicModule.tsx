@@ -12,6 +12,7 @@ import {Alert, Button, Card} from 'react-bootstrap';
 import Styles from './PublicModule.module.scss';
 import {getLocalDateTimeString} from '../../util';
 import {LoadingButton} from '../../util/LoadingButton';
+import {TagEditor} from '../../components/TagEditor/TagEditor';
 
 interface MyModuleState {
   module: Module;
@@ -33,7 +34,8 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
       userId: 0,
       specialCode: '',
       type: 'SingleUser',
-      updatedAt: ''
+      updatedAt: '',
+      moduleTags: []
     },
     startingModule: false
   };
@@ -135,6 +137,13 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
             <Card.Text style={{height: 105, textOverflow: 'ellipsis', overflow: 'hidden'}}>
               {module.description}
             </Card.Text>
+            <TagEditor
+              editable={false}
+              readonly={true}
+              expanded={true}
+              hideIcon={true}
+              tags={module.moduleTags.map(mt => mt.tag)}
+            />
           </Card.Body>
           <Card.Footer style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <small className='text-muted'>{getLocalDateTimeString(module.updatedAt)}</small>

@@ -1,50 +1,46 @@
 import React, {useEffect, useState} from 'react';
 import ReactTags, {Tag, ClassNames} from 'react-tag-autocomplete';
-import {} from './TagEditor.scss';
+import styles from './TagEditor.module.scss';
 import {usePerformRequest} from '../../util/usePerformRequest';
 import {getTags} from '../../api';
 import {Message} from '../../util/Message';
+import BadWordsFilter from 'bad-words';
+import {loadFilter} from '../util/BadwordsFilter';
+import {doNothing} from '../util/Util';
+import {classes} from '../../util';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEllipsisH, faWindowClose} from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   tags: Tag[];
-  mes: string | undefined;
-  editing: boolean;
-  onAdd(tag: Tag): void;
+  editable?: boolean;
+  readonly?: boolean;
+  expanded?: boolean;
+  setExpanded?: (expanded: boolean) => void;
+  hideIcon?: boolean;
+  onAdd?(tag: Tag): void;
   onSearch?(term: string): Tag[];
-  onDelete(i: number): void;
+  onDelete?(i: number): void;
   onInput?(name: string): void;
 }
 
 const formatTag = (tag: Tag) => tag.name.charAt(0).toUpperCase() + tag.name.substring(1);
 
 export function TagEditor(props: Props) {
-  const {tags, onSearch, onDelete, mes, editing} = props;
-  const [className, setClassName] = useState('disabled');
+  const {tags, onSearch, onDelete, editable, readonly, expanded, setExpanded, hideIcon} = props;
   const [invalid, setInvalid] = useState('');
-  const Filter = require('bad-words');
-  const BadWordList = require('badwords-list');
-  const badWordList = BadWordList.array;
-  const filter = new Filter();
-
-
-  const [tagSuggestions, setTagSuggestions] = React.useState<Tag[]>([]);
-  filter.addWords(...badWordList);
+  const [tagSuggestions, setTagSuggestions] = useState<Tag[]>([]);
+  const [filter] = useState<BadWordsFilter>(() => loadFilter());
   const onAdd = (tag: Tag) => {
-    tag.name = tag.name.charAt(0).toUpperCase() + tag.name.substring(1);
-    props.onAdd(tag);
+    tag.name = formatTag(tag);
+    if(props.onAdd)
+      props.onAdd(tag);
   };
   const {performRequest, error, setError} = usePerformRequest();
   useEffect(() => setError(false), [props.tags]);
-  useEffect(() => {
-    if (mes === 'success' && editing)
-      setClassName('enabled success');
-    else if (mes === 'success' && !editing)
-      setClassName('disabled success');
-    else if (!editing)
-      setClassName('disabled');
-    else
-      setClassName('enabled');
-  }, [mes, editing]);
+  const className =  editable
+    ? styles['editable']
+    : classes(styles['disabled'], readonly && styles['read-only'], expanded && styles['expanded']);
 
   function onValidate(tag: Tag) {
     let newInvalid = '';
@@ -71,30 +67,38 @@ export function TagEditor(props: Props) {
   }
 
   const classNames: ClassNames = {
-    root: 'react-tags',
-    rootFocused: 'is-focused',
-    selected: 'react-tags-selected',
-    selectedTag: 'react-tags-selected-tag',
+    root: styles['react-tags'],
+    rootFocused: styles['is-focused'],
+    selected: styles['react-tags-selected'],
+    selectedTag: styles['react-tags-selected-tag'],
     selectedTagName: 'react-tags-selected-tag-name',
-    search: 'react-tags-search',
-    searchInput: 'react-tags-search-input',
-    suggestions: 'react-tags-suggestions',
+    search: styles['react-tags-search'],
+    searchInput: styles['react-tags-search-input'],
+    suggestions: styles['react-tags-suggestions'],
     suggestionActive: 'is-active',
     suggestionDisabled: 'is-disabled'
   };
+
   return (
     <div className={className}>
       {error && <Message state={{variant: 'danger', message: 'Failed to load tags'}} />}
       <ReactTags
         tags={tags}
         onAddition={onAdd}
-        onDelete={onDelete}
+        onDelete={onDelete ?? doNothing}
         onInput={onInput}
         suggestions={tagSuggestions}
         allowNew={true}
         onValidate={onValidate}
         classNames={classNames}
       />
+      { !hideIcon && readonly &&
+        <FontAwesomeIcon
+          icon={expanded ? faWindowClose : faEllipsisH}
+          style={{display: 'inline', cursor: 'pointer', position: 'relative', top: 4, color: '#868e96'}}
+          onClick={() => setExpanded && setExpanded(!expanded)}
+        />
+      }
       {invalid && <Message state={{variant: 'danger', message: invalid}} />}
     </div>
   );

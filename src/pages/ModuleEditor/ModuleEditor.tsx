@@ -26,6 +26,7 @@ import {LabListEditor} from '../../components/LabListEditor/LabListEditor';
 import {PageTitle} from '../../components/util/PageTitle';
 import {TagEditor} from '../../components/TagEditor/TagEditor';
 import {ModuleTag} from '../../types/ModuleTag';
+import {useEffect} from 'react';
 
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
   {value: 'SingleUser', label: 'Single User'},
@@ -39,7 +40,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
   const [loading, setLoading] = React.useState(true);
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = React.useState(false);
-  const [redirect, setRedirect] = React.useState();
+  const [redirect, setRedirect] = React.useState<string>();
 
   function completeLoading() {
     setLoading(false);
@@ -67,9 +68,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setMessage(undefined);
   }
 
-
-
-  React.useEffect(() => {
+  useEffect(() => {
     async function LoadModule() {
       setRedirect(undefined);
       if (!moduleId) {
@@ -145,8 +144,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
               {(helpers) => (
                 <TagEditor
                   tags={values.moduleTags.map(mt => mt.tag)}
-                  mes={message?.variant}
-                  editing={editing}
+                  editable={editing}
                   onAdd={t => helpers.push(cast<ModuleTag>({moduleId: Number(moduleId), tagId: (t.id === 0) ? t.id : 0, tag: t}))}
                   onDelete={i => helpers.remove(i)}
                 />
