@@ -16,7 +16,7 @@ import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
 import {getModuleShareLink, ModuleType} from '../../types/Module';
 import {Redirect, RouteComponentProps} from 'react-router';
-import {getModuleForEditor, getTags, saveModule} from '../../api';
+import {getModuleForEditor, saveModule} from '../../api';
 import {HorizontallyCenteredSpinner} from '../../components/util/HorizonallyCenteredSpinner';
 import {ModuleEditorSchema} from './ModuleEditorSchema';
 import {RoutePaths} from '../../router/RoutePaths';
@@ -25,7 +25,6 @@ import CheckBoxInput from '../../components/util/CheckBoxInput/CheckBoxInput';
 import {LabListEditor} from '../../components/LabListEditor/LabListEditor';
 import {PageTitle} from '../../components/util/PageTitle';
 import {TagEditor} from '../../components/TagEditor/TagEditor';
-import {Tag} from '../../types/Tag';
 import {ModuleTag} from '../../types/ModuleTag';
 
 const moduleTypeOptions: DropdownOption<ModuleType>[] = [
@@ -36,7 +35,6 @@ const moduleTypeOptions: DropdownOption<ModuleType>[] = [
 type Props = RouteComponentProps<{ moduleId?: string }>;
 
 export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
-  const [tagSuggestions, setTagSuggestions] = React.useState<Tag[]>([]);
   const [initialValues, setInitialValues] = React.useState<ModuleForm>(makeModuleForm());
   const [loading, setLoading] = React.useState(true);
   const [message, setMessage] = useMessage();
@@ -69,14 +67,7 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
     setMessage(undefined);
   }
 
-  async function onTagInput(input: string) {
-    try {
-      setTagSuggestions(await getTags(input));
-    }
-    catch (e) {
-      setTagSuggestions(tagSuggestions);
-    }
-  }
+
 
   React.useEffect(() => {
     async function LoadModule() {
@@ -149,17 +140,15 @@ export default function ModuleEditor({match: {params: {moduleId}}}: Props) {
               <Form.Label column={true}>Module Description</Form.Label>
               <Input name={propertyOf<ModuleForm>('description')} placeholder='Description' type='textarea' disabled={!editing}/>
             </Form.Group>
-            <Form.Label column={true}>Tags</Form.Label>
+            <Form.Label column={true}>Tags (eg. "Server-Administration" - each word must start with an uppercase letter with dashes)</Form.Label>
             <FieldArray name={propertyOf<ModuleForm>('moduleTags')}>
               {(helpers) => (
                 <TagEditor
                   tags={values.moduleTags.map(mt => mt.tag)}
-                  tagSuggestions={tagSuggestions}
                   mes={message?.variant}
                   editing={editing}
                   onAdd={t => helpers.push(cast<ModuleTag>({moduleId: Number(moduleId), tagId: (t.id === 0) ? t.id : 0, tag: t}))}
                   onDelete={i => helpers.remove(i)}
-                  onInput={onTagInput}
                 />
               )}
             </FieldArray>

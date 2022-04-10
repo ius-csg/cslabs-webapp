@@ -11,5 +11,6 @@ export function usePerformRequest() {
       setSending({loading: false, error: true});
     }
   };
-  return {performRequest, loading, error};
+  const setError = (err: boolean) => setSending({loading: loading, error: err});
+  return {performRequest, loading, error, setError};
 }
