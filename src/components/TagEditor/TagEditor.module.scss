@@ -74,7 +74,7 @@
     }
 }
 
-.enabled {
+.editable {
     .react-tags {
         position: relative;
         padding: 6px 0 0 6px;
@@ -123,7 +123,7 @@
     }
 }
 
-.display-only {
+.read-only {
     width: 90%;
     display: inline-flex;
     height: 20%;

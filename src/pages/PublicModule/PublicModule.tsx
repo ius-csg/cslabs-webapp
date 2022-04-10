@@ -20,10 +20,6 @@ interface MyModuleState {
   startingModule: boolean;
 }
 
-function doNothing() {
-  // do nothing
-}
-
 type PublicModuleProps = RouteComponentProps<{ id: string }> & ReturnType<typeof mapStateToProps>;
 
 class PublicModule extends Component<PublicModuleProps, MyModuleState> {
@@ -142,11 +138,10 @@ class PublicModule extends Component<PublicModuleProps, MyModuleState> {
               {module.description}
             </Card.Text>
             <TagEditor
-              onAdd={doNothing}
-              editing={false}
-              tagSuggestions={[]}
-              onInput={doNothing}
-              onDelete={doNothing}
+              editable={false}
+              readonly={true}
+              expanded={true}
+              hideIcon={true}
               tags={module.moduleTags.map(mt => mt.tag)}
             />
           </Card.Body>
