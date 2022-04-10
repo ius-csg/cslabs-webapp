@@ -41,6 +41,7 @@ class ConsolePopout extends Component<Props> {
 
     this.externalWindow!.document.title = 'VM Popout';
 
+    // Sonarcloud thinks this line is a security issue
     this.externalWindow!.addEventListener('beforeunload', (ev: BeforeUnloadEvent) => {
       if(!this.shouldAsk) {
         return;

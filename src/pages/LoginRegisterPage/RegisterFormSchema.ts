@@ -29,6 +29,6 @@ export const RegisterFormSchema: ObjectSchema<RegisterFormValues> = object({
   password: passwordValidator,
   confirmPass: makeConfirmPasswordValidator('password'),
   gradYear: string(),
-  phoneNumber: string().matches(/[0-9]{3}-[0-9]{3}-[0-9]{4}/, 'Please type in format of XXX-XXX-XXXX'),
+  phoneNumber: string().matches(/\d{3}-\d{3}-\d{4}/, 'Please type in format of XXX-XXX-XXXX'),
   acceptedTerms: bool().test('accepted-terms', 'You must agree before submitting.', (value?: boolean) => Boolean(value))
 });
