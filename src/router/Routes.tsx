@@ -8,7 +8,6 @@ import Profile from '../pages/Profile/Profile';
 import ResetEmail from '../pages/ResetEmail/ResetEmail';
 import ResetPassword from '../pages/ResetPassword/ResetPassword';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
-import {NavigationBar} from '../components/NavigationBar/NavigationBar';
 import Explore from '../pages/Explore/Explore';
 import PublicModule from '../pages/PublicModule/PublicModule';
 import {PrivateRoute} from '../components/PrivateRoute/PrivateRoute';
@@ -26,14 +25,14 @@ import ModulesEditor from '../pages/ModulesEditor/ModulesEditor';
 import AdminPage from '../pages/AdminPanel/AdminPage';
 import LabEditor from '../pages/LabEditor/LabEditor';
 import ServiceUnavailable from '../pages/ServiceUnavailable/ServiceUnavailable';
-import SystemMessageList from '../components/SystemMessageList/SystemMessageList';
+import EmailVerification from '../pages/EmailVerification/EmailVerification';
+import UnsubscribeNewsletter from 'pages/UnsubscribeNewsletter/UnsubscribeNewsletter';
+import SubscriptionStatus from 'pages/NewsletterStatus/NewsletterStatus';
 
 
 const Routes = () => (
   <div style={{display: 'flex', flexFlow: 'column', minHeight: '100vh'}}>
     <Router history={History} >
-      <NavigationBar />
-        <SystemMessageList/>
       <Switch>
         <Route exact={true} path={RoutePaths.home} component={Home} redirectTo={RoutePaths.explore}/>
         <Route exact={true} path={RoutePaths.explore} component={Explore}/>
@@ -57,6 +56,9 @@ const Routes = () => (
         <Route exact={true} path={RoutePaths.sitePolicy} component={SitePolicy}/>
         <Route exact={true} path={RoutePaths.contentCreator} component={ModulesEditor}/>
         <Route exact={true} path={RoutePaths.adminPanel} component={AdminPage}/>
+        <Route exact={true} path={RoutePaths.emailVerification} component={EmailVerification}/>
+        <Route exact={true} path={RoutePaths.unsubscribeNewsletter} component={UnsubscribeNewsletter}/>
+        <Route exact={true} path={RoutePaths.newsletterStatus} component={SubscriptionStatus}/>
         <Route component={NotFound} />
         <Route component={ServiceUnavailable} />
       </Switch>

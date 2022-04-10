@@ -2,6 +2,7 @@ import {Component, default as React} from 'react';
 import {RouteComponentProps} from 'react-router';
 import {verifyEmail} from '../../api';
 import {Spinner} from 'react-bootstrap';
+import {Layout} from '../Layout/Layout';
 
 interface Params {
   code: string;
@@ -38,7 +39,7 @@ export class VerifyEmail extends Component<VerifyEmailProps, State> {
     }
   }
 
-  render() {
+  renderInner() {
     if (this.state.loading) {
       return (
         <div style={{display: 'flex', justifyContent: 'center', marginTop: '3rem'}}>
@@ -51,6 +52,12 @@ export class VerifyEmail extends Component<VerifyEmailProps, State> {
         {this.state.verified ? 'Your email has successfully been verified!': 'Sorry, we could not verify your email at this time.'}
       </p>
     );
+  }
+
+  render() {
+    return <Layout isEmailVerificationPage={true}>
+      {this.renderInner()}
+    </Layout>;
   }
 
 }

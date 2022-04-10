@@ -25,7 +25,8 @@ function LoginForm(props: Props) {
   });
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  const onSubmit = async (values: LoginFormValues) => {
+
+  const onSubmit = async (values: LoginFormValues) =>  {
     try {
       const resp = await login(values.email, values.password);
       await props.actions.setCurrentUser(resp.data);
