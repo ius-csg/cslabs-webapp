@@ -40,7 +40,6 @@
     top: 100%;
     left: 0;
     width: 100%;
-    width: 240px;
 }
 
 .react-tags-suggestions ul {
@@ -75,7 +74,7 @@
     }
 }
 
-.enabled {
+.editable {
     .react-tags {
         position: relative;
         padding: 6px 0 0 6px;
@@ -122,4 +121,24 @@
         padding: 0;
         border: 0;
     }
+}
+
+.read-only {
+    width: 90%;
+    display: inline-flex;
+    height: 20%;
+
+    .react-tags {
+        background-color: white;
+        overflow: hidden;
+    }
+
+    .react-tags-selected-tag {
+        font-size: small;
+    }
+}
+
+.expanded {
+    width: 93%;
+    height: 90%;
 }

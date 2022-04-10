@@ -1,6 +1,7 @@
 import {TrackableEntity} from './Entity';
 
 export interface User extends TrackableEntity {
+  verified: boolean;
   firstName: string;
   middleName?: string;
   lastName: string;
@@ -9,6 +10,7 @@ export interface User extends TrackableEntity {
   role: Role;
   cardCodeHash?: string;
   terminationDate?: string;
+  subscribedNewsletter: boolean;
 }
 
 export const ERole = {

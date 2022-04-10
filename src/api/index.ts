@@ -152,7 +152,7 @@ export async function getTags(name: string) {
 }
 
 export async function updateEndDateTime(id: number) {
-  return handleResponse( await api.post<UserLab>(`/user-lab/${id}/update-end-date-time`)).data;
+  return handleResponse(await api.post<UserLab>(`/user-lab/${id}/update-end-date-time`)).data;
 }
 
 export async function startUserLab(id: number) {
@@ -181,6 +181,20 @@ export async function startUserModule(id: string) {
 export async function verifyEmail(code: string) {
   return handleResponse(await api.post<string>(`/user/verify-email`, {code: code}));
 }
+
+export async function verifyUser() {
+  return handleResponse(await api.get<boolean>(`/user/verify-user`)).data;
+}
+
+export async function resendEmailVerification() {
+  return handleResponse(await api.post<boolean>(`/user/resend-emailverification`)).data;
+}
+
+
+export async function changeNewsletterSubscription(subscribe: boolean) {
+  return handleResponse(await api.put(`/user/change-newsletter-subscription`, {subscribe: subscribe}));
+}
+
 export async function getModuleForEditor(moduleId: number) {
   return handleResponse(await api.get<ModuleForm>(`/module/module-editor/${moduleId}`)).data;
 }

@@ -28,3 +28,15 @@ export function range(start: number, end: number) {
   }
   return arr;
 }
+
+
+export function doNothing() {
+  // do nothing
+}
+
+
+export function limitIf<T>(arr: T[], length: number, condition: boolean) {
+  if(arr.length > length && condition)
+    return arr.slice(0,4);
+  return arr;
+}

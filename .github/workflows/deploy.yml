@@ -1,0 +1,31 @@
+name: Deploy Webapp
+on:
+  push:
+    branches:
+      - dev
+  release:
+    types: [ published ]
+
+env:
+  CI: false
+
+jobs:
+  deploy-dev:
+    name: Deployment to dev
+    if: github.ref_name == 'dev'
+    runs-on: [self-hosted, cslabs, dev]
+    steps:
+      - name: Move to frontend repo, verify dev branch, and run deploy script
+        run:
+          cd /var/www/cslabs-webapp && git checkout dev && ./deploy.sh
+
+  deploy-prod:
+    name: Deployment to prod
+    if: github.event_name == 'release'
+    runs-on: [self-hosted, cslabs, prod]
+    steps:
+      - name: Move to frontend repo, verify main branch, and run deploy script
+        run:
+          cd /var/www/cslabs-webapp && git checkout main && ./deploy.sh
+
+
