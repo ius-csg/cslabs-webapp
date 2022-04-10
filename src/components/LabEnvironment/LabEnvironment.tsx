@@ -31,7 +31,7 @@ interface LabEnvironmentState {
   readmeLoaded: boolean;
   show_vm: boolean;
   eventKey: string;
-  module: Module;
+  module?: Module;
   labEndDateTime?: string;
   interval: number;
 }
@@ -45,19 +45,7 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     show_vm: false,
     eventKey: '#topology',
     labEndDateTime: this.props.userLab.endDateTime!,
-    interval: 0,
-    module: {
-      id: 0,
-      createdAt: '',
-      description: '',
-      disabled: false,
-      name: 'Loading',
-      published: false,
-      ownerId: 0,
-      specialCode: '',
-      type: 'SingleUser',
-      updatedAt: ''
-    }
+    interval: 0
   };
 
   componentWillUnmount() {
@@ -141,8 +129,8 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
             <h2>Lab : {this.props.userLab.lab.name}</h2>
             {this.isLabAbleToStart() ?
               <LoadingButton
-                loading={this.props.starting}
-                disabled={this.state.module.disabled}
+                loading={this.props.starting || !this.state.module}
+                disabled={this.state.module?.disabled ?? true}
                 label='Start Lab'
                 onClick={this.props.onStartLab}
                 disabledToolTipText={'This lab is currently disabled'}
