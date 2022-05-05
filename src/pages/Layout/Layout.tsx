@@ -2,6 +2,7 @@ import React, {CSSProperties} from 'react';
 import {Container} from 'react-bootstrap';
 import {CookieAlert} from '../../components/CookieAlert/CookieAlert';
 import {BrowserSupportAlert} from '../../components/BrowserSupportAlert/BrowserSupportAlert';
+
 interface LayoutProps {
   fluid?: boolean;
   children: any;

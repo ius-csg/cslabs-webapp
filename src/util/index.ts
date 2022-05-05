@@ -155,6 +155,7 @@ export interface AxiosErrorMessageParams {
  * }
  * @param errorsDictionary
  */
+// Code smell on this
 function convertAspNetCoreErrorsToFormikErrors(errorsDictionary: {[key: string]: string[]}): FormikErrors<any> {
   const keys = Object.keys(errorsDictionary);
   const errors: any = {};
@@ -186,6 +187,7 @@ export type SetErrors<T> = (errors: FormikErrors<T>) => void;
 
 const getErrorMessage = (errors: any): string[] => Array.isArray(errors['']) ? errors[''] : errors;
 
+// Code smell on this
 export function handleAxiosError(e: AxiosError, params: AxiosErrorMessageParams = {}, setErrors?: SetErrors<any>, errorsPrefix?: string) {
   if (e.response) {
     if (e.response.status === 400) {
@@ -255,7 +257,13 @@ export function isUnknownError(e: any) {
 }
 
 export function getErrorStatus(e: any): number {
-  return e.response ? e.response.status : (e.request ? e.request.status : -1);
+  if (e.response) {
+    return e.response.status;
+  } else if (e.request) {
+    return e.request.status;
+  } else {
+    return -1;
+  }
 }
 
 export type Stringify<T> = { [K in keyof T]: string | undefined };

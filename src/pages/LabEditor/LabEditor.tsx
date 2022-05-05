@@ -11,7 +11,7 @@ import {
   propertyOf, useMessage
 } from '../../util';
 import {Message} from '../../util/Message';
-import {LabForm, LabVmForm, VmTemplate} from '../../types/editorTypes';
+import {BridgeTemplate, LabForm, LabVmForm, VmInterfaceTemplate, VmTemplate} from '../../types/editorTypes';
 import {makeLabForm} from '../../factories';
 import {DropdownInput} from '../../components/util/DropdownInput/DropdownInput';
 import {DropdownOption} from '../../components/util/SearchableDropdown/SearchableDropdown';
@@ -28,6 +28,8 @@ import {FileInput} from '../../components/util/FileInput';
 import {VmTemplateModal} from '../../components/VmTemplateModal/VmTemplateModal';
 import {BridgeListEditor} from '../../components/BridgeListEditor/BridgeListEditor';
 import {LabTypes} from '../../components/LabTypesPopover/LabTypesPopover';
+import LabEditorGUI from '../LabEditorGUI/LabEditorGUI';
+import {toJpeg} from 'html-to-image';
 
 const labDifficultyOptions: DropdownOption<LabDifficulty>[] = [
   {value: 1, label: 'Easy'},
@@ -50,6 +52,8 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useMessage();
   const [editing, setEditing] = useState(false);
+  const [guiEnabled, setGuiEnabled] = useState(true);
+  const [guiSchema, setGuiSchema] = useState();
   const [vmTemplates, setVmTemplates] = useState<VmTemplate[]>([]);
   const [redirect, setRedirect] = useState();
   const vmTemplateDictionary = convertArrayToDictionary(vmTemplates, 'id') as Dictionary<VmTemplate>;
@@ -61,18 +65,110 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
   const onSubmit = async (form: LabForm, {setErrors}: FormikHelpers<LabForm>) => {
     form = {...form, moduleId: Number(moduleId)};
     setMessage(undefined);
+    let response;
     try {
-      const response = await saveLab(form);
-      setInitialValues(response);
+      if (guiEnabled) {
+        toJpeg(document.getElementById('diagram') as HTMLElement)
+          .then(async (dataUrl: string) => {
+            const file = new File([dataURLtoBlob(dataUrl)], 'name');
+            form = {...form, topology: (file)};
+            form.hasTopology = true;
+            form.labVms = getLabVmsFromGui();
+            form.bridgeTemplates = getBridgeTemplatesFromGui();
+            response = await saveLab(form);
+            setInitialValues(response);
+
+          })
+          .catch((err: any) => {
+            console.log(err);
+          });
+      } else {
+        console.log("No gui");
+        response = await saveLab(form);
+        setInitialValues(response);
+      }
+
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
-      if(!labId) {
+      if(!labId && response !== undefined) {
         setRedirect(RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', String(response.id)));
       }
     } catch (e) {
       setMessage({message: handleAxiosError(e, {}, setErrors, 'json'), variant: 'danger', critical: false});
     }
   };
+
+  const dataURLtoBlob = (dataURL: string) => {
+    // Decode the dataURL
+    const binary = atob(dataURL.split(',')[1]);
+    // Create 8-bit unsigned array
+    const array: any = [];
+    let i = 0;
+    while (i < binary.length) {
+      array.push(binary.charCodeAt(i));
+      i++;
+    }
+
+    return new Blob([ new Uint8Array(array) ], {type: 'image/jpeg'});
+  };
+
+  const getLabVmsFromGui = () => {
+    const labVms: LabVmForm[] = [];
+    let i = 1;
+    for (const node of guiSchema.nodes) {
+      if (node.nodeType === 'vm') {
+        const interfaces : VmInterfaceTemplate[] = [];
+        for (const link of guiSchema.links) {
+          if (link.input.slice(0, 36) === node.id) {
+            const connectedNode = link.output.slice(0, 36);
+            const interfaceObj = {
+              bridgeTemplateUuid: connectedNode,
+              id: 0,
+              interfaceNumber: 0
+            };
+            interfaces.push(interfaceObj);
+          } else if (link.output.slice(0, 36) === node.id) {
+            const connectedNode = link.input.slice(0, 36);
+            const interfaceObj = {
+              bridgeTemplateUuid: connectedNode,
+              id: 0,
+              interfaceNumber: 0
+            };
+            interfaces.push(interfaceObj);
+          }
+        }
+        const obj = {
+          templateInterfaces: interfaces,
+          vmTemplateId: 1,
+          isCoreRouter: false,
+          name: node.content,
+          id: i
+        };
+        labVms.push(obj);
+      }
+      i++;
+    }
+    return labVms;
+  };
+
+  const getBridgeTemplatesFromGui = () => {
+    const bridgeTemplates: BridgeTemplate[] = [];
+    let i = 1;
+    for (const node of guiSchema.nodes) {
+      if (node.nodeType === 'switch' || node.nodeType === 'wan') {
+        const obj = {
+          uuid: node.id,
+          isCoreBridge: (node.nodeType === 'wan'),
+          name: node.content,
+          id: i
+        };
+        bridgeTemplates.push(obj);
+      }
+      i++;
+    }
+    return bridgeTemplates;
+  };
+
 
   function onCancel() {
     setInitialValues({...initialValues});
@@ -126,6 +222,9 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                    <ButtonLink to={getEditModuleLink(values)} style={{marginLeft: '1rem'}} variant='info'>Back</ButtonLink>
                  </Col>
                  <Col className='d-flex justify-content-end align-items-center'>
+                   <Button type='button' onClick={() => setGuiEnabled(!guiEnabled)}>{guiEnabled ? 'Switch to Editor' : 'Switch to GUI'}</Button>
+                 </Col>
+                 <Col className='d-flex justify-content-end align-items-center'>
                    {editing && Boolean(values.id) && <Button style={{marginRight: '1rem'}} type='button' variant='danger' onClick={onCancel}>Cancel</Button>}
                    {!editing && <Button type='button' onClick={() => setEditing(true)}>Edit</Button>}
                    {editing && <LoadingButton loading={isSubmitting} type='submit' label={values.id ? 'Save' : 'Create'}/>}
@@ -137,11 +236,14 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                    <Form.Label>Lab Name</Form.Label>
                    <Input name={getFieldName('name')} placeholder='Enter Lab Name' disabled={!editing}/>
                  </Form.Group>
-                 <Form.Group>
-                   <Form.Label>Upload Topology Image (Only jpg supported)</Form.Label>
-                   <FileInput name={getFieldName('topology')} accept='image/jpg' disabled={!editing} />
-                   {values.hasTopology && <a href={getUserLabTopologyUrl(values.id)} target='_blank'>View Current</a>}
-                 </Form.Group>
+                 {guiEnabled ?
+                   <></> :
+                   <Form.Group>
+                     <Form.Label>Upload Topology Image (Only jpg supported)</Form.Label>
+                     <FileInput name={getFieldName('topology')} accept='image/jpg' disabled={!editing} />
+                     {values.hasTopology && <a href={getUserLabTopologyUrl(values.id)} target='_blank'>View Current</a>}
+                   </Form.Group>
+                 }
                  <Form.Group>
                    <Form.Label>Upload PDF Readme (only pdfs supported)</Form.Label>
                    <FileInput name={getFieldName('readme')} accept='.pdf' disabled={!editing} />
@@ -155,20 +257,30 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
                    <Form.Label>Lab Difficulty</Form.Label>
                    <DropdownInput name={getFieldName('labDifficulty')} dropdownData={labDifficultyOptions} disabled={!editing}/>
                  </Form.Group>
-                 <BridgeListEditor
-                   bridgeTemplates={values.bridgeTemplates}
-                   prefix={getFieldName('bridgeTemplates')}
-                   editing={editing}
-                   containsCoreRouter={vmTemplates.filter(vm => vm.isCoreRouter).length !== 0}
-                 />
-                 <VmTable
-                   bridgeTemplates={values.bridgeTemplates}
-                   prefix={getFieldName('labVms')}
-                   vms={values.labVms}
-                   editable={editing}
-                   onOpenTemplateSelection={(index) => setSelectedVm(index)}
-                   vmTemplateDictionary={vmTemplateDictionary}
-                 />
+                 {guiEnabled ?
+                     <LabEditorGUI
+                       setGuiSchema={setGuiSchema}
+                       disabled={!editing}
+                     />
+                  :
+                   <>
+                     <BridgeListEditor
+                       bridgeTemplates={values.bridgeTemplates}
+                       prefix={getFieldName('bridgeTemplates')}
+                       editing={editing}
+                       containsCoreRouter={vmTemplates.filter(vm => vm.isCoreRouter).length !== 0}
+                     />
+                     <VmTable
+                       bridgeTemplates={values.bridgeTemplates}
+                       prefix={getFieldName('labVms')}
+                       vms={values.labVms}
+                       editable={editing}
+                       onOpenTemplateSelection={(index) => setSelectedVm(index)}
+                       vmTemplateDictionary={vmTemplateDictionary}
+                     />
+                   </>
+                 }
+
                </Col>
              </Form>
              <VmTemplateModal

@@ -4,14 +4,16 @@ import {Button, Col, Container, Dropdown, ButtonGroup, ListGroup, Row, Tab} from
 import {Status} from '../../pages/Status/Status';
 import {Document, Page, pdfjs} from 'react-pdf';
 import {PDFDocumentProxy} from 'pdfjs-dist';
-import {getUserLabReadmeUrl, getUserLabTopologyUrl} from '../../api';
+import {getUserLabReadmeUrl, getUserLabTopologyUrl, updateEndDateTime} from '../../api';
 import {UserLab} from '../../types/UserLab';
 import {LoadingButton} from '../../util/LoadingButton';
-import {combineClasses, getRemainingLabTime} from '../../util';
+import {combineClasses, getRemainingLabTime, getLuxonObjectFromString} from '../../util';
 import {ConsoleWindowContainer} from '../ConsoleWindow/ConsoleWindowContainer';
 import {VmActionsMenu} from '../VmActionsMenu/VmActionsMenu';
 import {VmStatusIndicator} from '../util/VmStatusIndicator/VmStatusIndicator';
 import styles from './LabEnvironment.module.scss';
+import {RoutePaths} from 'router/RoutePaths';
+import Popup from '../util/Popup';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -28,8 +30,9 @@ interface LabEnvironmentState {
   readmeLoaded: boolean;
   show_vm: boolean;
   eventKey: string;
+  labEndDateTime?: string;
+  interval: number;
 }
-
 
 export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmentState> {
 
@@ -38,8 +41,18 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     readmeLoaded: false,
     pageNumber: 1,
     show_vm: false,
-    eventKey: '#topology'
+    eventKey: '#topology',
+    labEndDateTime: this.props.userLab.endDateTime!,
+    interval: 0
   };
+
+  componentDidMount() {
+    this.setLabEndDateTimeInterval(this.props.userLab);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.state.interval);
+  }
 
   canGoToPrevPage = () => this.state.pageNumber > 1;
   canGoToNextPage = () => this.state.pageNumber < this.state.numPages;
@@ -61,6 +74,49 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     return this.props.userLab.status !== 'Started';
   }
 
+  setLabEndDateTimeInterval = (userLab: UserLab) => {
+    this.state.interval = window.setInterval(() => {
+      this.setState({ labEndDateTime: userLab.endDateTime! });
+    }, 1000);
+  }
+
+  onExtendEndDateTime = async () => {
+    const updatedUserLab = await updateEndDateTime(this.props.userLab.id);
+    window.clearInterval(this.state.interval);
+    this.setState({ labEndDateTime: updatedUserLab.endDateTime! });
+    this.setLabEndDateTimeInterval(updatedUserLab);
+  };
+
+  showExtendButton = () => {
+    const remainingLabTime = getLuxonObjectFromString(this.state.labEndDateTime!).toLocal().diffNow().as('second');
+    // shows a pop up if the lab times up instead of providing an extend option
+    if (getRemainingLabTime(this.state.labEndDateTime) === 'Times up!') {
+      const handler = window.setTimeout(() => {
+        window.location.replace(RoutePaths.myModules);
+      }, 15000);
+
+      const onModuleRedirect = () => {
+        window.clearTimeout(handler);
+        window.location.replace(RoutePaths.myModules);
+      };
+      return (
+        <Popup
+          id='times-up' 
+          title='Times up!'
+          description='Congratulations! You have finished working on this lab.
+            You will be automatically redirected to your modules page after 15 seconds.'
+          rightButton={<Button onClick={onModuleRedirect} className='btn btn-primary'>My Modules</Button>}
+          size='sm'
+          display={true}
+        />
+      );
+    } else if (remainingLabTime > 0 && remainingLabTime <= 900) {      
+      return <Button className='ml-2' onClick={this.onExtendEndDateTime}>Extend</Button>;
+    } else {
+      return;
+    }
+  }
+
   render() {
     const { pageNumber, numPages } = this.state;
     return (
@@ -72,8 +128,10 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
               <LoadingButton
                 loading={this.props.starting}
                 label='Start Lab'
-                onClick={this.props.onStartLab}
-              /> : <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.props.userLab.endDateTime!)}</h6>}
+                onClick={this.props.onStartLab} 
+              /> : this.props.userLab.lab.type === 'Temporary' &&
+              <h6 style={{textAlign: 'right'}}>Lab's time remaining: {getRemainingLabTime(this.state.labEndDateTime)}{this.showExtendButton()}</h6>
+            }
           </Row>
           <Row className='fill-height'>
             <Col sm={4} md={4} lg={2}>
@@ -168,4 +226,3 @@ export class LabEnvironment extends Component<LabEnvironmentProps, LabEnvironmen
     );
   }
 }
-

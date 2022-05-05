@@ -1,0 +1,52 @@
+.componentContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    background-color: rgba(230, 230, 230, 0.95);
+    overflow-y: hidden;
+    height: 275px;
+    animation: slide 80ms linear;
+}
+
+.switchContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
+
+.switchButton {
+    height: 8em;
+    border: none;
+    background: none;
+}
+
+.switchButton:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.closeButton {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: none;
+}
+
+.closeButton:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+@keyframes slide {
+    0% {height: 0px;}
+    5% {height: 13px;}
+    33% {height: 90px;}
+    66% {height: 180px}
+    95% {height: 280px}
+    100% {height: 275px;}
+}
