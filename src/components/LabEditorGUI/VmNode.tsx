@@ -32,7 +32,7 @@ const VmNode = ({id, inputs, content}: NodeParameters) => {
             }))}
             </div>
             <img src={VmSVG} alt='VM' draggable={false} style={{height: '50px', userSelect:'none', pointerEvents:'none'}}/>
-            <div style={{display:'flex', justifyContent:'center'}}>
+            <div id={id} style={{display:'flex', justifyContent:'center'}}>
               <h5>{content}</h5>
             </div>
           </div>

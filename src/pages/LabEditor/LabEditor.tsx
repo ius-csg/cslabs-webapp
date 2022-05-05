@@ -90,7 +90,7 @@ export default function LabEditor({match: {params: {moduleId, labId}}}: Props) {
 
       setEditing(false);
       setMessage({message: 'Successfully Saved', variant: 'success'});
-      if(!labId) {
+      if(!labId && response !== undefined) {
         setRedirect(RoutePaths.EditLab.replace(':moduleId', String(moduleId)).replace(':labId', String(response.id)));
       }
     } catch (e) {

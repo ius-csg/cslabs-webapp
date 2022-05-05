@@ -424,8 +424,8 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           onClick: () => {
             if (schema.nodes.find(nodes => nodes.id === selectedNode)) {
               const node: Node<any> = schema.nodes.find(nodes => nodes.id === selectedNode) as Node<any>;
-              // TODO this position does not always align the text box under the node
-              setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
+              const element = document!.getElementById(node.id);
+              setTextBoxPosition([element!.getBoundingClientRect().left, element!.getBoundingClientRect().top]);
               toggleRenameTextBox(true);
               setNodeToRename(node.id);
               setNewNodeName(node.content as string);
@@ -510,10 +510,11 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
       if (((event.clientX - rect.left) >= node.coordinates[0] && (event.clientX - rect.left) - 20 <= node.coordinates[0] + 50)
         && ((event.clientY - rect.top) >= node.coordinates[1] && (event.clientY - rect.top) - 20 <= node.coordinates[1] + 100)) {
         if (node.nodeType === 'vm') {
-          setTextBoxPosition([node.coordinates[0] + rect.left - 50, node.coordinates[1] + rect.top + 90]);
+          const element = document!.getElementById(node.id);
+          setTextBoxPosition([element!.getBoundingClientRect().left, element!.getBoundingClientRect().top]);
+          toggleRenameTextBox(true);
           setNodeToRename(node.id);
           setNewNodeName(node.content as string);
-          toggleRenameTextBox(true);
         }
       }
     }
@@ -553,14 +554,16 @@ const UncontrolledDiagram = ({ menuType, setMenuType, textBoxPosition, setTextBo
           <SelectSwitch addSwitch={addNewSwitch} close={() => setSelectSwitchVisible(false)}/>}
             <Diagram schema={schema} onChange={onChange} />
           {renameTextBox &&
-          <form onSubmit={handleSubmit} style={{position:'absolute', left:`${textBoxPosition[0]}px`, top:`${textBoxPosition[1]}px`, zIndex:1000}}>
-            <input
-              type='text'
-              value={newNodeName}
-              onChange={handleInputChange}
-            />
-            <input type='submit' style={{display: 'none'}}/>
-          </form>}
+            <div style={{}}>
+              <form onSubmit={handleSubmit} style={{position:'fixed', left:`${textBoxPosition[0]}px`, top:`${textBoxPosition[1]}px`, zIndex:1000}}>
+                <input
+                  type='text'
+                  value={newNodeName}
+                  onChange={handleInputChange}
+                />
+                <input type='submit' style={{display: 'none'}}/>
+              </form>
+            </div>}}
         </div>
       </ContextContainer>
       </div>
